@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <record id="class_of_shares_list_view" model="ir.ui.view">
+            <field name="name">class.of.shares.list.view</field>
+            <field name="model">class.of.shares</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="class_shares"/>
+                    <field name="par_value"/>
+                    <field name="authorized_no"/>
+                    <field name="authorized_amount"/>
+                    <field name="subscribed_no"/>
+                    <field name="subscribed_amount"/>
+                    <field name="treasury_no"/>
+                    <field name="treasury_amount"/>
+                    <field name="paid_up_no"/>
+                    <field name="paid_up_amount"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="class_of_shares_form_view" model="ir.ui.view">
+            <field name="name">class.of.shares.form.view</field>
+            <field name="model">class.of.shares</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <group>
+                            <group>
+                                <field name="class_shares"/>
+                            </group>
+                            <group>
+                                <field name="par_value"/>
+                            </group>
+                            <group string="Authorized">
+                                <field name="authorized_no"/>
+                                <field name="authorized_amount"/>
+                            </group>
+                            <group string="Subscribed">
+                                <field name="subscribed_no"/>
+                                <field name="subscribed_amount"/>
+                            </group>
+                            <group string="Treasury">
+                                <field name="treasury_no"/>
+                                <field name="treasury_amount"/>
+                            </group>
+                            <group string=" Paid-Up">
+                                <field name="paid_up_no"/>
+                                <field name="paid_up_amount"/>
+                            </group>
+                        </group>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+<!--        <record id="class_of_shares_action" model="ir.actions.act_window">-->
+<!--            <field name="name">Class of Shares</field>-->
+<!--            <field name="res_model">class.of.shares</field>-->
+<!--            <field name="view_mode">tree, form</field>-->
+<!--        </record>-->
+
+<!--        <menuitem id="class_of_shares_root_menu" name="Class of Shares"/>-->
+<!--        <menuitem id="class_of_shares_sub_menu" parent="class_of_shares_root_menu"/>-->
+<!--        <menuitem id="class_of_shares_menu" action="class_of_shares_action" parent="class_of_shares_sub_menu"/>-->
+    </data>
+</odoo>
+
