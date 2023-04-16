@@ -166,8 +166,6 @@
                             If Yes what type of security is the Company permit to sell??
                             <field name="ask_2" nolabel="1"/>
                         </form>
-
-
                     </page>
                 </xpath>
 

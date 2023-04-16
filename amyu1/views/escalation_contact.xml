@@ -18,24 +18,22 @@
             <field name="arch" type="xml">
                 <form>
                     <group>
-                        <group>
-                            <field name="name"/>
-                            <field name="number_email"/>
-                        </group>
+                        <field name="name"/>
+                        <field name="number_email"/>
                     </group>
                 </form>
             </field>
         </record>
 
-<!--        <record id="corporate_officer_action" model="ir.actions.act_window">-->
-<!--            <field name="name">Corporate Officer</field>-->
-<!--            <field name="res_model">corporate.officer</field>-->
-<!--            <field name="view_mode">tree, form</field>-->
-<!--        </record>-->
+        <!--        <record id="corporate_officer_action" model="ir.actions.act_window">-->
+        <!--            <field name="name">Corporate Officer</field>-->
+        <!--            <field name="res_model">corporate.officer</field>-->
+        <!--            <field name="view_mode">tree, form</field>-->
+        <!--        </record>-->
 
-<!--        <menuitem id="corporate_officer_root_menu" name="Corporate Officer"/>-->
-<!--        <menuitem id="corporate_officer_sub_menu" parent="corporate_officer_root_menu"/>-->
-<!--        <menuitem id="corporate_officer_menu" action="corporate_officer_action" parent="corporate_officer_sub_menu"/>-->
+        <!--        <menuitem id="corporate_officer_root_menu" name="Corporate Officer"/>-->
+        <!--        <menuitem id="corporate_officer_sub_menu" parent="corporate_officer_root_menu"/>-->
+        <!--        <menuitem id="corporate_officer_menu" action="corporate_officer_action" parent="corporate_officer_sub_menu"/>-->
 
     </data>
 </odoo>

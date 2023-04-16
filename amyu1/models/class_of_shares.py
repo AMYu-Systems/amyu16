@@ -15,4 +15,4 @@ class ClassOfShares(models.Model):
     treasury_amount = fields.Float(string="Amount")
     paid_up_no = fields.Float(string="No.")
     paid_up_amount = fields.Float(string="Amount")
-    class_ids = fields.Many2one(comodel_name='res.partner', string="Class")
+    client_share_ids = fields.Many2one(comodel_name='client.profile', string="Class")

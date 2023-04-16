@@ -7,4 +7,4 @@ class EscalationContact(models.Model):
 
     name = fields.Char(string='Escalation Point of Contact', required=True)
     number_email = fields.Char(string="Contact Number and Email")
-    escalation_id = fields.Many2one(comodel_name='res.partner', string="Escalation")
+    escalation_id = fields.Many2one(comodel_name='client.profile', string="Escalation")

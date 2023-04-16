@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+
+        <record id="client_profile_kanban_view" model="ir.ui.view">
+            <field name="name">client.profile.kanban.view</field>
+            <field name="model">client.profile</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <field name="is_company"/>
+                    <field name="name"/>
+                    <field name="id"/>
+                    <field name="image"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_global_click">
+                                <div class="o_kanban_image">
+                                    <img alt="Avatar"
+                                         t-att-src="kanban_image('client.profile', 'image', record.id.raw_value)"/>
+                                </div>
+                                <div class="oe_kanban_details">
+                                    <ul>
+                                        <li>
+                                            Client Name :
+                                            <field name="name"/>
+                                        </li>
+                                        <li>
+                                            Group :
+                                            <field name="is_company"/>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="client_profile_list_view" model="ir.ui.view">
+            <field name="name">client.profile.list.view</field>
+            <field name="model">client.profile</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="is_company" string="Group"/>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="client_profile_form_view" model="ir.ui.view">
+            <field name="name">client.profile.form.view</field>
+            <field name="model">client.profile</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_button_box">
+                            <field name="image" widget="image" nolabel="1" class="oe_avatar"/>
+                            <div class="oe_title">
+                                <field name="is_company" widget="radio" options="{'horizontal':True}" nolabel="1"/>
+                                <h1>
+                                    <field id="name" class="text-break" name="name" default_focus="1"
+                                           placeholder="e.g. Lumber Inc"/>
+                                </h1>
+                            </div>
+                        </div>
+
+                        <group>
+                            <group>
+                                <field name="client_id"/>
+                                <field name="date_of_engagement" string="Date of Engagement"/>
+                            </group>
+                            <group>
+                                <field name="organization_type"/>
+                                <field name="industry_class"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="nature_of_business"/>
+                        </group>
+
+                        <group col="3">
+                            <group>
+                                <field name="tax_reporting_compliance"/>
+                                <field name="annual_registration_update"/>
+                                <field name="agree_upon_procedure"/>
+                            </group>
+                            <group>
+                                <field name="audit_assurance"/>
+                                <field name="tax_advocacy"/>
+                                <field name="advisory_consultancy"/>
+                            </group>
+                            <group>
+                                <field name="compilation"/>
+                                <field name="others"/>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page string="Contact Information">
+                                <group string="Registered Address">
+                                    <group>
+                                        <field name="unit_no"/>
+                                    </group>
+                                    <group>
+                                        <field name="building_name"/>
+                                    </group>
+                                    <group>
+                                        <field name="street"/>
+                                    </group>
+                                    <group>
+                                        <field name="district"/>
+                                    </group>
+                                    <group>
+                                        <field name="city"/>
+                                    </group>
+                                    <group>
+                                        <field name="zip"/>
+                                    </group>
+                                </group>
+                                <group>
+                                    <group>
+                                        <field name="landline" widget="phone"/>
+                                    </group>
+                                    <group>
+                                        <field name="website" widget="website"/>
+                                    </group>
+                                </group>
+                                <group string="Accounting or Office Admin Address">
+                                    <group>
+                                        <field name="unit_no2"/>
+                                    </group>
+                                    <group>
+                                        <field name="building_name2"/>
+                                    </group>
+                                    <group>
+                                        <field name="street2"/>
+                                    </group>
+                                    <group>
+                                        <field name="district2"/>
+                                    </group>
+                                    <group>
+                                        <field name="city2"/>
+                                    </group>
+                                    <group>
+                                        <field name="zip2"/>
+                                    </group>
+                                </group>
+                                <group>
+                                    <group>
+                                        <field name="primary_contact_person"/>
+                                        <field name="landline2" widget="phone"/>
+                                    </group>
+                                    <group>
+                                        <field name="mobile_no" widget="phone"/>
+                                        <field name="email_address" widget="email"/>
+                                    </group>
+                                </group>
+                                <group>
+                                    <group>
+                                        <field name="principal_accounting_officer"/>
+                                        <field name="landline3" widget="phone"/>
+                                    </group>
+                                    <group>
+                                        <field name="mobile_no2" widget="phone"/>
+                                        <field name="email_address2" widget="email"/>
+                                    </group>
+                                </group>
+                                <group string="Corporate Officer">
+                                </group>
+                                <field name="corporate_ids"/>
+                            </page>
+
+                            <page string="BIR Registration Information">
+                                <group col="3">
+                                    <group>
+                                        <field name="vat" placeholder="e.g 000-000-000"/>
+                                    </group>
+                                    <group>
+                                        <field name="rdo_code" placeholder="e.g 000"/>
+                                    </group>
+                                    <group>
+                                        <field name="registration_date" string="Registration Date" widget="date"/>
+                                    </group>
+                                </group>
+                                <group string="Tax Type" col="3">
+                                    <group>
+                                        <field name="income_tax"/>
+                                        <field name="excise_tax"/>
+                                    </group>
+                                    <group>
+                                        <field name="value_added_tax"/>
+                                        <field name="withholding_tax_expanded"/>
+                                    </group>
+                                    <group>
+                                        <field name="withholding_tax_compensation"/>
+                                        <field name="registration_fee"/>
+                                    </group>
+                                </group>
+                                <group>
+                                    <field name="other_percentage_tax"/>
+                                </group>
+                                <group col="2" string="">
+                                    <group>
+                                        <field name="tax_type"/>
+                                        <field name="invoice_tax"/>
+                                        <field name="filing_payment"/>
+                                    </group>
+                                    <group>
+                                        <field name="books_of_account"/>
+                                        <field name="psic_psoc"/>
+                                        <field name="ll_cas_permit_no"/>
+                                    </group>
+                                </group>
+                                <form>
+                                    Is the Company using any Point of sale(POS) Cash Registration(CRM) or Special
+                                    Purpose(SPM)
+                                    Machines?
+                                    <field name="ask" widget="radio" options="{'horizontal':True}"/>
+                                </form>
+                            </page>
+
+                            <page string="SEC/DTI Registration Information">
+                                <group col="2">
+                                    <group>
+                                        <field name="registration_number"/>
+                                    </group>
+                                    <group>
+                                        <field name="registration_date_sec" string="Registration Date" widget="date"/>
+                                    </group>
+                                </group>
+                                <group>
+                                    <field name="trade_name"/>
+                                </group>
+                                <group col="6" string="Capitalization">
+                                    <group col="2" string="">
+                                    </group>
+                                    <group col="2" string="">
+                                    </group>
+                                    <group string="Authorized">
+                                    </group>
+                                    <group string="Subscribed">
+                                    </group>
+                                    <group string="Treasury">
+                                    </group>
+                                    <group string="Paid-Up">
+                                    </group>
+                                    <field name="class_shares_id"/>
+                                </group>
+                                <group string="Annual Meeting">
+                                    <group>
+                                        <field name="date_per_law"/>
+                                    </group>
+                                    <group>
+                                        <field name="actual_date_meeting" string="Actual Date of Meeting"
+                                               widget="date"/>
+                                    </group>
+                                </group>
+                                <form>
+                                    Is the Company a holder of a Secondary license issued by the Securities and Exchange
+                                    Commission?
+                                    <field name="ask_1" widget="radio" options="{'horizontal':True}"
+                                           nolabel="1"/>
+                                    If Yes what type of security is the Company permit to sell??
+                                    <field name="ask_2" nolabel="1"/>
+                                </form>
+                            </page>
+
+                            <page string="Regulatory Information">
+                                <form>
+                                    Is the Entry regulated or accredited by or is a license holder issued by any of the
+                                    following Government Regulatory Agencies?
+                                    <field name="ask_3" widget="radio" options="{'horizontal':True}"/>
+                                </form>
+                                <group col="3">
+                                    <group>
+                                        <field name="bureau_of_custom"/>
+                                        <field name="bangko_sentral_pilipinas"/>
+                                        <field name="professional_regulation_commission"/>
+                                        <field name="philippines_council_ngo_certification"/>
+                                    </group>
+                                    <group>
+                                        <field name="cooperative_development_authority"/>
+                                        <field name="insurance_commission"/>
+                                        <field name="integrated_bar_philippines"/>
+                                        <field name="philippines_stock_exchange"/>
+                                    </group>
+                                    <group>
+                                        <field name="construction_industry_authority_philippines"/>
+                                        <field name="philippine_amusement_gaming_corporation"/>
+                                        <field name="land_transportation_franchising_regulatory_board"/>
+                                    </group>
+                                </group>
+                                <group>
+                                    <field name="others_ri"/>
+                                </group>
+                            </page>
+
+                            <page string="Social Security Information">
+                                <group col="3">
+                                    <group>
+                                        <field name="sss"/>
+                                        <field name="phic"/>
+                                        <field name="hdmf"/>
+                                    </group>
+                                    <group>
+                                        <field name="sss_filing"/>
+                                        <field name="phic_filing"/>
+                                        <field name="hdmf_filing"/>
+                                    </group>
+                                    <group>
+                                        <field name="sss_pay"/>
+                                        <field name="phic_pay"/>
+                                        <field name="hdmf_pay"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Engagement Administration-Escalation Matrix">
+                                <group string="For any pertinents resolution, outstanding documentation for submission and follow-up request shall be escalated as:">
+                                </group>
+                                <group>
+                                    <group string="Level">
+                                        <form colspan="2">
+                                            Level 1
+                                        </form>
+                                        <form colspan="2">
+                                            Level 2
+                                        </form>
+                                        <form colspan="2">
+                                            Level 3
+                                        </form>
+                                    </group>
+                                    <group string="Escalation Timeframe">
+                                        <form colspan="2">
+                                            upon encounter of issue;unresolved issue after 1 day;1 day delay in
+                                            submission of documents.
+                                        </form>
+                                        <form colspan="2">
+                                            unresolved issue after 2 days;2 day delay in submission of documents.
+                                        </form>
+                                        <form colspan="2">
+                                            unresolved issue after 3 days; 3 day delay in submission of documents.
+                                        </form>
+                                    </group>
+                                    <field name="escalation"/>
+                                </group>
+                                <form>
+                                    I declare that the information contained in this Client Information Sheet has
+                                    been
+                                    accomplished and verified by me and to the best of my knowledge and belief is a
+                                    true, correct, and complete statement. It is understood and agreed that the
+                                    information disclosed herein for the collection, use, processing, storage and
+                                    retention of my personal data or information by A.M. Yu And Associates, CPAs
+                                    will
+                                    remain confidential. I understand that my consent does not prevent the existence
+                                    of
+                                    other criteria for lawful processing of personal data and does not waive any of
+                                    my
+                                    rights under RA 10173 – Data Privacy Act of 2012 and other applicable laws.
+                                </form>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="client_profile_search_view" model="ir.ui.view">
+            <field name="name">client.profile.search.view</field>
+            <field name="model">client.profile</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name" string="Client"/>
+                    <field name="is_company" string="Group"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="client_profile_action" model="ir.actions.act_window">
+            <field name="name">Client Records</field>
+            <field name="res_model">client.profile</field>
+            <field name="view_mode">tree,kanban,form</field>
+        </record>
+
+        <menuitem id="client_profile_root_menu"
+                  name="Client Profile"
+                  action="client_profile_action"/>
+    </data>
+</odoo>
+
