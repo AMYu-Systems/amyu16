@@ -24,13 +24,13 @@
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
+        'security/ir.model.access.csv',
         'views/res_partner_view.xml',
-        'views/corporate_officer_view.xml',
-        'views/client_profile_view.xml',
         'views/corporate_officer_view.xml',
         'views/class_of_shares_view.xml',
         'views/escalation_contact.xml',
+        'views/client_profile_view.xml',
+        'views/client_records_views.xml'
 
     ],
     'application': True,

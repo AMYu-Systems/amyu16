@@ -1,17 +1,54 @@
-from odoo import models, fields
+import datetime
+
+from odoo import models, fields, api
+
+
+class EscalationContact(models.Model):
+    _name = "escalation.contact"
+    _description = "Escalation Point of Contact"
+
+    name = fields.Char(string='Escalation Point of Contact', required=True)
+    number_email = fields.Char(string="Contact Number and Email")
+    escalation_id = fields.Many2one(comodel_name='client.profile', string="Escalation")
+
+
+class CorporateOfficer(models.Model):
+    _name = "corporate.officer"
+    _description = "Corporate Officer"
+
+    name = fields.Char(string='Name', required=True)
+    position = fields.Char(string='Position')
+    client_profile_ids = fields.Many2one(comodel_name='client.profile', string="Partner")
+
+
+class ClassOfShares(models.Model):
+    _name = 'class.of.shares'
+    _description = "Class of Shares"
+
+    class_shares = fields.Char(string="Class of Shares")
+    par_value = fields.Float(string="Par Value per Share")
+    authorized_no = fields.Float(string="No.")
+    authorized_amount = fields.Float(string="Amount")
+    subscribed_no = fields.Float(string="No.")
+    subscribed_amount = fields.Float(string="Amount")
+    treasury_no = fields.Float(string="No.")
+    treasury_amount = fields.Float(string="Amount")
+    paid_up_no = fields.Float(string="No.")
+    paid_up_amount = fields.Float(string="Amount")
+    client_share_ids = fields.Many2one(comodel_name='client.profile', string="Class")
 
 
 class ClientProfile(models.Model):
     _name = 'client.profile'
     _description = "Profile"
     # profile
-    is_company = fields.Selection([('individual', 'Individual'), ('company', 'Company')])
+    is_company = fields.Selection([('individual', 'Individual'), ('company', 'Company')], required=True)
     name = fields.Char(string="Client Name", required=True)
     image = fields.Image(string="Image")
-    organization_type = fields.Many2one(comodel_name="res.partner", string="Organization Type")
-    industry_class = fields.Many2one(comodel_name="res.partner", string="Industry Class")
+    organization_type = fields.Many2one(comodel_name="res.partner.category", string="Organization Type")
+    industry_class = fields.Many2one(comodel_name="res.partner.industry", string="Industry Class")
     nature_of_business = fields.Text(string="Nature of Business")
-    date_of_engagement = fields.Date('date')
+    date_of_engagement = fields.Date(string="Date")
     client_id = fields.Char(string="Client ID")
     tax_reporting_compliance = fields.Boolean(string="Tax Reporting & Compliance")
     annual_registration_update = fields.Boolean(string="Annual Registration Update")
@@ -21,6 +58,7 @@ class ClientProfile(models.Model):
     advisory_consultancy = fields.Boolean(string="Advisory & Consultancy")
     compilation = fields.Boolean(string="Compilation")
     others = fields.Char(string="Others")
+    client_record_ids = fields.One2many(string="Client Record",comodel_name="client.records",inverse_name="client_profile_id")
     # Contacts
     unit_no = fields.Char(string="Unit/Floor")
     building_name = fields.Char(string="Building Name")
@@ -45,7 +83,7 @@ class ClientProfile(models.Model):
     mobile_no2 = fields.Char(string="Mobile No.")
     email_address2 = fields.Char(string="Email Address")
     corporate_ids = fields.One2many(comodel_name='corporate.officer', inverse_name='client_profile_ids',
-                                    string="Officer")
+                                    string="Corporate Officer")
     # BIR
     vat = fields.Char(string="Tax Id No.")
     rdo_code = fields.Char(string="RDO Code")
@@ -72,7 +110,8 @@ class ClientProfile(models.Model):
     actual_date_meeting = fields.Date('date')
     ask_1 = fields.Selection([('yes', 'Yes'), ('no', 'No')])
     ask_2 = fields.Char(string="If Yes what type of security is the Company permit to sell?")
-    class_shares_id = fields.One2many(comodel_name='class.of.shares', inverse_name='client_share_ids', string="Class")
+    class_shares_id = fields.One2many(comodel_name='class.of.shares', inverse_name='client_share_ids',
+                                      string="Class of Shares")
     # Regulatory
     ask_3 = fields.Selection([('yes', 'Yes'), ('no', 'No')])
     bureau_of_custom = fields.Boolean(string="Bureau of Custom")
@@ -102,3 +141,44 @@ class ClientProfile(models.Model):
     # Escalation
     escalation = fields.One2many(comodel_name='escalation.contact', inverse_name='escalation_id',
                                  string="Escalation Point")
+    # client_records
+    documents_count = fields.Integer(compute="action_attach_documents")
+
+    def action_attach_documents(self):
+        for rec in self:
+            rec.documents_count = self.env['client.records'].search_count([
+                ('client_profile_id','=',rec.id)
+            ])
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Documents',
+            'res_model': 'client.records',
+            'view_mode': 'tree,form',
+            'domain': [('client_profile_id','=',rec.id)],
+            'context': {'default_client_profile_id':rec.id},
+            'target': 'current',
+        }
+
+
+class ClientRecords(models.Model):
+    _name = 'client.records'
+    _rec_name = "file_name"
+
+    upload_file = fields.Binary(string='File', attachment=True)
+    file_name = fields.Char(string='Filename')
+    client_profile_id = fields.Many2one(string="Client Profile",comodel_name="client.profile")
+
+    @api.model
+    def year_selection(self):
+        year = 2000  # replace 2000 with your a start year
+        year_list = []
+        while year != 2030:  # replace 2030 with your end year
+            year_list.append((str(year), str(year)))
+            year += 1
+        return year_list
+
+    year_field = fields.Selection(
+        year_selection,
+        string="Year",
+        default="2023",  # as a default value it would be 2019
+    )

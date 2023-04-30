@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <record id="client_records_list_view" model="ir.ui.view">
+            <field name="name">client.records.list.view</field>
+            <field name="model">client.records</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="year_field"/>
+                    <field name="file_name"/>
+                    <field name="upload_file"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="client_records_form_view" model="ir.ui.view">
+            <field name="name">client.records.form.view</field>
+            <field name="model">client.records</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="year_field" />
+                        <field name="file_name" invisible="1"/>
+                        <field name="upload_file" filename="file_name" widget="pdf_viewer"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="client_records_kanban_view" model="ir.ui.view">
+            <field name="name">client.records.kanban.view</field>
+            <field name="model">client.records</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <field name="year_field"/>
+                    <field name="file_name"/>
+                    <field name="upload_file"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_global_click">
+                                <div class="oe_kanban_details">
+                                    <ul>
+                                        <li>
+                                            File Name :
+                                            <field name="file_name"/>
+                                        </li>
+                                        <li>
+                                            Year :
+                                            <field name="year_field"/>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </t>
+                        >
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="client_records_search_view" model="ir.ui.view">
+            <field name="name">client.records.search.view</field>
+            <field name="model">client.records</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="file_name" string="File Name"
+                           filter_domain="['|',('file_name','ilike',self),('year_field','ilike',self),]"/>
+                    <field name="year_field" string="Year"/>
+                    <searchpanel>
+                        <field name="year_field" enable_counters="1" string="Years"/>
+                    </searchpanel>
+                </search>
+            </field>
+        </record>
+
+    </data>
+</odoo>
+
+
+
