@@ -20,16 +20,17 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'crm', 'muk_web_theme', ],
+    'depends': ['base', 'muk_web_theme', ],
 
     # always loaded
     'data': [
         'security/ir.model.access.csv',
-        'views/res_partner_view.xml',
+        'views/client_profile_view.xml',
+        # 'views/res_partner_view.xml',
         'views/corporate_officer_view.xml',
         'views/class_of_shares_view.xml',
         'views/escalation_contact.xml',
-        'views/client_profile_view.xml',
+
         'views/client_records_views.xml'
 
     ],

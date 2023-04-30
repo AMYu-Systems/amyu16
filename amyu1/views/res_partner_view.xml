@@ -1,376 +1,376 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<odoo>
-    <data>
-        <record id="view_partner_form" model="ir.ui.view">
-            <field name="name">AMYu Partner Form</field>
-            <field name="model">res.partner</field>
-            <field name="inherit_id" ref="base.view_partner_form"/>
-            <field name="arch" type="xml">
+<!--<?xml version="1.0" encoding="utf-8" ?>-->
+<!--<odoo>-->
+<!--    <data>-->
+<!--        <record id="view_partner_form" model="ir.ui.view">-->
+<!--            <field name="name">AMYu Partner Form</field>-->
+<!--            <field name="model">res.partner</field>-->
+<!--            <field name="inherit_id" ref="base.view_partner_form"/>-->
+<!--            <field name="arch" type="xml">-->
 
-                <xpath expr="//form/sheet/notebook" position="inside">
-                    <page string="Contact Information">
-                        <group col="3" string="Registered Address">
-                            <group>
-                                <field name="unit_no" nolabel="1" placeholder="unit/floor no" colspan="2"/>
-                                <field name="street2" nolabel="1" placeholder="village/barangay/district" colspan="2"/>
-                            </group>
-                            <group>
-                                <field name="building_name" nolabel="1" placeholder="building name" colspan="2"/>
-                                <field name="city" nolabel="1" placeholder="city" colspan="2"/>
-                            </group>
-                            <group>
-                                <field name="street" nolabel="1" placeholder="street" colspan="2"/>
-                                <field name="zip" nolabel="1" placeholder="zip"/>
-                            </group>
-                        </group>
-                        <group>
-                            <group col="2">
-                                <field name="landline" widget="phone"/>
-                            </group>
-                            <group>
-                                <field name="website" string="Website"/>
-                            </group>
-                        </group>
-                        <group col="3" string="Accounting or Office Admin Address">
-                            <group>
-                                <field name="floor_no" nolabel="1" placeholder="unit/floor no" colspan="2"/>
-                                <field name="district" nolabel="1" placeholder="village/barangay/district" colspan="2"/>
-                            </group>
-                            <group>
-                                <field name="building_name1" nolabel="1" placeholder="building name" colspan="2"/>
-                                <field name="city1" nolabel="1" placeholder="city" colspan="2"/>
-                            </group>
-                            <group>
-                                <field name="street1" nolabel="1" placeholder="street" colspan="2"/>
-                                <field name="zip_code" nolabel="1" placeholder="zip"/>
-                            </group>
-                        </group>
-                        <group>
-                            <group>
-                                <field name="primary_contact_person"/>
-                                <field name="landline1" widget="phone"/>
-                            </group>
-                            <group>
-                                <field name="mobile_no" widget="phone"/>
-                                <field name="email_address" widget="email"/>
-                            </group>
-                        </group>
-                        <group string="">
-                            <group>
-                                <field name="principal_accounting_officer"/>
-                                <field name="landline2" widget="phone"/>
-                            </group>
-                            <group>
-                                <field name="mobile_no1" widget="phone"/>
-                                <field name="email_address1" widget="email"/>
-                            </group>
-                        </group>
-                        <group string="Corporate Officer">
-                        </group>
-                        <field name="corporate_ids"/>
-                    </page>
-                </xpath>
+<!--                <xpath expr="//form/sheet/notebook" position="inside">-->
+<!--                    <page string="Contact Information">-->
+<!--                        <group col="3" string="Registered Address">-->
+<!--                            <group>-->
+<!--                                <field name="unit_no" nolabel="1" placeholder="unit/floor no" colspan="2"/>-->
+<!--                                <field name="street2" nolabel="1" placeholder="village/barangay/district" colspan="2"/>-->
+<!--                            </group>-->
+<!--                            <group>-->
+<!--                                <field name="building_name" nolabel="1" placeholder="building name" colspan="2"/>-->
+<!--                                <field name="city" nolabel="1" placeholder="city" colspan="2"/>-->
+<!--                            </group>-->
+<!--                            <group>-->
+<!--                                <field name="street" nolabel="1" placeholder="street" colspan="2"/>-->
+<!--                                <field name="zip" nolabel="1" placeholder="zip"/>-->
+<!--                            </group>-->
+<!--                        </group>-->
+<!--                        <group>-->
+<!--                            <group col="2">-->
+<!--                                <field name="landline" widget="phone"/>-->
+<!--                            </group>-->
+<!--                            <group>-->
+<!--                                <field name="website" string="Website"/>-->
+<!--                            </group>-->
+<!--                        </group>-->
+<!--                        <group col="3" string="Accounting or Office Admin Address">-->
+<!--                            <group>-->
+<!--                                <field name="floor_no" nolabel="1" placeholder="unit/floor no" colspan="2"/>-->
+<!--                                <field name="district" nolabel="1" placeholder="village/barangay/district" colspan="2"/>-->
+<!--                            </group>-->
+<!--                            <group>-->
+<!--                                <field name="building_name1" nolabel="1" placeholder="building name" colspan="2"/>-->
+<!--                                <field name="city1" nolabel="1" placeholder="city" colspan="2"/>-->
+<!--                            </group>-->
+<!--                            <group>-->
+<!--                                <field name="street1" nolabel="1" placeholder="street" colspan="2"/>-->
+<!--                                <field name="zip_code" nolabel="1" placeholder="zip"/>-->
+<!--                            </group>-->
+<!--                        </group>-->
+<!--                        <group>-->
+<!--                            <group>-->
+<!--                                <field name="primary_contact_person"/>-->
+<!--                                <field name="landline1" widget="phone"/>-->
+<!--                            </group>-->
+<!--                            <group>-->
+<!--                                <field name="mobile_no" widget="phone"/>-->
+<!--                                <field name="email_address" widget="email"/>-->
+<!--                            </group>-->
+<!--                        </group>-->
+<!--                        <group string="">-->
+<!--                            <group>-->
+<!--                                <field name="principal_accounting_officer"/>-->
+<!--                                <field name="landline2" widget="phone"/>-->
+<!--                            </group>-->
+<!--                            <group>-->
+<!--                                <field name="mobile_no1" widget="phone"/>-->
+<!--                                <field name="email_address1" widget="email"/>-->
+<!--                            </group>-->
+<!--                        </group>-->
+<!--                        <group string="Corporate Officer">-->
+<!--                        </group>-->
+<!--                        <field name="corporate_ids"/>-->
+<!--                    </page>-->
+<!--                </xpath>-->
 
-                <xpath expr="//form/sheet/notebook" position="inside">
-                    <page string="BIR Registration Information">
-                        <group col="3">
-                            <group>
-                                <field name="vat" placeholder="e.g 000-000-000"/>
-                            </group>
-                            <group>
-                                <field name="rdo_code" placeholder="e.g 000"/>
-                            </group>
-                            <group>
-                                <field name="registration_date" string="Registration Date" widget="date"/>
-                            </group>
-                        </group>
-                        <group string="Tax Type" col="3">
-                            <group>
-                                <field name="income_tax"/>
-                                <field name="excise_tax"/>
-                            </group>
-                            <group>
-                                <field name="value_added_tax"/>
-                                <field name="withholding_tax_expanded"/>
-                            </group>
-                            <group>
-                                <field name="withholding_tax_compensation"/>
-                                <field name="registration_fee"/>
-                            </group>
-                        </group>
-                        <group>
-                            <field name="other_percentage_tax"/>
-                        </group>
-                        <group col="2" string="">
-                            <group>
-                                <field name="tax_type"/>
-                                <field name="invoice_tax"/>
-                                <field name="filing_payment"/>
-                            </group>
-                            <group>
-                                <field name="books_of_account"/>
-                                <field name="psic_psoc"/>
-                                <field name="ll_cas_permit_no"/>
-                            </group>
-                        </group>
-                        <form>
-                            Is the Company using any Point of sale(POS) Cash Registration(CRM) or Special Purpose(SPM)
-                            Machines?
-                            <field name="ask" widget="radio" options="{'horizontal':True}"/>
-                        </form>
-                    </page>
-                </xpath>
+<!--                <xpath expr="//form/sheet/notebook" position="inside">-->
+<!--                    <page string="BIR Registration Information">-->
+<!--                        <group col="3">-->
+<!--                            <group>-->
+<!--                                <field name="vat" placeholder="e.g 000-000-000"/>-->
+<!--                            </group>-->
+<!--                            <group>-->
+<!--                                <field name="rdo_code" placeholder="e.g 000"/>-->
+<!--                            </group>-->
+<!--                            <group>-->
+<!--                                <field name="registration_date" string="Registration Date" widget="date"/>-->
+<!--                            </group>-->
+<!--                        </group>-->
+<!--                        <group string="Tax Type" col="3">-->
+<!--                            <group>-->
+<!--                                <field name="income_tax"/>-->
+<!--                                <field name="excise_tax"/>-->
+<!--                            </group>-->
+<!--                            <group>-->
+<!--                                <field name="value_added_tax"/>-->
+<!--                                <field name="withholding_tax_expanded"/>-->
+<!--                            </group>-->
+<!--                            <group>-->
+<!--                                <field name="withholding_tax_compensation"/>-->
+<!--                                <field name="registration_fee"/>-->
+<!--                            </group>-->
+<!--                        </group>-->
+<!--                        <group>-->
+<!--                            <field name="other_percentage_tax"/>-->
+<!--                        </group>-->
+<!--                        <group col="2" string="">-->
+<!--                            <group>-->
+<!--                                <field name="tax_type"/>-->
+<!--                                <field name="invoice_tax"/>-->
+<!--                                <field name="filing_payment"/>-->
+<!--                            </group>-->
+<!--                            <group>-->
+<!--                                <field name="books_of_account"/>-->
+<!--                                <field name="psic_psoc"/>-->
+<!--                                <field name="ll_cas_permit_no"/>-->
+<!--                            </group>-->
+<!--                        </group>-->
+<!--                        <form>-->
+<!--                            Is the Company using any Point of sale(POS) Cash Registration(CRM) or Special Purpose(SPM)-->
+<!--                            Machines?-->
+<!--                            <field name="ask" widget="radio" options="{'horizontal':True}"/>-->
+<!--                        </form>-->
+<!--                    </page>-->
+<!--                </xpath>-->
 
-                <xpath expr="//form/sheet/notebook" position="inside">
-                    <page string="SEC/DTI Registration information">
-                        <group col="2">
-                            <group>
-                                <field name="registration_number"/>
-                            </group>
-                            <group>
-                                <field name="registration_date_sec" string="Registration Date" widget="date"/>
-                            </group>
-                        </group>
-                        <group>
-                            <field name="trade_name"/>
-                        </group>
-                        <group col="6" string="Capitalization">
-                            <group col="2" string="">
-                            </group>
-                            <group col="2" string="">
-                            </group>
-                            <group string="Authorized">
-                            </group>
-                            <group string="Subscribed">
-                            </group>
-                            <group string="Treasury">
-                            </group>
-                            <group string="Paid-Up">
-                            </group>
-                            <field name="share_ids"/>
-                        </group>
-                        <group string="Annual Meeting">
-                            <group>
-                                <field name="date_per_law"/>
-                            </group>
-                            <group>
-                                <field name="actual_date_meeting" string="Actual Date of Meeting"
-                                       widget="date"/>
-                            </group>
-                        </group>
-                        <form>
-                            Is the Company a holder of a Secondary license issued by the Securities and Exchange
-                            Commission?
-                            <field name="ask_1" widget="radio" options="{'horizontal':True}"
-                                   nolabel="1"/>
-                            If Yes what type of security is the Company permit to sell??
-                            <field name="ask_2" nolabel="1"/>
-                        </form>
-                    </page>
-                </xpath>
+<!--                <xpath expr="//form/sheet/notebook" position="inside">-->
+<!--                    <page string="SEC/DTI Registration information">-->
+<!--                        <group col="2">-->
+<!--                            <group>-->
+<!--                                <field name="registration_number"/>-->
+<!--                            </group>-->
+<!--                            <group>-->
+<!--                                <field name="registration_date_sec" string="Registration Date" widget="date"/>-->
+<!--                            </group>-->
+<!--                        </group>-->
+<!--                        <group>-->
+<!--                            <field name="trade_name"/>-->
+<!--                        </group>-->
+<!--                        <group col="6" string="Capitalization">-->
+<!--                            <group col="2" string="">-->
+<!--                            </group>-->
+<!--                            <group col="2" string="">-->
+<!--                            </group>-->
+<!--                            <group string="Authorized">-->
+<!--                            </group>-->
+<!--                            <group string="Subscribed">-->
+<!--                            </group>-->
+<!--                            <group string="Treasury">-->
+<!--                            </group>-->
+<!--                            <group string="Paid-Up">-->
+<!--                            </group>-->
+<!--                            <field name="share_ids"/>-->
+<!--                        </group>-->
+<!--                        <group string="Annual Meeting">-->
+<!--                            <group>-->
+<!--                                <field name="date_per_law"/>-->
+<!--                            </group>-->
+<!--                            <group>-->
+<!--                                <field name="actual_date_meeting" string="Actual Date of Meeting"-->
+<!--                                       widget="date"/>-->
+<!--                            </group>-->
+<!--                        </group>-->
+<!--                        <form>-->
+<!--                            Is the Company a holder of a Secondary license issued by the Securities and Exchange-->
+<!--                            Commission?-->
+<!--                            <field name="ask_1" widget="radio" options="{'horizontal':True}"-->
+<!--                                   nolabel="1"/>-->
+<!--                            If Yes what type of security is the Company permit to sell??-->
+<!--                            <field name="ask_2" nolabel="1"/>-->
+<!--                        </form>-->
+<!--                    </page>-->
+<!--                </xpath>-->
 
-                <xpath expr="//form/sheet/notebook" position="inside">
-                    <page string="Regulatory Information">
-                        <form>
-                            Is the Entry regulated or accredited by or is a license holder issued by any of the
-                            following Goverment Regalutory Agencies?
-                            <field name="ask_3" widget="radio" options="{'horizontal':True}"/>
-                        </form>
-                        <group col="3">
-                            <group>
-                                <field name="bureau_of_custom"/>
-                                <field name="bangko_sentral_pilipinas"/>
-                                <field name="professional_regulation_commission"/>
-                                <field name="philippines_council_ngo_certification"/>
-                            </group>
-                            <group>
-                                <field name="cooperative_development_authority"/>
-                                <field name="insurance_commission"/>
-                                <field name="integrated_bar_philippines"/>
-                                <field name="philippines_stock_exchange"/>
-                            </group>
-                            <group>
-                                <field name="construction_industry_authority_philippines"/>
-                                <field name="philippine_amusement_gaming_corporation"/>
-                                <field name="land_transportation_franchising_regulatory_board"/>
-                            </group>
-                        </group>
-                        <group>
-                            <field name="others_ri"/>
-                        </group>
-                        <notebook>
-                            <page string="Social Security Information">
-                                <group col="3">
-                                    <group>
-                                        <field name="sss"/>
-                                        <field name="phic"/>
-                                        <field name="hdmf"/>
-                                    </group>
-                                    <group>
-                                        <field name="sss_filing"/>
-                                        <field name="phic_filing"/>
-                                        <field name="hdmf_filing"/>
-                                    </group>
-                                    <group>
-                                        <field name="sss_pay"/>
-                                        <field name="phic_pay"/>
-                                        <field name="hdmf_pay"/>
-                                    </group>
-                                </group>
-                            </page>
-                        </notebook>
-                        <notebook>
-                            <page string="Engagement Administration-Escalation Matrix">
-                                <group string="For any pertinents resolution, outstanding documentation for submission and follow-up request shall be escalated as:">
-                                </group>
-                                <group>
-                                    <group string="Level">
-                                        <form colspan="2">
-                                            Level 1
-                                        </form>
-                                        <form colspan="2">
-                                            Level 2
-                                        </form>
-                                        <form colspan="2">
-                                            Level 3
-                                        </form>
-                                    </group>
-                                    <group string="Escalation Timeframe">
-                                        <form colspan="2">
-                                            upon encounter of issue;unresolved issue after 1 day;1 day delay in
-                                            submission of documents.
-                                        </form>
-                                        <form colspan="2">
-                                            unresolved issue after 2 days;2 day delay in submission of documents.
-                                        </form>
-                                        <form colspan="2">
-                                            unresolved issue after 3 days; 3 day delay in submission of documents.
-                                        </form>
-                                    </group>
-                                    <field name="escalation"/>
-                                </group>
-                                <form>
-                                    I declare that the information contained in this Client Information Sheet has
-                                    been
-                                    accomplished and verified by me and to the best of my knowledge and belief is a
-                                    true, correct, and complete statement. It is understood and agreed that the
-                                    information disclosed herein for the collection, use, processing, storage and
-                                    retention of my personal data or information by A.M. Yu And Associates, CPAs
-                                    will
-                                    remain confidential. I understand that my consent does not prevent the existence
-                                    of
-                                    other criteria for lawful processing of personal data and does not waive any of
-                                    my
-                                    rights under RA 10173 – Data Privacy Act of 2012 and other applicable laws.
-                                </form>
-                            </page>
-                        </notebook>
-                    </page>
-                </xpath>
+<!--                <xpath expr="//form/sheet/notebook" position="inside">-->
+<!--                    <page string="Regulatory Information">-->
+<!--                        <form>-->
+<!--                            Is the Entry regulated or accredited by or is a license holder issued by any of the-->
+<!--                            following Goverment Regalutory Agencies?-->
+<!--                            <field name="ask_3" widget="radio" options="{'horizontal':True}"/>-->
+<!--                        </form>-->
+<!--                        <group col="3">-->
+<!--                            <group>-->
+<!--                                <field name="bureau_of_custom"/>-->
+<!--                                <field name="bangko_sentral_pilipinas"/>-->
+<!--                                <field name="professional_regulation_commission"/>-->
+<!--                                <field name="philippines_council_ngo_certification"/>-->
+<!--                            </group>-->
+<!--                            <group>-->
+<!--                                <field name="cooperative_development_authority"/>-->
+<!--                                <field name="insurance_commission"/>-->
+<!--                                <field name="integrated_bar_philippines"/>-->
+<!--                                <field name="philippines_stock_exchange"/>-->
+<!--                            </group>-->
+<!--                            <group>-->
+<!--                                <field name="construction_industry_authority_philippines"/>-->
+<!--                                <field name="philippine_amusement_gaming_corporation"/>-->
+<!--                                <field name="land_transportation_franchising_regulatory_board"/>-->
+<!--                            </group>-->
+<!--                        </group>-->
+<!--                        <group>-->
+<!--                            <field name="others_ri"/>-->
+<!--                        </group>-->
+<!--                        <notebook>-->
+<!--                            <page string="Social Security Information">-->
+<!--                                <group col="3">-->
+<!--                                    <group>-->
+<!--                                        <field name="sss"/>-->
+<!--                                        <field name="phic"/>-->
+<!--                                        <field name="hdmf"/>-->
+<!--                                    </group>-->
+<!--                                    <group>-->
+<!--                                        <field name="sss_filing"/>-->
+<!--                                        <field name="phic_filing"/>-->
+<!--                                        <field name="hdmf_filing"/>-->
+<!--                                    </group>-->
+<!--                                    <group>-->
+<!--                                        <field name="sss_pay"/>-->
+<!--                                        <field name="phic_pay"/>-->
+<!--                                        <field name="hdmf_pay"/>-->
+<!--                                    </group>-->
+<!--                                </group>-->
+<!--                            </page>-->
+<!--                        </notebook>-->
+<!--                        <notebook>-->
+<!--                            <page string="Engagement Administration-Escalation Matrix">-->
+<!--                                <group string="For any pertinents resolution, outstanding documentation for submission and follow-up request shall be escalated as:">-->
+<!--                                </group>-->
+<!--                                <group>-->
+<!--                                    <group string="Level">-->
+<!--                                        <form colspan="2">-->
+<!--                                            Level 1-->
+<!--                                        </form>-->
+<!--                                        <form colspan="2">-->
+<!--                                            Level 2-->
+<!--                                        </form>-->
+<!--                                        <form colspan="2">-->
+<!--                                            Level 3-->
+<!--                                        </form>-->
+<!--                                    </group>-->
+<!--                                    <group string="Escalation Timeframe">-->
+<!--                                        <form colspan="2">-->
+<!--                                            upon encounter of issue;unresolved issue after 1 day;1 day delay in-->
+<!--                                            submission of documents.-->
+<!--                                        </form>-->
+<!--                                        <form colspan="2">-->
+<!--                                            unresolved issue after 2 days;2 day delay in submission of documents.-->
+<!--                                        </form>-->
+<!--                                        <form colspan="2">-->
+<!--                                            unresolved issue after 3 days; 3 day delay in submission of documents.-->
+<!--                                        </form>-->
+<!--                                    </group>-->
+<!--                                    <field name="escalation"/>-->
+<!--                                </group>-->
+<!--                                <form>-->
+<!--                                    I declare that the information contained in this Client Information Sheet has-->
+<!--                                    been-->
+<!--                                    accomplished and verified by me and to the best of my knowledge and belief is a-->
+<!--                                    true, correct, and complete statement. It is understood and agreed that the-->
+<!--                                    information disclosed herein for the collection, use, processing, storage and-->
+<!--                                    retention of my personal data or information by A.M. Yu And Associates, CPAs-->
+<!--                                    will-->
+<!--                                    remain confidential. I understand that my consent does not prevent the existence-->
+<!--                                    of-->
+<!--                                    other criteria for lawful processing of personal data and does not waive any of-->
+<!--                                    my-->
+<!--                                    rights under RA 10173 – Data Privacy Act of 2012 and other applicable laws.-->
+<!--                                </form>-->
+<!--                            </page>-->
+<!--                        </notebook>-->
+<!--                    </page>-->
+<!--                </xpath>-->
 
-                <xpath expr="//field[@name='vat']" position="after">
-                    <group colspan="2" string="Nature of Activities, Brands, Products and Services:">
-                    </group>
-                    <field name="nature_of_activities" placeholder="nature of business"/>
-                </xpath>
+<!--                <xpath expr="//field[@name='vat']" position="after">-->
+<!--                    <group colspan="2" string="Nature of Activities, Brands, Products and Services:">-->
+<!--                    </group>-->
+<!--                    <field name="nature_of_activities" placeholder="nature of business"/>-->
+<!--                </xpath>-->
 
-                <xpath expr="//field[@name='street']" position="after">
-                    <group col="2" string="Client ID">
-                    </group>
-                    <field name="barcode" nolabel="1"/>
-                </xpath>
+<!--                <xpath expr="//field[@name='street']" position="after">-->
+<!--                    <group col="2" string="Client ID">-->
+<!--                    </group>-->
+<!--                    <field name="barcode" nolabel="1"/>-->
+<!--                </xpath>-->
 
-                <xpath expr="//field[@name='street2']" position="after">
-                    <group string="Date of Engagement">
-                    </group>
-                    <field name="date_of_engagement" placeholder="date" nolabel="1"/>
-                </xpath>
+<!--                <xpath expr="//field[@name='street2']" position="after">-->
+<!--                    <group string="Date of Engagement">-->
+<!--                    </group>-->
+<!--                    <field name="date_of_engagement" placeholder="date" nolabel="1"/>-->
+<!--                </xpath>-->
 
-                <xpath expr="//field[@name='city']" position="after">
-                    <group string="Industry Class">
-                    </group>
-                    <field name="industry_id" placeholder="services" nolabel="1"/>
-                </xpath>
+<!--                <xpath expr="//field[@name='city']" position="after">-->
+<!--                    <group string="Industry Class">-->
+<!--                    </group>-->
+<!--                    <field name="industry_id" placeholder="services" nolabel="1"/>-->
+<!--                </xpath>-->
 
-                <xpath expr="//field[@name='category_id']" position="after">
-                    <group col="2" colspan="2" string="Existing Engagement">
-                        <group>
-                            <field name="tax_reporting_compliance"/>
-                            <field name="annual_registration_update"/>
-                            <field name="agree_upon_procedure"/>
-                            <field name="audit_assurance"/>
-                        </group>
-                        <group>
-                            <field name="tax_advocacy"/>
-                            <field name="advisory_consultancy"/>
-                            <field name="compilation"/>
-                        </group>
-                    </group>
-                    <group>
-                        <field name="others" colspan="3"/>
-                    </group>
-                </xpath>
+<!--                <xpath expr="//field[@name='category_id']" position="after">-->
+<!--                    <group col="2" colspan="2" string="Existing Engagement">-->
+<!--                        <group>-->
+<!--                            <field name="tax_reporting_compliance"/>-->
+<!--                            <field name="annual_registration_update"/>-->
+<!--                            <field name="agree_upon_procedure"/>-->
+<!--                            <field name="audit_assurance"/>-->
+<!--                        </group>-->
+<!--                        <group>-->
+<!--                            <field name="tax_advocacy"/>-->
+<!--                            <field name="advisory_consultancy"/>-->
+<!--                            <field name="compilation"/>-->
+<!--                        </group>-->
+<!--                    </group>-->
+<!--                    <group>-->
+<!--                        <field name="others" colspan="3"/>-->
+<!--                    </group>-->
+<!--                </xpath>-->
 
-                <xpath expr="//field[@name='website']" position="after">
-                    <group string="Organization Type">
-                    </group>
-                    <field name="category_id"/>
-                </xpath>
+<!--                <xpath expr="//field[@name='website']" position="after">-->
+<!--                    <group string="Organization Type">-->
+<!--                    </group>-->
+<!--                    <field name="category_id"/>-->
+<!--                </xpath>-->
 
-                <xpath expr="//field[@name='street']" position="attributes">
-                    <attribute name="invisible">1</attribute>
-                </xpath>
-                <xpath expr="//field[@name='street2']" position="attributes">
-                    <attribute name="invisible">1</attribute>
-                </xpath>
-                <xpath expr="//field[@name='city']" position="attributes">
-                    <attribute name="invisible">1</attribute>
-                </xpath>
-                <xpath expr="//field[@name='state_id']" position="attributes">
-                    <attribute name="invisible">1</attribute>
-                </xpath>
-                <xpath expr="//field[@name='zip']" position="attributes">
-                    <attribute name="invisible">1</attribute>
-                </xpath>
-                <xpath expr="//field[@name='country_id']" position="attributes">
-                    <attribute name="invisible">1</attribute>
-                </xpath>
+<!--                <xpath expr="//field[@name='street']" position="attributes">-->
+<!--                    <attribute name="invisible">1</attribute>-->
+<!--                </xpath>-->
+<!--                <xpath expr="//field[@name='street2']" position="attributes">-->
+<!--                    <attribute name="invisible">1</attribute>-->
+<!--                </xpath>-->
+<!--                <xpath expr="//field[@name='city']" position="attributes">-->
+<!--                    <attribute name="invisible">1</attribute>-->
+<!--                </xpath>-->
+<!--                <xpath expr="//field[@name='state_id']" position="attributes">-->
+<!--                    <attribute name="invisible">1</attribute>-->
+<!--                </xpath>-->
+<!--                <xpath expr="//field[@name='zip']" position="attributes">-->
+<!--                    <attribute name="invisible">1</attribute>-->
+<!--                </xpath>-->
+<!--                <xpath expr="//field[@name='country_id']" position="attributes">-->
+<!--                    <attribute name="invisible">1</attribute>-->
+<!--                </xpath>-->
 
-                <xpath expr="//field[@name='email']" position="attributes">
-                    <attribute name="invisible">1</attribute>
-                </xpath>
+<!--                <xpath expr="//field[@name='email']" position="attributes">-->
+<!--                    <attribute name="invisible">1</attribute>-->
+<!--                </xpath>-->
 
-                <xpath expr="//field[@name='phone']" position="attributes">
-                    <attribute name="invisible">1</attribute>
-                </xpath>
+<!--                <xpath expr="//field[@name='phone']" position="attributes">-->
+<!--                    <attribute name="invisible">1</attribute>-->
+<!--                </xpath>-->
 
-                <xpath expr="//field[@name='mobile']" position="attributes">
-                    <attribute name="invisible">1</attribute>
-                </xpath>
+<!--                <xpath expr="//field[@name='mobile']" position="attributes">-->
+<!--                    <attribute name="invisible">1</attribute>-->
+<!--                </xpath>-->
 
-                <xpath expr="//field[@name='vat']" position="attributes">
-                    <attribute name="invisible">1</attribute>
-                </xpath>
-                <xpath expr="//field[@name='website']" position="attributes">
-                    <attribute name="invisible">1</attribute>
-                </xpath>
+<!--                <xpath expr="//field[@name='vat']" position="attributes">-->
+<!--                    <attribute name="invisible">1</attribute>-->
+<!--                </xpath>-->
+<!--                <xpath expr="//field[@name='website']" position="attributes">-->
+<!--                    <attribute name="invisible">1</attribute>-->
+<!--                </xpath>-->
 
-                <xpath expr="//group/field[@name='category_id']" position="attributes">
-                    <attribute name="invisible">1</attribute>
-                </xpath>
+<!--                <xpath expr="//group/field[@name='category_id']" position="attributes">-->
+<!--                    <attribute name="invisible">1</attribute>-->
+<!--                </xpath>-->
 
-                <xpath expr="//page[@name='contact_addresses']" position="attributes">
-                    <attribute name="invisible">1</attribute>
-                </xpath>
+<!--                <xpath expr="//page[@name='contact_addresses']" position="attributes">-->
+<!--                    <attribute name="invisible">1</attribute>-->
+<!--                </xpath>-->
 
-                <xpath expr="//page[@name='sales_purchases']" position="attributes">
-                    <attribute name="invisible">1</attribute>
-                </xpath>
-                <xpath expr="//page[@name='internal_notes']" position="attributes">
-                    <attribute name="invisible">1</attribute>
-                </xpath>
+<!--                <xpath expr="//page[@name='sales_purchases']" position="attributes">-->
+<!--                    <attribute name="invisible">1</attribute>-->
+<!--                </xpath>-->
+<!--                <xpath expr="//page[@name='internal_notes']" position="attributes">-->
+<!--                    <attribute name="invisible">1</attribute>-->
+<!--                </xpath>-->
 
-            </field>
-        </record>
-    </data>
-</odoo>
+<!--            </field>-->
+<!--        </record>-->
+<!--    </data>-->
+<!--</odoo>-->
