@@ -6,45 +6,44 @@
             <field name="name">associates.profile.kanban.view</field>
             <field name="model">associates.profile</field>
             <field name="arch" type="xml">
-                <kanban>
-                    <field name="name"/>
+                <kanban default_group_by="associates_cluster">
+                    <field name="associates"/>
+                    <field name="associates_cluster"/>
+                    <field name="associates_supervisor"/>
+                    <field name="associates_manager"/>
                     <field name="id"/>
                     <field name="associates_image"/>
                     <templates>
                         <t t-name="kanban-box">
-                            <div class="oe_kanban_card">
-                                <span t-esc="record.name.raw_value"/>
-                            </div>
+                            <!--                            <div class="oe_kanban_card">-->
+                            <!--                                <span t-esc="record.associates.raw_value"/>-->
+                            <!--                            </div>-->
                             <div t-attf-class="oe_kanban_global_click">
                                 <div class="o_kanban_image">
                                     <img alt="Avatar"
                                          t-att-src="kanban_image('associates.profile', 'associates_image', record.id.raw_value)"/>
                                 </div>
-<!--                                <div class="oe_kanban_details">-->
-<!--                                    <ul>-->
-<!--                                        <li>-->
-<!--                                            <h2>-->
-<!--                                                <field name="client_name"/>-->
-<!--                                            </h2>-->
-<!--                                        </li>-->
-<!--                                        <li>-->
-<!--                                            Associates :-->
-<!--                                            <field name="name"/>-->
-<!--                                        </li>-->
-<!--                                        <li>-->
-<!--                                            SuperVisor :-->
-<!--                                            <field name="supervisor"/>-->
-<!--                                        </li>-->
-<!--                                        <li>-->
-<!--                                            Manager :-->
-<!--                                            <field name="manager"/>-->
-<!--                                        </li>-->
-<!--                                        <li>-->
-<!--                                            Cluster :-->
-<!--                                            <field name="cluster"/>-->
-<!--                                        </li>-->
-<!--                                    </ul>-->
-<!--                                </div>-->
+                                <div class="oe_kanban_details">
+                                    <ul>
+                                        <li>
+                                            <h2>
+                                                <field name="associates"/>
+                                            </h2>
+                                        </li>
+                                        <li>
+                                            Cluster:
+                                            <field name="associates_cluster"/>
+                                        </li>
+                                        <li>
+                                            Supervisor:
+                                            <field name="associates_supervisor"/>
+                                        </li>
+                                        <li>
+                                            Manager:
+                                            <field name="associates_manager"/>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </t>
                     </templates>
@@ -58,10 +57,24 @@
             <field name="arch" type="xml">
                 <form>
                     <sheet>
-                        <field name="associates_image" widget="image" nolabel="1" class="oe_avatar"/>
+                        <div>
+                            <field name="associates_image" widget="image" nolabel="1" class="oe_avatar"/>
+                        </div>
                         <group>
-                            <field name="name"/>
+                            <group>
+                                <field name="associates"/>
+                                <field name="associates_cluster"/>
+                            </group>
+                            <group>
+                                <field name="associates_supervisor"/>
+                                <field name="associates_manager"/>
+                            </group>
                         </group>
+                        <notebook>
+                            <page string="CLIENTS">
+                                <field name="client_list" widget="Many2many_tags"/>
+                            </page>
+                        </notebook>
                     </sheet>
                 </form>
             </field>
@@ -72,7 +85,10 @@
             <field name="model">associates.profile</field>
             <field name="arch" type="xml">
                 <tree>
-                    <field name="name"/>
+                    <field name="associates"/>
+                    <field name="associates_cluster"/>
+                    <field name="associates_supervisor"/>
+                    <field name="associates_manager"/>
                 </tree>
             </field>
         </record>
@@ -82,7 +98,11 @@
             <field name="model">associates.profile</field>
             <field name="arch" type="xml">
                 <search>
-                    <field name="name" string="Associates"/>
+                    <field name="associates"
+                           filter_domain="['|','|','|',('associates', 'ilike', self),('associates_cluster', 'ilike', self), ('associates_supervisor', 'ilike', self), ('associates_manager', 'ilike', self)]"/>
+                    <field name="associates_cluster"/>
+                    <field name="associates_supervisor"/>
+                    <field name="associates_manager"/>
                 </search>
             </field>
         </record>

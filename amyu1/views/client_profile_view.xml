@@ -389,11 +389,9 @@
             <field name="arch" type="xml">
                 <search>
                     <field name="name" string="Client"
-                           filter_domain="['|',('name','ilike',self),('client_id','ilike',self),]"/>
-                    <field name="client_id" string="Client ID"
-                           filter_domain="['|',('client_id','ilike',self),('industry_class','ilike',self),]"/>
-                    <field name="industry_class" string="Industry"
-                           filter_domain="['|',('industry_class','ilike',self),('name','ilike',self)]"/>
+                           filter_domain="['|','|',('name','ilike',self),('client_id','ilike',self),('industry_class','ilike',self)]"/>
+                    <field name="client_id" string="Client ID"/>
+                    <field name="industry_class" string="Industry"/>
                     <searchpanel>
                         <!--                        <field name="is_company" enable_counters="1" string="Groups"/>-->
                         <!--                        <field name="industry_class" enable_counters="1" string="Industry"/>-->
@@ -403,7 +401,7 @@
         </record>
 
         <record id="client_profile_action" model="ir.actions.act_window">
-            <field name="name">Client Information</field>
+            <field name="name">Client Profile Information</field>
             <field name="res_model">client.profile</field>
             <field name="view_mode">tree,kanban,form</field>
         </record>

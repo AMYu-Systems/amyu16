@@ -60,6 +60,8 @@ class ClientProfile(models.Model):
     others = fields.Char(string="Others")
     client_record_ids = fields.One2many(string="Client Record", comodel_name="client.records",
                                         inverse_name="client_profile_id")
+    associates_client_list = fields.One2many(string="List of Clients", comodel_name='associates.profile',
+                                             inverse_name='client_list')
     # Contacts
     unit_no = fields.Char(string="Unit/Floor")
     building_name = fields.Char(string="Building Name")
@@ -187,6 +189,11 @@ class ClientRecords(models.Model):
 
 class AssociatesProfile(models.Model):
     _name = 'associates.profile'
+    _rec_name = "associates"
 
-    name = fields.Many2one('associates.profile', string="Associates")
+    associates = fields.Char(string="Associates")
     associates_image = fields.Image(string="Pictures")
+    associates_manager = fields.Char(string="Manager")
+    associates_supervisor = fields.Char(string="Supervisor")
+    associates_cluster = fields.Char(string="Cluster")
+    client_list = fields.Many2one(string="Client List", comodel_name='client.profile')
