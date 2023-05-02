@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+
+        <record id="associates_profile_kanban_view" model="ir.ui.view">
+            <field name="name">associates.profile.kanban.view</field>
+            <field name="model">associates.profile</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <field name="name"/>
+                    <field name="id"/>
+                    <field name="associates_image"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_card">
+                                <span t-esc="record.name.raw_value"/>
+                            </div>
+                            <div t-attf-class="oe_kanban_global_click">
+                                <div class="o_kanban_image">
+                                    <img alt="Avatar"
+                                         t-att-src="kanban_image('associates.profile', 'associates_image', record.id.raw_value)"/>
+                                </div>
+<!--                                <div class="oe_kanban_details">-->
+<!--                                    <ul>-->
+<!--                                        <li>-->
+<!--                                            <h2>-->
+<!--                                                <field name="client_name"/>-->
+<!--                                            </h2>-->
+<!--                                        </li>-->
+<!--                                        <li>-->
+<!--                                            Associates :-->
+<!--                                            <field name="name"/>-->
+<!--                                        </li>-->
+<!--                                        <li>-->
+<!--                                            SuperVisor :-->
+<!--                                            <field name="supervisor"/>-->
+<!--                                        </li>-->
+<!--                                        <li>-->
+<!--                                            Manager :-->
+<!--                                            <field name="manager"/>-->
+<!--                                        </li>-->
+<!--                                        <li>-->
+<!--                                            Cluster :-->
+<!--                                            <field name="cluster"/>-->
+<!--                                        </li>-->
+<!--                                    </ul>-->
+<!--                                </div>-->
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="associates_profile_form_view" model="ir.ui.view">
+            <field name="name">associates.profile.form.view</field>
+            <field name="model">associates.profile</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <field name="associates_image" widget="image" nolabel="1" class="oe_avatar"/>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="associates_profile_list_view" model="ir.ui.view">
+            <field name="name">associates.profile.list.view</field>
+            <field name="model">associates.profile</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="associates_profile_search_view" model="ir.ui.view">
+            <field name="name">associates.profile.search.view</field>
+            <field name="model">associates.profile</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name" string="Associates"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="associates_profile_action" model="ir.actions.act_window">
+            <field name="name">Associates Profile Information</field>
+            <field name="res_model">associates.profile</field>
+            <field name="view_mode">tree,kanban,form</field>
+        </record>
+
+    </data>
+</odoo>
+

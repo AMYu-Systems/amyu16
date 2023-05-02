@@ -58,7 +58,8 @@ class ClientProfile(models.Model):
     advisory_consultancy = fields.Boolean(string="Advisory & Consultancy")
     compilation = fields.Boolean(string="Compilation")
     others = fields.Char(string="Others")
-    client_record_ids = fields.One2many(string="Client Record",comodel_name="client.records",inverse_name="client_profile_id")
+    client_record_ids = fields.One2many(string="Client Record", comodel_name="client.records",
+                                        inverse_name="client_profile_id")
     # Contacts
     unit_no = fields.Char(string="Unit/Floor")
     building_name = fields.Char(string="Building Name")
@@ -147,15 +148,15 @@ class ClientProfile(models.Model):
     def action_attach_documents(self):
         for rec in self:
             rec.documents_count = self.env['client.records'].search_count([
-                ('client_profile_id','=',rec.id)
+                ('client_profile_id', '=', rec.id)
             ])
         return {
             'type': 'ir.actions.act_window',
             'name': 'Documents',
             'res_model': 'client.records',
             'view_mode': 'tree,form',
-            'domain': [('client_profile_id','=',rec.id)],
-            'context': {'default_client_profile_id':rec.id},
+            'domain': [('client_profile_id', '=', rec.id)],
+            'context': {'default_client_profile_id': rec.id},
             'target': 'current',
         }
 
@@ -166,7 +167,7 @@ class ClientRecords(models.Model):
 
     upload_file = fields.Binary(string='File', attachment=True)
     file_name = fields.Char(string='Filename')
-    client_profile_id = fields.Many2one(string="Client Profile",comodel_name="client.profile")
+    client_profile_id = fields.Many2one(string="Client Profile", comodel_name="client.profile")
 
     @api.model
     def year_selection(self):
@@ -182,3 +183,10 @@ class ClientRecords(models.Model):
         string="Year",
         default="2023",  # as a default value it would be 2019
     )
+
+
+class AssociatesProfile(models.Model):
+    _name = 'associates.profile'
+
+    name = fields.Many2one('associates.profile', string="Associates")
+    associates_image = fields.Image(string="Pictures")
