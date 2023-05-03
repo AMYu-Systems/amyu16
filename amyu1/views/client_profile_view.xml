@@ -6,7 +6,7 @@
             <field name="name">client.profile.kanban.view</field>
             <field name="model">client.profile</field>
             <field name="arch" type="xml">
-                <kanban>
+                <kanban default_group_by="assoc_client">
                     <field name="is_company"/>
                     <field name="name"/>
                     <field name="id"/>
@@ -49,7 +49,7 @@
             <field name="arch" type="xml">
                 <tree>
                     <field name="is_company" string="Group"/>
-                    <field name="client_id"/>
+                    <field name="assoc_client"/>
                     <field name="name"/>
                     <field name="industry_class" widget="badge" decoration-info="1"/>
                     <field name="organization_type" widget="badge" decoration-success="1"/>
@@ -77,6 +77,9 @@
                             <field name="image" widget="image" nolabel="1" class="oe_avatar"/>
                         </div>
                         <div class="oe_title">
+                            <group>
+                                <field name="assoc_client"/>
+                            </group>
                             <field name="is_company" widget="radio" options="{'horizontal':True}" nolabel="1"/>
                             <h1>
                                 <field id="name" class="text-break" name="name" default_focus="1"
@@ -389,9 +392,10 @@
             <field name="arch" type="xml">
                 <search>
                     <field name="name" string="Client"
-                           filter_domain="['|','|',('name','ilike',self),('client_id','ilike',self),('industry_class','ilike',self)]"/>
-                    <field name="client_id" string="Client ID"/>
+                           filter_domain="['|','|','|',('name','ilike',self),('assoc_client','ilike',self),('industry_class','ilike',self),('organization_type','ilike',self)]"/>
+                    <field name="assoc_client" string="Client ID"/>
                     <field name="industry_class" string="Industry"/>
+                    <field name="organization_type" string="Organization"/>
                     <searchpanel>
                         <!--                        <field name="is_company" enable_counters="1" string="Groups"/>-->
                         <!--                        <field name="industry_class" enable_counters="1" string="Industry"/>-->
@@ -401,7 +405,7 @@
         </record>
 
         <record id="client_profile_action" model="ir.actions.act_window">
-            <field name="name">Client Profile Information</field>
+            <field name="name">Client Information Sheet</field>
             <field name="res_model">client.profile</field>
             <field name="view_mode">tree,kanban,form</field>
         </record>

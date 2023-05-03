@@ -19,10 +19,10 @@
                             <!--                                <span t-esc="record.associates.raw_value"/>-->
                             <!--                            </div>-->
                             <div t-attf-class="oe_kanban_global_click">
-                                <div class="o_kanban_image">
-                                    <img alt="Avatar"
-                                         t-att-src="kanban_image('associates.profile', 'associates_image', record.id.raw_value)"/>
-                                </div>
+<!--                                <div class="o_kanban_image">-->
+<!--                                    <img alt="Avatar"-->
+<!--                                         t-att-src="kanban_image('associates.profile', 'associates_image', record.id.raw_value)"/>-->
+<!--                                </div>-->
                                 <div class="oe_kanban_details">
                                     <ul>
                                         <li>
@@ -70,11 +70,9 @@
                                 <field name="associates_manager"/>
                             </group>
                         </group>
-                        <notebook>
-                            <page string="CLIENTS">
-                                <field name="client_list" widget="Many2many_tags"/>
-                            </page>
-                        </notebook>
+                        <sheet>
+                            <field name="client_list" widget="grouped_view_widget"/>
+                        </sheet>
                     </sheet>
                 </form>
             </field>
@@ -113,6 +111,25 @@
             <field name="view_mode">tree,kanban,form</field>
         </record>
 
+        <record id="associates_profile_lines_list_view" model="ir.ui.view">
+            <field name="name">associates.profile.lines.list.view</field>
+            <field name="model">associates.profile.lines</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="client_id" widget="many2one_avatar"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="associates_profile_lines_form_view" model="ir.ui.view">
+            <field name="name">associates.profile.lines.form.view</field>
+            <field name="model">associates.profile.lines</field>
+            <field name="arch" type="xml">
+                <form>
+                    <field name="client_id" />
+                </form>
+            </field>
+        </record>
     </data>
 </odoo>
 

@@ -5,6 +5,7 @@ access.class.of.shares,access.class_of_shares,amyu1.model_class_of_shares,base.g
 access.escalation.contact,access.escalation_contact,amyu1.model_escalation_contact,base.group_user,1,1,1,1
 access.client.records,access.client_records,amyu1.model_client_records,base.group_user,1,1,1,1
 access.associates.profile,access.associates_profile,amyu1.model_associates_profile,base.group_user,1,1,1,1
+access.associates.profile.lines,access.associates_profile_lines,amyu1.model_associates_profile_lines,base.group_user,1,1,1,1
 
 
 
