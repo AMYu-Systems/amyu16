@@ -42,7 +42,7 @@ class ClientProfile(models.Model):
     _name = 'client.profile'
     _description = "Profile"
     # profile
-    assoc_client = fields.Many2one(comodel_name='associates.profile',string="Associates")
+    assoc_id = fields.Many2one(string="Associate",comodel_name='associates.profile')
     is_company = fields.Selection([('individual', 'Individual'), ('company', 'Company')], required=True)
     name = fields.Char(string="Client Name", required=True)
     image = fields.Image(string="Image")
@@ -198,10 +198,11 @@ class AssociatesProfile(models.Model):
     associates_cluster = fields.Char(string="Cluster")
     client_list = fields.One2many(string="List of Clients", comodel_name='associates.profile.lines',
                                   inverse_name='associates_client_list')
+    client_ids = fields.One2many(string="Clients",comodel_name='client.profile',inverse_name='assoc_id',readonly=True)
 
 
 class AssociatesProfileLines(models.Model):
     _name = 'associates.profile.lines'
 
     associates_client_list = fields.Many2one(string="Client List", comodel_name='associates.profile')
-    client_id = fields.Many2one(string="Client Information",comodel_name='client.profile')
+    # client_id = fields.Many2one(string="Client Information",comodel_name='client.profile')
