@@ -74,8 +74,9 @@
 <!--                            <field name="client_list" widget="grouped_view_widget"/>-->
                             <field name="client_ids" widget="grouped_view_widget">
                                 <tree>
+                                    <field name="is_company" string="Group"/>
                                     <field name="name"/>
-                                    <field name="date_of_engagement"/>
+                                    <field name="date_of_engagement" string="Engagement Date"/>
                                 </tree>
                             </field>
                         </sheet>

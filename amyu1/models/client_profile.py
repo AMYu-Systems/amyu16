@@ -156,10 +156,10 @@ class ClientProfile(models.Model):
             'type': 'ir.actions.act_window',
             'name': 'Documents',
             'res_model': 'client.records',
-            'view_mode': 'tree,form',
+            'view_mode': 'tree,kanban,form',
             'domain': [('client_profile_id', '=', rec.id)],
             'context': {'default_client_profile_id': rec.id},
-            'target': 'current',
+            'target': 'new',
         }
 
 
