@@ -411,8 +411,7 @@
         <menuitem id="associates_profile_sub_menu"
                   name="Associates"
                   parent="client_profile_root_menu"
-                  action="associates_profile_action"
-                  sequence="1"/>
+                  action="associates_profile_action"/>
 
     </data>
 </odoo>
