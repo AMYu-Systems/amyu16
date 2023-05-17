@@ -1,3 +1,4 @@
+import base64
 import datetime
 
 from odoo import models, fields, api
@@ -42,7 +43,7 @@ class ClientProfile(models.Model):
     _name = 'client.profile'
     _description = "Profile"
     # profile
-    assoc_id = fields.Many2one(string="Associate",comodel_name='associates.profile')
+    assoc_id = fields.Many2one(string="Associate", comodel_name='associates.profile')
     is_company = fields.Selection([('individual', 'Individual'), ('company', 'Company')], required=True)
     name = fields.Char(string="Client Name", required=True)
     image = fields.Image(string="Image")
@@ -154,12 +155,12 @@ class ClientProfile(models.Model):
             ])
         return {
             'type': 'ir.actions.act_window',
-            'name': 'Documents',
+            'name': 'Working Papers',
             'res_model': 'client.records',
-            'view_mode': 'tree,kanban,form',
+            'view_mode': 'kanban,form',
             'domain': [('client_profile_id', '=', rec.id)],
             'context': {'default_client_profile_id': rec.id},
-            'target': 'new',
+            'target': 'current',
         }
 
 
@@ -198,7 +199,8 @@ class AssociatesProfile(models.Model):
     associates_cluster = fields.Char(string="Cluster")
     client_list = fields.One2many(string="List of Clients", comodel_name='associates.profile.lines',
                                   inverse_name='associates_client_list')
-    client_ids = fields.One2many(string="Clients",comodel_name='client.profile',inverse_name='assoc_id',readonly=True)
+    client_ids = fields.One2many(string="Clients", comodel_name='client.profile', inverse_name='assoc_id',
+                                 readonly=True)
 
 
 class AssociatesProfileLines(models.Model):

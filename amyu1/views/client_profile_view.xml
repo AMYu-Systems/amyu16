@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <data>
-
         <record id="client_profile_kanban_view" model="ir.ui.view">
             <field name="name">client.profile.kanban.view</field>
             <field name="model">client.profile</field>
@@ -15,8 +14,9 @@
                         <t t-name="kanban-box">
                             <div t-attf-class="oe_kanban_global_click">
                                 <div class="o_kanban_image">
-                                    <img alt="Avatar"
-                                         t-att-src="kanban_image('client.profile', 'image', record.id.raw_value)"/>
+<!--                                    <img alt="Avatar"-->
+<!--                                         t-att-src="kanban_image('client.profile', 'image', record.id.raw_value)"/>-->
+                                    <field name="image" widget="image" options="{'zoom': True}"/>
                                 </div>
                                 <div class="oe_kanban_details">
                                     <ul>
@@ -59,11 +59,13 @@
                 <form>
                     <sheet>
                         <div class="oe_button_box" name="button_box">
+<!--                             <button name="%(client_records_action)d" string="Open" class="oe_edit_only"-->
+<!--                                     type="action"></button>-->
                             <button name="action_attach_documents" class="oe_stat_button"
                                     type="object" icon="fa-files-o" widget="statinfo">
                                 <div class="o_stat_info">
                                     <field name="documents_count"/>
-                                    <span class="o_stat_text">Documents</span>
+                                    <span class="o_stat_text">Working Papers</span>
                                 </div>
                             </button>
                         </div>

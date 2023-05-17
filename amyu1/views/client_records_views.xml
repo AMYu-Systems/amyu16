@@ -90,6 +90,13 @@
             </field>
         </record>
 
+<!--        <record id="client_records_action" model="ir.actions.act_window">-->
+<!--            <field name="name">Working Papers</field>-->
+<!--            <field name="res_model">client.records</field>-->
+<!--            <field name="view_mode">kanban,form</field>-->
+<!--            <field name="target">new</field>-->
+<!--        </record>-->
+
     </data>
 </odoo>
 
