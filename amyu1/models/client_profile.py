@@ -43,15 +43,15 @@ class ClientProfile(models.Model):
     _name = 'client.profile'
     _description = "Profile"
     # profile
-    assoc_id = fields.Many2one(string="Associate", comodel_name='associates.profile')
+    assoc_id = fields.Many2one(string="Associate", comodel_name='associates.profile',required=True)
     is_company = fields.Selection([('individual', 'Individual'), ('company', 'Company')], required=True)
     name = fields.Char(string="Client Name", required=True)
     image = fields.Image(string="Image")
-    organization_type = fields.Many2one(comodel_name="res.partner.category", string="Organization Type")
-    industry_class = fields.Many2one(comodel_name="res.partner.industry", string="Industry Class")
+    organization_type = fields.Many2one(comodel_name="res.partner.category", string="Organization Type",required=True)
+    industry_class = fields.Many2one(comodel_name="res.partner.industry", string="Industry Class",required=True)
     nature_of_business = fields.Text(string="Nature of Business")
-    date_of_engagement = fields.Date(string="Date")
-    client_id = fields.Char(string="Client ID")
+    date_of_engagement = fields.Date(string="Date",required=True)
+    client_id = fields.Char(string="Client ID",required=True)
     tax_reporting_compliance = fields.Boolean(string="Tax Reporting & Compliance")
     annual_registration_update = fields.Boolean(string="Annual Registration Update")
     agree_upon_procedure = fields.Boolean(string="Agree-Upon Procedures")
