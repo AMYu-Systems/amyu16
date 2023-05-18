@@ -20,8 +20,8 @@
                             <!--                            </div>-->
                             <div t-attf-class="oe_kanban_global_click">
                                 <div class="o_kanban_image">
-<!--                                    <img alt="Avatar"-->
-<!--                                         t-att-src="kanban_image('associates.profile', 'associates_image', record.id.raw_value)"/>-->
+                                    <!--                                    <img alt="Avatar"-->
+                                    <!--                                         t-att-src="kanban_image('associates.profile', 'associates_image', record.id.raw_value)"/>-->
                                     <field name="associates_image" widget="image" options="{'zoom':True}"/>
 
                                 </div>
@@ -31,10 +31,6 @@
                                             <h2>
                                                 <field name="associates"/>
                                             </h2>
-                                        </li>
-                                        <li>
-                                            Cluster:
-                                            <field name="associates_cluster"/>
                                         </li>
                                         <li>
                                             Supervisor:
@@ -73,7 +69,7 @@
                             </group>
                         </group>
                         <sheet>
-<!--                            <field name="client_list" widget="grouped_view_widget"/>-->
+                            <!--                            <field name="client_list" widget="grouped_view_widget"/>-->
                             <field name="client_ids" widget="grouped_view_widget">
                                 <tree>
                                     <field name="is_company" string="Group"/>
@@ -120,25 +116,25 @@
             <field name="view_mode">tree,kanban,form</field>
         </record>
 
-<!--        <record id="associates_profile_lines_list_view" model="ir.ui.view">-->
-<!--            <field name="name">associates.profile.lines.list.view</field>-->
-<!--            <field name="model">associates.profile.lines</field>-->
-<!--            <field name="arch" type="xml">-->
-<!--                <tree>-->
-<!--                    <field name="client_ids" widget="many2one_avatar"/>-->
-<!--                </tree>-->
-<!--            </field>-->
-<!--        </record>-->
+        <!--        <record id="associates_profile_lines_list_view" model="ir.ui.view">-->
+        <!--            <field name="name">associates.profile.lines.list.view</field>-->
+        <!--            <field name="model">associates.profile.lines</field>-->
+        <!--            <field name="arch" type="xml">-->
+        <!--                <tree>-->
+        <!--                    <field name="client_ids" widget="many2one_avatar"/>-->
+        <!--                </tree>-->
+        <!--            </field>-->
+        <!--        </record>-->
 
-<!--        <record id="associates_profile_lines_form_view" model="ir.ui.view">-->
-<!--            <field name="name">associates.profile.lines.form.view</field>-->
-<!--            <field name="model">associates.profile.lines</field>-->
-<!--            <field name="arch" type="xml">-->
-<!--                <form>-->
-<!--                    <field name="client_ids"/>-->
-<!--                </form>-->
-<!--            </field>-->
-<!--        </record>-->
+        <!--        <record id="associates_profile_lines_form_view" model="ir.ui.view">-->
+        <!--            <field name="name">associates.profile.lines.form.view</field>-->
+        <!--            <field name="model">associates.profile.lines</field>-->
+        <!--            <field name="arch" type="xml">-->
+        <!--                <form>-->
+        <!--                    <field name="client_ids"/>-->
+        <!--                </form>-->
+        <!--            </field>-->
+        <!--        </record>-->
     </data>
 </odoo>
 

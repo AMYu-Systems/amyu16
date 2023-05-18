@@ -145,12 +145,15 @@ class ClientProfile(models.Model):
     sss = fields.Char(string="SSS ER No")
     phic = fields.Char(string="PHIC ER No")
     hdmf = fields.Char(string="HDMF ER No")
-    sss_filing = fields.Char(string="Filing")
-    phic_filing = fields.Char(string="Filing")
-    hdmf_filing = fields.Char(string="Filing")
-    sss_pay = fields.Char(string="Payment")
-    phic_pay = fields.Char(string="Payment")
-    hdmf_pay = fields.Char(string="Payment")
+    sss_filing = fields.Selection([('manual', 'Manual'), ('online', 'Online(AMS-CCL)')], string="Filing")
+    phic_filing = fields.Selection([('manual', 'Manual'), ('online', 'Online(ERPS)')], string="Filing")
+    hdmf_filing = fields.Selection([('manual', 'Manual'), ('online', 'Online(eSRS)')], string="Filing")
+    sss_pay = fields.Selection([('cash', 'Cash'), ('check', 'Check'), ('online_banking', 'Online Banking(EPS)')],
+                               string="Payment")
+    phic_pay = fields.Selection([('cash', 'Cash'), ('check', 'Check'), ('online_banking', 'Online Banking(EPS)')],
+                           string="Payment")
+    hdmf_pay = fields.Selection([('cash', 'Cash'), ('check', 'Check'), ('online_banking', 'Online Banking(EPS)')],
+                           string="Payment")
     # Escalation
     escalation = fields.One2many(comodel_name='escalation.contact', inverse_name='escalation_id',
                                  string="Escalation Point")

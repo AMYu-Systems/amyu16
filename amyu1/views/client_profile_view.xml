@@ -24,9 +24,10 @@
                                             <h2>
                                                 <field name="name"/>
                                             </h2>
+                                            <field name="is_company"/>
                                         </li>
                                         <li>
-                                            <field name="is_company"/>
+
                                         </li>
                                     </ul>
                                 </div>
@@ -73,42 +74,27 @@
                         <div class="oe_title">
                             <field name="is_company" widget="radio" options="{'horizontal':True}" nolabel="1"/>
                             <h1>
-                                <field id="name" class="text-break" name="name" default_focus="1"
-                                       placeholder="e.g. Lumber Inc"/>
+                                <field name="name" placeholder="e.g. Lumber Inc" style="font-size: min(4vw, 2.6rem);"/>
                             </h1>
 
                         </div>
                         <group>
                             <group>
                                 <field name="client_id"/>
+                            </group>
+                            <group>
                                 <field name="date_of_engagement" string="Date of Engagement"/>
                             </group>
                             <group>
                                 <field name="organization_type" options="{'no_open': True}"/>
+                            </group>
+                            <group>
                                 <field name="industry_class" options="{'no_open': True}"/>
                             </group>
+                            <group>
+                                <field name="nature_of_business"/>
+                            </group>
                         </group>
-                        <group col="2">
-                            <label for="nature_of_business"/>
-                            <field name="nature_of_business" nolabel="1"/>
-                        </group>
-
-                        <!--                        <group col="3">-->
-                        <!--                            <group>-->
-                        <!--                                <field name="tax_reporting_compliance"/>-->
-                        <!--                                <field name="annual_registration_update"/>-->
-                        <!--                                <field name="agree_upon_procedure"/>-->
-                        <!--                            </group>-->
-                        <!--                            <group>-->
-                        <!--                                <field name="audit_assurance"/>-->
-                        <!--                                <field name="tax_advocacy"/>-->
-                        <!--                                <field name="advisory_consultancy"/>-->
-                        <!--                            </group>-->
-                        <!--                            <group>-->
-                        <!--                                <field name="compilation"/>-->
-                        <!--                                <field name="others"/>-->
-                        <!--                            </group>-->
-                        <!--                        </group>-->
 
                         <notebook>
                             <page string="Contact Information">
@@ -237,12 +223,12 @@
                                         <field name="ll_cas_permit_no"/>
                                     </group>
                                 </group>
-                                <form>
+                                <li>
                                     Is the Company using any Point of sale(POS) Cash Registration(CRM) or Special
                                     Purpose(SPM)
                                     Machines?
                                     <field name="ask" widget="radio" options="{'horizontal':True}"/>
-                                </form>
+                                </li>
                             </page>
 
                             <page string="SEC/DTI Registration Information">
@@ -281,25 +267,23 @@
                                                widget="date"/>
                                     </group>
                                 </group>
-                                <ul>
-                                    <li>
-                                        Is the Company a holder of a Secondary license issued by the Securities and
-                                        Exchange
-                                        Commission?
-                                        <field name="ask_1" widget="radio" options="{'horizontal':True}"
-                                               nolabel="1"/>
-                                        If Yes what type of security is the Company permit to sell?
-                                        <field name="ask_2" nolabel="1"/>
-                                    </li>
-                                </ul>
+                                <li>
+                                    Is the Company a holder of a Secondary license issued by the Securities and
+                                    Exchange
+                                    Commission?
+                                    <field name="ask_1" widget="radio" options="{'horizontal':True}"
+                                           nolabel="1"/>
+                                    If Yes what type of security is the Company permit to sell?
+                                    <field name="ask_2" nolabel="1"/>
+                                </li>
                             </page>
 
                             <page string="Regulatory Information">
-                                <form>
+                                <li>
                                     Is the Entry regulated or accredited by or is a license holder issued by any of the
                                     following Government Regulatory Agencies?
                                     <field name="ask_3" widget="radio" options="{'horizontal':True}"/>
-                                </form>
+                                </li>
                                 <group col="2">
                                     <group>
                                         <field name="bangko_sentral_pilipinas" nolabel="1"/>
