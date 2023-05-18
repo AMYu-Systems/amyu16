@@ -76,9 +76,7 @@
                                 <field id="name" class="text-break" name="name" default_focus="1"
                                        placeholder="e.g. Lumber Inc"/>
                             </h1>
-                            <group>
-                                <field name="assoc_id"/>
-                            </group>
+
                         </div>
                         <group>
                             <group>
@@ -90,26 +88,27 @@
                                 <field name="industry_class" options="{'no_open': True}"/>
                             </group>
                         </group>
-                        <group>
-                            <field name="nature_of_business"/>
+                        <group col="2">
+                            <label for="nature_of_business"/>
+                            <field name="nature_of_business" nolabel="1"/>
                         </group>
 
-                        <group col="3">
-                            <group>
-                                <field name="tax_reporting_compliance"/>
-                                <field name="annual_registration_update"/>
-                                <field name="agree_upon_procedure"/>
-                            </group>
-                            <group>
-                                <field name="audit_assurance"/>
-                                <field name="tax_advocacy"/>
-                                <field name="advisory_consultancy"/>
-                            </group>
-                            <group>
-                                <field name="compilation"/>
-                                <field name="others"/>
-                            </group>
-                        </group>
+                        <!--                        <group col="3">-->
+                        <!--                            <group>-->
+                        <!--                                <field name="tax_reporting_compliance"/>-->
+                        <!--                                <field name="annual_registration_update"/>-->
+                        <!--                                <field name="agree_upon_procedure"/>-->
+                        <!--                            </group>-->
+                        <!--                            <group>-->
+                        <!--                                <field name="audit_assurance"/>-->
+                        <!--                                <field name="tax_advocacy"/>-->
+                        <!--                                <field name="advisory_consultancy"/>-->
+                        <!--                            </group>-->
+                        <!--                            <group>-->
+                        <!--                                <field name="compilation"/>-->
+                        <!--                                <field name="others"/>-->
+                        <!--                            </group>-->
+                        <!--                        </group>-->
 
                         <notebook>
                             <page string="Contact Information">
@@ -181,7 +180,7 @@
                                         <field name="email_address2" widget="email"/>
                                     </group>
                                 </group>
-                                <group string="Corporate Officer">
+                                <group string="Corporate Officers">
                                 </group>
                                 <field name="corporate_ids"/>
                             </page>
@@ -198,23 +197,34 @@
                                         <field name="registration_date" string="Registration Date" widget="date"/>
                                     </group>
                                 </group>
-                                <group string="Tax Type" col="3">
+                                <group string="Tax Types" col="3">
                                     <group>
-                                        <field name="income_tax"/>
-                                        <field name="excise_tax"/>
+                                        <field name="income_tax" nolabel="1"/>
+                                        <label for="income_tax"/>
+                                        <field name="excise_tax" nolabel="1"/>
+                                        <label for="excise_tax"/>
                                     </group>
                                     <group>
-                                        <field name="value_added_tax"/>
-                                        <field name="withholding_tax_expanded"/>
+                                        <field name="value_added_tax" nolabel="1"/>
+                                        <label for="value_added_tax"/>
+                                        <field name="withholding_tax_expanded" nolabel="1"/>
+                                        <label for="withholding_tax_expanded"/>
                                     </group>
                                     <group>
-                                        <field name="withholding_tax_compensation"/>
-                                        <field name="registration_fee"/>
+                                        <field name="withholding_tax_compensation" nolabel="1"/>
+                                        <label for="withholding_tax_compensation"/>
+                                        <field name="registration_fee" nolabel="1"/>
+                                        <label for="registration_fee"/>
                                     </group>
                                 </group>
                                 <group>
-                                    <field name="other_percentage_tax"/>
+                                    <group>
+                                        <field name="other_percentage_tax" nolabel="1"/>
+                                        <label for="other_percentage_tax"/>
+                                    </group>
+                                    <field name="other_percentage_tax1" nolabel="1"/>
                                 </group>
+
                                 <group col="2" string="">
                                     <group>
                                         <field name="tax_type"/>
@@ -271,14 +281,17 @@
                                                widget="date"/>
                                     </group>
                                 </group>
-                                <form>
-                                    Is the Company a holder of a Secondary license issued by the Securities and Exchange
-                                    Commission?
-                                    <field name="ask_1" widget="radio" options="{'horizontal':True}"
-                                           nolabel="1"/>
-                                    If Yes what type of security is the Company permit to sell??
-                                    <field name="ask_2" nolabel="1"/>
-                                </form>
+                                <ul>
+                                    <li>
+                                        Is the Company a holder of a Secondary license issued by the Securities and
+                                        Exchange
+                                        Commission?
+                                        <field name="ask_1" widget="radio" options="{'horizontal':True}"
+                                               nolabel="1"/>
+                                        If Yes what type of security is the Company permit to sell?
+                                        <field name="ask_2" nolabel="1"/>
+                                    </li>
+                                </ul>
                             </page>
 
                             <page string="Regulatory Information">
@@ -287,27 +300,38 @@
                                     following Government Regulatory Agencies?
                                     <field name="ask_3" widget="radio" options="{'horizontal':True}"/>
                                 </form>
-                                <group col="3">
+                                <group col="2">
                                     <group>
-                                        <field name="bureau_of_custom"/>
-                                        <field name="bangko_sentral_pilipinas"/>
-                                        <field name="professional_regulation_commission"/>
-                                        <field name="philippines_council_ngo_certification"/>
+                                        <field name="bangko_sentral_pilipinas" nolabel="1"/>
+                                        <label for="bangko_sentral_pilipinas"/>
+                                        <field name="bureau_of_custom" nolabel="1"/>
+                                        <label for="bureau_of_custom"/>
+                                        <field name="construction_industry_authority_philippines" nolabel="1"/>
+                                        <label for="construction_industry_authority_philippines"/>
+                                        <field name="cooperative_development_authority" nolabel="1"/>
+                                        <label for="cooperative_development_authority"/>
+                                        <field name="insurance_commission" nolabel="1"/>
+                                        <label for="insurance_commission"/>
+                                        <field name="integrated_bar_philippines" nolabel="1"/>
+                                        <label for="integrated_bar_philippines"/>
                                     </group>
                                     <group>
-                                        <field name="cooperative_development_authority"/>
-                                        <field name="insurance_commission"/>
-                                        <field name="integrated_bar_philippines"/>
-                                        <field name="philippines_stock_exchange"/>
+                                        <field name="land_transportation_franchising_regulatory_board" nolabel="1"/>
+                                        <label for="land_transportation_franchising_regulatory_board"/>
+                                        <field name="philippine_amusement_gaming_corporation" nolabel="1"/>
+                                        <label for="philippine_amusement_gaming_corporation"/>
+                                        <field name="philippines_council_ngo_certification" nolabel="1"/>
+                                        <label for="philippines_council_ngo_certification"/>
+                                        <field name="philippines_stock_exchange" nolabel="1"/>
+                                        <label for="philippines_stock_exchange"/>
+                                        <field name="professional_regulation_commission" nolabel="1"/>
+                                        <label for="professional_regulation_commission"/>
                                     </group>
                                     <group>
-                                        <field name="construction_industry_authority_philippines"/>
-                                        <field name="philippine_amusement_gaming_corporation"/>
-                                        <field name="land_transportation_franchising_regulatory_board"/>
+                                        <field name="others_ri" nolabel="1"/>
+                                        <label for="others_ri"/>
                                     </group>
-                                </group>
-                                <group>
-                                    <field name="others_ri"/>
+                                    <field name="others_reg" nolabel="1"/>
                                 </group>
                             </page>
 
@@ -330,49 +354,18 @@
                                     </group>
                                 </group>
                             </page>
-                            <page string="Engagement Administration-Escalation Matrix">
-                                <group string="For any pertinents resolution, outstanding documentation for submission and follow-up request shall be escalated as:">
-                                </group>
+                            <page string="Engagement Administration">
                                 <group>
-                                    <group string="Level">
-                                        <form colspan="2">
-                                            Level 1
-                                        </form>
-                                        <form colspan="2">
-                                            Level 2
-                                        </form>
-                                        <form colspan="2">
-                                            Level 3
-                                        </form>
-                                    </group>
-                                    <group string="Escalation Timeframe">
-                                        <form colspan="2">
-                                            upon encounter of issue;unresolved issue after 1 day;1 day delay in
-                                            submission of documents.
-                                        </form>
-                                        <form colspan="2">
-                                            unresolved issue after 2 days;2 day delay in submission of documents.
-                                        </form>
-                                        <form colspan="2">
-                                            unresolved issue after 3 days; 3 day delay in submission of documents.
-                                        </form>
-                                    </group>
-                                    <field name="escalation"/>
+                                    <field name="assoc_id"/>
                                 </group>
-                                <form>
-                                    I declare that the information contained in this Client Information Sheet has
-                                    been
-                                    accomplished and verified by me and to the best of my knowledge and belief is a
-                                    true, correct, and complete statement. It is understood and agreed that the
-                                    information disclosed herein for the collection, use, processing, storage and
-                                    retention of my personal data or information by A.M. Yu And Associates, CPAs
-                                    will
-                                    remain confidential. I understand that my consent does not prevent the existence
-                                    of
-                                    other criteria for lawful processing of personal data and does not waive any of
-                                    my
-                                    rights under RA 10173 – Data Privacy Act of 2012 and other applicable laws.
-                                </form>
+                                <ul>
+                                    <li>
+                                        For any pertinent resolution, outstanding documentation for submission and
+                                        follow-up
+                                        request shall be escalated as:
+                                    </li>
+                                </ul>
+                                <field name="escalation"/>
                             </page>
                         </notebook>
                     </sheet>
