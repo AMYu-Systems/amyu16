@@ -76,7 +76,6 @@
                             <h1>
                                 <field name="name" placeholder="e.g. Lumber Inc" style="font-size: min(4vw, 2.6rem);"/>
                             </h1>
-
                         </div>
                         <group>
                             <group>
@@ -224,9 +223,7 @@
                                     </group>
                                 </group>
                                 <li>
-                                    Is the Company using any Point of sale(POS) Cash Registration(CRM) or Special
-                                    Purpose(SPM)
-                                    Machines?
+                                    Is the Company using any Point-of-Sale(POS),Cash Register(CRM),or Special Purpose(SPM) Machines?
                                     <field name="ask" widget="radio" options="{'horizontal':True}"/>
                                 </li>
                             </page>
@@ -273,14 +270,14 @@
                                     Commission?
                                     <field name="ask_1" widget="radio" options="{'horizontal':True}"
                                            nolabel="1"/>
-                                    If Yes what type of security is the Company permit to sell?
+                                    If Yes, what type of security is the Company permitted to sell?
                                     <field name="ask_2" nolabel="1"/>
                                 </li>
                             </page>
 
                             <page string="Regulatory Information">
                                 <li>
-                                    Is the Entry regulated or accredited by or is a license holder issued by any of the
+                                    Is the Entity regulated or accredited by or is a license holder issued by any of the
                                     following Government Regulatory Agencies?
                                     <field name="ask_3" widget="radio" options="{'horizontal':True}"/>
                                 </li>
@@ -344,9 +341,8 @@
                                 </group>
                                 <ul>
                                     <li>
-                                        For any pertinent resolution, outstanding documentation for submission and
-                                        follow-up
-                                        request shall be escalated as:
+                                        For any pertinent issues resolution, outstanding documentation for submission,
+                                        and follow-up requests shall be escalated as:
                                     </li>
                                 </ul>
                                 <field name="escalation"/>
