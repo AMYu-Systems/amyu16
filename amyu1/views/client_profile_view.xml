@@ -59,15 +59,6 @@
             <field name="arch" type="xml">
                 <form>
                     <sheet>
-                        <div class="oe_button_box" name="button_box">
-                            <button name="action_attach_documents" class="oe_stat_button"
-                                    type="object" icon="fa-files-o" widget="statinfo">
-                                <div class="o_stat_info">
-                                    <field name="documents_count"/>
-                                    <span class="o_stat_text">Working Papers</span>
-                                </div>
-                            </button>
-                        </div>
                         <div>
                             <field name="image" widget="image" nolabel="1" class="oe_avatar"/>
                         </div>
@@ -170,7 +161,7 @@
                                 <field name="corporate_ids"/>
                             </page>
 
-                            <page string="BIR Registration Information">
+                            <page name="bir_registration_information" string="BIR Registration Information">
                                 <group col="3">
                                     <group>
                                         <field name="vat" placeholder="e.g 000-000-000"/>
@@ -223,12 +214,13 @@
                                     </group>
                                 </group>
                                 <li>
-                                    Is the Company using any Point-of-Sale(POS),Cash Register(CRM),or Special Purpose(SPM) Machines?
+                                    Is the Company using any Point-of-Sale(POS),Cash Register(CRM),or Special
+                                    Purpose(SPM) Machines?
                                     <field name="ask" widget="radio" options="{'horizontal':True}"/>
                                 </li>
                             </page>
 
-                            <page string="SEC/DTI Registration Information">
+                            <page name="sec_dti_registration_information" string="SEC/DTI Registration Information">
                                 <group col="2">
                                     <group>
                                         <field name="registration_number"/>
@@ -275,7 +267,7 @@
                                 </li>
                             </page>
 
-                            <page string="Regulatory Information">
+                            <page name="regulatory_information" string="Regulatory Information">
                                 <li>
                                     Is the Entity regulated or accredited by or is a license holder issued by any of the
                                     following Government Regulatory Agencies?
@@ -316,7 +308,7 @@
                                 </group>
                             </page>
 
-                            <page string="Social Security Information">
+                            <page name="social_security_information" string="Social Security Information">
                                 <group col="3">
                                     <group>
                                         <field name="sss"/>
@@ -335,9 +327,21 @@
                                     </group>
                                 </group>
                             </page>
-                            <page string="Engagement Administration">
-                                <group>
-                                    <field name="assoc_id"/>
+
+                            <page name="engagement_administration" string="Engagement Administration">
+                                <group name="engagement_team" string="Engagement Team">
+                                    <group>
+                                        <field name="associates_manager"/>
+                                    </group>
+                                    <group>
+                                        <field name="associates_supervisor"/>
+                                    </group>
+                                    <group>
+                                        <field name="assoc_id"/>
+                                    </group>
+                                    <group>
+                                       <field name="associates_cluster"/>
+                                    </group>
                                 </group>
                                 <ul>
                                     <li>
@@ -346,6 +350,17 @@
                                     </li>
                                 </ul>
                                 <field name="escalation"/>
+                            </page>
+                            <page name="working_papers" string="Working Papers">
+                                <header>
+                                    <button name="action_attach_documents" class="oe_stat_button"
+                                            type="object" icon="fa-files-o" widget="statinfo">
+                                        <div class="o_stat_info">
+                                            <field name="documents_count"/>
+                                            <span class="o_stat_text">Working Papers</span>
+                                        </div>
+                                    </button>
+                                </header>
                             </page>
                         </notebook>
                     </sheet>

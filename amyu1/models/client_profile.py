@@ -43,7 +43,6 @@ class ClientProfile(models.Model):
     _name = 'client.profile'
     _description = "Profile"
     # profile
-    assoc_id = fields.Many2one(string="Associate", comodel_name='associates.profile', required=True)
     is_company = fields.Selection([('individual', 'Individual'), ('company', 'Company')], required=True)
     name = fields.Char(string="Client Name", required=True)
     image = fields.Image(string="Image")
@@ -151,9 +150,9 @@ class ClientProfile(models.Model):
     sss_pay = fields.Selection([('cash', 'Cash'), ('check', 'Check'), ('online_banking', 'Online Banking(EPS)')],
                                string="Payment")
     phic_pay = fields.Selection([('cash', 'Cash'), ('check', 'Check'), ('online_banking', 'Online Banking(EPS)')],
-                           string="Payment")
+                                string="Payment")
     hdmf_pay = fields.Selection([('cash', 'Cash'), ('check', 'Check'), ('online_banking', 'Online Banking(EPS)')],
-                           string="Payment")
+                                string="Payment")
     # Escalation
     escalation = fields.One2many(comodel_name='escalation.contact', inverse_name='escalation_id',
                                  string="Escalation Point")
@@ -174,6 +173,17 @@ class ClientProfile(models.Model):
             'context': {'default_client_profile_id': rec.id},
             'target': 'current',
         }
+
+    # engagement admin
+    assoc_id = fields.Many2one(string="Associate", comodel_name='associates.profile', required=True)
+    associates_manager = fields.Char(string="Manager", related="assoc_id.associates_manager", readonly=True)
+    associates_supervisor = fields.Char(string="Supervisor", related="assoc_id.associates_supervisor", readonly=True)
+    associates_cluster = fields.Char(string="Cluster", related="assoc_id.associates_cluster", readonly=True)
+
+    # working papers
+    upload_file = fields.Binary(string='File', attachment=True)
+    file_name = fields.Char(string='Filename')
+    year_field = fields.Date(string="Year")
 
 
 class ClientRecords(models.Model):
