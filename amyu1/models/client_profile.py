@@ -27,14 +27,14 @@ class ClassOfShares(models.Model):
     _description = "Class of Shares"
 
     class_shares = fields.Char(string="Class of Shares")
-    par_value = fields.Float(string="Par Value per Share")
-    authorized_no = fields.Float(string="No.")
+    par_value = fields.Integer(string="Par Value per Share", default='')
+    authorized_no = fields.Integer(string="No.")
     authorized_amount = fields.Float(string="Amount")
-    subscribed_no = fields.Float(string="No.")
+    subscribed_no = fields.Integer(string="No.")
     subscribed_amount = fields.Float(string="Amount")
-    treasury_no = fields.Float(string="No.")
+    treasury_no = fields.Integer(string="No.")
     treasury_amount = fields.Float(string="Amount")
-    paid_up_no = fields.Float(string="No.")
+    paid_up_no = fields.Integer(string="No.")
     paid_up_amount = fields.Float(string="Amount")
     client_share_ids = fields.Many2one(comodel_name='client.profile', string="Class")
 
@@ -46,9 +46,9 @@ class ClientProfile(models.Model):
     is_company = fields.Selection([('individual', 'Individual'), ('company', 'Company')], required=True)
     name = fields.Char(string="Client Name", required=True)
     image = fields.Image(string="Image")
-    organization_type = fields.Many2one(comodel_name="res.partner.category", string="Organization Type", required=True)
-    industry_class = fields.Many2one(comodel_name="res.partner.industry", string="Industry Class", required=True)
-    nature_of_business = fields.Text(string="Nature of Activities,Brands,Product & Services")
+    organization_type = fields.Many2one(string="Organization Type", comodel_name="res.partner.category", required=True)
+    industry_class = fields.Many2one(string="Industry Class", comodel_name="res.partner.industry", required=True)
+    nature_of_business = fields.Char(string="Nature of Activities, Brands, Product & Services")
     date_of_engagement = fields.Date(string="Date", required=True)
     client_id = fields.Char(string="Client ID", required=True)
     tax_reporting_compliance = fields.Boolean(string="Tax Reporting & Compliance")
@@ -61,6 +61,21 @@ class ClientProfile(models.Model):
     others = fields.Char(string="Others")
     client_record_ids = fields.One2many(string="Client Record", comodel_name="client.records",
                                         inverse_name="client_profile_id")
+    approval_status = fields.Selection(
+        [('submit', 'Submit'), ('approved_by_supervisor', 'Supervisor'), ('approved_by_manager', 'Manager'),
+         ('cancel', 'Cancel')], default='submit',required=True)
+
+    def action_submit(self):
+        self.approval_status = 'submit'
+
+    def action_approval_by_supervisor(self):
+        self.approval_status = 'approved_by_supervisor'
+
+    def action_approval_by_manager(self):
+        self.approval_status = 'approved_by_manager'
+
+    def action_cancel(self):
+        self.approval_status = 'cancel'
 
     # Contacts
     unit_no = fields.Char(string="Unit/Floor")
@@ -69,7 +84,7 @@ class ClientProfile(models.Model):
     district = fields.Char(string="District/Barangay/Village")
     city = fields.Char(string="City")
     zip = fields.Char(string="Zip Code")
-    landline = fields.Char(string="Telephone")
+    landline = fields.Integer(string="Telephone")
     website = fields.Char(string="Website")
     unit_no2 = fields.Char(string="Unit/Floor")
     building_name2 = fields.Char(string="Building Name")
@@ -77,13 +92,13 @@ class ClientProfile(models.Model):
     district2 = fields.Char(string="District/Barangay/Village")
     city2 = fields.Char(string="City")
     zip2 = fields.Char(string="Zip Code")
-    landline2 = fields.Char(string="Telephone")
+    landline2 = fields.Integer(string="Telephone")
     primary_contact_person = fields.Char(string="Primary Contact")
-    mobile_no = fields.Char(string="Mobile No.")
+    mobile_no = fields.Integer(string="Mobile No.")
     email_address = fields.Char(string="Email Address")
     principal_accounting_officer = fields.Char(string="Principal Accounting Officer")
-    landline3 = fields.Char(string="Telephone")
-    mobile_no2 = fields.Char(string="Mobile No.")
+    landline3 = fields.Integer(string="Telephone")
+    mobile_no2 = fields.Integer(string="Mobile No.")
     email_address2 = fields.Char(string="Email Address")
     corporate_ids = fields.One2many(comodel_name='corporate.officer', inverse_name='client_profile_ids',
                                     string="Corporate Officers")
@@ -123,6 +138,7 @@ class ClientProfile(models.Model):
     ask_2 = fields.Char(string="If Yes what type of security is the Company permit to sell?")
     class_shares_id = fields.One2many(comodel_name='class.of.shares', inverse_name='client_share_ids',
                                       string="Class of Shares")
+    space = fields.Char(string="Annual Meeting", readonly=True)
     # Regulatory
     ask_3 = fields.Selection([('yes', 'Yes'), ('no', 'No')])
     bureau_of_custom = fields.Boolean(string="Bureau of Customs")
@@ -139,7 +155,7 @@ class ClientProfile(models.Model):
     land_transportation_franchising_regulatory_board = fields.Boolean(
         string="Land Transportation Franchising and Regulatory Board")
     others_ri = fields.Boolean(string="Others")
-    others_reg = fields.Char()
+    others_reg = fields.Char(string="Others")
     # SSS
     sss = fields.Char(string="SSS ER No")
     phic = fields.Char(string="PHIC ER No")

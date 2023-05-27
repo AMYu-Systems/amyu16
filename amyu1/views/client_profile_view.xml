@@ -58,6 +58,26 @@
             <field name="model">client.profile</field>
             <field name="arch" type="xml">
                 <form>
+                    <header>
+
+                       <button name="action_approval_by_supervisor" confirm="This Client Profile is for Supervisor Approval?"
+                                    string="Submit to Supervisor" class="oe_highlight"
+                                    attrs="{'invisible': [('approval_status', '!=', 'submit')]}"
+                                    type="object"/>
+                       <button name="action_approval_by_manager" confirm="is this file for Final Checking?"
+                                    string="Submit for Manager Approval" class="oe_highlight"
+                                    attrs="{'invisible': [('approval_status', '!=', 'approved_by_supervisor')]}"
+                                    type="object"/>
+                        <button name="action_cancel" confirm="Cancel this data?"
+                                attrs="{'invisible': [('approval_status', '!=', 'submit'),('approval_status', '!=', 'approved_by_supervisor')]}"
+                                string="Cancel" type="object"/>
+                        <button name="action_submit" confirm="Draft for Submitting?"
+                                string="Draft to Queue" attrs="{'invisible': [('approval_status', '!=', 'cancel')]}"
+                                type="object"/>
+
+                        <field name="approval_status" widget="statusbar"
+                               status_invisible="submit,approved_by_supervisor,approved_by_manager"/>
+                    </header>
                     <sheet>
                         <div>
                             <field name="image" widget="image" nolabel="1" class="oe_avatar"/>
@@ -71,18 +91,12 @@
                         <group>
                             <group>
                                 <field name="client_id"/>
+                                <field name="organization_type" options="{'no_open': True}"/>
+                                <field name="nature_of_business"/>
                             </group>
                             <group>
                                 <field name="date_of_engagement" string="Date of Engagement"/>
-                            </group>
-                            <group>
-                                <field name="organization_type" options="{'no_open': True}"/>
-                            </group>
-                            <group>
                                 <field name="industry_class" options="{'no_open': True}"/>
-                            </group>
-                            <group>
-                                <field name="nature_of_business"/>
                             </group>
                         </group>
 
@@ -91,73 +105,38 @@
                                 <group string="Registered Address">
                                     <group>
                                         <field name="unit_no"/>
-                                    </group>
-                                    <group>
-                                        <field name="building_name"/>
-                                    </group>
-                                    <group>
                                         <field name="street"/>
-                                    </group>
-                                    <group>
-                                        <field name="district"/>
-                                    </group>
-                                    <group>
                                         <field name="city"/>
-                                    </group>
-                                    <group>
-                                        <field name="zip"/>
-                                    </group>
-                                </group>
-                                <group>
-                                    <group>
                                         <field name="landline" widget="phone"/>
                                     </group>
                                     <group>
+                                        <field name="building_name"/>
+                                        <field name="district"/>
+                                        <field name="zip" widget="zip"/>
                                         <field name="website" widget="website"/>
                                     </group>
                                 </group>
                                 <group string="Accounting or Office Admin Address">
                                     <group>
                                         <field name="unit_no2"/>
-                                    </group>
-                                    <group>
-                                        <field name="building_name2"/>
-                                    </group>
-                                    <group>
                                         <field name="street2"/>
-                                    </group>
-                                    <group>
-                                        <field name="district2"/>
-                                    </group>
-                                    <group>
                                         <field name="city2"/>
-                                    </group>
-                                    <group>
-                                        <field name="zip2"/>
-                                    </group>
-                                </group>
-                                <group>
-                                    <group>
                                         <field name="primary_contact_person"/>
                                         <field name="landline2" widget="phone"/>
-                                    </group>
-                                    <group>
-                                        <field name="mobile_no" widget="phone"/>
-                                        <field name="email_address" widget="email"/>
-                                    </group>
-                                </group>
-                                <group>
-                                    <group>
                                         <field name="principal_accounting_officer"/>
                                         <field name="landline3" widget="phone"/>
                                     </group>
                                     <group>
+                                        <field name="building_name2"/>
+                                        <field name="district2"/>
+                                        <field name="zip2" widget="zip"/>
+                                        <field name="mobile_no" widget="phone"/>
+                                        <field name="email_address" widget="email"/>
                                         <field name="mobile_no2" widget="phone"/>
                                         <field name="email_address2" widget="email"/>
                                     </group>
                                 </group>
-                                <group string="Corporate Officers">
-                                </group>
+                                <group string="Corporate Officers"/>
                                 <field name="corporate_ids"/>
                             </page>
 
@@ -179,26 +158,24 @@
                                         <label for="income_tax"/>
                                         <field name="excise_tax" nolabel="1"/>
                                         <label for="excise_tax"/>
-                                    </group>
-                                    <group>
                                         <field name="value_added_tax" nolabel="1"/>
                                         <label for="value_added_tax"/>
-                                        <field name="withholding_tax_expanded" nolabel="1"/>
-                                        <label for="withholding_tax_expanded"/>
                                     </group>
                                     <group>
+                                        <field name="withholding_tax_expanded" nolabel="1"/>
+                                        <label for="withholding_tax_expanded"/>
                                         <field name="withholding_tax_compensation" nolabel="1"/>
                                         <label for="withholding_tax_compensation"/>
                                         <field name="registration_fee" nolabel="1"/>
                                         <label for="registration_fee"/>
                                     </group>
-                                </group>
-                                <group>
                                     <group>
-                                        <field name="other_percentage_tax" nolabel="1"/>
-                                        <label for="other_percentage_tax"/>
+                                        <group colspan="2">
+                                            <field name="other_percentage_tax" nolabel="1"/>
+                                            <label for="other_percentage_tax"/>
+                                        </group>
+                                        <field name="other_percentage_tax1" nolabel="1"/>
                                     </group>
-                                    <field name="other_percentage_tax1" nolabel="1"/>
                                 </group>
 
                                 <group col="2" string="">
@@ -221,17 +198,16 @@
                             </page>
 
                             <page name="sec_dti_registration_information" string="SEC/DTI Registration Information">
-                                <group col="2">
+                                <group>
                                     <group>
                                         <field name="registration_number"/>
+                                        <field name="trade_name"/>
                                     </group>
                                     <group>
                                         <field name="registration_date_sec" string="Registration Date" widget="date"/>
                                     </group>
                                 </group>
-                                <group>
-                                    <field name="trade_name"/>
-                                </group>
+
                                 <group col="6" string="Capitalization">
                                     <group col="2" string="">
                                     </group>
@@ -247,7 +223,10 @@
                                     </group>
                                     <field name="class_shares_id"/>
                                 </group>
-                                <group string="Annual Meeting">
+                                <group col="3">
+                                    <group>
+                                        <field name="space"/>
+                                    </group>
                                     <group>
                                         <field name="date_per_law"/>
                                     </group>
@@ -262,6 +241,8 @@
                                     Commission?
                                     <field name="ask_1" widget="radio" options="{'horizontal':True}"
                                            nolabel="1"/>
+                                </li>
+                                <li>
                                     If Yes, what type of security is the Company permitted to sell?
                                     <field name="ask_2" nolabel="1"/>
                                 </li>
@@ -273,6 +254,7 @@
                                     following Government Regulatory Agencies?
                                     <field name="ask_3" widget="radio" options="{'horizontal':True}"/>
                                 </li>
+                                <separator/>
                                 <group col="2">
                                     <group>
                                         <field name="bangko_sentral_pilipinas" nolabel="1"/>
@@ -299,12 +281,10 @@
                                         <label for="philippines_stock_exchange"/>
                                         <field name="professional_regulation_commission" nolabel="1"/>
                                         <label for="professional_regulation_commission"/>
-                                    </group>
-                                    <group>
                                         <field name="others_ri" nolabel="1"/>
                                         <label for="others_ri"/>
+                                        <field name="others_reg" nolabel="1" colspan="2"/>
                                     </group>
-                                    <field name="others_reg" nolabel="1"/>
                                 </group>
                             </page>
 
@@ -331,18 +311,15 @@
                             <page name="engagement_administration" string="Engagement Administration">
                                 <group name="engagement_team" string="Engagement Team">
                                     <group>
-                                        <field name="associates_manager"/>
-                                    </group>
-                                    <group>
+                                        <field name="assoc_id"/>
                                         <field name="associates_supervisor"/>
                                     </group>
                                     <group>
-                                        <field name="assoc_id"/>
-                                    </group>
-                                    <group>
-                                       <field name="associates_cluster"/>
+                                        <field name="associates_manager"/>
+                                        <field name="associates_cluster"/>
                                     </group>
                                 </group>
+                                <group string="Escalation Matrix"/>
                                 <ul>
                                     <li>
                                         For any pertinent issues resolution, outstanding documentation for submission,
@@ -351,6 +328,7 @@
                                 </ul>
                                 <field name="escalation"/>
                             </page>
+
                             <page name="working_papers" string="Working Papers">
                                 <header>
                                     <button name="action_attach_documents" class="oe_stat_button"
