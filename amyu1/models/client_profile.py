@@ -7,7 +7,7 @@ class EscalationContact(models.Model):
 
     level = fields.Selection([('level_1', '1st Level'), ('level_2', '2nd Level'), ('level_3', '3rd Level')],
                              string="Level")
-    contact_name = fields.Char(string='Point of Contact', required=True)
+    contact_name = fields.Char(string='Point of Contact')
     contact_number = fields.Char(string="Contact Number")
     email = fields.Char(string="Email")
     escalation_id = fields.Many2one(comodel_name='client.profile', string="Escalation")
@@ -50,7 +50,7 @@ class ClientProfile(models.Model):
     industry_class = fields.Many2one(string="Industry Class", comodel_name="res.partner.industry", required=True)
     nature_of_business = fields.Char(string="Nature of Activities, Brands, Product & Services")
     date_of_engagement = fields.Date(string="Date", required=True)
-    client_id = fields.Char(string="Client ID", required=True)
+    client_id = fields.Char(string="Client ID")
     tax_reporting_compliance = fields.Boolean(string="Tax Reporting & Compliance")
     annual_registration_update = fields.Boolean(string="Annual Registration Update")
     agree_upon_procedure = fields.Boolean(string="Agree-Upon Procedures")
@@ -63,7 +63,7 @@ class ClientProfile(models.Model):
                                         inverse_name="client_profile_id")
     approval_status = fields.Selection(
         [('submit', 'Submit'), ('approved_by_supervisor', 'Supervisor'), ('approved_by_manager', 'Manager'),
-         ('cancel', 'Cancel')], default='submit',required=True)
+         ('approved', 'Approved')], default='submit', required=True)
 
     def action_submit(self):
         self.approval_status = 'submit'
@@ -76,6 +76,40 @@ class ClientProfile(models.Model):
 
     def action_cancel(self):
         self.approval_status = 'cancel'
+
+    def action_approved(self):
+        self.approval_status = 'approved'
+        return {
+            'effect': {
+                'fadeout': 'slow',
+                'message': 'Approved',
+                'type': 'rainbow_man'
+            }
+        }
+
+    @api.model
+    def create(self, vals):
+        # Compute Client ID
+        client_id = str(vals['name'][0:3 if len(vals['name']) > 2 else 2]).upper().strip() + "-" + \
+                    str(vals['date_of_engagement'])[5:7] + \
+                    str(vals['date_of_engagement'])[0:4] + "-" + \
+                    self.env['ir.sequence'].next_by_code('client.id.seq')
+        vals.update({'client_id': client_id})
+        res = super(ClientProfile, self).create(vals)
+        if res:
+            self.env['escalation.contact'].create({
+                'level': 'level_1',
+                'escalation_id': res.id
+            })
+            self.env['escalation.contact'].create({
+                'level': 'level_2',
+                'escalation_id': res.id
+            })
+            self.env['escalation.contact'].create({
+                'level': 'level_3',
+                'escalation_id': res.id
+            })
+        return res
 
     # Contacts
     unit_no = fields.Char(string="Unit/Floor")

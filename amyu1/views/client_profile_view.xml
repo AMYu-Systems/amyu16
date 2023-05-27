@@ -48,7 +48,7 @@
                     <field name="assoc_id"/>
                     <field name="industry_class" widget="badge" decoration-info="1"/>
                     <field name="organization_type" widget="badge" decoration-success="1"/>
-                    <field name="date_of_engagement"/>
+                    <field name="approval_status"/>
                 </tree>
             </field>
         </record>
@@ -60,14 +60,19 @@
                 <form>
                     <header>
 
-                       <button name="action_approval_by_supervisor" confirm="This Client Profile is for Supervisor Approval?"
-                                    string="Submit to Supervisor" class="oe_highlight"
-                                    attrs="{'invisible': [('approval_status', '!=', 'submit')]}"
-                                    type="object"/>
-                       <button name="action_approval_by_manager" confirm="is this file for Final Checking?"
-                                    string="Submit for Manager Approval" class="oe_highlight"
-                                    attrs="{'invisible': [('approval_status', '!=', 'approved_by_supervisor')]}"
-                                    type="object"/>
+                        <button name="action_approval_by_supervisor"
+                                confirm="Submit this client profile to Supervisor Approval?"
+                                string="Submit to Supervisor" class="oe_highlight"
+                                attrs="{'invisible': [('approval_status', '!=', 'submit')]}"
+                                type="object"/>
+                        <button name="action_approval_by_manager" confirm="is this file for Final Approval?"
+                                string="Submit for Manager Approval" class="oe_highlight"
+                                attrs="{'invisible': [('approval_status', '!=', 'approved_by_supervisor')]}"
+                                type="object"/>
+                        <button name="action_approved" confirm="Approved"
+                                string="Approved" class="oe_highlight"
+                                attrs="{'invisible': [('approval_status', '!=', 'approved_by_manager')]}"
+                                type="object"/>
                         <button name="action_cancel" confirm="Cancel this data?"
                                 attrs="{'invisible': [('approval_status', '!=', 'submit'),('approval_status', '!=', 'approved_by_supervisor')]}"
                                 string="Cancel" type="object"/>
@@ -90,7 +95,7 @@
                         </div>
                         <group>
                             <group>
-                                <field name="client_id"/>
+                                <field name="client_id" readonly="1" placeholder="System generated"/>
                                 <field name="organization_type" options="{'no_open': True}"/>
                                 <field name="nature_of_business"/>
                             </group>
@@ -378,6 +383,15 @@
                   name="Associates"
                   parent="client_profile_root_menu"
                   action="associates_profile_action"/>
+
+        <record model="ir.sequence" id="client_id_seq">
+            <field name="name">Client ID Sequence"</field>
+            <field name="code">client.id.seq</field>
+            <field name="company_id" eval="False"/>
+            <field name="number_next">1</field>
+            <field name="padding">5</field>
+            <field name="number_increment">1</field>
+        </record>
 
     </data>
 </odoo>

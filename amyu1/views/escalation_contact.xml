@@ -5,8 +5,8 @@
             <field name="name">escalation.contact.list.view</field>
             <field name="model">escalation.contact</field>
             <field name="arch" type="xml">
-                <tree>
-                    <field name="level"/>
+                <tree editable="bottom" create="0" edit="1" delete="0">
+                    <field name="level" readonly="1"/>
                     <field name="contact_name"/>
                     <field name="contact_number"/>
                     <field name="email"/>
