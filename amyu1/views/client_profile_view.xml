@@ -90,7 +90,7 @@
                         <div class="oe_title">
                             <field name="is_company" widget="radio" options="{'horizontal':True}" nolabel="1"/>
                             <h1>
-                                <field name="name" placeholder="e.g. Lumber Inc" style="font-size: min(4vw, 2.6rem);"/>
+                                <field name="name" placeholder="e.g. Lumber Inc" style="text-transform: uppercase;"/>
                             </h1>
                         </div>
                         <group>

@@ -7,6 +7,7 @@
             <field name="arch" type="xml">
                 <tree editable="bottom" create="0" edit="1" delete="0">
                     <field name="level" readonly="1"/>
+                    <field name="timeframe" readonly="1"/>
                     <field name="contact_name"/>
                     <field name="contact_number"/>
                     <field name="email"/>

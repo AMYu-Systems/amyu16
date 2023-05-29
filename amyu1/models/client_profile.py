@@ -7,9 +7,14 @@ class EscalationContact(models.Model):
 
     level = fields.Selection([('level_1', '1st Level'), ('level_2', '2nd Level'), ('level_3', '3rd Level')],
                              string="Level")
+    timeframe = fields.Selection(
+        [('lvl1', 'upon encounter of issue; unresolved issue after 1 day; 1 day delay in submission of documents'),
+         ('lvl2', 'unresolved issue after 2 days; 2 days delay in submission of documents'),
+         ('lvl3', 'unresolved issue after 3 days; 3 days delay in submission of documents')],
+        string="Escalation Timeframe")
     contact_name = fields.Char(string='Point of Contact')
     contact_number = fields.Char(string="Contact Number")
-    email = fields.Char(string="Email")
+    email = fields.Char(string="Email Address")
     escalation_id = fields.Many2one(comodel_name='client.profile', string="Escalation")
 
 
@@ -43,11 +48,11 @@ class ClientProfile(models.Model):
     _name = 'client.profile'
     _description = "Profile"
     # profile
-    is_company = fields.Selection([('individual', 'Individual'), ('company', 'Company')], required=True)
+    is_company = fields.Selection([('individual', 'Individual'), ('company', 'Company')], default="company")
     name = fields.Char(string="Client Name", required=True)
     image = fields.Image(string="Image")
-    organization_type = fields.Many2one(string="Organization Type", comodel_name="res.partner.category", required=True)
-    industry_class = fields.Many2one(string="Industry Class", comodel_name="res.partner.industry", required=True)
+    organization_type = fields.Many2one(string="Organization Type", comodel_name="res.partner.category")
+    industry_class = fields.Many2one(string="Industry Class", comodel_name="res.partner.industry")
     nature_of_business = fields.Char(string="Nature of Activities, Brands, Product & Services")
     date_of_engagement = fields.Date(string="Date", required=True)
     client_id = fields.Char(string="Client ID")
@@ -87,6 +92,11 @@ class ClientProfile(models.Model):
             }
         }
 
+    # @api.onchange('name')
+    # def set_caps(self):
+    #     val = str(self.name)
+    #     self.name = val.upper()
+
     @api.model
     def create(self, vals):
         # Compute Client ID
@@ -99,14 +109,17 @@ class ClientProfile(models.Model):
         if res:
             self.env['escalation.contact'].create({
                 'level': 'level_1',
+                'timeframe': 'lvl1',
                 'escalation_id': res.id
             })
             self.env['escalation.contact'].create({
                 'level': 'level_2',
+                'timeframe': 'lvl2',
                 'escalation_id': res.id
             })
             self.env['escalation.contact'].create({
                 'level': 'level_3',
+                'timeframe': 'lvl3',
                 'escalation_id': res.id
             })
         return res
