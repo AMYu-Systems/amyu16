@@ -1,4 +1,6 @@
 from odoo import models, fields, api
+import re
+from odoo.exceptions import ValidationError
 
 
 class EscalationContact(models.Model):
@@ -68,7 +70,7 @@ class ClientProfile(models.Model):
                                         inverse_name="client_profile_id")
     approval_status = fields.Selection(
         [('submit', 'Submit'), ('approved_by_supervisor', 'Supervisor'), ('approved_by_manager', 'Manager'),
-         ('approved', 'Approved')], default='submit', required=True)
+         ('approved', 'Approved'), ('cancel', '')], default='submit', required=True)
 
     def action_submit(self):
         self.approval_status = 'submit'
@@ -92,6 +94,7 @@ class ClientProfile(models.Model):
             }
         }
 
+    # uppercase client name
     # @api.onchange('name')
     # def set_caps(self):
     #     val = str(self.name)
@@ -131,7 +134,23 @@ class ClientProfile(models.Model):
     district = fields.Char(string="District/Barangay/Village")
     city = fields.Char(string="City")
     zip = fields.Char(string="Zip Code")
-    landline = fields.Integer(string="Telephone")
+
+    @api.constrains('zip')
+    def _validate_zip(self):
+        for record in self:
+            pattern = r'^\d{4}$'  # Modify the regular expression pattern according to your requirements
+            if record.zip and not re.match(pattern, record.zip):
+                raise ValidationError('Invalid Zip Code!')
+
+    landline = fields.Char(string="Telephone")
+
+    @api.constrains('landline')
+    def _validate_landline(self):
+        for record in self:
+            pattern = r'^\d{3}-\d{4}$'  # Modify the regular expression pattern according to your requirements
+            if record.landline and not re.match(pattern, record.landline):
+                raise ValidationError('Invalid telephone number format!')
+
     website = fields.Char(string="Website")
     unit_no2 = fields.Char(string="Unit/Floor")
     building_name2 = fields.Char(string="Building Name")
@@ -139,19 +158,76 @@ class ClientProfile(models.Model):
     district2 = fields.Char(string="District/Barangay/Village")
     city2 = fields.Char(string="City")
     zip2 = fields.Char(string="Zip Code")
-    landline2 = fields.Integer(string="Telephone")
+
+    @api.constrains('zip2')
+    def _validate_zip2(self):
+        for record in self:
+            pattern = r'^\d{4}$'  # Modify the regular expression pattern according to your requirements
+            if record.zip2 and not re.match(pattern, record.zip2):
+                raise ValidationError('Invalid Zip Code!')
+
+    landline2 = fields.Char(string="Telephone")
+
+    @api.constrains('landline2')
+    def _validate_landline2(self):
+        for record in self:
+            pattern = r'^\d{3}-\d{4}$'  # Modify the regular expression pattern according to your requirements
+            if record.landline2 and not re.match(pattern, record.landline2):
+                raise ValidationError('Invalid telephone number format!')
+
     primary_contact_person = fields.Char(string="Primary Contact")
-    mobile_no = fields.Integer(string="Mobile No.")
+    mobile_number = fields.Char(string="Mobile No.")
+
+    @api.constrains('mobile_number')
+    def _validate_mobile_number(self):
+        for record in self:
+            pattern = r'^(?:\+63|0)\d{10}$'  # Modify the regular expression pattern according to your requirements
+            if record.mobile_number and not re.match(pattern, record.mobile_number):
+                raise ValidationError('Invalid mobile number format!')
+
     email_address = fields.Char(string="Email Address")
     principal_accounting_officer = fields.Char(string="Principal Accounting Officer")
-    landline3 = fields.Integer(string="Telephone")
-    mobile_no2 = fields.Integer(string="Mobile No.")
+    landline3 = fields.Char(string="Telephone")
+
+    @api.constrains('landline3')
+    def _validate_landline3(self):
+        for record in self:
+            pattern = r'^\d{3}-\d{4}$'  # Modify the regular expression pattern according to your requirements
+            if record.landline3 and not re.match(pattern, record.landline3):
+                raise ValidationError('Invalid telephone number format!')
+
+    mobile_number2 = fields.Char(string="Mobile No.")
+
+    @api.constrains('mobile_number2')
+    def _validate_mobile_number2(self):
+        for record in self:
+            pattern = r'^(?:\+63|0)\d{10}$'  # Modify the regular expression pattern according to your requirements
+            if record.mobile_number2 and not re.match(pattern, record.mobile_number2):
+                raise ValidationError('Invalid mobile number format!')
+
     email_address2 = fields.Char(string="Email Address")
     corporate_ids = fields.One2many(comodel_name='corporate.officer', inverse_name='client_profile_ids',
                                     string="Corporate Officers")
+
     # BIR
     vat = fields.Char(string="Tax Id No.")
+
+    @api.constrains('vat')
+    def _validate_vat(self):
+        for record in self:
+            pattern = r'^\d{3}-\d{3}-\d{3}$'  # Modify the regular expression pattern according to your requirements
+            if record.vat and not re.match(pattern, record.vat):
+                raise ValidationError('Invalid TAX ID!')
+
     rdo_code = fields.Char(string="RDO Code")
+
+    @api.constrains('rdo_code')
+    def _validate_rdo_code(self):
+        for record in self:
+            pattern = r'^\d{3}$'  # Modify the regular expression pattern according to your requirements
+            if record.rdo_code and not re.match(pattern, record.rdo_code):
+                raise ValidationError('Invalid RDO Code!')
+
     registration_date = fields.Date('Date')
     income_tax = fields.Boolean(string="Income Tax")
     excise_tax = fields.Boolean(string="Excise Tax")

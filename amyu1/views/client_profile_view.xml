@@ -43,12 +43,14 @@
             <field name="model">client.profile</field>
             <field name="arch" type="xml">
                 <tree>
-                    <field name="is_company" string="Group"/>
                     <field name="name"/>
                     <field name="assoc_id"/>
-                    <field name="industry_class" widget="badge" decoration-info="1"/>
-                    <field name="organization_type" widget="badge" decoration-success="1"/>
-                    <field name="approval_status"/>
+                    <field name="industry_class"/>
+                    <field name="organization_type"/>
+                    <field name="approval_status" widget="badge" decoration-muted="approval_status == 'submit'"
+                           decoration-primary="approval_status == 'approved_by_supervisor'"
+                           decoration-info="approval_status == 'approved_by_manager'"
+                           decoration-success="approval_status == 'approved'"/>
                 </tree>
             </field>
         </record>
@@ -90,7 +92,7 @@
                         <div class="oe_title">
                             <field name="is_company" widget="radio" options="{'horizontal':True}" nolabel="1"/>
                             <h1>
-                                <field name="name" placeholder="e.g. Lumber Inc" style="text-transform: uppercase;"/>
+                                <field name="name" placeholder="e.g. Lumber Inc"/>
                             </h1>
                         </div>
                         <group>
@@ -112,12 +114,12 @@
                                         <field name="unit_no"/>
                                         <field name="street"/>
                                         <field name="city"/>
-                                        <field name="landline" widget="phone"/>
+                                        <field name="landline" widget="phone" placeholder="eg.000-0000"/>
                                     </group>
                                     <group>
                                         <field name="building_name"/>
                                         <field name="district"/>
-                                        <field name="zip" widget="zip"/>
+                                        <field name="zip"/>
                                         <field name="website" widget="website"/>
                                     </group>
                                 </group>
@@ -127,17 +129,17 @@
                                         <field name="street2"/>
                                         <field name="city2"/>
                                         <field name="primary_contact_person"/>
-                                        <field name="landline2" widget="phone"/>
+                                        <field name="landline2" widget="phone" placeholder="eg.000-0000"/>
                                         <field name="principal_accounting_officer"/>
-                                        <field name="landline3" widget="phone"/>
+                                        <field name="landline3" widget="phone" placeholder="eg.000-0000"/>
                                     </group>
                                     <group>
                                         <field name="building_name2"/>
                                         <field name="district2"/>
-                                        <field name="zip2" widget="zip"/>
-                                        <field name="mobile_no" widget="phone"/>
+                                        <field name="zip2"/>
+                                        <field name="mobile_number" widget="phone"/>
                                         <field name="email_address" widget="email"/>
-                                        <field name="mobile_no2" widget="phone"/>
+                                        <field name="mobile_number2" widget="phone"/>
                                         <field name="email_address2" widget="email"/>
                                     </group>
                                 </group>
