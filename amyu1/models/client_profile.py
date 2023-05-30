@@ -103,11 +103,13 @@ class ClientProfile(models.Model):
     @api.model
     def create(self, vals):
         # Compute Client ID
-        client_id = str(
-            vals['name'].replace(".", "").replace("-", "").replace(" ", "")[0:3 if len(vals['name']) > 2 else 2]).upper().strip() + "-" + \
-                    str(vals['date_of_engagement'])[5:7] + \
-                    str(vals['date_of_engagement'])[0:4] + "-" + \
-                    self.env['ir.sequence'].next_by_code('client.id.seq')
+        special_character = ['!', '@', '#', '$', '%', '^', '*', '-', '_', '+', " "]
+        for char in special_character:
+            client_id = str(
+                vals['name'].replace(char, "")[0:3 if len(vals['name']) > 2 else 2]).upper().strip() + "-" + \
+                        str(vals['date_of_engagement'])[5:7] + \
+                        str(vals['date_of_engagement'])[0:4] + "-" + \
+                        self.env['ir.sequence'].next_by_code('client.id.seq')
         vals.update({'client_id': client_id})
         res = super(ClientProfile, self).create(vals)
         if res:
