@@ -103,7 +103,8 @@ class ClientProfile(models.Model):
     @api.model
     def create(self, vals):
         # Compute Client ID
-        client_id = str(vals['name'][0:3 if len(vals['name']) > 2 else 2]).upper().strip() + "-" + \
+        client_id = str(
+            vals['name'].replace(".", "").replace("-", "").replace(" ", "")[0:3 if len(vals['name']) > 2 else 2]).upper().strip() + "-" + \
                     str(vals['date_of_engagement'])[5:7] + \
                     str(vals['date_of_engagement'])[0:4] + "-" + \
                     self.env['ir.sequence'].next_by_code('client.id.seq')
