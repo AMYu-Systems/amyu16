@@ -62,25 +62,25 @@
                 <form>
                     <header>
 
-                        <button name="action_approval_by_supervisor"
-                                confirm="Submit this client profile to Supervisor Approval?"
-                                string="Submit to Supervisor" class="oe_highlight"
-                                attrs="{'invisible': [('approval_status', '!=', 'submit')]}"
-                                type="object"/>
-                        <button name="action_approval_by_manager" confirm="is this file for Final Approval?"
-                                string="Submit for Manager Approval" class="oe_highlight"
-                                attrs="{'invisible': [('approval_status', '!=', 'approved_by_supervisor')]}"
-                                type="object"/>
-                        <button name="action_approved" confirm="Approved"
-                                string="Approved" class="oe_highlight"
-                                attrs="{'invisible': [('approval_status', '!=', 'approved_by_manager')]}"
-                                type="object"/>
-                        <button name="action_cancel" confirm="Cancel this data?"
-                                attrs="{'invisible': [('approval_status', '!=', 'submit'),('approval_status', '!=', 'approved_by_supervisor')]}"
-                                string="Cancel" type="object"/>
-                        <button name="action_submit" confirm="Draft for Submitting?"
-                                string="Draft to Queue" attrs="{'invisible': [('approval_status', '!=', 'cancel')]}"
-                                type="object"/>
+                        <!--                        <button name="action_approval_by_supervisor"-->
+                        <!--                                confirm="Submit this client profile to Supervisor Approval?"-->
+                        <!--                                string="Submit to Supervisor" class="oe_highlight"-->
+                        <!--                                attrs="{'invisible': [('approval_status', '!=', 'submit')]}"-->
+                        <!--                                type="object"/>-->
+                        <!--                        <button name="action_approval_by_manager" confirm="is this file for Final Approval?"-->
+                        <!--                                string="Submit for Manager Approval" class="oe_highlight"-->
+                        <!--                                attrs="{'invisible': [('approval_status', '!=', 'approved_by_supervisor')]}"-->
+                        <!--                                type="object"/>-->
+                        <!--                        <button name="action_approved" confirm="Approved"-->
+                        <!--                                string="Approved" class="oe_highlight"-->
+                        <!--                                attrs="{'invisible': [('approval_status', '!=', 'approved_by_manager')]}"-->
+                        <!--                                type="object"/>-->
+                        <!--                        <button name="action_cancel" confirm="Cancel this data?"-->
+                        <!--                                attrs="{'invisible': [('approval_status', '!=', 'submit'),('approval_status', '!=', 'approved_by_supervisor')]}"-->
+                        <!--                                string="Cancel" type="object"/>-->
+                        <!--                        <button name="action_submit" confirm="Draft for Submitting?"-->
+                        <!--                                string="Draft to Queue" attrs="{'invisible': [('approval_status', '!=', 'cancel')]}"-->
+                        <!--                                type="object"/>-->
 
                         <field name="approval_status" widget="statusbar"
                                status_invisible="submit,approved_by_supervisor,approved_by_manager"/>
@@ -181,7 +181,8 @@
                                             <field name="other_percentage_tax" nolabel="1"/>
                                             <label for="other_percentage_tax"/>
                                         </group>
-                                        <field name="other_percentage_tax1" nolabel="1"/>
+                                        <field name="other_percentage_tax1" nolabel="1"
+                                               attrs="{'invisible': [('other_percentage_tax', '=', False)]}"/>
                                     </group>
                                 </group>
 
@@ -197,11 +198,12 @@
                                         <field name="ll_cas_permit_no"/>
                                     </group>
                                 </group>
-                                <li>
+                                <p>
                                     Is the Company using any Point-of-Sale(POS),Cash Register(CRM),or Special
                                     Purpose(SPM) Machines?
-                                    <field name="ask" widget="radio" options="{'horizontal':True}"/>
-                                </li>
+                                    <field name="ask" style="margin-left: 20px;" widget="radio"
+                                           options="{'horizontal':True}"/>
+                                </p>
                             </page>
 
                             <page name="sec_dti_registration_information" string="SEC/DTI Registration Information">
@@ -231,9 +233,9 @@
                                     <field name="class_shares_id"/>
                                 </group>
                                 <group col="3">
-                                    <group>
-                                        <field name="space"/>
-                                    </group>
+                                    <p>
+                                        Annual Meeting
+                                    </p>
                                     <group>
                                         <field name="date_per_law"/>
                                     </group>
@@ -242,26 +244,32 @@
                                                widget="date"/>
                                     </group>
                                 </group>
-                                <li>
+                                <p>
                                     Is the Company a holder of a Secondary license issued by the Securities and
                                     Exchange
                                     Commission?
-                                    <field name="ask_1" widget="radio" options="{'horizontal':True}"
+                                    <field name="ask_1" style="margin-left: 20px;" widget="radio"
+                                           options="{'horizontal':True}"
                                            nolabel="1"/>
-                                </li>
-                                <li>
                                     If Yes, what type of security is the Company permitted to sell?
-                                    <field name="ask_2" nolabel="1"/>
-                                </li>
+                                </p>
+                                <p>
+                                    <field name="ask_2" widget="text" nolabel="1"/>
+                                </p>
+
                             </page>
 
                             <page name="regulatory_information" string="Regulatory Information">
-                                <li>
+                                <p>
                                     Is the Entity regulated or accredited by or is a license holder issued by any of the
                                     following Government Regulatory Agencies?
-                                    <field name="ask_3" widget="radio" options="{'horizontal':True}"/>
-                                </li>
-                                <separator/>
+                                    <field name="ask_3" style="margin-left: 20px; margin-bottom:10px; " widget="radio"
+                                           options="{'horizontal':True}"/>
+                                </p>
+                                <!--                                <group>-->
+                                <!--                                </group>-->
+                                <!--                                <group>-->
+                                <!--                                </group>-->
                                 <group col="2">
                                     <group>
                                         <field name="bangko_sentral_pilipinas" nolabel="1"/>
@@ -290,7 +298,8 @@
                                         <label for="professional_regulation_commission"/>
                                         <field name="others_ri" nolabel="1"/>
                                         <label for="others_ri"/>
-                                        <field name="others_reg" nolabel="1" colspan="2"/>
+                                        <field name="others_reg" nolabel="1" colspan="2"
+                                               attrs="{'invisible': [('others_ri', '=', False)]}"/>
                                     </group>
                                 </group>
                             </page>
@@ -327,12 +336,10 @@
                                     </group>
                                 </group>
                                 <group string="Escalation Matrix"/>
-                                <ul>
-                                    <li>
-                                        For any pertinent issues resolution, outstanding documentation for submission,
-                                        and follow-up requests shall be escalated as:
-                                    </li>
-                                </ul>
+                                <p>
+                                    For any pertinent issues resolution, outstanding documentation for submission,
+                                    and follow-up requests shall be escalated as:
+                                </p>
                                 <field name="escalation"/>
                             </page>
 
@@ -372,19 +379,19 @@
         </record>
 
         <record id="client_profile_action" model="ir.actions.act_window">
-            <field name="name">Client Information Sheet</field>
+            <field name="name">Client Dashboard</field>
             <field name="res_model">client.profile</field>
             <field name="view_mode">tree,kanban,form</field>
         </record>
 
         <menuitem id="client_profile_root_menu"
-                  name="Document Management System"
+                  name="Client Profile &amp; Monitoring System"
                   action="client_profile_action"/>
 
-        <menuitem id="associates_profile_sub_menu"
-                  name="Associates"
-                  parent="client_profile_root_menu"
-                  action="associates_profile_action"/>
+        <!--        <menuitem id="associates_profile_sub_menu"-->
+        <!--                  name="Associates"-->
+        <!--                  parent="client_profile_root_menu"-->
+        <!--                  action="associates_profile_action"/>-->
 
         <record model="ir.sequence" id="client_id_seq">
             <field name="name">Client ID Sequence"</field>

@@ -94,22 +94,13 @@ class ClientProfile(models.Model):
             }
         }
 
-    # uppercase client name
-    # @api.onchange('name')
-    # def set_caps(self):
-    #     val = str(self.name)
-    #     self.name = val.upper()
-
     @api.model
     def create(self, vals):
         # Compute Client ID
-        special_character = ['!', '@', '#', '$', '%', '^', '*', '-', '_', '+', " "]
-        for char in special_character:
-            client_id = str(
-                vals['name'].replace(char, "")[0:3 if len(vals['name']) > 2 else 2]).upper().strip() + "-" + \
-                        str(vals['date_of_engagement'])[5:7] + \
-                        str(vals['date_of_engagement'])[0:4] + "-" + \
-                        self.env['ir.sequence'].next_by_code('client.id.seq')
+        client_id = str(vals['name'].replace(".", "")[0:3 if len(vals['name']) > 2 else 2].strip()).upper() + "-" + \
+                    str(vals['date_of_engagement'])[2:4] + \
+                    str(vals['date_of_engagement'])[5:7] + "-" + \
+                    self.env['ir.sequence'].next_by_code('client.id.seq')
         vals.update({'client_id': client_id})
         res = super(ClientProfile, self).create(vals)
         if res:
@@ -150,7 +141,7 @@ class ClientProfile(models.Model):
     @api.constrains('landline')
     def _validate_landline(self):
         for record in self:
-            pattern = r'^\d{3}-\d{4}$'  # Modify the regular expression pattern according to your requirements
+            pattern = r'^\d{1}\d{3}-\d{4}$'  # Modify the regular expression pattern according to your requirements
             if record.landline and not re.match(pattern, record.landline):
                 raise ValidationError('Invalid telephone number format!')
 
@@ -174,7 +165,7 @@ class ClientProfile(models.Model):
     @api.constrains('landline2')
     def _validate_landline2(self):
         for record in self:
-            pattern = r'^\d{3}-\d{4}$'  # Modify the regular expression pattern according to your requirements
+            pattern = r'^\d{1}\d{3}-\d{4}$'  # Modify the regular expression pattern according to your requirements
             if record.landline2 and not re.match(pattern, record.landline2):
                 raise ValidationError('Invalid telephone number format!')
 
@@ -195,7 +186,7 @@ class ClientProfile(models.Model):
     @api.constrains('landline3')
     def _validate_landline3(self):
         for record in self:
-            pattern = r'^\d{3}-\d{4}$'  # Modify the regular expression pattern according to your requirements
+            pattern = r'^\d{1}\d{3}-\d{4}$'  # Modify the regular expression pattern according to your requirements
             if record.landline3 and not re.match(pattern, record.landline3):
                 raise ValidationError('Invalid telephone number format!')
 
@@ -261,7 +252,7 @@ class ClientProfile(models.Model):
     date_per_law = fields.Char(string="Date per By-Laws")
     actual_date_meeting = fields.Date('date')
     ask_1 = fields.Selection([('yes', 'Yes'), ('no', 'No')])
-    ask_2 = fields.Char(string="If Yes what type of security is the Company permit to sell?")
+    ask_2 = fields.Text(string="If Yes what type of security is the Company permit to sell?")
     class_shares_id = fields.One2many(comodel_name='class.of.shares', inverse_name='client_share_ids',
                                       string="Class of Shares")
     space = fields.Char(string="Annual Meeting", readonly=True)
@@ -338,7 +329,7 @@ class ClientRecords(models.Model):
 
     @api.model
     def year_selection(self):
-        year = 2000  # replace 2000 with your a start year
+        year = 2000  # replace 2000 with a start year
         year_list = []
         while year != 2030:  # replace 2030 with your end year
             year_list.append((str(year), str(year)))
