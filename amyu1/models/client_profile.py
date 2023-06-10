@@ -1,6 +1,7 @@
 from odoo import models, fields, api
 import re
 from odoo.exceptions import ValidationError
+from datetime import datetime
 
 
 class EscalationContact(models.Model):
@@ -55,8 +56,9 @@ class ClientProfile(models.Model):
     image = fields.Image(string="Image")
     organization_type = fields.Many2one(string="Organization Type", comodel_name="res.partner.category")
     industry_class = fields.Many2one(string="Industry Class", comodel_name="res.partner.industry")
-    nature_of_business = fields.Char(string="Nature of Activities, Brands, Product & Services")
+    nature_of_business = fields.Text(string="Nature of Activities, Brands, Product & Services")
     date_of_engagement = fields.Date(string="Date", required=True)
+    result = fields.Integer(string='Result', compute='_compute_result')
     client_id = fields.Char(string="Client ID")
     tax_reporting_compliance = fields.Boolean(string="Tax Reporting & Compliance")
     annual_registration_update = fields.Boolean(string="Annual Registration Update")
@@ -94,14 +96,55 @@ class ClientProfile(models.Model):
             }
         }
 
+    # def compute_name(self):
+    #     client_id = ""
+    #     name = re.sub(r'\W+', ' ', vals['name'])
+    #     name_array = name.split()
+    #     if len(name_array) == 1:
+    #         client_id = name_array[0][0:3]
+    #     elif len(name_array) == 2:
+    #         name1 = name_array[0]
+    #         name2 = name_array[1]
+    #         client_id = name1[0:2] if len(name1) >= 2 else name1[0:1] + \
+    #                                                        name2[0:2] if len(name1) == 1 else name2[0:1]
+    #     elif len(name_array) >= 3:
+    #         name1 = name_array[0]
+    #         name2 = name_array[1]
+    #         name3 = name_array[2]
+    #         client_id = name1[0:1] + name2[0:1] + name3[0:1]
+    #
+    #     # Compute Client ID
+    #     client_id += "-" + ("0" if int(datetime.strftime(self.date_of_engagement,'%Y')) < 2000 else "1") + \
+    #                  str(self.date_of_engagement)[2:4] + \
+    #                  str(self.date_of_engagement)[5:7] + "-" + \
+    #                  self.env['ir.sequence'].next_by_code('client.id.seq')
+    #     print(client_id.upper())
+    #     return client_id
+
     @api.model
     def create(self, vals):
+        name = re.sub(r'\W+', ' ', vals['name'])
+        name_array = name.split()
+        if len(name_array) == 1:
+            client_id = name_array[0][0:3]
+        elif len(name_array) == 2:
+            name1 = name_array[0]
+            name2 = name_array[1]
+            client_id = name1[0:2] if len(name1) >= 2 else name1[0:1] + \
+                                                           name2[0:2] if len(name1) == 1 else name2[0:1]
+        elif len(name_array) >= 3:
+            name1 = name_array[0]
+            name2 = name_array[1]
+            name3 = name_array[2]
+            client_id = name1[0:1] + name2[0:1] + name3[0:1]
+
         # Compute Client ID
-        client_id = str(vals['name'].replace(".", "")[0:3 if len(vals['name']) > 2 else 2].strip()).upper() + "-" + \
-                    str(vals['date_of_engagement'])[2:4] + \
-                    str(vals['date_of_engagement'])[5:7] + "-" + \
-                    self.env['ir.sequence'].next_by_code('client.id.seq')
-        vals.update({'client_id': client_id})
+        client_id += "-" + ("0" if int(datetime.strftime(datetime.strptime(vals['date_of_engagement'], '%Y-%m-%d'), '%Y')) < 2000 else "1") + \
+                     str(vals['date_of_engagement'])[2:4] + \
+                     str(vals['date_of_engagement'])[5:7] + "-" + \
+                     self.env['ir.sequence'].next_by_code('client.id.seq')
+
+        vals.update({'client_id': client_id.upper()})
         res = super(ClientProfile, self).create(vals)
         if res:
             self.env['escalation.contact'].create({
@@ -141,8 +184,17 @@ class ClientProfile(models.Model):
     @api.constrains('landline')
     def _validate_landline(self):
         for record in self:
-            pattern = r'^\d{1}\d{3}-\d{4}$'  # Modify the regular expression pattern according to your requirements
+            pattern = r'^\d{2}-\d{4}-\d{4}\(\d{3}\)$'
             if record.landline and not re.match(pattern, record.landline):
+                raise ValidationError('Invalid telephone number format!')
+
+    facsimile_no = fields.Char(string="Facsimile")
+
+    @api.constrains('facsimile_no')
+    def _validate_facsimile_no(self):
+        for record in self:
+            pattern = r'^\d{2}-\d{4}-\d{4}\(\d{3}\)$'
+            if record.facsimile_no and not re.match(pattern, record.facsimile_no):
                 raise ValidationError('Invalid telephone number format!')
 
     website = fields.Char(string="Website")
@@ -165,7 +217,7 @@ class ClientProfile(models.Model):
     @api.constrains('landline2')
     def _validate_landline2(self):
         for record in self:
-            pattern = r'^\d{1}\d{3}-\d{4}$'  # Modify the regular expression pattern according to your requirements
+            pattern = r'^\d{2}-\d{4}-\d{4}\(\d{3}\)$'
             if record.landline2 and not re.match(pattern, record.landline2):
                 raise ValidationError('Invalid telephone number format!')
 
@@ -186,7 +238,7 @@ class ClientProfile(models.Model):
     @api.constrains('landline3')
     def _validate_landline3(self):
         for record in self:
-            pattern = r'^\d{1}\d{3}-\d{4}$'  # Modify the regular expression pattern according to your requirements
+            pattern = r'^\d{2}-\d{4}-\d{4}\(\d{3}\)$'
             if record.landline3 and not re.match(pattern, record.landline3):
                 raise ValidationError('Invalid telephone number format!')
 
@@ -244,20 +296,19 @@ class ClientProfile(models.Model):
          ('cas_generated', 'CAS-Generated')], string="Books of Accounts")
     psic_psoc = fields.Char(string="PSIC/PSOC")
     ll_cas_permit_no = fields.Char(string="LL/CAS Permit No")
-    ask = fields.Selection([('yes', 'Yes'), ('no', 'No')])
+    ask = fields.Selection([('yes', 'Yes'), ('no', 'No')], default="no")
     # SEC/DTI
     registration_number = fields.Char(string="Registration No")
     registration_date_sec = fields.Date('Date')
     trade_name = fields.Char(string="Trade Name")
     date_per_law = fields.Char(string="Date per By-Laws")
     actual_date_meeting = fields.Date('date')
-    ask_1 = fields.Selection([('yes', 'Yes'), ('no', 'No')])
+    ask_1 = fields.Selection([('yes', 'Yes'), ('no', 'No')], default="no")
     ask_2 = fields.Text(string="If Yes what type of security is the Company permit to sell?")
     class_shares_id = fields.One2many(comodel_name='class.of.shares', inverse_name='client_share_ids',
                                       string="Class of Shares")
-    space = fields.Char(string="Annual Meeting", readonly=True)
     # Regulatory
-    ask_3 = fields.Selection([('yes', 'Yes'), ('no', 'No')])
+    ask_3 = fields.Selection([('yes', 'Yes'), ('no', 'No')], default="no")
     bureau_of_custom = fields.Boolean(string="Bureau of Customs")
     bangko_sentral_pilipinas = fields.Boolean(string="Bangko Sentral ng Pilipinas")
     professional_regulation_commission = fields.Boolean(string="Professional Regulation Commission")
