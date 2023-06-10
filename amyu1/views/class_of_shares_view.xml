@@ -5,7 +5,7 @@
             <field name="name">class.of.shares.list.view</field>
             <field name="model">class.of.shares</field>
             <field name="arch" type="xml">
-                <tree>
+                <tree editable="bottom" create="1" edit="1" delete="0">
                     <field name="class_shares"/>
                     <field name="par_value"/>
                     <field name="authorized_no"/>
@@ -20,38 +20,38 @@
             </field>
         </record>
 
-        <record id="class_of_shares_form_view" model="ir.ui.view">
-            <field name="name">class.of.shares.form.view</field>
-            <field name="model">class.of.shares</field>
-            <field name="arch" type="xml">
-                <form>
-                    <group>
-                        <group>
-                            <field name="class_shares"/>
-                        </group>
-                        <group>
-                            <field name="par_value"/>
-                        </group>
-                        <group string="Authorized">
-                            <field name="authorized_no"/>
-                            <field name="authorized_amount"/>
-                        </group>
-                        <group string="Subscribed">
-                            <field name="subscribed_no"/>
-                            <field name="subscribed_amount"/>
-                        </group>
-                        <group string="Treasury">
-                            <field name="treasury_no"/>
-                            <field name="treasury_amount"/>
-                        </group>
-                        <group string=" Paid-Up">
-                            <field name="paid_up_no"/>
-                            <field name="paid_up_amount"/>
-                        </group>
-                    </group>
-                </form>
-            </field>
-        </record>
+        <!--        <record id="class_of_shares_form_view" model="ir.ui.view">-->
+        <!--            <field name="name">class.of.shares.form.view</field>-->
+        <!--            <field name="model">class.of.shares</field>-->
+        <!--            <field name="arch" type="xml">-->
+        <!--                <form>-->
+        <!--                    <group>-->
+        <!--                        <group>-->
+        <!--                            <field name="class_shares"/>-->
+        <!--                        </group>-->
+        <!--                        <group>-->
+        <!--                            <field name="par_value"/>-->
+        <!--                        </group>-->
+        <!--                        <group string="Authorized">-->
+        <!--                            <field name="authorized_no"/>-->
+        <!--                            <field name="authorized_amount"/>-->
+        <!--                        </group>-->
+        <!--                        <group string="Subscribed">-->
+        <!--                            <field name="subscribed_no"/>-->
+        <!--                            <field name="subscribed_amount"/>-->
+        <!--                        </group>-->
+        <!--                        <group string="Treasury">-->
+        <!--                            <field name="treasury_no"/>-->
+        <!--                            <field name="treasury_amount"/>-->
+        <!--                        </group>-->
+        <!--                        <group string=" Paid-Up">-->
+        <!--                            <field name="paid_up_no"/>-->
+        <!--                            <field name="paid_up_amount"/>-->
+        <!--                        </group>-->
+        <!--                    </group>-->
+        <!--                </form>-->
+        <!--            </field>-->
+        <!--        </record>-->
 
         <!--        <record id="class_of_shares_action" model="ir.actions.act_window">-->
         <!--            <field name="name">Class of Shares</field>-->

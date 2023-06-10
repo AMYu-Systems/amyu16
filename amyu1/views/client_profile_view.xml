@@ -350,17 +350,17 @@
                                 <field name="escalation"/>
                             </page>
 
-                            <page name="working_papers" string="Working Papers">
-                                <header>
-                                    <button name="action_attach_documents" class="oe_stat_button"
-                                            type="object" icon="fa-files-o" widget="statinfo">
-                                        <div class="o_stat_info">
-                                            <field name="documents_count"/>
-                                            <span class="o_stat_text">Working Papers</span>
-                                        </div>
-                                    </button>
-                                </header>
-                            </page>
+<!--                            <page name="working_papers" string="Working Papers">-->
+<!--                                <header>-->
+<!--                                    <button name="action_attach_documents" class="oe_stat_button"-->
+<!--                                            type="object" icon="fa-files-o" widget="statinfo">-->
+<!--                                        <div class="o_stat_info">-->
+<!--                                            <field name="documents_count"/>-->
+<!--                                            <span class="o_stat_text">Working Papers</span>-->
+<!--                                        </div>-->
+<!--                                    </button>-->
+<!--                                </header>-->
+<!--                            </page>-->
                         </notebook>
                     </sheet>
                 </form>

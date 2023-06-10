@@ -15,24 +15,24 @@
             </field>
         </record>
 
-        <record id="escalation_contact_form_view" model="ir.ui.view">
-            <field name="name">escalation.contact.form.view</field>
-            <field name="model">escalation.contact</field>
-            <field name="arch" type="xml">
-                <form>
-                    <group>
-                        <group>
-                            <field name="level"/>
-                            <field name="contact_name"/>
-                        </group>
-                        <group>
-                            <field name="contact_number"/>
-                            <field name="email"/>
-                        </group>
-                    </group>
-                </form>
-            </field>
-        </record>
+<!--        <record id="escalation_contact_form_view" model="ir.ui.view">-->
+<!--            <field name="name">escalation.contact.form.view</field>-->
+<!--            <field name="model">escalation.contact</field>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <form>-->
+<!--                    <group>-->
+<!--                        <group>-->
+<!--                            <field name="level"/>-->
+<!--                            <field name="contact_name"/>-->
+<!--                        </group>-->
+<!--                        <group>-->
+<!--                            <field name="contact_number"/>-->
+<!--                            <field name="email"/>-->
+<!--                        </group>-->
+<!--                    </group>-->
+<!--                </form>-->
+<!--            </field>-->
+<!--        </record>-->
 
         <!--        <record id="corporate_officer_action" model="ir.actions.act_window">-->
         <!--            <field name="name">Corporate Officer</field>-->

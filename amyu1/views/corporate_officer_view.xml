@@ -5,27 +5,27 @@
             <field name="name">corporate.officer.list.view</field>
             <field name="model">corporate.officer</field>
             <field name="arch" type="xml">
-                <tree>
+                <tree editable="bottom" create="1" edit="1" delete="0">
                     <field name="name"/>
                     <field name="position"/>
                 </tree>
             </field>
         </record>
 
-        <record id="corporate_officer_form_view" model="ir.ui.view">
-            <field name="name">corporate.officer.form.view</field>
-            <field name="model">corporate.officer</field>
-            <field name="arch" type="xml">
-                <form>
-                    <group>
-                        <group>
-                            <field name="name"/>
-                            <field name="position"/>
-                        </group>
-                    </group>
-                </form>
-            </field>
-        </record>
+<!--        <record id="corporate_officer_form_view" model="ir.ui.view">-->
+<!--            <field name="name">corporate.officer.form.view</field>-->
+<!--            <field name="model">corporate.officer</field>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <form>-->
+<!--                    <group>-->
+<!--                        <group>-->
+<!--                            <field name="name"/>-->
+<!--                            <field name="position"/>-->
+<!--                        </group>-->
+<!--                    </group>-->
+<!--                </form>-->
+<!--            </field>-->
+<!--        </record>-->
 
 <!--        <record id="corporate_officer_action" model="ir.actions.act_window">-->
 <!--            <field name="name">Corporate Officer</field>-->

@@ -36,12 +36,16 @@ class ClassOfShares(models.Model):
 
     class_shares = fields.Char(string="Class of Shares")
     par_value = fields.Integer(string="Par Value per Share", default='')
+    column_3 = fields.Char(string="Authorized")
     authorized_no = fields.Integer(string="No.")
     authorized_amount = fields.Float(string="Amount")
+    column_4 = fields.Char(string="Subscribed")
     subscribed_no = fields.Integer(string="No.")
     subscribed_amount = fields.Float(string="Amount")
+    column_5 = fields.Char(string="Treasury")
     treasury_no = fields.Integer(string="No.")
     treasury_amount = fields.Float(string="Amount")
+    column_6 = fields.Char(string="Paid-Up")
     paid_up_no = fields.Integer(string="No.")
     paid_up_amount = fields.Float(string="Amount")
     client_share_ids = fields.Many2one(comodel_name='client.profile', string="Class")
@@ -96,30 +100,47 @@ class ClientProfile(models.Model):
             }
         }
 
+    # @api.onchange("name")
     # def compute_name(self):
     #     client_id = ""
-    #     name = re.sub(r'\W+', ' ', vals['name'])
-    #     name_array = name.split()
-    #     if len(name_array) == 1:
-    #         client_id = name_array[0][0:3]
-    #     elif len(name_array) == 2:
-    #         name1 = name_array[0]
-    #         name2 = name_array[1]
-    #         client_id = name1[0:2] if len(name1) >= 2 else name1[0:1] + \
-    #                                                        name2[0:2] if len(name1) == 1 else name2[0:1]
-    #     elif len(name_array) >= 3:
-    #         name1 = name_array[0]
-    #         name2 = name_array[1]
-    #         name3 = name_array[2]
-    #         client_id = name1[0:1] + name2[0:1] + name3[0:1]
+    #     if self.date_of_engagement:
+    #         name = re.sub(r'\W+', ' ', self.name)
+    #         name_array = name.split()
+    #         if len(name_array) == 1:
+    #             client_id = name_array[0][0:3]
+    #         elif len(name_array) == 2:
+    #             name1 = name_array[0]
+    #             name2 = name_array[1]
+    #             print(name1, name2)
+    #             client_id = (name1[0:2] if len(name1) >= 2 else name1[0:1]) + \
+    #                         (name2[0:2] if len(name1) == 1 else name2[0:1])
+    #         elif len(name_array) >= 3:
+    #             name1 = name_array[0]
+    #             name2 = name_array[1]
+    #             name3 = name_array[2]
+    #             client_id = name1[0:1] + name2[0:1] + name3[0:1]
     #
-    #     # Compute Client ID
-    #     client_id += "-" + ("0" if int(datetime.strftime(self.date_of_engagement,'%Y')) < 2000 else "1") + \
-    #                  str(self.date_of_engagement)[2:4] + \
-    #                  str(self.date_of_engagement)[5:7] + "-" + \
-    #                  self.env['ir.sequence'].next_by_code('client.id.seq')
-    #     print(client_id.upper())
-    #     return client_id
+    #         print(client_id.upper())
+    def write(self, vals):
+        if 'name' in vals:
+            old_id = self.client_id.split("-")[0]
+            name = re.sub(r'\W+', ' ', vals['name'])
+            name_array = name.split()
+
+            if len(name_array) == 1:
+                client_id = name_array[0][0:3]
+            elif len(name_array) == 2:
+                name1 = name_array[0]
+                name2 = name_array[1]
+                client_id = (name1[0:2] if len(name1) >= 2 else name1[0:1]) + \
+                            (name2[0:2] if len(name1) == 1 else name2[0:1])
+            elif len(name_array) >= 3:
+                name1 = name_array[0]
+                name2 = name_array[1]
+                name3 = name_array[2]
+                client_id = name1[0:1] + name2[0:1] + name3[0:1]
+            vals.update({'client_id': self.client_id.replace(old_id, client_id)})
+        super(ClientProfile, self).write(vals)
 
     @api.model
     def create(self, vals):
@@ -130,16 +151,16 @@ class ClientProfile(models.Model):
         elif len(name_array) == 2:
             name1 = name_array[0]
             name2 = name_array[1]
-            client_id = name1[0:2] if len(name1) >= 2 else name1[0:1] + \
-                                                           name2[0:2] if len(name1) == 1 else name2[0:1]
+            client_id = (name1[0:2] if len(name1) >= 2 else name1[0:1]) + \
+                        (name2[0:2] if len(name1) == 1 else name2[0:1])
         elif len(name_array) >= 3:
             name1 = name_array[0]
             name2 = name_array[1]
             name3 = name_array[2]
             client_id = name1[0:1] + name2[0:1] + name3[0:1]
-
         # Compute Client ID
-        client_id += "-" + ("0" if int(datetime.strftime(datetime.strptime(vals['date_of_engagement'], '%Y-%m-%d'), '%Y')) < 2000 else "1") + \
+        client_id += "-" + ("0" if int(
+            datetime.strftime(datetime.strptime(vals['date_of_engagement'], '%Y-%m-%d'), '%Y')) < 2000 else "1") + \
                      str(vals['date_of_engagement'])[2:4] + \
                      str(vals['date_of_engagement'])[5:7] + "-" + \
                      self.env['ir.sequence'].next_by_code('client.id.seq')
