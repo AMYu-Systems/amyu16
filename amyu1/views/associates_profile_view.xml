@@ -31,14 +31,14 @@
                                                 <field name="name"/>
                                             </h2>
                                         </li>
-                                        <li>
-                                            Supervisor:
-                                            <field name="associates_supervisor"/>
-                                        </li>
-                                        <li>
-                                            Manager:
-                                            <field name="associates_manager"/>
-                                        </li>
+<!--                                        <li>-->
+<!--                                            Supervisor:-->
+<!--                                            <field name="associates_supervisor"/>-->
+<!--                                        </li>-->
+<!--                                        <li>-->
+<!--                                            Manager:-->
+<!--                                            <field name="associates_manager"/>-->
+<!--                                        </li>-->
                                     </ul>
                                 </div>
                             </div>
@@ -70,8 +70,8 @@
                         <sheet>
                             <field name="client_profile_ids" widget="grouped_view_widget">
                                 <tree>
-                                    <field name="is_company" string="Group"/>
                                     <field name="name"/>
+                                    <field name="client_system_generated"/>
                                     <field name="date_of_engagement" string="Engagement Date"/>
                                 </tree>
                             </field>

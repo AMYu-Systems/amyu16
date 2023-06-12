@@ -15,7 +15,6 @@ class ClientProfile(models.Model):
     industry_class = fields.Many2one(string="Industry Class", comodel_name="res.partner.industry")
     nature_of_business = fields.Text(string="Nature of Activities, Brands, Product & Services")
     date_of_engagement = fields.Date(string="Date", required=True)
-    result = fields.Integer(string='Result', compute='_compute_result')
     client_system_generated = fields.Char(string="Client ID")
     tax_reporting_compliance = fields.Boolean(string="Tax Reporting & Compliance")
     annual_registration_update = fields.Boolean(string="Annual Registration Update")
@@ -28,23 +27,27 @@ class ClientProfile(models.Model):
     client_record_ids = fields.One2many(string="Client Record", comodel_name="client.records",
                                         inverse_name="client_profile_id")
     state = fields.Selection(
-        [('draft', 'Draft'), ('submit', 'Submit'), ('supervisor', 'Supervisor'), ('manager', 'Manager'),
-         ('approved', 'Approved'), ('cancel', '')], string="Status", default='draft', required=True)
+        [('draft', 'Draft'), ('supervisor', 'Supervisor'), ('manager', 'Manager'),
+         ('approved', 'Approved'), ('cancel', 'Returned')], string="Status", default='draft', required=True)
     associate_id = fields.Many2one(string="Associate", comodel_name="associates.profile")
+    associates_manager = fields.Char(string="Manager", related="associate_id.associates_manager", readonly=True)
+    associates_supervisor = fields.Char(string="Supervisor", related="associate_id.associates_supervisor",
+                                        readonly=True)
+    associates_cluster = fields.Char(string="Cluster", related="associate_id.associates_cluster", readonly=True)
 
-    def action_submit(self):
-        self.state = 'submit'
+    def draft_action(self):
+        self.state = 'draft'
 
-    def action_supervisor(self):
+    def action_submit_supervisor(self):
         self.state = 'supervisor'
 
-    def action_manager(self):
+    def action_approve_supervisor(self):
         self.state = 'manager'
 
-    def action_cancel(self):
+    def action_return(self):
         self.state = 'cancel'
 
-    def action_approved(self):
+    def action_approve_manager(self):
         self.state = 'approved'
         return {
             'effect': {
@@ -93,7 +96,8 @@ class ClientProfile(models.Model):
                 name2 = name_array[1]
                 name3 = name_array[2]
                 client_system_generated = name1[0:1] + name2[0:1] + name3[0:1]
-            vals.update({'client_system_generated': self.client_system_generated.replace(old_id, client_system_generated).upper()})
+            vals.update({'client_system_generated': self.client_system_generated.replace(old_id,
+                                                                                         client_system_generated).upper()})
         super(ClientProfile, self).write(vals)
 
     @api.model
@@ -139,7 +143,6 @@ class ClientProfile(models.Model):
             })
         return res
 
-    # Contacts
     unit_no = fields.Char(string="Unit/Floor")
     building_name = fields.Char(string="Building Name")
     street = fields.Char(string="Street")
@@ -229,8 +232,6 @@ class ClientProfile(models.Model):
     email_address2 = fields.Char(string="Email Address")
     corporate_ids = fields.One2many(comodel_name='corporate.officer', inverse_name='client_profile_ids',
                                     string="Corporate Officers")
-
-    # BIR
     vat = fields.Char(string="Tax Id No.")
 
     @api.constrains('vat')
@@ -272,7 +273,6 @@ class ClientProfile(models.Model):
     psic_psoc = fields.Char(string="PSIC/PSOC")
     ll_cas_permit_no = fields.Char(string="LL/CAS Permit No")
     ask = fields.Selection([('yes', 'Yes'), ('no', 'No')], default="no")
-    # SEC/DTI
     registration_number = fields.Char(string="Registration No")
     registration_date_sec = fields.Date('Date')
     trade_name = fields.Char(string="Trade Name")
@@ -282,7 +282,6 @@ class ClientProfile(models.Model):
     ask_2 = fields.Text(string="If Yes what type of security is the Company permit to sell?")
     class_shares_id = fields.One2many(comodel_name='class.of.shares', inverse_name='client_share_ids',
                                       string="Class of Shares")
-    # Regulatory
     ask_3 = fields.Selection([('yes', 'Yes'), ('no', 'No')], default="no")
     bureau_of_custom = fields.Boolean(string="Bureau of Customs")
     bangko_sentral_pilipinas = fields.Boolean(string="Bangko Sentral ng Pilipinas")
@@ -299,7 +298,6 @@ class ClientProfile(models.Model):
         string="Land Transportation Franchising and Regulatory Board")
     others_ri = fields.Boolean(string="Others")
     others_reg = fields.Char(string="Others")
-    # SSS
     sss = fields.Char(string="SSS ER No")
     phic = fields.Char(string="PHIC ER No")
     hdmf = fields.Char(string="HDMF ER No")
@@ -312,37 +310,30 @@ class ClientProfile(models.Model):
                                 string="Payment")
     hdmf_pay = fields.Selection([('cash', 'Cash'), ('check', 'Check'), ('online_banking', 'Online Banking(EPS)')],
                                 string="Payment")
-    # Escalation
     escalation = fields.One2many(comodel_name='escalation.contact', inverse_name='escalation_id',
                                  string="Escalation Point")
-    # client_records
-    documents_count = fields.Integer(compute="action_attach_documents")
+    # # client_records
+    # documents_count = fields.Integer(compute="action_attach_documents")
+    #
+    # def action_attach_documents(self):
+    #     for rec in self:
+    #         rec.documents_count = self.env['client.records'].search_count([
+    #             ('client_profile_id', '=', rec.id)
+    #         ])
+    #     return {
+    #         'type': 'ir.actions.act_window',
+    #         'name': 'Working Papers',
+    #         'res_model': 'client.records',
+    #         'view_mode': 'kanban,form',
+    #         'domain': [('client_profile_id', '=', rec.id)],
+    #         'context': {'default_client_profile_id': rec.id},
+    #         'target': 'current',
+    #     }
 
-    def action_attach_documents(self):
-        for rec in self:
-            rec.documents_count = self.env['client.records'].search_count([
-                ('client_profile_id', '=', rec.id)
-            ])
-        return {
-            'type': 'ir.actions.act_window',
-            'name': 'Working Papers',
-            'res_model': 'client.records',
-            'view_mode': 'kanban,form',
-            'domain': [('client_profile_id', '=', rec.id)],
-            'context': {'default_client_profile_id': rec.id},
-            'target': 'current',
-        }
-
-    # engagement admin
-    assoc_id = fields.Many2one(string="Associate", comodel_name='associates.profile', required=True)
-    associates_manager = fields.Char(string="Manager", related="assoc_id.associates_manager", readonly=True)
-    associates_supervisor = fields.Char(string="Supervisor", related="assoc_id.associates_supervisor", readonly=True)
-    associates_cluster = fields.Char(string="Cluster", related="assoc_id.associates_cluster", readonly=True)
-
-    # working papers
-    upload_file = fields.Binary(string='File', attachment=True)
-    file_name = fields.Char(string='Filename')
-    year_field = fields.Date(string="Year")
+    # # working papers
+    # upload_file = fields.Binary(string='File', attachment=True)
+    # file_name = fields.Char(string='Filename')
+    # year_field = fields.Date(string="Year")
 
 
 class ClientRecords(models.Model):

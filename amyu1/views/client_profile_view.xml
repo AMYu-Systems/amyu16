@@ -5,7 +5,7 @@
             <field name="name">client.profile.kanban.view</field>
             <field name="model">client.profile</field>
             <field name="arch" type="xml">
-                <kanban default_group_by="associate_id">
+                <kanban>
                     <field name="is_company"/>
                     <field name="name"/>
                     <field name="id"/>
@@ -24,6 +24,7 @@
                                             <h2>
                                                 <field name="name"/>
                                             </h2>
+                                            <field name="client_system_generated"/>
                                             <field name="is_company"/>
                                         </li>
                                         <li>
@@ -44,9 +45,10 @@
             <field name="arch" type="xml">
                 <tree>
                     <field name="name"/>
+                    <field name="client_system_generated"/>
                     <field name="associate_id"/>
-                    <field name="industry_class"/>
-                    <field name="organization_type"/>
+                    <field name="associates_cluster"/>
+                    <field name="associates_supervisor"/>
                     <field name="state" widget="badge" decoration-muted="state == 'submit'"
                            decoration-primary="state == 'supervisor'"
                            decoration-info="state == 'manager'"
@@ -61,29 +63,20 @@
             <field name="arch" type="xml">
                 <form>
                     <header>
-
-                        <!--                        <button name="action_approval_by_supervisor"-->
-                        <!--                                confirm="Submit this client profile to Supervisor Approval?"-->
-                        <!--                                string="Submit to Supervisor" class="oe_highlight"-->
-                        <!--                                attrs="{'invisible': [('approval_status', '!=', 'submit')]}"-->
-                        <!--                                type="object"/>-->
-                        <!--                        <button name="action_approval_by_manager" confirm="is this file for Final Approval?"-->
-                        <!--                                string="Submit for Manager Approval" class="oe_highlight"-->
-                        <!--                                attrs="{'invisible': [('approval_status', '!=', 'approved_by_supervisor')]}"-->
-                        <!--                                type="object"/>-->
-                        <!--                        <button name="action_approved" confirm="Approved"-->
-                        <!--                                string="Approved" class="oe_highlight"-->
-                        <!--                                attrs="{'invisible': [('approval_status', '!=', 'approved_by_manager')]}"-->
-                        <!--                                type="object"/>-->
-                        <!--                        <button name="action_cancel" confirm="Cancel this data?"-->
-                        <!--                                attrs="{'invisible': [('approval_status', '!=', 'submit'),('approval_status', '!=', 'approved_by_supervisor')]}"-->
-                        <!--                                string="Cancel" type="object"/>-->
-                        <!--                        <button name="action_submit" confirm="Draft for Submitting?"-->
-                        <!--                                string="Draft to Queue" attrs="{'invisible': [('approval_status', '!=', 'cancel')]}"-->
-                        <!--                                type="object"/>-->
+                        <button name="action_submit_supervisor" string="Submit to Supervisor" type="object"
+                                attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                        <button name="action_approve_supervisor" string="Approve by Supervisor" type="object"
+                                attrs="{'invisible': [('state', '!=', 'supervisor')]}"/>
+                        <button name="action_approve_manager" string="Approve by Manager" type="object"
+                                attrs="{'invisible': [('state', '!=', 'manager')]}"/>
+                        <button name="action_return" string="Return" type="object"
+                                attrs="{'invisible': [('state', '!=', 'supervisor'),('state', '!=', 'manager'),('state', '!=', 'approved')]}"
+                                class="oe_highlight"/>
+                        <button name="draft_action" confirm="Draft for Submitting?" string="Draft Again"
+                                attrs="{'invisible': [('state', '!=', 'cancel')]}" type="object"/>
 
                         <field name="state" widget="statusbar"
-                               status_invisible="draft,submit,supervisor,manager"/>
+                               status_invisible="draft,supervisor,manager"/>
                     </header>
                     <sheet>
                         <div>
@@ -330,7 +323,7 @@
                             <page name="engagement_administration" string="Engagement Administration">
                                 <group name="engagement_team" string="Engagement Team">
                                     <group>
-                                        <field name="associate_id"/>
+                                        <field name="associate_id" options="{'no_open': True,'no_create':True}"/>
                                         <field name="associates_supervisor"/>
                                     </group>
                                     <group>
@@ -385,7 +378,7 @@
             <field name="name">Associates Profile</field>
             <field name="res_model">associates.profile</field>
             <field name="view_mode">tree,kanban,form</field>
-            <field name="view_id" ref="associates_profile_list_view"/>
+            <field name="view_id" ref="associates_profile_kanban_view"/>
         </record>
 
         <record id="maintain_client_profile_action" model="ir.actions.act_window">
@@ -397,7 +390,7 @@
         </record>
 
         <record id="client_profile_supervisor_action" model="ir.actions.act_window">
-            <field name="name">For Supervisor Approval</field>
+            <field name="name">Supervisor Approval</field>
             <field name="res_model">client.profile</field>
             <field name="view_mode">tree,kanban,form</field>
             <field name="view_id" ref="client_profile_list_view"/>
@@ -405,14 +398,14 @@
         </record>
 
         <record id="client_profile_manager_action" model="ir.actions.act_window">
-            <field name="name">For Manager Approval</field>
+            <field name="name">Manager Approval</field>
             <field name="res_model">client.profile</field>
             <field name="view_mode">tree,kanban,form</field>
             <field name="view_id" ref="client_profile_list_view"/>
             <field name="domain">[('state','=','manager')]</field>
         </record>
 
-         <menuitem id="menu_maintain_root"
+        <menuitem id="menu_maintain_root"
                   name="Maintenance"
                   sequence="1"
                   parent="cpms_root_menu"/>
