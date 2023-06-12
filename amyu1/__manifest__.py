@@ -25,8 +25,8 @@
     # always loaded
     'data': [
         'security/ir.model.access.csv',
-        'views/client_profile_view.xml',
         'views/associates_profile_view.xml',
+        'views/client_profile_view.xml',
         'views/corporate_officer_view.xml',
         'views/class_of_shares_view.xml',
         'views/escalation_contact.xml',

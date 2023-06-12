@@ -4,53 +4,6 @@ from odoo.exceptions import ValidationError
 from datetime import datetime
 
 
-class EscalationContact(models.Model):
-    _name = "escalation.contact"
-    _description = "Escalation Point of Contact"
-
-    level = fields.Selection([('level_1', '1st Level'), ('level_2', '2nd Level'), ('level_3', '3rd Level')],
-                             string="Level")
-    timeframe = fields.Selection(
-        [('lvl1', 'upon encounter of issue; unresolved issue after 1 day; 1 day delay in submission of documents'),
-         ('lvl2', 'unresolved issue after 2 days; 2 days delay in submission of documents'),
-         ('lvl3', 'unresolved issue after 3 days; 3 days delay in submission of documents')],
-        string="Escalation Timeframe")
-    contact_name = fields.Char(string='Point of Contact')
-    contact_number = fields.Char(string="Contact Number")
-    email = fields.Char(string="Email Address")
-    escalation_id = fields.Many2one(comodel_name='client.profile', string="Escalation")
-
-
-class CorporateOfficer(models.Model):
-    _name = "corporate.officer"
-    _description = "Corporate Officers"
-
-    name = fields.Char(string='Name', required=True)
-    position = fields.Char(string='Position')
-    client_profile_ids = fields.Many2one(comodel_name='client.profile', string="Partner")
-
-
-class ClassOfShares(models.Model):
-    _name = 'class.of.shares'
-    _description = "Class of Shares"
-
-    class_shares = fields.Char(string="Class of Shares")
-    par_value = fields.Integer(string="Par Value per Share", default='')
-    column_3 = fields.Char(string="Authorized")
-    authorized_no = fields.Integer(string="No.")
-    authorized_amount = fields.Float(string="Amount")
-    column_4 = fields.Char(string="Subscribed")
-    subscribed_no = fields.Integer(string="No.")
-    subscribed_amount = fields.Float(string="Amount")
-    column_5 = fields.Char(string="Treasury")
-    treasury_no = fields.Integer(string="No.")
-    treasury_amount = fields.Float(string="Amount")
-    column_6 = fields.Char(string="Paid-Up")
-    paid_up_no = fields.Integer(string="No.")
-    paid_up_amount = fields.Float(string="Amount")
-    client_share_ids = fields.Many2one(comodel_name='client.profile', string="Class")
-
-
 class ClientProfile(models.Model):
     _name = 'client.profile'
     _description = "Profile"
@@ -63,7 +16,7 @@ class ClientProfile(models.Model):
     nature_of_business = fields.Text(string="Nature of Activities, Brands, Product & Services")
     date_of_engagement = fields.Date(string="Date", required=True)
     result = fields.Integer(string='Result', compute='_compute_result')
-    client_id = fields.Char(string="Client ID")
+    client_system_generated = fields.Char(string="Client ID")
     tax_reporting_compliance = fields.Boolean(string="Tax Reporting & Compliance")
     annual_registration_update = fields.Boolean(string="Annual Registration Update")
     agree_upon_procedure = fields.Boolean(string="Agree-Upon Procedures")
@@ -74,24 +27,25 @@ class ClientProfile(models.Model):
     others = fields.Char(string="Others")
     client_record_ids = fields.One2many(string="Client Record", comodel_name="client.records",
                                         inverse_name="client_profile_id")
-    approval_status = fields.Selection(
-        [('submit', 'Submit'), ('approved_by_supervisor', 'Supervisor'), ('approved_by_manager', 'Manager'),
-         ('approved', 'Approved'), ('cancel', '')], default='submit', required=True)
+    state = fields.Selection(
+        [('draft', 'Draft'), ('submit', 'Submit'), ('supervisor', 'Supervisor'), ('manager', 'Manager'),
+         ('approved', 'Approved'), ('cancel', '')], string="Status", default='draft', required=True)
+    associate_id = fields.Many2one(string="Associate", comodel_name="associates.profile")
 
     def action_submit(self):
-        self.approval_status = 'submit'
+        self.state = 'submit'
 
-    def action_approval_by_supervisor(self):
-        self.approval_status = 'approved_by_supervisor'
+    def action_supervisor(self):
+        self.state = 'supervisor'
 
-    def action_approval_by_manager(self):
-        self.approval_status = 'approved_by_manager'
+    def action_manager(self):
+        self.state = 'manager'
 
     def action_cancel(self):
-        self.approval_status = 'cancel'
+        self.state = 'cancel'
 
     def action_approved(self):
-        self.approval_status = 'approved'
+        self.state = 'approved'
         return {
             'effect': {
                 'fadeout': 'slow',
@@ -123,23 +77,23 @@ class ClientProfile(models.Model):
     #         print(client_id.upper())
     def write(self, vals):
         if 'name' in vals:
-            old_id = self.client_id.split("-")[0]
+            old_id = self.client_system_generated.split("-")[0]
             name = re.sub(r'\W+', ' ', vals['name'])
             name_array = name.split()
 
             if len(name_array) == 1:
-                client_id = name_array[0][0:3]
+                client_system_generated = name_array[0][0:3]
             elif len(name_array) == 2:
                 name1 = name_array[0]
                 name2 = name_array[1]
-                client_id = (name1[0:2] if len(name1) >= 2 else name1[0:1]) + \
-                            (name2[0:2] if len(name1) == 1 else name2[0:1])
+                client_system_generated = (name1[0:2] if len(name1) >= 2 else name1[0:1]) + \
+                                          (name2[0:2] if len(name1) == 1 else name2[0:1])
             elif len(name_array) >= 3:
                 name1 = name_array[0]
                 name2 = name_array[1]
                 name3 = name_array[2]
-                client_id = name1[0:1] + name2[0:1] + name3[0:1]
-            vals.update({'client_id': self.client_id.replace(old_id, client_id)})
+                client_system_generated = name1[0:1] + name2[0:1] + name3[0:1]
+            vals.update({'client_system_generated': self.client_system_generated.replace(old_id, client_system_generated).upper()})
         super(ClientProfile, self).write(vals)
 
     @api.model
@@ -147,25 +101,25 @@ class ClientProfile(models.Model):
         name = re.sub(r'\W+', ' ', vals['name'])
         name_array = name.split()
         if len(name_array) == 1:
-            client_id = name_array[0][0:3]
+            client_system_generated = name_array[0][0:3]
         elif len(name_array) == 2:
             name1 = name_array[0]
             name2 = name_array[1]
-            client_id = (name1[0:2] if len(name1) >= 2 else name1[0:1]) + \
-                        (name2[0:2] if len(name1) == 1 else name2[0:1])
+            client_system_generated = (name1[0:2] if len(name1) >= 2 else name1[0:1]) + \
+                                      (name2[0:2] if len(name1) == 1 else name2[0:1])
         elif len(name_array) >= 3:
             name1 = name_array[0]
             name2 = name_array[1]
             name3 = name_array[2]
-            client_id = name1[0:1] + name2[0:1] + name3[0:1]
+            client_system_generated = name1[0:1] + name2[0:1] + name3[0:1]
         # Compute Client ID
-        client_id += "-" + ("0" if int(
+        client_system_generated += "-" + ("0" if int(
             datetime.strftime(datetime.strptime(vals['date_of_engagement'], '%Y-%m-%d'), '%Y')) < 2000 else "1") + \
-                     str(vals['date_of_engagement'])[2:4] + \
-                     str(vals['date_of_engagement'])[5:7] + "-" + \
-                     self.env['ir.sequence'].next_by_code('client.id.seq')
+                                   str(vals['date_of_engagement'])[2:4] + \
+                                   str(vals['date_of_engagement'])[5:7] + "-" + \
+                                   self.env['ir.sequence'].next_by_code('client.id.seq')
 
-        vals.update({'client_id': client_id.upper()})
+        vals.update({'client_system_generated': client_system_generated.upper()})
         res = super(ClientProfile, self).create(vals)
         if res:
             self.env['escalation.contact'].create({
@@ -413,25 +367,3 @@ class ClientRecords(models.Model):
         string="Year",
         default="2023",  # as a default value it would be 2019
     )
-
-
-class AssociatesProfile(models.Model):
-    _name = 'associates.profile'
-    _rec_name = "associates"
-
-    associates = fields.Char(string="Associates")
-    associates_image = fields.Image(string="Pictures")
-    associates_manager = fields.Char(string="Manager")
-    associates_supervisor = fields.Char(string="Supervisor")
-    associates_cluster = fields.Char(string="Cluster")
-    client_list = fields.One2many(string="List of Clients", comodel_name='associates.profile.lines',
-                                  inverse_name='associates_client_list')
-    client_ids = fields.One2many(string="Clients", comodel_name='client.profile', inverse_name='assoc_id',
-                                 readonly=True)
-
-
-class AssociatesProfileLines(models.Model):
-    _name = 'associates.profile.lines'
-
-    associates_client_list = fields.Many2one(string="Client List", comodel_name='associates.profile')
-    # client_id = fields.Many2one(string="Client Information",comodel_name='client.profile')

@@ -5,7 +5,7 @@
             <field name="name">client.profile.kanban.view</field>
             <field name="model">client.profile</field>
             <field name="arch" type="xml">
-                <kanban default_group_by="assoc_id">
+                <kanban default_group_by="associate_id">
                     <field name="is_company"/>
                     <field name="name"/>
                     <field name="id"/>
@@ -44,13 +44,13 @@
             <field name="arch" type="xml">
                 <tree>
                     <field name="name"/>
-                    <field name="assoc_id"/>
+                    <field name="associate_id"/>
                     <field name="industry_class"/>
                     <field name="organization_type"/>
-                    <field name="approval_status" widget="badge" decoration-muted="approval_status == 'submit'"
-                           decoration-primary="approval_status == 'approved_by_supervisor'"
-                           decoration-info="approval_status == 'approved_by_manager'"
-                           decoration-success="approval_status == 'approved'"/>
+                    <field name="state" widget="badge" decoration-muted="state == 'submit'"
+                           decoration-primary="state == 'supervisor'"
+                           decoration-info="state == 'manager'"
+                           decoration-success="state == 'approved'" string="Status"/>
                 </tree>
             </field>
         </record>
@@ -82,8 +82,8 @@
                         <!--                                string="Draft to Queue" attrs="{'invisible': [('approval_status', '!=', 'cancel')]}"-->
                         <!--                                type="object"/>-->
 
-                        <field name="approval_status" widget="statusbar"
-                               status_invisible="submit,approved_by_supervisor,approved_by_manager"/>
+                        <field name="state" widget="statusbar"
+                               status_invisible="draft,submit,supervisor,manager"/>
                     </header>
                     <sheet>
                         <div>
@@ -97,7 +97,7 @@
                         </div>
                         <group>
                             <group>
-                                <field name="client_id" readonly="1" placeholder="System generated"/>
+                                <field name="client_system_generated" readonly="1" placeholder="System generated"/>
                                 <field name="organization_type" options="{'no_open': True}"/>
                                 <field name="nature_of_business" widget="textarea"/>
                             </group>
@@ -273,10 +273,6 @@
                                     <field name="ask_3" style="margin-left: 20px; margin-bottom:10px; " widget="radio"
                                            options="{'horizontal':True}"/>
                                 </p>
-                                <!--                                <group>-->
-                                <!--                                </group>-->
-                                <!--                                <group>-->
-                                <!--                                </group>-->
                                 <group col="2">
                                     <group>
                                         <field name="bangko_sentral_pilipinas" nolabel="1"/>
@@ -334,7 +330,7 @@
                             <page name="engagement_administration" string="Engagement Administration">
                                 <group name="engagement_team" string="Engagement Team">
                                     <group>
-                                        <field name="assoc_id"/>
+                                        <field name="associate_id"/>
                                         <field name="associates_supervisor"/>
                                     </group>
                                     <group>
@@ -350,17 +346,17 @@
                                 <field name="escalation"/>
                             </page>
 
-<!--                            <page name="working_papers" string="Working Papers">-->
-<!--                                <header>-->
-<!--                                    <button name="action_attach_documents" class="oe_stat_button"-->
-<!--                                            type="object" icon="fa-files-o" widget="statinfo">-->
-<!--                                        <div class="o_stat_info">-->
-<!--                                            <field name="documents_count"/>-->
-<!--                                            <span class="o_stat_text">Working Papers</span>-->
-<!--                                        </div>-->
-<!--                                    </button>-->
-<!--                                </header>-->
-<!--                            </page>-->
+                            <!--                            <page name="working_papers" string="Working Papers">-->
+                            <!--                                <header>-->
+                            <!--                                    <button name="action_attach_documents" class="oe_stat_button"-->
+                            <!--                                            type="object" icon="fa-files-o" widget="statinfo">-->
+                            <!--                                        <div class="o_stat_info">-->
+                            <!--                                            <field name="documents_count"/>-->
+                            <!--                                            <span class="o_stat_text">Working Papers</span>-->
+                            <!--                                        </div>-->
+                            <!--                                    </button>-->
+                            <!--                                </header>-->
+                            <!--                            </page>-->
                         </notebook>
                     </sheet>
                 </form>
@@ -373,8 +369,8 @@
             <field name="arch" type="xml">
                 <search>
                     <field name="name" string="Client"
-                           filter_domain="['|','|','|',('name','ilike',self),('assoc_id','ilike',self),('industry_class','ilike',self),('organization_type','ilike',self)]"/>
-                    <field name="assoc_id" string="Associates"/>
+                           filter_domain="['|','|','|',('name','ilike',self),('associate_id','ilike',self),('industry_class','ilike',self),('organization_type','ilike',self)]"/>
+                    <field name="associate_id" string="Associates"/>
                     <field name="industry_class" string="Industry"/>
                     <field name="organization_type" string="Organization"/>
                     <searchpanel>
@@ -385,20 +381,65 @@
             </field>
         </record>
 
-        <record id="client_profile_action" model="ir.actions.act_window">
-            <field name="name">Client Dashboard</field>
-            <field name="res_model">client.profile</field>
+        <record id="maintain_associates_profile_action" model="ir.actions.act_window">
+            <field name="name">Associates Profile</field>
+            <field name="res_model">associates.profile</field>
             <field name="view_mode">tree,kanban,form</field>
+            <field name="view_id" ref="associates_profile_list_view"/>
         </record>
 
-        <menuitem id="client_profile_root_menu"
-                  name="Client Profile &amp; Monitoring System"
-                  action="client_profile_action"/>
+        <record id="maintain_client_profile_action" model="ir.actions.act_window">
+            <field name="name">Client Profile</field>
+            <field name="res_model">client.profile</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="view_id" ref="client_profile_list_view"/>
+            <field name="domain">[('state','=','draft')]</field>
+        </record>
 
-        <!--        <menuitem id="associates_profile_sub_menu"-->
-        <!--                  name="Associates"-->
-        <!--                  parent="client_profile_root_menu"-->
-        <!--                  action="associates_profile_action"/>-->
+        <record id="client_profile_supervisor_action" model="ir.actions.act_window">
+            <field name="name">For Supervisor Approval</field>
+            <field name="res_model">client.profile</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="view_id" ref="client_profile_list_view"/>
+            <field name="domain">[('state','=','supervisor')]</field>
+        </record>
+
+        <record id="client_profile_manager_action" model="ir.actions.act_window">
+            <field name="name">For Manager Approval</field>
+            <field name="res_model">client.profile</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="view_id" ref="client_profile_list_view"/>
+            <field name="domain">[('state','=','manager')]</field>
+        </record>
+
+         <menuitem id="menu_maintain_root"
+                  name="Maintenance"
+                  sequence="1"
+                  parent="cpms_root_menu"/>
+        <menuitem id="menu_maintain_assoc"
+                  name="Associates"
+                  parent="menu_maintain_root"
+                  action="maintain_associates_profile_action"/>
+        <menuitem id="menu_maintain_clients"
+                  name="Client Profile"
+                  parent="menu_maintain_root"
+                  action="maintain_client_profile_action"/>
+
+        <menuitem id="cpms_root_menu"
+                  name="CPMS"
+                  action="client_profile_supervisor_action"/>
+        <menuitem id="menu_tasks"
+                  name="Tasks"
+                  sequence="2"
+                  parent="cpms_root_menu"/>
+        <menuitem id="menu_task_client_profile_supervisor"
+                  name="For Supervisor Approval"
+                  action="client_profile_supervisor_action"
+                  parent="menu_tasks"/>
+        <menuitem id="menu_task_client_profile_manager"
+                  name="For Manager Approval"
+                  action="client_profile_manager_action"
+                  parent="menu_tasks"/>
 
         <record model="ir.sequence" id="client_id_seq">
             <field name="name">Client ID Sequence"</field>
