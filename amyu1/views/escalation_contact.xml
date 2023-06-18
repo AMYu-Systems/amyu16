@@ -8,42 +8,12 @@
                 <tree editable="bottom" create="0" edit="1" delete="0">
                     <field name="level" readonly="1"/>
                     <field name="timeframe" readonly="1"/>
-                    <field name="contact_name"/>
+                    <field name="name"/>
                     <field name="contact_number"/>
                     <field name="email"/>
                 </tree>
             </field>
         </record>
-
-<!--        <record id="escalation_contact_form_view" model="ir.ui.view">-->
-<!--            <field name="name">escalation.contact.form.view</field>-->
-<!--            <field name="model">escalation.contact</field>-->
-<!--            <field name="arch" type="xml">-->
-<!--                <form>-->
-<!--                    <group>-->
-<!--                        <group>-->
-<!--                            <field name="level"/>-->
-<!--                            <field name="contact_name"/>-->
-<!--                        </group>-->
-<!--                        <group>-->
-<!--                            <field name="contact_number"/>-->
-<!--                            <field name="email"/>-->
-<!--                        </group>-->
-<!--                    </group>-->
-<!--                </form>-->
-<!--            </field>-->
-<!--        </record>-->
-
-        <!--        <record id="corporate_officer_action" model="ir.actions.act_window">-->
-        <!--            <field name="name">Corporate Officer</field>-->
-        <!--            <field name="res_model">corporate.officer</field>-->
-        <!--            <field name="view_mode">tree, form</field>-->
-        <!--        </record>-->
-
-        <!--        <menuitem id="corporate_officer_root_menu" name="Corporate Officer"/>-->
-        <!--        <menuitem id="corporate_officer_sub_menu" parent="corporate_officer_root_menu"/>-->
-        <!--        <menuitem id="corporate_officer_menu" action="corporate_officer_action" parent="corporate_officer_sub_menu"/>-->
-
     </data>
 </odoo>
 

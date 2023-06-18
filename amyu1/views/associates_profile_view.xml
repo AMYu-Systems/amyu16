@@ -14,15 +14,10 @@
                     <field name="associates_image"/>
                     <templates>
                         <t t-name="kanban-box">
-                            <!--                            <div class="oe_kanban_card">-->
-                            <!--                                <span t-esc="record.associates.raw_value"/>-->
-                            <!--                            </div>-->
+
                             <div t-attf-class="oe_kanban_global_click">
                                 <div class="o_kanban_image">
-                                    <!--                                    <img alt="Avatar"-->
-                                    <!--                                         t-att-src="kanban_image('associates.profile', 'associates_image', record.id.raw_value)"/>-->
                                     <field name="associates_image" widget="image" options="{'zoom':True}"/>
-
                                 </div>
                                 <div class="oe_kanban_details">
                                     <ul>
@@ -31,14 +26,6 @@
                                                 <field name="name"/>
                                             </h2>
                                         </li>
-<!--                                        <li>-->
-<!--                                            Supervisor:-->
-<!--                                            <field name="associates_supervisor"/>-->
-<!--                                        </li>-->
-<!--                                        <li>-->
-<!--                                            Manager:-->
-<!--                                            <field name="associates_manager"/>-->
-<!--                                        </li>-->
                                     </ul>
                                 </div>
                             </div>
@@ -108,6 +95,11 @@
             </field>
         </record>
 
+        <record id="maintain_associates_profile_action" model="ir.actions.act_window">
+            <field name="name">Associates Profile</field>
+            <field name="res_model">associates.profile</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="view_id" ref="associates_profile_kanban_view"/>
+        </record>
     </data>
 </odoo>
-

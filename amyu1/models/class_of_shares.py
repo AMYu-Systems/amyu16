@@ -5,7 +5,7 @@ class ClassOfShares(models.Model):
     _name = 'class.of.shares'
     _description = "Class of Shares"
 
-    class_shares = fields.Char(string="Class of Shares")
+    name = fields.Char(string="Class of Shares")
     par_value = fields.Integer(string="Par Value per Share", default='')
     column_3 = fields.Char(string="Authorized")
     authorized_no = fields.Integer(string="No.")

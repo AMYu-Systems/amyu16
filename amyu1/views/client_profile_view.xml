@@ -5,17 +5,19 @@
             <field name="name">client.profile.kanban.view</field>
             <field name="model">client.profile</field>
             <field name="arch" type="xml">
-                <kanban>
+                <kanban records_draggable="0" create="false">
+                    <field name="state"/>
                     <field name="is_company"/>
                     <field name="name"/>
                     <field name="id"/>
                     <field name="image"/>
+                    <kanban>
+                        <field name="state_sequence" invisible="1"/>
+                    </kanban>
                     <templates>
                         <t t-name="kanban-box">
                             <div t-attf-class="oe_kanban_global_click">
                                 <div class="o_kanban_image">
-                                    <!--                                    <img alt="Avatar"-->
-                                    <!--                                         t-att-src="kanban_image('client.profile', 'image', record.id.raw_value)"/>-->
                                     <field name="image" widget="image" options="{'zoom': True}"/>
                                 </div>
                                 <div class="oe_kanban_details">
@@ -24,11 +26,12 @@
                                             <h2>
                                                 <field name="name"/>
                                             </h2>
-                                            <field name="client_system_generated"/>
-                                            <field name="is_company"/>
                                         </li>
                                         <li>
-
+                                            <field name="client_system_generated"/>
+                                        </li>
+                                        <li>
+                                            <field name="is_company"/>
                                         </li>
                                     </ul>
                                 </div>
@@ -48,11 +51,10 @@
                     <field name="client_system_generated"/>
                     <field name="associate_id"/>
                     <field name="associates_cluster"/>
-                    <field name="associates_supervisor"/>
-                    <field name="state" widget="badge" decoration-muted="state == 'submit'"
-                           decoration-primary="state == 'supervisor'"
-                           decoration-info="state == 'manager'"
-                           decoration-success="state == 'approved'" string="Status"/>
+                    <!--                    <field name="state" widget="badge" decoration-muted="state == 'submit'"-->
+                    <!--                           decoration-primary="state == 'supervisor'"-->
+                    <!--                           decoration-info="state == 'manager'"-->
+                    <!--                           decoration-success="state == 'approved'" string="Status"/>-->
                 </tree>
             </field>
         </record>
@@ -70,13 +72,13 @@
                         <button name="action_approve_manager" string="Approve by Manager" type="object"
                                 attrs="{'invisible': [('state', '!=', 'manager')]}"/>
                         <button name="action_return" string="Return" type="object"
-                                attrs="{'invisible': [('state', '!=', 'supervisor'),('state', '!=', 'manager'),('state', '!=', 'approved')]}"
+                                attrs="{'invisible': [('state', '!=', 'supervisor'),('state', '!=', 'manager')]}"
                                 class="oe_highlight"/>
                         <button name="draft_action" confirm="Draft for Submitting?" string="Draft Again"
                                 attrs="{'invisible': [('state', '!=', 'cancel')]}" type="object"/>
 
                         <field name="state" widget="statusbar"
-                               status_invisible="draft,supervisor,manager"/>
+                               status_invisible="draft,supervisor,manager,approved"/>
                     </header>
                     <sheet>
                         <div>
@@ -374,17 +376,17 @@
             </field>
         </record>
 
-        <record id="maintain_associates_profile_action" model="ir.actions.act_window">
-            <field name="name">Associates Profile</field>
-            <field name="res_model">associates.profile</field>
-            <field name="view_mode">tree,kanban,form</field>
-            <field name="view_id" ref="associates_profile_kanban_view"/>
+        <record id="dashboard_client_profile_action" model="ir.actions.act_window">
+            <field name="name">Dashboard</field>
+            <field name="res_model">client.profile</field>
+            <field name="view_mode">kanban</field>
+            <field name="view_id" ref="client_profile_kanban_view"/>
         </record>
 
         <record id="maintain_client_profile_action" model="ir.actions.act_window">
             <field name="name">Client Profile</field>
             <field name="res_model">client.profile</field>
-            <field name="view_mode">tree,kanban,form</field>
+            <field name="view_mode">tree,form</field>
             <field name="view_id" ref="client_profile_list_view"/>
             <field name="domain">[('state','=','draft')]</field>
         </record>
@@ -392,7 +394,7 @@
         <record id="client_profile_supervisor_action" model="ir.actions.act_window">
             <field name="name">Supervisor Approval</field>
             <field name="res_model">client.profile</field>
-            <field name="view_mode">tree,kanban,form</field>
+            <field name="view_mode">tree,form</field>
             <field name="view_id" ref="client_profile_list_view"/>
             <field name="domain">[('state','=','supervisor')]</field>
         </record>
@@ -400,14 +402,24 @@
         <record id="client_profile_manager_action" model="ir.actions.act_window">
             <field name="name">Manager Approval</field>
             <field name="res_model">client.profile</field>
-            <field name="view_mode">tree,kanban,form</field>
+            <field name="view_mode">tree,form</field>
             <field name="view_id" ref="client_profile_list_view"/>
             <field name="domain">[('state','=','manager')]</field>
         </record>
-
+        <menuitem id="cpms_root_menu"
+                  name="CPMS"
+                  action="client_profile_supervisor_action"/>
+        <menuitem id="menu_dashboard_root"
+                  name="Dashboard"
+                  sequence="1"
+                  parent="cpms_root_menu"/>
+        <menuitem id="menu_dashboard"
+                  name="Progress Status"
+                  parent="menu_dashboard_root"
+                  action="dashboard_client_profile_action"/>
         <menuitem id="menu_maintain_root"
                   name="Maintenance"
-                  sequence="1"
+                  sequence="2"
                   parent="cpms_root_menu"/>
         <menuitem id="menu_maintain_assoc"
                   name="Associates"
@@ -417,20 +429,16 @@
                   name="Client Profile"
                   parent="menu_maintain_root"
                   action="maintain_client_profile_action"/>
-
-        <menuitem id="cpms_root_menu"
-                  name="CPMS"
-                  action="client_profile_supervisor_action"/>
         <menuitem id="menu_tasks"
                   name="Tasks"
-                  sequence="2"
+                  sequence="3"
                   parent="cpms_root_menu"/>
         <menuitem id="menu_task_client_profile_supervisor"
-                  name="For Supervisor Approval"
+                  name="Supervisor Approval"
                   action="client_profile_supervisor_action"
                   parent="menu_tasks"/>
         <menuitem id="menu_task_client_profile_manager"
-                  name="For Manager Approval"
+                  name="Manager Approval"
                   action="client_profile_manager_action"
                   parent="menu_tasks"/>
 

@@ -7,9 +7,9 @@ from datetime import datetime
 class ClientProfile(models.Model):
     _name = 'client.profile'
     _description = "Profile"
-    # profile
-    is_company = fields.Selection([('individual', 'Individual'), ('company', 'Company')], default="company")
+
     name = fields.Char(string="Client Name", required=True)
+    is_company = fields.Selection([('individual', 'Individual'), ('company', 'Company')], default="company")
     image = fields.Image(string="Image")
     organization_type = fields.Many2one(string="Organization Type", comodel_name="res.partner.category")
     industry_class = fields.Many2one(string="Industry Class", comodel_name="res.partner.industry")
@@ -26,14 +26,31 @@ class ClientProfile(models.Model):
     others = fields.Char(string="Others")
     client_record_ids = fields.One2many(string="Client Record", comodel_name="client.records",
                                         inverse_name="client_profile_id")
-    state = fields.Selection(
-        [('draft', 'Draft'), ('supervisor', 'Supervisor'), ('manager', 'Manager'),
-         ('approved', 'Approved'), ('cancel', 'Returned')], string="Status", default='draft', required=True)
+    state = fields.Selection([('draft', 'Draft'),
+                              ('supervisor', 'Supervisor'),
+                              ('manager', 'Manager'),
+                              ('approved', 'Approved'),
+                              ('cancel', 'Returned')], default='draft', string="Status")
     associate_id = fields.Many2one(string="Associate", comodel_name="associates.profile")
     associates_manager = fields.Char(string="Manager", related="associate_id.associates_manager", readonly=True)
     associates_supervisor = fields.Char(string="Supervisor", related="associate_id.associates_supervisor",
                                         readonly=True)
     associates_cluster = fields.Char(string="Cluster", related="associate_id.associates_cluster", readonly=True)
+    state_sequence = fields.Char(compute='_compute_state_sequence', string='State Sequence', store=True)
+
+    @api.depends('state')
+    def _compute_state_sequence(self):
+        for record in self:
+            if record.state == 'draft':
+                record.state_sequence = 'DRAFT'
+            elif record.state == 'supervisor':
+                record.state_sequence = 'SUPERVISOR'
+            elif record.state == 'manager':
+                record.state_sequence = 'MANAGER'
+            elif record.state == 'approved':
+                record.state_sequence = 'APPROVED'
+            else:
+                record.state_sequence = 'Unknown'
 
     def draft_action(self):
         self.state = 'draft'
