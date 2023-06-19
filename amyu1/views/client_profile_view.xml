@@ -10,30 +10,29 @@
                     <field name="is_company"/>
                     <field name="name"/>
                     <field name="id"/>
-                    <field name="image"/>
+                    <field name="image_101"/>
                     <kanban>
                         <field name="state_sequence" invisible="1"/>
                     </kanban>
                     <templates>
                         <t t-name="kanban-box">
-                            <div t-attf-class="oe_kanban_global_click">
+                            <div class="oe_kanban_content"
+                                 t-attf-class="oe_kanban_clickable_allowed oe_kanban_editable_#{record.state === 'approved' ? 'allowed' : 'disabled'}">
                                 <div class="o_kanban_image">
-                                    <field name="image" widget="image" options="{'zoom': True}"/>
+                                    <field name="image_101" widget="image" options="{'zoom': True}"/>
                                 </div>
                                 <div class="oe_kanban_details">
-                                    <ul>
-                                        <li>
-                                            <h2>
-                                                <field name="name"/>
-                                            </h2>
-                                        </li>
-                                        <li>
-                                            <field name="client_system_generated"/>
-                                        </li>
-                                        <li>
-                                            <field name="is_company"/>
-                                        </li>
-                                    </ul>
+                                    <div class="oe_kanban_title">
+                                        <h6>
+                                            <field name="name"/>
+                                        </h6>
+                                    </div>
+                                    <div class="oe_kanban_description">
+                                        <field name="client_system_generated"/>
+                                    </div>
+                                    <span style="font-weight: bold; color: blue;">
+                                        <field name="state"/>
+                                    </span>
                                 </div>
                             </div>
                         </t>
@@ -65,7 +64,7 @@
             <field name="arch" type="xml">
                 <form>
                     <header>
-                        <button name="action_submit_supervisor" string="Submit to Supervisor" type="object"
+                        <button name="action_submit_supervisor" string="Send to Supervisor" type="object"
                                 attrs="{'invisible': [('state', '!=', 'draft')]}"/>
                         <button name="action_approve_supervisor" string="Approve by Supervisor" type="object"
                                 attrs="{'invisible': [('state', '!=', 'supervisor')]}"/>
@@ -82,7 +81,7 @@
                     </header>
                     <sheet>
                         <div>
-                            <field name="image" widget="image" nolabel="1" class="oe_avatar"/>
+                            <field name="image_101" widget="image" nolabel="1" class="oe_avatar"/>
                         </div>
                         <div class="oe_title">
                             <field name="is_company" widget="radio" options="{'horizontal':True}" nolabel="1"/>
@@ -97,7 +96,7 @@
                                 <field name="nature_of_business" widget="textarea"/>
                             </group>
                             <group>
-                                <field name="date_of_engagement" string="Date of Engagement"/>
+                                <field name="date_of_engagement" options="{'datepicker': {'format': 'yyyy/MM'}}"/>
                                 <field name="industry_class" options="{'no_open': True}"/>
                             </group>
                         </group>
@@ -379,7 +378,7 @@
         <record id="dashboard_client_profile_action" model="ir.actions.act_window">
             <field name="name">Dashboard</field>
             <field name="res_model">client.profile</field>
-            <field name="view_mode">kanban</field>
+            <field name="view_mode">form,kanban</field>
             <field name="view_id" ref="client_profile_kanban_view"/>
         </record>
 
@@ -406,6 +405,7 @@
             <field name="view_id" ref="client_profile_list_view"/>
             <field name="domain">[('state','=','manager')]</field>
         </record>
+
         <menuitem id="cpms_root_menu"
                   name="CPMS"
                   action="client_profile_supervisor_action"/>
