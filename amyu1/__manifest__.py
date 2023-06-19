@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'muk_web_theme', ],
+    'depends': ['base', 'muk_web_theme'],
 
     # always loaded
     'data': [
