@@ -1,46 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <data>
-        <record id="client_profile_kanban_view" model="ir.ui.view">
-            <field name="name">client.profile.kanban.view</field>
-            <field name="model">client.profile</field>
-            <field name="arch" type="xml">
-                <kanban records_draggable="0" create="false">
-                    <field name="state"/>
-                    <field name="is_company"/>
-                    <field name="name"/>
-                    <field name="id"/>
-                    <field name="image_101"/>
-                    <kanban>
-                        <field name="state_sequence" invisible="1"/>
-                    </kanban>
-                    <templates>
-                        <t t-name="kanban-box">
-                            <div class="oe_kanban_content"
-                                 t-attf-class="oe_kanban_clickable_allowed oe_kanban_editable_#{record.state === 'approved' ? 'allowed' : 'disabled'}">
-                                <div class="o_kanban_image">
-                                    <field name="image_101" widget="image" options="{'zoom': True}"/>
-                                </div>
-                                <div class="oe_kanban_details">
-                                    <div class="oe_kanban_title">
-                                        <h6>
-                                            <field name="name"/>
-                                        </h6>
-                                    </div>
-                                    <div class="oe_kanban_description">
-                                        <field name="client_system_generated"/>
-                                    </div>
-                                    <span style="font-weight: bold; color: blue;">
-                                        <field name="state"/>
-                                    </span>
-                                </div>
-                            </div>
-                        </t>
-                    </templates>
-                </kanban>
-            </field>
-        </record>
-
         <record id="client_profile_list_view" model="ir.ui.view">
             <field name="name">client.profile.list.view</field>
             <field name="model">client.profile</field>
@@ -50,10 +10,6 @@
                     <field name="client_system_generated"/>
                     <field name="associate_id"/>
                     <field name="associates_cluster"/>
-                    <!--                    <field name="state" widget="badge" decoration-muted="state == 'submit'"-->
-                    <!--                           decoration-primary="state == 'supervisor'"-->
-                    <!--                           decoration-info="state == 'manager'"-->
-                    <!--                           decoration-success="state == 'approved'" string="Status"/>-->
                 </tree>
             </field>
         </record>
@@ -73,7 +29,7 @@
                         <button name="action_return" string="Return" type="object"
                                 attrs="{'invisible': [('state', '!=', 'supervisor'),('state', '!=', 'manager')]}"
                                 class="oe_highlight"/>
-                        <button name="draft_action" confirm="Draft for Submitting?" string="Draft Again"
+                        <button name="draft_action" confirm="Draft Again?" string="returned to Draft"
                                 attrs="{'invisible': [('state', '!=', 'cancel')]}" type="object"/>
 
                         <field name="state" widget="statusbar"
@@ -81,23 +37,30 @@
                     </header>
                     <sheet>
                         <div>
-                            <field name="image_101" widget="image" nolabel="1" class="oe_avatar"/>
+                            <field name="image_101" widget="image" nolabel="1" class="oe_avatar"
+                                   attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                         </div>
                         <div class="oe_title">
-                            <field name="is_company" widget="radio" options="{'horizontal':True}" nolabel="1"/>
+                            <field name="is_company" widget="radio" options="{'horizontal':True}" nolabel="1"
+                                   attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                             <h1>
-                                <field name="name" placeholder="e.g. Lumber Inc"/>
+                                <field name="name" placeholder="e.g. Lumber Inc"
+                                       attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                             </h1>
                         </div>
                         <group>
                             <group>
                                 <field name="client_system_generated" readonly="1" placeholder="System generated"/>
-                                <field name="organization_type" options="{'no_open': True}"/>
-                                <field name="nature_of_business" widget="textarea"/>
+                                <field name="organization_type" options="{'no_open': True}"
+                                       attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
+                                <field name="nature_of_business" widget="textarea"
+                                       attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                             </group>
                             <group>
-                                <field name="date_of_engagement" options="{'datepicker': {'format': 'yyyy/MM'}}"/>
-                                <field name="industry_class" options="{'no_open': True}"/>
+                                <field name="date_of_engagement"
+                                       attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
+                                <field name="industry_class" options="{'no_open': True}"
+                                       attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                             </group>
                         </group>
 
@@ -105,80 +68,114 @@
                             <page string="Contact Information">
                                 <group string="Registered Address">
                                     <group>
-                                        <field name="unit_no"/>
-                                        <field name="street"/>
-                                        <field name="city"/>
+                                        <field name="unit_no"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
+                                        <field name="street"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
+                                        <field name="city"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <field name="landline" widget="phone"
-                                               placeholder="Example: 02-8236-4935(Loc:)"/>
+                                               placeholder="Example: 02-8236-4935(Loc:)"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <field name="facsimile_no" widget="phone"
-                                               placeholder="Example: 02-8236-4935(Loc:)"/>
+                                               placeholder="Example: 02-8236-4935(Loc:)"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                     </group>
                                     <group>
-                                        <field name="building_name"/>
-                                        <field name="district"/>
-                                        <field name="zip"/>
-                                        <field name="website" widget="website"/>
+                                        <field name="building_name"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
+                                        <field name="district"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
+                                        <field name="zip"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
+                                        <field name="website" widget="website"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                     </group>
                                 </group>
 
                                 <group string="Accounting or Office Admin Address">
                                     <group>
-                                        <field name="unit_no2"/>
-                                        <field name="street2"/>
-                                        <field name="city2"/>
-                                        <field name="primary_contact_person"/>
+                                        <field name="unit_no2"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
+                                        <field name="street2"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
+                                        <field name="city2"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
+                                        <field name="primary_contact_person"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <field name="landline2" widget="phone"
-                                               placeholder="Example: 02-8236-4935(Loc:)"/>
-                                        <field name="principal_accounting_officer"/>
+                                               placeholder="Example: 02-8236-4935(Loc:)"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
+                                        <field name="principal_accounting_officer"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <field name="landline3" widget="phone"
-                                               placeholder="Example: 02-8236-4935(Loc:)"/>
+                                               placeholder="Example: 02-8236-4935(Loc:)"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                     </group>
                                     <group>
-                                        <field name="building_name2"/>
-                                        <field name="district2"/>
-                                        <field name="zip2"/>
-                                        <field name="mobile_number" widget="phone"/>
-                                        <field name="email_address" widget="email"/>
-                                        <field name="mobile_number2" widget="phone"/>
-                                        <field name="email_address2" widget="email"/>
+                                        <field name="building_name2"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
+                                        <field name="district2"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
+                                        <field name="zip2"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
+                                        <field name="mobile_number" widget="phone"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
+                                        <field name="email_address" widget="email"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
+                                        <field name="mobile_number2" widget="phone"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
+                                        <field name="email_address2" widget="email"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                     </group>
                                 </group>
                                 <group string="Corporate Officers"/>
-                                <field name="corporate_ids"/>
+                                <field name="corporate_ids"
+                                       attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                             </page>
 
                             <page name="bir_registration_information" string="BIR Registration Information">
                                 <group col="3">
                                     <group>
-                                        <field name="vat" placeholder="e.g 000-000-000"/>
+                                        <field name="vat" placeholder="e.g 000-000-000"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                     </group>
                                     <group>
-                                        <field name="rdo_code" placeholder="e.g 000"/>
+                                        <field name="rdo_code" placeholder="e.g 000"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                     </group>
                                     <group>
-                                        <field name="registration_date" string="Registration Date" widget="date"/>
+                                        <field name="registration_date" string="Registration Date" widget="date"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                     </group>
                                 </group>
                                 <group string="Tax Types" col="3">
                                     <group>
-                                        <field name="income_tax" nolabel="1"/>
+                                        <field name="income_tax" nolabel="1"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <label for="income_tax"/>
-                                        <field name="excise_tax" nolabel="1"/>
+                                        <field name="excise_tax" nolabel="1"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <label for="excise_tax"/>
-                                        <field name="value_added_tax" nolabel="1"/>
+                                        <field name="value_added_tax" nolabel="1"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <label for="value_added_tax"/>
                                     </group>
                                     <group>
-                                        <field name="withholding_tax_expanded" nolabel="1"/>
+                                        <field name="withholding_tax_expanded" nolabel="1"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <label for="withholding_tax_expanded"/>
-                                        <field name="withholding_tax_compensation" nolabel="1"/>
+                                        <field name="withholding_tax_compensation" nolabel="1"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <label for="withholding_tax_compensation"/>
-                                        <field name="registration_fee" nolabel="1"/>
+                                        <field name="registration_fee" nolabel="1"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <label for="registration_fee"/>
                                     </group>
                                     <group>
                                         <group colspan="2">
-                                            <field name="other_percentage_tax" nolabel="1"/>
+                                            <field name="other_percentage_tax" nolabel="1"
+                                                   attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                             <label for="other_percentage_tax"/>
                                         </group>
                                         <field name="other_percentage_tax1" nolabel="1"
@@ -188,32 +185,42 @@
 
                                 <group col="2" string="">
                                     <group>
-                                        <field name="tax_type"/>
-                                        <field name="invoice_tax"/>
-                                        <field name="filing_payment"/>
+                                        <field name="tax_type"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
+                                        <field name="invoice_tax"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
+                                        <field name="filing_payment"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                     </group>
                                     <group>
-                                        <field name="books_of_account"/>
-                                        <field name="psic_psoc"/>
-                                        <field name="ll_cas_permit_no"/>
+                                        <field name="books_of_account"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
+                                        <field name="psic_psoc"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
+                                        <field name="ll_cas_permit_no"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                     </group>
                                 </group>
                                 <p>
                                     Is the Company using any Point-of-Sale(POS),Cash Register(CRM),or Special
                                     Purpose(SPM) Machines?
                                     <field name="ask" style="margin-left: 20px;" widget="radio"
-                                           options="{'horizontal':True}"/>
+                                           options="{'horizontal':True}"
+                                           attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                 </p>
                             </page>
 
                             <page name="sec_dti_registration_information" string="SEC/DTI Registration Information">
                                 <group>
                                     <group>
-                                        <field name="registration_number"/>
-                                        <field name="trade_name"/>
+                                        <field name="registration_number"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
+                                        <field name="trade_name"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                     </group>
                                     <group>
-                                        <field name="registration_date_sec" string="Registration Date" widget="date"/>
+                                        <field name="registration_date_sec" string="Registration Date" widget="date"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                     </group>
                                 </group>
 
@@ -230,18 +237,21 @@
                                     </group>
                                     <group string="Paid-Up">
                                     </group>
-                                    <field name="class_shares_id"/>
+                                    <field name="class_shares_id"
+                                           attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                 </group>
                                 <group col="3">
                                     <p>
                                         Annual Meeting
                                     </p>
                                     <group>
-                                        <field name="date_per_law"/>
+                                        <field name="date_per_law"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                     </group>
                                     <group>
                                         <field name="actual_date_meeting" string="Actual Date of Meeting"
-                                               widget="date"/>
+                                               widget="date"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                     </group>
                                 </group>
                                 <p>
@@ -250,7 +260,8 @@
                                     Commission?
                                     <field name="ask_1" style="margin-left: 20px;" widget="radio"
                                            options="{'horizontal':True}"
-                                           nolabel="1"/>
+                                           nolabel="1"
+                                           attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                     If Yes, what type of security is the Company permitted to sell?
                                 </p>
                                 <p>
@@ -265,35 +276,48 @@
                                     Is the Entity regulated or accredited by or is a license holder issued by any of the
                                     following Government Regulatory Agencies?
                                     <field name="ask_3" style="margin-left: 20px; margin-bottom:10px; " widget="radio"
-                                           options="{'horizontal':True}"/>
+                                           options="{'horizontal':True}"
+                                           attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                 </p>
                                 <group col="2">
                                     <group>
-                                        <field name="bangko_sentral_pilipinas" nolabel="1"/>
+                                        <field name="bangko_sentral_pilipinas" nolabel="1"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <label for="bangko_sentral_pilipinas"/>
-                                        <field name="bureau_of_custom" nolabel="1"/>
+                                        <field name="bureau_of_custom" nolabel="1"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <label for="bureau_of_custom"/>
-                                        <field name="construction_industry_authority_philippines" nolabel="1"/>
+                                        <field name="construction_industry_authority_philippines" nolabel="1"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <label for="construction_industry_authority_philippines"/>
-                                        <field name="cooperative_development_authority" nolabel="1"/>
+                                        <field name="cooperative_development_authority" nolabel="1"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <label for="cooperative_development_authority"/>
-                                        <field name="insurance_commission" nolabel="1"/>
+                                        <field name="insurance_commission" nolabel="1"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <label for="insurance_commission"/>
-                                        <field name="integrated_bar_philippines" nolabel="1"/>
+                                        <field name="integrated_bar_philippines" nolabel="1"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <label for="integrated_bar_philippines"/>
                                     </group>
                                     <group>
-                                        <field name="land_transportation_franchising_regulatory_board" nolabel="1"/>
+                                        <field name="land_transportation_franchising_regulatory_board" nolabel="1"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <label for="land_transportation_franchising_regulatory_board"/>
-                                        <field name="philippine_amusement_gaming_corporation" nolabel="1"/>
+                                        <field name="philippine_amusement_gaming_corporation" nolabel="1"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <label for="philippine_amusement_gaming_corporation"/>
-                                        <field name="philippines_council_ngo_certification" nolabel="1"/>
+                                        <field name="philippines_council_ngo_certification" nolabel="1"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <label for="philippines_council_ngo_certification"/>
-                                        <field name="philippines_stock_exchange" nolabel="1"/>
+                                        <field name="philippines_stock_exchange" nolabel="1"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <label for="philippines_stock_exchange"/>
-                                        <field name="professional_regulation_commission" nolabel="1"/>
+                                        <field name="professional_regulation_commission" nolabel="1"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <label for="professional_regulation_commission"/>
-                                        <field name="others_ri" nolabel="1"/>
+                                        <field name="others_ri" nolabel="1"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <label for="others_ri"/>
                                         <field name="others_reg" nolabel="1" colspan="2"
                                                attrs="{'invisible': [('others_ri', '=', False)]}"/>
@@ -304,19 +328,28 @@
                             <page name="social_security_information" string="Social Security Information">
                                 <group col="3">
                                     <group>
-                                        <field name="sss"/>
-                                        <field name="phic"/>
-                                        <field name="hdmf"/>
+                                        <field name="sss"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
+                                        <field name="phic"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
+                                        <field name="hdmf"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                     </group>
                                     <group>
-                                        <field name="sss_filing"/>
-                                        <field name="phic_filing"/>
-                                        <field name="hdmf_filing"/>
+                                        <field name="sss_filing"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
+                                        <field name="phic_filing"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
+                                        <field name="hdmf_filing"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                     </group>
                                     <group>
-                                        <field name="sss_pay"/>
-                                        <field name="phic_pay"/>
-                                        <field name="hdmf_pay"/>
+                                        <field name="sss_pay"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
+                                        <field name="phic_pay"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
+                                        <field name="hdmf_pay"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                     </group>
                                 </group>
                             </page>
@@ -324,7 +357,8 @@
                             <page name="engagement_administration" string="Engagement Administration">
                                 <group name="engagement_team" string="Engagement Team">
                                     <group>
-                                        <field name="associate_id" options="{'no_open': True,'no_create':True}"/>
+                                        <field name="associate_id" options="{'no_open': True,'no_create':True}"
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <field name="associates_supervisor"/>
                                     </group>
                                     <group>
@@ -337,7 +371,8 @@
                                     For any pertinent issues resolution, outstanding documentation for submission,
                                     and follow-up requests shall be escalated as:
                                 </p>
-                                <field name="escalation"/>
+                                <field name="escalation"
+                                       attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                             </page>
 
                             <!--                            <page name="working_papers" string="Working Papers">-->
@@ -363,52 +398,27 @@
             <field name="arch" type="xml">
                 <search>
                     <field name="name" string="Client"
-                           filter_domain="['|','|','|',('name','ilike',self),('associate_id','ilike',self),('industry_class','ilike',self),('organization_type','ilike',self)]"/>
+                           filter_domain="['|','|','|',('name','ilike',self),('associate_id','ilike',self),('client_system_generated','ilike',self),('organization_type','ilike',self)]"/>
                     <field name="associate_id" string="Associates"/>
-                    <field name="industry_class" string="Industry"/>
+                    <field name="client_system_generated" string="Industry"/>
                     <field name="organization_type" string="Organization"/>
                     <searchpanel>
-                        <!--                        <field name="is_company" enable_counters="1" string="Groups"/>-->
-                        <!--                        <field name="industry_class" enable_counters="1" string="Industry"/>-->
+                        <!--                        <field name="state" widget="state_sequence" enable_counters="1" string="Status"/>-->
                     </searchpanel>
                 </search>
             </field>
-        </record>
-
-        <record id="dashboard_client_profile_action" model="ir.actions.act_window">
-            <field name="name">Dashboard</field>
-            <field name="res_model">client.profile</field>
-            <field name="view_mode">form,kanban</field>
-            <field name="view_id" ref="client_profile_kanban_view"/>
         </record>
 
         <record id="maintain_client_profile_action" model="ir.actions.act_window">
             <field name="name">Client Profile</field>
             <field name="res_model">client.profile</field>
             <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="client_profile_list_view"/>
             <field name="domain">[('state','=','draft')]</field>
-        </record>
-
-        <record id="client_profile_supervisor_action" model="ir.actions.act_window">
-            <field name="name">Supervisor Approval</field>
-            <field name="res_model">client.profile</field>
-            <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="client_profile_list_view"/>
-            <field name="domain">[('state','=','supervisor')]</field>
-        </record>
-
-        <record id="client_profile_manager_action" model="ir.actions.act_window">
-            <field name="name">Manager Approval</field>
-            <field name="res_model">client.profile</field>
-            <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="client_profile_list_view"/>
-            <field name="domain">[('state','=','manager')]</field>
         </record>
 
         <menuitem id="cpms_root_menu"
                   name="CPMS"
-                  action="client_profile_supervisor_action"/>
+                  action="dashboard_client_profile_action"/>
         <menuitem id="menu_dashboard_root"
                   name="Dashboard"
                   sequence="1"
@@ -429,18 +439,18 @@
                   name="Client Profile"
                   parent="menu_maintain_root"
                   action="maintain_client_profile_action"/>
-        <menuitem id="menu_tasks"
-                  name="Tasks"
-                  sequence="3"
-                  parent="cpms_root_menu"/>
-        <menuitem id="menu_task_client_profile_supervisor"
-                  name="Supervisor Approval"
-                  action="client_profile_supervisor_action"
-                  parent="menu_tasks"/>
-        <menuitem id="menu_task_client_profile_manager"
-                  name="Manager Approval"
-                  action="client_profile_manager_action"
-                  parent="menu_tasks"/>
+<!--        <menuitem id="menu_tasks"-->
+<!--                  name="Tasks"-->
+<!--                  sequence="3"-->
+<!--                  parent="cpms_root_menu"/>-->
+<!--        <menuitem id="menu_task_client_profile_supervisor"-->
+<!--                  name="Supervisor Approval"-->
+<!--                  action="client_profile_supervisor_action"-->
+<!--                  parent="menu_tasks"/>-->
+<!--        <menuitem id="menu_task_client_profile_manager"-->
+<!--                  name="Manager Approval"-->
+<!--                  action="client_profile_manager_action"-->
+<!--                  parent="menu_tasks"/>-->
 
         <record model="ir.sequence" id="client_id_seq">
             <field name="name">Client ID Sequence"</field>
@@ -453,4 +463,3 @@
 
     </data>
 </odoo>
-

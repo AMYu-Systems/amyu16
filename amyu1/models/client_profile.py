@@ -36,27 +36,36 @@ class ClientProfile(models.Model):
     associates_supervisor = fields.Char(string="Supervisor", related="associate_id.associates_supervisor",
                                         readonly=True)
     associates_cluster = fields.Char(string="Cluster", related="associate_id.associates_cluster", readonly=True)
-    state_sequence = fields.Char(compute='_compute_state_sequence', string='State Sequence', store=True)
+    state_sequence = fields.Integer(compute='_compute_state_sequence', string='State Sequence', store=True)
 
     @api.depends('state')
     def _compute_state_sequence(self):
         for record in self:
             if record.state == 'draft':
-                record.state_sequence = 'DRAFT'
+                record.state_sequence = 1
             elif record.state == 'supervisor':
-                record.state_sequence = 'SUPERVISOR'
+                record.state_sequence = 2
             elif record.state == 'manager':
-                record.state_sequence = 'MANAGER'
+                record.state_sequence = 3
             elif record.state == 'approved':
-                record.state_sequence = 'APPROVED'
+                record.state_sequence = 4
             else:
-                record.state_sequence = 'Unknown'
+                record.state_sequence = 0
 
     def draft_action(self):
         self.state = 'draft'
 
     def action_submit_supervisor(self):
         self.state = 'supervisor'
+        # return {
+        #     'name':'Supervisor',
+        #     'view_type':'form',
+        #     'view_mode':'tree,form',
+        #     'res_model':'client.profile',
+        #     'type':'ir.actions.act_window',
+        #     'target':'inline',
+        #     'flags':{'form':{'action_button':True}},
+        # }
 
     def action_approve_supervisor(self):
         self.state = 'manager'
