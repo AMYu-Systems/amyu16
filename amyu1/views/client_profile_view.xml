@@ -21,15 +21,24 @@
                 <form>
                     <header>
                         <button name="action_submit_supervisor" string="Send to Supervisor" type="object"
+                                groups="amyu1.associate_group"
                                 attrs="{'invisible': [('state', '!=', 'draft')]}"/>
-                        <button name="action_approve_supervisor" string="Approve by Supervisor" type="object"
+                        <button name="action_approve_supervisor" string="Approved" type="object"
+                                groups="amyu1.supervisor_group"
                                 attrs="{'invisible': [('state', '!=', 'supervisor')]}"/>
-                        <button name="action_approve_manager" string="Approve by Manager" type="object"
+                        <button name="action_approve_manager" string="Approved" type="object"
+                                groups="amyu1.manager_group"
                                 attrs="{'invisible': [('state', '!=', 'manager')]}"/>
                         <button name="action_return" string="Return" type="object"
-                                attrs="{'invisible': [('state', '!=', 'supervisor'),('state', '!=', 'manager')]}"
+                                groups="amyu1.supervisor_group"
+                                attrs="{'invisible': [('state', '!=', 'supervisor')]}"
+                                class="oe_highlight"/>
+                        <button name="action_return" string="Return" type="object"
+                                groups="amyu1.manager_group"
+                                attrs="{'invisible': [('state', '!=', 'manager')]}"
                                 class="oe_highlight"/>
                         <button name="draft_action" confirm="Draft Again?" string="returned to Draft"
+                                groups="amyu1.supervisor_group,amyu1.manager_group"
                                 attrs="{'invisible': [('state', '!=', 'cancel')]}" type="object"/>
 
                         <field name="state" widget="statusbar"
@@ -415,42 +424,6 @@
             <field name="view_mode">tree,form</field>
             <field name="domain">[('state','=','draft')]</field>
         </record>
-
-        <menuitem id="cpms_root_menu"
-                  name="CPMS"
-                  action="dashboard_client_profile_action"/>
-        <menuitem id="menu_dashboard_root"
-                  name="Dashboard"
-                  sequence="1"
-                  parent="cpms_root_menu"/>
-        <menuitem id="menu_dashboard"
-                  name="Progress Status"
-                  parent="menu_dashboard_root"
-                  action="dashboard_client_profile_action"/>
-        <menuitem id="menu_maintain_root"
-                  name="Maintenance"
-                  sequence="2"
-                  parent="cpms_root_menu"/>
-        <menuitem id="menu_maintain_assoc"
-                  name="Associates"
-                  parent="menu_maintain_root"
-                  action="maintain_associates_profile_action"/>
-        <menuitem id="menu_maintain_clients"
-                  name="Client Profile"
-                  parent="menu_maintain_root"
-                  action="maintain_client_profile_action"/>
-<!--        <menuitem id="menu_tasks"-->
-<!--                  name="Tasks"-->
-<!--                  sequence="3"-->
-<!--                  parent="cpms_root_menu"/>-->
-<!--        <menuitem id="menu_task_client_profile_supervisor"-->
-<!--                  name="Supervisor Approval"-->
-<!--                  action="client_profile_supervisor_action"-->
-<!--                  parent="menu_tasks"/>-->
-<!--        <menuitem id="menu_task_client_profile_manager"-->
-<!--                  name="Manager Approval"-->
-<!--                  action="client_profile_manager_action"-->
-<!--                  parent="menu_tasks"/>-->
 
         <record model="ir.sequence" id="client_id_seq">
             <field name="name">Client ID Sequence"</field>

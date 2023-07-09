@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="associate_group" model="res.groups">
+        <field name="name">Associates</field>
+    </record>
+    <record id="supervisor_group" model="res.groups">
+        <field name="name">Supervisor</field>
+    </record>
+    <record id="manager_group" model="res.groups">
+        <field name="name">Manager</field>
+    </record>
+</odoo>

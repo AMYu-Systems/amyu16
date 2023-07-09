@@ -20,20 +20,22 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'muk_web_theme'],
+    'depends': ['base'],
 
     # always loaded
     'data': [
         'security/ir.model.access.csv',
+        'views/cpms_groups.xml',
+        'views/state_view.xml',
         'views/associates_profile_view.xml',
         'views/client_profile_view.xml',
         'views/supervisor_view.xml',
         'views/manager_view.xml',
-        'views/state_view.xml',
         'views/corporate_officer_view.xml',
         'views/class_of_shares_view.xml',
         'views/escalation_contact.xml',
         'views/client_records_views.xml',
+        'views/cmps_menu_view.xml',
 
     ],
     'application': True,
