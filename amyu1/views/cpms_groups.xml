@@ -3,10 +3,26 @@
     <record id="associate_group" model="res.groups">
         <field name="name">Associates</field>
     </record>
+
     <record id="supervisor_group" model="res.groups">
         <field name="name">Supervisor</field>
     </record>
+
     <record id="manager_group" model="res.groups">
         <field name="name">Manager</field>
+    </record>
+
+    <record id="cpms_associate_rule" model="ir.rule">
+        <field name="name">See Only Own Documents</field>
+        <field name="model_id" ref="model_client_profile"/>
+        <field name="domain_force">[('create_uid', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('associate_group'))]"/>
+    </record>
+
+     <record id="cpms_supervisor_rule" model="ir.rule">
+        <field name="name">See all Documents</field>
+        <field name="model_id" ref="model_client_profile"/>
+        <field name="domain_force">[]</field>
+        <field name="groups" eval="[(4, ref('supervisor_group'))]"/>
     </record>
 </odoo>

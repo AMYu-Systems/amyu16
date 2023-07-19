@@ -14,19 +14,19 @@
                     <field name="associates_image"/>
                     <templates>
                         <t t-name="kanban-box">
-
                             <div t-attf-class="oe_kanban_global_click">
                                 <div class="o_kanban_image">
                                     <field name="associates_image" widget="image" options="{'zoom':True}"/>
                                 </div>
                                 <div class="oe_kanban_details">
-                                    <ul>
-                                        <li>
-                                            <h2>
-                                                <field name="name"/>
-                                            </h2>
-                                        </li>
-                                    </ul>
+                                    <div class="oe_kanban_title">
+                                        <h6>
+                                            <field name="name"/>
+                                        </h6>
+                                    </div>
+                                    <div class="oe_kanban_description">
+                                        <field name="position"/>
+                                    </div>
                                 </div>
                             </div>
                         </t>
@@ -48,6 +48,7 @@
                             <group>
                                 <field name="name"/>
                                 <field name="associates_cluster"/>
+                                <field name="position"/>
                             </group>
                             <group>
                                 <field name="associates_supervisor"/>

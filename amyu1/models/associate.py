@@ -9,5 +9,6 @@ class AssociatesProfile(models.Model):
     associates_manager = fields.Char(string="Manager")
     associates_supervisor = fields.Char(string="Supervisor")
     associates_cluster = fields.Char(string="Cluster")
+    position = fields.Char(string="Position")
     client_profile_ids = fields.One2many(string="Clients", comodel_name="client.profile",
                                          inverse_name="associate_id",readonly=True)
