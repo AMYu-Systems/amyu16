@@ -7,6 +7,7 @@ from datetime import datetime
 class ClientProfile(models.Model):
     _name = 'client.profile'
     _description = "Profile"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     name = fields.Char(string="Client Name", required=True)
     is_company = fields.Selection([('individual', 'Individual'), ('company', 'Company')], default="company")
