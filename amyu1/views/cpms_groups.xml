@@ -25,4 +25,11 @@
         <field name="domain_force">[]</field>
         <field name="groups" eval="[(4, ref('supervisor_group'))]"/>
     </record>
+
+    <record id="cpms_manager_rule" model="ir.rule">
+        <field name="name">See all Documents</field>
+        <field name="model_id" ref="model_client_profile"/>
+        <field name="domain_force">[]</field>
+        <field name="groups" eval="[(4, ref('manager_group'))]"/>
+    </record>
 </odoo>

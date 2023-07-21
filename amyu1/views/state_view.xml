@@ -16,26 +16,26 @@
                     </kanban>
                     <templates>
                         <t t-name="kanban-box">
-                            <div t-attf-class="oe_kanban_global_click">
-                                <div class="oe_kanban_content">
-                                    <div class="o_kanban_image">
-                                        <field name="image_101" widget="image" options="{'zoom': True}"/>
+                            <!--                            <div t-attf-class="oe_kanban_global_click">-->
+                            <div class="oe_kanban_content">
+                                <div class="o_kanban_image">
+                                    <field name="image_101" widget="image" options="{'zoom': True}"/>
+                                </div>
+                                <div class="oe_kanban_details">
+                                    <div class="oe_kanban_title">
+                                        <h6>
+                                            <field name="name"/>
+                                        </h6>
                                     </div>
-                                    <div class="oe_kanban_details">
-                                        <div class="oe_kanban_title">
-                                            <h6>
-                                                <field name="name"/>
-                                            </h6>
-                                        </div>
-                                        <div class="oe_kanban_description">
-                                            <field name="client_system_generated"/>
-                                        </div>
-                                        <span style="font-weight: bold; color: blue;">
-                                            <field name="state"/>
-                                        </span>
+                                    <div class="oe_kanban_description">
+                                        <field name="client_system_generated"/>
                                     </div>
+                                    <span style="font-weight: bold; color: blue;">
+                                        <field name="state"/>
+                                    </span>
                                 </div>
                             </div>
+                            <!--                            </div>-->
                         </t>
                     </templates>
                 </kanban>
