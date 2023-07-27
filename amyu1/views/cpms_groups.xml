@@ -19,6 +19,13 @@
         <field name="groups" eval="[(4, ref('associate_group'))]"/>
     </record>
 
+    <record id="cpms_associate_profile_rule" model="ir.rule">
+        <field name="name">See Own Profile</field>
+        <field name="model_id" ref="model_associates_profile"/>
+        <field name="domain_force">[('create_uid', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('associate_group'))]"/>
+    </record>
+
      <record id="cpms_supervisor_rule" model="ir.rule">
         <field name="name">See all Documents</field>
         <field name="model_id" ref="model_client_profile"/>
