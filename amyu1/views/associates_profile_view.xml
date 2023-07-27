@@ -5,7 +5,7 @@
             <field name="name">associates.profile.kanban.view</field>
             <field name="model">associates.profile</field>
             <field name="arch" type="xml">
-                <kanban default_group_by="associates_cluster">
+                <kanban>
                     <field name="name"/>
                     <field name="associates_cluster"/>
                     <field name="associates_supervisor"/>
