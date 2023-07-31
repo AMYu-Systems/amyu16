@@ -366,6 +366,7 @@ class ClientProfile(models.Model):
 class ClientRecords(models.Model):
     _name = 'client.records'
     _rec_name = "file_name"
+    _description = "Records"
 
     upload_file = fields.Binary(string='File', attachment=True)
     file_name = fields.Char(string='Filename')

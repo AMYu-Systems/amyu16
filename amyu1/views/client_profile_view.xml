@@ -74,7 +74,7 @@
                         </group>
 
                         <notebook>
-                            <page string="CONTACT INFORMATION" class="oe_highlight">
+                            <page string="CONTACT" class="oe_highlight">
                                 <group string="Registered Address">
                                     <group>
                                         <field name="unit_no"
@@ -143,7 +143,7 @@
                                        attrs="{'readonly': ['|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved')]}"/>
                             </page>
 
-                            <page name="bir_registration_information" string="BIR REGISTRATION INFORMATION">
+                            <page name="bir_registration_information" string="BIR REGISTRATION">
                                 <group col="3">
                                     <group>
                                         <field name="vat" placeholder="e.g 000-000-000"
@@ -219,7 +219,7 @@
                                 </p>
                             </page>
 
-                            <page name="sec_dti_registration_information" string="SEC/DTI REGISTRATION INFORMATION">
+                            <page name="sec_dti_registration_information" string="SEC/DTI REGISTRATION">
                                 <group>
                                     <group>
                                         <field name="registration_number"
@@ -280,7 +280,7 @@
 
                             </page>
 
-                            <page name="regulatory_information" string="REGULATORY INFORMATION">
+                            <page name="regulatory_information" string="REGULATORY">
                                 <p>
                                     Is the Entity regulated or accredited by or is a license holder issued by any of the
                                     following Government Regulatory Agencies?
@@ -334,7 +334,7 @@
                                 </group>
                             </page>
 
-                            <page name="social_security_information" string="SOCIAL SECURITY INFORMATION">
+                            <page name="social_security_information" string="SOCIAL SECURITY">
                                 <group col="3">
                                     <group>
                                         <field name="sss"
@@ -397,11 +397,11 @@
                             <!--                            </page>-->
                         </notebook>
                     </sheet>
-                    <!--                    <div class="oe_chatter">-->
-                    <!--                        &lt;!&ndash;                        <field name="message_follower_ids"/>&ndash;&gt;-->
-                    <!--                        <field name="activity_ids"/>-->
-                    <!--                        <field name="message_ids"/>-->
-                    <!--                    </div>-->
+                    <div class="oe_chatter">
+                        <!--                        <field name="message_follower_ids"/>-->
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
                 </form>
             </field>
         </record>
@@ -426,7 +426,7 @@
         <record id="maintain_client_profile_action" model="ir.actions.act_window">
             <field name="name">Client Profile</field>
             <field name="res_model">client.profile</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">form</field>
             <field name="domain">[('state','=','draft')]</field>
         </record>
 
