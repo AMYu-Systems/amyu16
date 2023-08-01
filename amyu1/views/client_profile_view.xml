@@ -9,7 +9,7 @@
                     <field name="name"/>
                     <field name="client_system_generated"/>
                     <field name="associate_id"/>
-                    <field name="associates_cluster"/>
+                    <field name="cluster_id"/>
                 </tree>
             </field>
         </record>
@@ -368,11 +368,11 @@
                                     <group>
                                         <field name="associate_id" options="{'no_open': True,'no_create':True}"
                                                attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
-                                        <field name="associates_supervisor"/>
+                                        <field name="supervisor_id" options="{'no_open': True}"/>
                                     </group>
                                     <group>
-                                        <field name="associates_manager"/>
-                                        <field name="associates_cluster"/>
+                                        <field name="manager_id" options="{'no_open': True}"/>
+                                        <field name="cluster_id" options="{'no_open': True}"/>
                                     </group>
                                 </group>
                                 <group string="Escalation Matrix"/>

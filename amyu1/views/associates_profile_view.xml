@@ -7,9 +7,6 @@
             <field name="arch" type="xml">
                 <kanban create="false">
                     <field name="name"/>
-                    <field name="associates_cluster"/>
-                    <field name="associates_supervisor"/>
-                    <field name="associates_manager"/>
                     <field name="id"/>
                     <field name="associates_image"/>
                     <templates>
@@ -24,9 +21,9 @@
                                             <field name="name"/>
                                         </h6>
                                     </div>
-                                    <div class="oe_kanban_description">
-                                        <field name="position"/>
-                                    </div>
+                                    <!--                                    <div class="oe_kanban_description">-->
+                                    <!--                                        <field name="position"/>-->
+                                    <!--                                    </div>-->
                                 </div>
                             </div>
                         </t>
@@ -46,24 +43,16 @@
                         </div>
                         <group>
                             <group>
-                                <field name="name"/>
-                                <field name="associates_cluster"/>
-                                <field name="position"/>
-                            </group>
-                            <group>
-                                <field name="associates_supervisor"/>
-                                <field name="associates_manager"/>
+                                <field name="name" default="lambda self, *args, **kwargs: self.env.user.login"/>
                             </group>
                         </group>
-                        <sheet>
-                            <field name="client_profile_ids" widget="grouped_view_widget">
-                                <tree>
-                                    <field name="name"/>
-                                    <field name="client_system_generated"/>
-                                    <field name="date_of_engagement" string="Engagement Date"/>
-                                </tree>
-                            </field>
-                        </sheet>
+                        <field name="client_profile_ids" widget="grouped_view_widget">
+                            <tree>
+                                <field name="name"/>
+                                <field name="client_system_generated"/>
+                                <field name="date_of_engagement" string="Engagement Date"/>
+                            </tree>
+                        </field>
                     </sheet>
                 </form>
             </field>
@@ -75,9 +64,6 @@
             <field name="arch" type="xml">
                 <tree>
                     <field name="name"/>
-                    <field name="associates_cluster"/>
-                    <field name="associates_supervisor"/>
-                    <field name="associates_manager"/>
                 </tree>
             </field>
         </record>
@@ -88,10 +74,7 @@
             <field name="arch" type="xml">
                 <search>
                     <field name="name"
-                           filter_domain="['|','|','|',('name', 'ilike', self),('associates_cluster', 'ilike', self), ('associates_supervisor', 'ilike', self), ('associates_manager', 'ilike', self)]"/>
-                    <field name="associates_cluster"/>
-                    <field name="associates_supervisor"/>
-                    <field name="associates_manager"/>
+                           filter_domain="[('name', 'ilike', self)]"/>
                 </search>
             </field>
         </record>

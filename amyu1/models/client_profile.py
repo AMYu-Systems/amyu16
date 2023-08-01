@@ -33,10 +33,9 @@ class ClientProfile(models.Model):
                               ('approved', 'Approved'),
                               ('cancel', 'Returned')], default='draft', string="Status")
     associate_id = fields.Many2one(string="Associate", comodel_name="associates.profile")
-    associates_manager = fields.Char(string="Manager", related="associate_id.associates_manager", readonly=True)
-    associates_supervisor = fields.Char(string="Supervisor", related="associate_id.associates_supervisor",
-                                        readonly=True)
-    associates_cluster = fields.Char(string="Cluster", related="associate_id.associates_cluster", readonly=True)
+    manager_id = fields.Many2one(string="Manager", comodel_name="manager.tags")
+    supervisor_id = fields.Many2one(string="Supervisor", comodel_name="supervisor.tags")
+    cluster_id = fields.Many2one(string="Cluster", comodel_name="partner.tags")
     state_sequence = fields.Integer(compute='_compute_state_sequence', string='State Sequence', store=True)
 
     @api.depends('state')
