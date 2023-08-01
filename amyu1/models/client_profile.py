@@ -12,7 +12,7 @@ class ClientProfile(models.Model):
     name = fields.Char(string="Client Name", required=True)
     is_company = fields.Selection([('individual', 'Individual'), ('company', 'Company')], default="company")
     image_101 = fields.Image(string="Image")
-    organization_type = fields.Many2one(string="Organization Type", comodel_name="res.partner.category")
+    organization_type = fields.Many2one(string="Organization Type", comodel_name="organization.type")
     industry_class = fields.Many2one(string="Industry Class", comodel_name="res.partner.industry")
     nature_of_business = fields.Text(string="Nature of Activities, Brands, Product & Services")
     date_of_engagement = fields.Date(string="Date of Engagement")
