@@ -24,7 +24,7 @@
     # always loaded
     'data': [
         'security/ir.model.access.csv',
-        'views/cpms_groups.xml',
+        'security/cpms_groups.xml',
         'views/state_view.xml',
         'views/associates_profile_view.xml',
         'views/client_profile_view.xml',
