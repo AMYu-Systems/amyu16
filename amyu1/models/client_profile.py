@@ -8,6 +8,7 @@ class ClientProfile(models.Model):
     _name = 'client.profile'
     _description = "Profile"
     _inherit = ['mail.thread', 'mail.activity.mixin']
+    inherit_id = "web.assets_backend"
 
     name = fields.Char(string="Client Name", required=True)
     is_company = fields.Selection([('individual', 'Individual'), ('company', 'Company')], default="company")
@@ -33,9 +34,9 @@ class ClientProfile(models.Model):
                               ('approved', 'Approved'),
                               ('cancel', 'Returned')], default='draft', string="Status")
     associate_id = fields.Many2one(string="Associate", comodel_name="associates.profile")
-    manager_id = fields.Many2one(string="Manager", comodel_name="manager.tags")
-    supervisor_id = fields.Many2one(string="Supervisor", comodel_name="supervisor.tags")
-    cluster_id = fields.Many2one(string="Cluster", comodel_name="partner.tags")
+    manager_id = fields.Many2one(string="Manager", related="associate_id.manager_id", readonly=True)
+    supervisor_id = fields.Many2one(string="Supervisor", related="associate_id.supervisor_id", readonly=True)
+    cluster_id = fields.Many2one(string="Cluster", related="associate_id.cluster_id", readonly=True)
     state_sequence = fields.Integer(compute='_compute_state_sequence', string='State Sequence', store=True)
 
     @api.depends('state')

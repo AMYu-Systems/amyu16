@@ -74,7 +74,7 @@
                         </group>
 
                         <notebook>
-                            <page string="CONTACT" class="oe_highlight">
+                            <page string="CONTACT">
                                 <group string="Registered Address">
                                     <group>
                                         <field name="unit_no"
@@ -438,6 +438,5 @@
             <field name="padding">5</field>
             <field name="number_increment">1</field>
         </record>
-
     </data>
 </odoo>

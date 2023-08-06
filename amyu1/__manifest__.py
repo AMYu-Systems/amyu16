@@ -35,9 +35,8 @@
         'views/escalation_contact.xml',
         'views/client_records_views.xml',
         'views/cmps_menu_view.xml',
-
     ],
     'application': True,
-    'license': 'LGPL-3'
+    'license': 'LGPL-3',
 
 }

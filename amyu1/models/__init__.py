@@ -8,3 +8,4 @@ from . import organization_type
 from . import supervisor_list
 from . import manager_list
 from . import partner_list
+# from . import res_partner
