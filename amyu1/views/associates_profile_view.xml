@@ -8,22 +8,25 @@
                 <kanban create="false">
                     <field name="name"/>
                     <field name="id"/>
-                    <field name="associates_image"/>
+                    <field name="user_image"/>
                     <templates>
                         <t t-name="kanban-box">
                             <div t-attf-class="oe_kanban_global_click">
                                 <div class="o_kanban_image">
-                                    <field name="associates_image" widget="image" options="{'zoom':True}"/>
+                                    <field name="user_image" widget="image" options="{'zoom': true}"
+                                           class="oe_avatar"/>
                                 </div>
                                 <div class="oe_kanban_details">
                                     <div class="oe_kanban_title">
-                                        <h6>
+                                        <h2>
                                             <field name="name"/>
-                                        </h6>
+                                        </h2>
                                     </div>
-                                    <!--                                    <div class="oe_kanban_description">-->
-                                    <!--                                        <field name="position"/>-->
-                                    <!--                                    </div>-->
+                                    <div class="oe_kanban_description">
+                                        <span style="font-weight: bold; color: blue;">
+                                            <field name="cluster_id"/>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </t>
@@ -39,7 +42,7 @@
                 <form>
                     <sheet>
                         <div>
-                            <field name="associates_image" widget="image" nolabel="1" class="oe_avatar"/>
+                            <field name="user_image" widget="image" nolabel="1" class="oe_avatar"/>
                         </div>
                         <group>
                             <group>
@@ -72,6 +75,9 @@
             <field name="arch" type="xml">
                 <tree>
                     <field name="name"/>
+                    <field name="supervisor_id"/>
+                    <field name="manager_id"/>
+                    <field name="cluster_id"/>
                 </tree>
             </field>
         </record>

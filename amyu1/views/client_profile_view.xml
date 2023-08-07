@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <data>
-        <record id="client_profile_list_view" model="ir.ui.view">
-            <field name="name">client.profile.list.view</field>
+        <record id="client_profile_tree_view" model="ir.ui.view">
+            <field name="name">client.profile.tree.view</field>
             <field name="model">client.profile</field>
             <field name="arch" type="xml">
                 <tree>
@@ -426,7 +426,7 @@
         <record id="maintain_client_profile_action" model="ir.actions.act_window">
             <field name="name">Client Profile</field>
             <field name="res_model">client.profile</field>
-            <field name="view_mode">form</field>
+            <field name="view_mode">tree,form</field>
             <field name="domain">[('state','=','draft')]</field>
         </record>
 
