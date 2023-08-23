@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <data>
-        <record id="corporate_officer_list_view" model="ir.ui.view">
-            <field name="name">corporate.officer.list.view</field>
+        <record id="corporate_officer_tree_view" model="ir.ui.view">
+            <field name="name">corporate.officer.tree.view</field>
             <field name="model">corporate.officer</field>
             <field name="arch" type="xml">
                 <tree editable="bottom" create="1" edit="1" delete="0">

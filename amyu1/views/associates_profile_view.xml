@@ -8,13 +8,12 @@
                 <kanban create="false">
                     <field name="name"/>
                     <field name="id"/>
-                    <field name="user_image"/>
+                     <field name="image"/>
                     <templates>
                         <t t-name="kanban-box">
                             <div t-attf-class="oe_kanban_global_click">
                                 <div class="o_kanban_image">
-                                    <field name="user_image" widget="image" options="{'zoom': true}"
-                                           class="oe_avatar"/>
+                                   <field name="image" widget="image" class="oe_avatar"/>
                                 </div>
                                 <div class="oe_kanban_details">
                                     <div class="oe_kanban_title">
@@ -42,19 +41,23 @@
                 <form>
                     <sheet>
                         <div>
-                            <field name="user_image" widget="image" nolabel="1" class="oe_avatar"/>
+                             <field name="image" widget="image" class="oe_avatar"/>
                         </div>
                         <group>
                             <group>
-                                <field name="name" options="{'no_edit': True, 'no_create': True,'no_open': True}"/>
+                                <field name="name" options="{'no_edit': True, 'no_create': True,'no_open': True}"
+                                       attrs="{'readonly': [('id', '!=', False)]}"/>
                                 <field name="supervisor_id"
-                                       options="{'no_edit': True, 'no_create': True,'no_open': True}"/>
+                                       options="{'no_edit': True, 'no_create': True,'no_open': True}"
+                                       attrs="{'readonly': [('id', '!=', False)]}"/>
                             </group>
                             <group>
                                 <field name="manager_id"
-                                       options="{'no_edit': True, 'no_create': True,'no_open': True}"/>
+                                       options="{'no_edit': True, 'no_create': True,'no_open': True}"
+                                       attrs="{'readonly': [('id', '!=', False)]}"/>
                                 <field name="cluster_id"
-                                       options="{'no_edit': True, 'no_create': True,'no_open': True}"/>
+                                       options="{'no_edit': True, 'no_create': True,'no_open': True}"
+                                       attrs="{'readonly': [('id', '!=', False)]}"/>
                             </group>
                         </group>
                         <field name="client_profile_ids" widget="grouped_view_widget">
@@ -69,8 +72,8 @@
             </field>
         </record>
 
-        <record id="associates_profile_list_view" model="ir.ui.view">
-            <field name="name">associates.profile.list.view</field>
+        <record id="associates_profile_tree_view" model="ir.ui.view">
+            <field name="name">associates.profile.tree.view</field>
             <field name="model">associates.profile</field>
             <field name="arch" type="xml">
                 <tree>
@@ -87,8 +90,11 @@
             <field name="model">associates.profile</field>
             <field name="arch" type="xml">
                 <search>
-                    <field name="name"
-                           filter_domain="[('name', 'ilike', self)]"/>
+                    <field name="name" filter_domain="[('name', 'ilike', self)]"/>
+                    <field name="client_profile_ids"/>
+                    <searchpanel>
+                        <field name="cluster_id" enable_counters="1" string="Cluster Overview"/>
+                    </searchpanel>
                 </search>
             </field>
         </record>

@@ -25,9 +25,10 @@
     'data': [
         'security/ir.model.access.csv',
         'security/cpms_groups.xml',
-        'views/state_view.xml',
+        'views/cpms_state_view.xml',
         'views/associates_profile_view.xml',
         'views/client_profile_view.xml',
+        'views/cpms_client_list_view.xml',
         'views/supervisor_view.xml',
         'views/manager_view.xml',
         'views/corporate_officer_view.xml',

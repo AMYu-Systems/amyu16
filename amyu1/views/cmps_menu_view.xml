@@ -8,10 +8,14 @@
                   name="General"
                   sequence="1"
                   parent="cpms_root_menu"/>
-        <menuitem id="menu_general"
+        <menuitem id="menu_general_profile"
                   name="Profile"
                   parent="menu_general_root"
                   action="maintain_associates_profile_action"/>
+        <menuitem id="menu_general_client"
+                  name="Client"
+                  parent="menu_general_root"
+                  action="client_list_action"/>
         <menuitem id="menu_accounts_root"
                   name="Accounts"
                   sequence="2"

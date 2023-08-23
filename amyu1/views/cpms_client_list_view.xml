@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <record id="client_tree_view" model="ir.ui.view">
+            <field name="name">client.tree.view</field>
+            <field name="model">client.profile</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="associate_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="client_list_action" model="ir.actions.act_window">
+            <field name="name">Client List</field>
+            <field name="res_model">client.profile</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+    </data>
+</odoo>
