@@ -25,8 +25,6 @@ class ClientProfile(models.Model):
     advisory_consultancy = fields.Boolean(string="Advisory & Consultancy")
     compilation = fields.Boolean(string="Compilation")
     others = fields.Char(string="Others")
-    client_record_ids = fields.One2many(string="Client Record", comodel_name="client.records",
-                                        inverse_name="client_profile_id")
     state = fields.Selection([('draft', 'Draft'),
                               ('supervisor', 'Supervisor'),
                               ('manager', 'Manager'),
@@ -360,28 +358,3 @@ class ClientProfile(models.Model):
     # upload_file = fields.Binary(string='File', attachment=True)
     # file_name = fields.Char(string='Filename')
     # year_field = fields.Date(string="Year")
-
-
-class ClientRecords(models.Model):
-    _name = 'client.records'
-    _rec_name = "file_name"
-    _description = "Records"
-
-    upload_file = fields.Binary(string='File', attachment=True)
-    file_name = fields.Char(string='Filename')
-    client_profile_id = fields.Many2one(string="Client Profile", comodel_name="client.profile")
-
-    @api.model
-    def year_selection(self):
-        year = 2000  # replace 2000 with a start year
-        year_list = []
-        while year != 2030:  # replace 2030 with your end year
-            year_list.append((str(year), str(year)))
-            year += 1
-        return year_list
-
-    year_field = fields.Selection(
-        year_selection,
-        string="Year",
-        default="2023",  # as a default value it would be 2019
-    )

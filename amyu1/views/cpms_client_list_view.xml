@@ -5,17 +5,20 @@
             <field name="name">client.tree.view</field>
             <field name="model">client.profile</field>
             <field name="arch" type="xml">
-                <tree>
+                <tree create="False">
                     <field name="name"/>
                     <field name="associate_id"/>
+                    <field name="supervisor_id" groups="amyu1.manager_group"/>
+                    <field name="supervisor_id" groups="amyu1.cluster_group"/>
                 </tree>
             </field>
         </record>
 
-        <record id="client_list_action" model="ir.actions.act_window">
+        <record id="client_tree_action" model="ir.actions.act_window">
             <field name="name">Client List</field>
             <field name="res_model">client.profile</field>
             <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="client_tree_view"/>
         </record>
     </data>
 </odoo>

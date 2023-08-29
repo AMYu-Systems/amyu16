@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <record id="user_tree_view" model="ir.ui.view">
+            <field name="name">user.tree.view</field>
+            <field name="model">cpms.users</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="work_job_id"/>
+                    <field name="supervisor_id"/>
+                    <field name="manager_id"/>
+                    <field name="lead_partner_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="user_form_view" model="ir.ui.view">
+            <field name="name">user.form.view</field>
+            <field name="model">cpms.users</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="supervisor_id"/>
+                                <field name="manager_id"/>
+                            </group>
+                            <group>
+                                <field name="work_job_id"/>
+                                <field name="lead_partner_id"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="user_tree_action" model="ir.actions.act_window">
+            <field name="name">User Details</field>
+            <field name="res_model">cpms.users</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+    </data>
+</odoo>

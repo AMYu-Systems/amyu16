@@ -7,8 +7,9 @@
             <field name="arch" type="xml">
                 <tree>
                     <field name="name"/>
+                    <field name="client_system_generated"/>
                     <field name="associate_id"/>
-                    <field name="supervisor_id" attrs="{'invisible': [('id', '=', 'manager_id')]}" />
+                    <field name="cluster_id"/>
                 </tree>
             </field>
         </record>
@@ -50,25 +51,25 @@
                         </div>
                         <div class="oe_title">
                             <field name="is_company" widget="radio" options="{'horizontal':True}" nolabel="1"
-                                   attrs="{'readonly': [('id', '!=', False)]}"/>
+                                   attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                             <h1>
                                 <field name="name" placeholder="e.g. Lumber Inc"
-                                       attrs="{'readonly': [('id', '!=', False)]}"/>
+                                       attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                             </h1>
                         </div>
                         <group>
                             <group>
                                 <field name="client_system_generated" readonly="1" placeholder="System generated"/>
                                 <field name="organization_type" options="{'no_open': True}"
-                                       attrs="{'readonly': [('id', '!=', False)]}"/>
+                                       attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                 <field name="nature_of_business" widget="textarea"
-                                       attrs="{'readonly': [('id', '!=', False)]}"/>
+                                       attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                             </group>
                             <group>
                                 <field name="date_of_engagement"
-                                       attrs="{'readonly': [('id', '!=', False)]}"/>
+                                       attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                 <field name="industry_class" options="{'no_open': True}"
-                                       attrs="{'readonly': [('id', '!=', False)]}"/>
+                                       attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                             </group>
                         </group>
 
@@ -77,113 +78,113 @@
                                 <group string="Registered Address">
                                     <group>
                                         <field name="unit_no"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <field name="street"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <field name="city"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <field name="landline" widget="phone"
                                                placeholder="Example: 02-8236-4935(Loc:)"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <field name="facsimile_no" widget="phone"
                                                placeholder="Example: 02-8236-4935(Loc:)"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                     </group>
                                     <group>
                                         <field name="building_name"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <field name="district"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <field name="zip"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <field name="website" widget="website"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                     </group>
                                 </group>
 
                                 <group string="Accounting or Office Admin Address">
                                     <group>
                                         <field name="unit_no2"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <field name="street2"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <field name="city2"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <field name="primary_contact_person"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <field name="landline2" widget="phone"
                                                placeholder="Example: 02-8236-4935(Loc:)"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <field name="principal_accounting_officer"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <field name="landline3" widget="phone"
                                                placeholder="Example: 02-8236-4935(Loc:)"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                     </group>
                                     <group>
                                         <field name="building_name2"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <field name="district2"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <field name="zip2"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <field name="mobile_number" widget="phone"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <field name="email_address" widget="email"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <field name="mobile_number2" widget="phone"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <field name="email_address2" widget="email"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                     </group>
                                 </group>
                                 <group string="Corporate Officers"/>
                                 <field name="corporate_ids"
-                                       attrs="{'readonly': [('id', '!=', False)]}"/>
+                                       attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                             </page>
 
                             <page name="bir_registration_information" string="BIR REGISTRATION">
                                 <group col="3">
                                     <group>
                                         <field name="vat" placeholder="e.g 000-000-000"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                     </group>
                                     <group>
                                         <field name="rdo_code" placeholder="e.g 000"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                     </group>
                                     <group>
                                         <field name="registration_date" string="Registration Date" widget="date"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                     </group>
                                 </group>
                                 <group string="Tax Types" col="3">
                                     <group>
                                         <field name="income_tax" nolabel="1"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <label for="income_tax"/>
                                         <field name="excise_tax" nolabel="1"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <label for="excise_tax"/>
                                         <field name="value_added_tax" nolabel="1"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <label for="value_added_tax"/>
                                     </group>
                                     <group>
                                         <field name="withholding_tax_expanded" nolabel="1"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <label for="withholding_tax_expanded"/>
                                         <field name="withholding_tax_compensation" nolabel="1"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <label for="withholding_tax_compensation"/>
                                         <field name="registration_fee" nolabel="1"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <label for="registration_fee"/>
                                     </group>
                                     <group>
                                         <group colspan="2">
                                             <field name="other_percentage_tax" nolabel="1"
-                                                   attrs="{'readonly': [('id', '!=', False)]}"/>
+                                                   attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                             <label for="other_percentage_tax"/>
                                         </group>
                                         <field name="other_percentage_tax1" nolabel="1"
@@ -194,19 +195,19 @@
                                 <group col="2" string="">
                                     <group>
                                         <field name="tax_type"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <field name="invoice_tax"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <field name="filing_payment"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                     </group>
                                     <group>
                                         <field name="books_of_account"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <field name="psic_psoc"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <field name="ll_cas_permit_no"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                     </group>
                                 </group>
                                 <p>
@@ -214,7 +215,7 @@
                                     Purpose(SPM) Machines?
                                     <field name="ask" style="margin-left: 20px;" widget="radio"
                                            options="{'horizontal':True}"
-                                           attrs="{'readonly': [('id', '!=', False)]}"/>
+                                           attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                 </p>
                             </page>
 
@@ -222,13 +223,13 @@
                                 <group>
                                     <group>
                                         <field name="registration_number"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <field name="trade_name"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                     </group>
                                     <group>
                                         <field name="registration_date_sec" string="Registration Date" widget="date"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                     </group>
                                 </group>
 
@@ -246,7 +247,7 @@
                                     <group string="Paid-Up">
                                     </group>
                                     <field name="class_shares_id"
-                                           attrs="{'readonly': [('id', '!=', False)]}"/>
+                                           attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                 </group>
                                 <group col="3">
                                     <p>
@@ -254,12 +255,12 @@
                                     </p>
                                     <group>
                                         <field name="date_per_law"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                     </group>
                                     <group>
                                         <field name="actual_date_meeting" string="Actual Date of Meeting"
                                                widget="date"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                     </group>
                                 </group>
                                 <p>
@@ -269,7 +270,7 @@
                                     <field name="ask_1" style="margin-left: 20px;" widget="radio"
                                            options="{'horizontal':True}"
                                            nolabel="1"
-                                           attrs="{'readonly': [('id', '!=', False)]}"/>
+                                           attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                     If Yes, what type of security is the Company permitted to sell?
                                 </p>
                                 <p>
@@ -285,47 +286,47 @@
                                     following Government Regulatory Agencies?
                                     <field name="ask_3" style="margin-left: 20px; margin-bottom:10px; " widget="radio"
                                            options="{'horizontal':True}"
-                                           attrs="{'readonly': [('id', '!=', False)]}"/>
+                                           attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                 </p>
                                 <group col="2">
                                     <group>
                                         <field name="bangko_sentral_pilipinas" nolabel="1"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <label for="bangko_sentral_pilipinas"/>
                                         <field name="bureau_of_custom" nolabel="1"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <label for="bureau_of_custom"/>
                                         <field name="construction_industry_authority_philippines" nolabel="1"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <label for="construction_industry_authority_philippines"/>
                                         <field name="cooperative_development_authority" nolabel="1"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <label for="cooperative_development_authority"/>
                                         <field name="insurance_commission" nolabel="1"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <label for="insurance_commission"/>
                                         <field name="integrated_bar_philippines" nolabel="1"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <label for="integrated_bar_philippines"/>
                                     </group>
                                     <group>
                                         <field name="land_transportation_franchising_regulatory_board" nolabel="1"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <label for="land_transportation_franchising_regulatory_board"/>
                                         <field name="philippine_amusement_gaming_corporation" nolabel="1"
-                                               aattrs="{'readonly': [('id', '!=', False)]}"/>
+                                               aattrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <label for="philippine_amusement_gaming_corporation"/>
                                         <field name="philippines_council_ngo_certification" nolabel="1"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <label for="philippines_council_ngo_certification"/>
                                         <field name="philippines_stock_exchange" nolabel="1"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <label for="philippines_stock_exchange"/>
                                         <field name="professional_regulation_commission" nolabel="1"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <label for="professional_regulation_commission"/>
                                         <field name="others_ri" nolabel="1"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <label for="others_ri"/>
                                         <field name="others_reg" nolabel="1" colspan="2"
                                                attrs="{'invisible': [('others_ri', '=', False)]}"/>
@@ -337,27 +338,27 @@
                                 <group col="3">
                                     <group>
                                         <field name="sss"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <field name="phic"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <field name="hdmf"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                     </group>
                                     <group>
                                         <field name="sss_filing"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <field name="phic_filing"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <field name="hdmf_filing"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                     </group>
                                     <group>
                                         <field name="sss_pay"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <field name="phic_pay"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                         <field name="hdmf_pay"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                                               attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                                     </group>
                                 </group>
                             </page>
@@ -365,13 +366,12 @@
                             <page name="engagement_administration" string="ENGAGEMENT ADMINISTRATION">
                                 <group name="engagement_team" string="Engagement Team">
                                     <group>
-                                        <field name="associate_id" options="{'no_open': True,'no_create':True}"
-                                               attrs="{'readonly': [('id', '!=', False)]}"/>
-                                        <field name="supervisor_id" options="{'no_open': True}"/>
+                                        <field name="associate_id" attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
+                                        <field name="supervisor_id"/>
                                     </group>
                                     <group>
-                                        <field name="manager_id" options="{'no_open': True}"/>
-                                        <field name="cluster_id" options="{'no_open': True}"/>
+                                        <field name="manager_id"/>
+                                        <field name="cluster_id"/>
                                     </group>
                                 </group>
                                 <group string="Escalation Matrix"/>
@@ -380,7 +380,7 @@
                                     and follow-up requests shall be escalated as:
                                 </p>
                                 <field name="escalation"
-                                       attrs="{'readonly': [('id', '!=', False)]}"/>
+                                       attrs="{'readonly': ['|', ('state', '=', 'supervisor'), ('state', '=', 'manager')]}"/>
                             </page>
 
                             <!--                            <page name="working_papers" string="Working Papers">-->
