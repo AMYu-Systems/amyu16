@@ -36,5 +36,13 @@
                   name="Manager Approval"
                   action="client_profile_manager_action"
                   parent="menu_accounts_root"/>
+        <menuitem id="menu_dashboard_root"
+                  name="Dashboard"
+                  sequence="3"
+                  parent="cpms_root_menu"/>
+        <menuitem id="menu_dashboard_report"
+                  name="Report"
+                  action="master_list_action"
+                  parent="menu_dashboard_root"/>
     </data>
 </odoo>

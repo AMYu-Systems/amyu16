@@ -6,4 +6,4 @@ class OrganizationType(models.Model):
     _description = "Tags"
 
     name = fields.Char(string="Organization Type")
-    active = fields.Boolean(string="Active",default=True)
+    active = fields.Boolean(string="Active", default=True)

@@ -16,4 +16,60 @@
         <field name="name">Partner</field>
     </record>
 
+    <record id="cpms_client_profile_rule" model="ir.rule">
+        <field name="name">User Own Client Documents</field>
+        <field name="model_id" ref="model_client_profile"/>
+        <field name="domain_force">[('create_uid', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('amyu1.associate_group'))]"/>
+    </record>
+
+    <record id="cpms_associate_profile_rule" model="ir.rule">
+        <field name="name">User Own Profile</field>
+        <field name="model_id" ref="model_associate_profile"/>
+        <field name="domain_force">[('create_uid', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('amyu1.associate_group'))]"/>
+    </record>
+
+     <record id="supervisor_client_profile_rule" model="ir.rule">
+        <field name="name">Supervisor see Client Documents</field>
+        <field name="model_id" ref="model_client_profile"/>
+        <field name="domain_force">[('supervisor_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('amyu1.supervisor_group'))]"/>
+    </record>
+
+    <record id="supervisor_associate_profile_rule" model="ir.rule">
+        <field name="name">Supervisor see Profile</field>
+        <field name="model_id" ref="model_associate_profile"/>
+        <field name="domain_force">[('supervisor_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('amyu1.supervisor_group'))]"/>
+    </record>
+
+    <record id="manager_client_profile_rule" model="ir.rule">
+        <field name="name">Manager see Client Documents</field>
+        <field name="model_id" ref="model_client_profile"/>
+        <field name="domain_force">[('manager_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('amyu1.manager_group'))]"/>
+    </record>
+
+    <record id="manager_associate_profile_rule" model="ir.rule">
+        <field name="name">Manager see Profile</field>
+        <field name="model_id" ref="model_associate_profile"/>
+        <field name="domain_force">[('manager_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('amyu1.manager_group'))]"/>
+    </record>
+
+     <record id="partners_client_profile_rule" model="ir.rule">
+        <field name="name">Partner see Client Documents</field>
+        <field name="model_id" ref="model_client_profile"/>
+        <field name="domain_force">[('lead_partner_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('amyu1.cluster_group'))]"/>
+    </record>
+
+    <record id="partners_associate_profile_rule" model="ir.rule">
+        <field name="name">Partner see Profile</field>
+        <field name="model_id" ref="model_associate_profile"/>
+        <field name="domain_force">[('lead_partner_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('amyu1.cluster_group'))]"/>
+    </record>
+
 </odoo>
