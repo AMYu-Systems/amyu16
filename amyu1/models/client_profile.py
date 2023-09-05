@@ -15,7 +15,7 @@ class ClientProfile(models.Model):
     organization_type = fields.Many2one(string="Organization Type", comodel_name="organization.type")
     industry_class = fields.Many2one(string="Industry Class", comodel_name="res.partner.industry")
     nature_of_business = fields.Text(string="Nature of Activities, Brands, Product & Services")
-    date_of_engagement = fields.Date(string="Date of Engagement")
+    date_of_engagement = fields.Date(string="Date of Engagement", required=True)
     client_system_generated = fields.Char(string="Client ID")
     tax_reporting_compliance = fields.Boolean(string="Tax Reporting & Compliance")
     annual_registration_update = fields.Boolean(string="Annual Registration Update")
@@ -30,12 +30,13 @@ class ClientProfile(models.Model):
                               ('manager', 'Manager'),
                               ('approved', 'Approved'),
                               ('cancel', 'Returned')], default='draft', string="Status")
-    associate_id = fields.Many2one(string="Associate", comodel_name="associate.profile")
+    associate_id = fields.Many2one(string="Associate", comodel_name="associate.profile", required=True)
     manager_id = fields.Many2one(string="Manager", related="associate_id.manager_id", readonly=True)
     supervisor_id = fields.Many2one(string="Supervisor", related="associate_id.supervisor_id", readonly=True)
     cluster_id = fields.Many2one(string="Cluster", related="associate_id.cluster_id", readonly=True)
     lead_partner_id = fields.Many2one(string="Lead Partner", related="associate_id.lead_partner_id", readonly=True)
     state_sequence = fields.Integer(compute='_compute_state_sequence', string='State Sequence', store=True)
+    # client_fs_ids = fields.One2many(comodel_name='client.fs', inverse_name="client_fs_id", string="FS")
 
     @api.depends('state')
     def _compute_state_sequence(self):

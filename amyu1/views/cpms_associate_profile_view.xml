@@ -90,8 +90,8 @@
             <field name="model">associate.profile</field>
             <field name="arch" type="xml">
                 <search>
-                    <field name="name" filter_domain="[('name', 'ilike', self)]"/>
-                    <field name="job_work_id"/>
+                    <field name="name" filter_domain="['|',('name', 'ilike', self),('client_profile_ids', 'ilike', self)]" string="Associate"/>
+                    <field name="client_profile_ids"  string="Client"/>
                     <searchpanel>
                         <field name="job_work_id" enable_counters="1" groups="amyu1.supervisor_group" string="My Team"/>
                         <field name="team_id" enable_counters="1" groups="amyu1.manager_group" string="Manager Overview"/>
