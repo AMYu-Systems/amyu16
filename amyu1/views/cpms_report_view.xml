@@ -12,7 +12,6 @@
                     <field name="manager_id"/>
                     <field name="supervisor_id"/>
                     <field name="associate_id"/>
-                    <field name="supervisor_id" string="Checker"/>
                 </tree>
             </field>
         </record>

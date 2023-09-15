@@ -10,10 +10,37 @@ class ClientProfile(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
     name = fields.Char(string="Client Name", required=True)
+
+    @api.onchange('name')
+    def caps_name(self):
+        if self.name:
+            self.name = str(self.name).title()
+
     is_company = fields.Selection([('individual', 'Individual'), ('company', 'Company')], default="company")
     image_101 = fields.Image(string="Image")
-    organization_type = fields.Many2one(string="Organization Type", comodel_name="organization.type")
-    industry_class = fields.Many2one(string="Industry Class", comodel_name="res.partner.industry")
+    organization_type = fields.Selection(
+        [('sole_proprietor', 'Sole Proprietor'), ('general_partnership', 'General Partnership'),
+         ('general_professional', 'General Professional Partnership'),
+         ('domestic_stock', 'Domestic Stock Corporation'), ('domestic_nsnp', 'Domestic NSNP Corporation'),
+         ('foreign_corporation', 'Branch of Foreign Corporation'),
+         ('foreign_nsnp', 'Branch of Foreign NSNP Corporation'), ('rohq', 'ROHQ of Foreign Corporation'),
+         ('representative_officer', 'Representative Office')], string="Organization Type")
+    industry_class = fields.Selection(
+        [('agricultural', 'Agricultural Products & Farming Operations'), ('automotive', 'Automotive & Spare Parts'),
+         ('', ''), ('utilities', 'Energy, Utilities & Telecommunications'), ('financial_service', 'Financial Services'),
+         ('', ''), ('food', 'Food, Beverage & Restaurant Operations'),
+         ('organization', 'Foundations & Non-Profit Organizations'),
+         ('appliances', 'Furniture, Appliances & IT Equipment'), ('construction', 'Hardware & Construction Supplies'),
+         ('health', 'Healthcare & Pharmaceuticals'), ('hospital', 'Hospitality & Leisure'),
+         ('industrial', 'Industrial Manufacturing'),
+         ('information_technology', 'IT Services & Business Process Outsourcing'),
+         ('retail', 'Lifestyle & Retail Brands'), ('entertainment', 'Media & Entertainment'),
+         ('nothing', 'n.e.c. (not elsewhere classified)'),
+         ('', ''), ('other_service', 'Other Services'), ('print_service', 'Printing Services'),
+         ('consultancy', 'Professional & Consultancy Services'), ('transport', 'Public Transport Services'),
+         ('real_estate', 'Real Estate Development & Construction'),
+         ('stationery', 'Stationery & Paper Products'), ('logistic', 'Warehousing & Logistics')],
+        string="Industry Class")
     nature_of_business = fields.Text(string="Nature of Activities, Brands, Product & Services")
     date_of_engagement = fields.Date(string="Date of Engagement", required=True)
     client_system_generated = fields.Char(string="Client ID")
@@ -258,7 +285,7 @@ class ClientProfile(models.Model):
     email_address2 = fields.Char(string="Email Address")
     corporate_ids = fields.One2many(comodel_name='corporate.officer', inverse_name='client_profile_ids',
                                     string="Corporate Officers")
-    vat = fields.Char(string="Tax Id No.")
+    vat = fields.Char(string="Tax Id No.", widget='char_with_dashes_widget')
 
     @api.constrains('vat')
     def _validate_vat(self):
@@ -280,8 +307,9 @@ class ClientProfile(models.Model):
     income_tax = fields.Boolean(string="Income Tax")
     excise_tax = fields.Boolean(string="Excise Tax")
     value_added_tax = fields.Boolean(string="Value-added Tax")
-    withholding_tax_expanded = fields.Boolean(string="Withholding Tax-Expanded")
-    withholding_tax_compensation = fields.Boolean(string="Withholding Tax-Compensation")
+    withholding_tax_expanded = fields.Boolean(string="Withholding Tax - Expanded")
+    withholding_tax_compensation = fields.Boolean(string="Withholding Tax - Compensation")
+    withholding_tax_final = fields.Boolean(string="Withholding Tax - Final")
     registration_fee = fields.Boolean(string="Registration Fee")
     other_percentage_tax = fields.Boolean(string="Other Percentage Tax")
     other_percentage_tax1 = fields.Char()
@@ -310,6 +338,8 @@ class ClientProfile(models.Model):
                                       string="Class of Shares")
     ask_3 = fields.Selection([('yes', 'Yes'), ('no', 'No')], default="no")
     bureau_of_custom = fields.Boolean(string="Bureau of Customs")
+    attachment = fields.Binary(string='Attachment')
+    attachment_fname = fields.Char(string="Attachment Filename")
     bangko_sentral_pilipinas = fields.Boolean(string="Bangko Sentral ng Pilipinas")
     professional_regulation_commission = fields.Boolean(string="Professional Regulation Commission")
     philippines_council_ngo_certification = fields.Boolean(string="Philippine Council for NGO Certification")
@@ -318,7 +348,7 @@ class ClientProfile(models.Model):
     integrated_bar_philippines = fields.Boolean(string="Integrated Bar of the Philippines")
     philippines_stock_exchange = fields.Boolean(string="Philippine Stock Exchange")
     construction_industry_authority_philippines = fields.Boolean(
-        string="Construction Industry authority of the Philippines(PCAB)")
+        string="Construction Industry authority of the Philippines (PCAB)")
     philippine_amusement_gaming_corporation = fields.Boolean(string="Philippine Amusement and Gaming Corporation")
     land_transportation_franchising_regulatory_board = fields.Boolean(
         string="Land Transportation Franchising and Regulatory Board")
@@ -327,14 +357,14 @@ class ClientProfile(models.Model):
     sss = fields.Char(string="SSS ER No")
     phic = fields.Char(string="PHIC ER No")
     hdmf = fields.Char(string="HDMF ER No")
-    sss_filing = fields.Selection([('manual', 'Manual'), ('online', 'Online(AMS-CCL)')], string="Filing")
-    phic_filing = fields.Selection([('manual', 'Manual'), ('online', 'Online(ERPS)')], string="Filing")
-    hdmf_filing = fields.Selection([('manual', 'Manual'), ('online', 'Online(eSRS)')], string="Filing")
-    sss_pay = fields.Selection([('cash', 'Cash'), ('check', 'Check'), ('online_banking', 'Online Banking(EPS)')],
+    sss_filing = fields.Selection([('manual', 'Manual'), ('online', 'Online (AMS-CCL)')], string="Filing")
+    phic_filing = fields.Selection([('manual', 'Manual'), ('online', 'Online (ERPS)')], string="Filing")
+    hdmf_filing = fields.Selection([('manual', 'Manual'), ('online', 'Online (eSRS)')], string="Filing")
+    sss_pay = fields.Selection([('cash', 'Cash'), ('check', 'Check'), ('online_banking', 'Online Banking (EPS)')],
                                string="Payment")
-    phic_pay = fields.Selection([('cash', 'Cash'), ('check', 'Check'), ('online_banking', 'Online Banking(EPS)')],
+    phic_pay = fields.Selection([('cash', 'Cash'), ('check', 'Check'), ('online_banking', 'Online Banking (EPS)')],
                                 string="Payment")
-    hdmf_pay = fields.Selection([('cash', 'Cash'), ('check', 'Check'), ('online_banking', 'Online Banking(EPS)')],
+    hdmf_pay = fields.Selection([('cash', 'Cash'), ('check', 'Check'), ('online_banking', 'Online Banking (EPS)')],
                                 string="Payment")
     escalation = fields.One2many(comodel_name='escalation.contact', inverse_name='escalation_id',
                                  string="Escalation Point")

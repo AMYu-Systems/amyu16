@@ -58,7 +58,7 @@
             <field name="name">associate.profile.form.view</field>
             <field name="model">associate.profile</field>
             <field name="arch" type="xml">
-                <form>
+                <form create="false">
                     <div>
                         <field name="image" widget="image" nolabel="1" class="oe_avatar"
                                attrs="{'readonly': [('id', '!=', False)]}"/>
