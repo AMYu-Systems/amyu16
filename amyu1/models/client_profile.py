@@ -62,22 +62,29 @@ class ClientProfile(models.Model):
     supervisor_id = fields.Many2one(string="Supervisor", related="associate_id.supervisor_id", readonly=True)
     cluster_id = fields.Many2one(string="Cluster", related="associate_id.cluster_id", readonly=True)
     lead_partner_id = fields.Many2one(string="Lead Partner", related="associate_id.lead_partner_id", readonly=True)
-    state_sequence = fields.Integer(compute='_compute_state_sequence', string='State Sequence', store=True)
+    state_sequence = fields.Char(compute='_compute_state_sequence', string='Progress Status', store=True)
+
     # client_fs_ids = fields.One2many(comodel_name='client.fs', inverse_name="client_fs_id", string="FS")
+    # is_editable = fields.Boolean(default=False)
+    #
+    # def toggle_edit_mode(self):
+    #     for record in self:
+    #         record.is_editable = not record.is_editable
 
     @api.depends('state')
     def _compute_state_sequence(self):
         for record in self:
             if record.state == 'draft':
-                record.state_sequence = 1
+                record.state_sequence = '1.Draft'
             elif record.state == 'supervisor':
-                record.state_sequence = 2
+                record.state_sequence = '2.Supervisor'
             elif record.state == 'manager':
-                record.state_sequence = 3
+                record.state_sequence = '3.Manager'
             elif record.state == 'approved':
-                record.state_sequence = 4
+                record.state_sequence = '4.Approved'
+
             else:
-                record.state_sequence = 0
+                record.state_sequence = 'Unknown'
 
     def draft_action(self):
         self.state = 'draft'
@@ -201,7 +208,7 @@ class ClientProfile(models.Model):
     street = fields.Char(string="Street")
     district = fields.Char(string="District/Barangay/Village")
     city = fields.Char(string="City")
-    zip = fields.Char(string="Zip Code")
+    zip = fields.Char(string="Zip Code", size=4)
 
     @api.constrains('zip')
     def _validate_zip(self):
@@ -210,23 +217,23 @@ class ClientProfile(models.Model):
             if record.zip and not re.match(pattern, record.zip):
                 raise ValidationError('Invalid Zip Code!')
 
-    landline = fields.Char(string="Telephone")
+    landline = fields.Char(string="Telephone", help="This field includes a hyphen", size=13)
 
     @api.constrains('landline')
     def _validate_landline(self):
         for record in self:
-            pattern = r'^\d{2}-\d{4}-\d{4}\(\d{3}\)$'
+            pattern = r'^\d{4}-\d{4}-\d{3}$'
             if record.landline and not re.match(pattern, record.landline):
-                raise ValidationError('Invalid telephone number format!')
+                raise ValidationError('Invalid telephone number format ex:0000-0000-local number!')
 
-    facsimile_no = fields.Char(string="Facsimile")
+    facsimile_no = fields.Char(string="Facsimile", help="This field includes a hyphen", size=13)
 
     @api.constrains('facsimile_no')
     def _validate_facsimile_no(self):
         for record in self:
-            pattern = r'^\d{2}-\d{4}-\d{4}\(\d{3}\)$'
+            pattern = r'^\d{4}-\d{4}-\d{3}$'
             if record.facsimile_no and not re.match(pattern, record.facsimile_no):
-                raise ValidationError('Invalid telephone number format!')
+                raise ValidationError('Invalid telephone number format ex:0000-0000-local number!')
 
     website = fields.Char(string="Website")
     unit_no2 = fields.Char(string="Unit/Floor")
@@ -234,7 +241,7 @@ class ClientProfile(models.Model):
     street2 = fields.Char(string="Street")
     district2 = fields.Char(string="District/Barangay/Village")
     city2 = fields.Char(string="City")
-    zip2 = fields.Char(string="Zip Code")
+    zip2 = fields.Char(string="Zip Code", size=4)
 
     @api.constrains('zip2')
     def _validate_zip2(self):
@@ -243,14 +250,14 @@ class ClientProfile(models.Model):
             if record.zip2 and not re.match(pattern, record.zip2):
                 raise ValidationError('Invalid Zip Code!')
 
-    landline2 = fields.Char(string="Telephone")
+    landline2 = fields.Char(string="Telephone", help="This field includes a hyphen", size=13)
 
     @api.constrains('landline2')
     def _validate_landline2(self):
         for record in self:
-            pattern = r'^\d{2}-\d{4}-\d{4}\(\d{3}\)$'
+            pattern = r'^\d{4}-\d{4}-\d{3}$'
             if record.landline2 and not re.match(pattern, record.landline2):
-                raise ValidationError('Invalid telephone number format!')
+                raise ValidationError('Invalid telephone number format ex:0000-0000-local number!')
 
     primary_contact_person = fields.Char(string="Primary Contact")
     mobile_number = fields.Char(string="Mobile No.")
@@ -264,14 +271,14 @@ class ClientProfile(models.Model):
 
     email_address = fields.Char(string="Email Address")
     principal_accounting_officer = fields.Char(string="Principal Accounting Officer")
-    landline3 = fields.Char(string="Telephone")
+    landline3 = fields.Char(string="Telephone", help="This field includes a hyphen", size=13)
 
     @api.constrains('landline3')
     def _validate_landline3(self):
         for record in self:
-            pattern = r'^\d{2}-\d{4}-\d{4}\(\d{3}\)$'
+            pattern = r'^\d{4}-\d{4}-\d{3}$'
             if record.landline3 and not re.match(pattern, record.landline3):
-                raise ValidationError('Invalid telephone number format!')
+                raise ValidationError('Invalid telephone number format ex:0000-0000-local number!')
 
     mobile_number2 = fields.Char(string="Mobile No.")
 
@@ -285,21 +292,28 @@ class ClientProfile(models.Model):
     email_address2 = fields.Char(string="Email Address")
     corporate_ids = fields.One2many(comodel_name='corporate.officer', inverse_name='client_profile_ids',
                                     string="Corporate Officers")
-    vat = fields.Char(string="Tax Id No.", widget='char_with_dashes_widget')
+    vat = fields.Char(string="Tax ID No.", size=11)
+
+    @api.onchange('vat')
+    def onchange_vat(self):
+        if self.vat and len(self.vat) == 9:
+            formatted_value = '-'.join([self.vat[:3], self.vat[3:6], self.vat[6:]])
+            self.vat = formatted_value
 
     @api.constrains('vat')
-    def _validate_vat(self):
+    def _check_vat(self):
         for record in self:
-            pattern = r'^\d{3}-\d{3}-\d{3}$'  # Modify the regular expression pattern according to your requirements
-            if record.vat and not re.match(pattern, record.vat):
-                raise ValidationError('Invalid TAX ID!')
+            if record.vat:
+                if any(char.isalpha() and char != '-' for char in record.vat):
+                    raise ValidationError(
+                        "Only numbers are allowed in the TAX ID Number.")
 
-    rdo_code = fields.Char(string="RDO Code")
+    rdo_code = fields.Char(string="RDO Code", size=4)
 
     @api.constrains('rdo_code')
     def _validate_rdo_code(self):
         for record in self:
-            pattern = r'^\d{3}$'  # Modify the regular expression pattern according to your requirements
+            pattern = r'^\d{4}$'  # Modify the regular expression pattern according to your requirements
             if record.rdo_code and not re.match(pattern, record.rdo_code):
                 raise ValidationError('Invalid RDO Code!')
 
@@ -318,16 +332,22 @@ class ClientProfile(models.Model):
             'top_20k_corporate', 'Top 20k Corporate'), ('medium_taxpayer', 'Medium Taxpayer'), (
             'large_taxpayer', 'Large Taxpayer')], string="Taxpayer Type")
     invoice_tax = fields.Selection([
-        ('bound_padded', 'Bound(Padded)'), ('computer_aid_loose_leaf', 'Computer-aided(Loose-leaf)'), (
+        ('bound_padded', 'Bound (Padded)'), ('computer_aid_loose_leaf', 'Computer-aided (Loose-leaf)'), (
             'cas_generated', 'CAS-Generated')], string="Invoice Type")
-    filing_payment = fields.Selection([('ebir_manual', 'eBIR(Manual)'), ('efps', 'EFPS')], string="Filling & Payment")
+    filing_payment = fields.Selection([('ebir_manual', 'eBIR (Manual)'), ('efps', 'EFPS')], string="Filling & Payment")
     books_of_account = fields.Selection(
-        [('manual', 'Manual'), ('computer_aid_loose_leaf', 'Computer-aided(Loose-leaf)'),
+        [('manual', 'Manual'), ('computer_aid_loose_leaf', 'Computer-aided (Loose-leaf)'),
          ('cas_generated', 'CAS-Generated')], string="Books of Accounts")
     psic_psoc = fields.Char(string="PSIC/PSOC")
     ll_cas_permit_no = fields.Char(string="LL/CAS Permit No")
     ask = fields.Selection([('yes', 'Yes'), ('no', 'No')], default="no")
-    registration_number = fields.Char(string="Registration No")
+    registration_number = fields.Char(string="Registration No", size=13)
+
+    @api.onchange('registration_number')
+    def set_upper(self):
+        self.registration_number = str(self.registration_number).upper()
+        return
+
     registration_date_sec = fields.Date('Date')
     trade_name = fields.Char(string="Trade Name")
     date_per_law = fields.Char(string="Date per By-Laws")
@@ -338,7 +358,7 @@ class ClientProfile(models.Model):
                                       string="Class of Shares")
     ask_3 = fields.Selection([('yes', 'Yes'), ('no', 'No')], default="no")
     bureau_of_custom = fields.Boolean(string="Bureau of Customs")
-    attachment = fields.Binary(string='Attachment')
+    attachment = fields.Many2many('ir.attachment', 'attachment_rel', 'pro_id', 'attach_id', string='Attachments', )
     attachment_fname = fields.Char(string="Attachment Filename")
     bangko_sentral_pilipinas = fields.Boolean(string="Bangko Sentral ng Pilipinas")
     professional_regulation_commission = fields.Boolean(string="Professional Regulation Commission")
@@ -354,9 +374,69 @@ class ClientProfile(models.Model):
         string="Land Transportation Franchising and Regulatory Board")
     others_ri = fields.Boolean(string="Others")
     others_reg = fields.Char(string="Others")
-    sss = fields.Char(string="SSS ER No")
-    phic = fields.Char(string="PHIC ER No")
-    hdmf = fields.Char(string="HDMF ER No")
+    sss = fields.Char(string="SSS ER No", size=15)
+
+    @api.onchange('sss')
+    def onchange_sss(self):
+        for record in self:
+            if record.sss and len(record.sss) == 13:
+                formatted_number = '-'.join([
+                    record.sss[:2],
+                    record.sss[2:10],
+                    record.sss[10:]
+                ])
+                record.sss = formatted_number
+
+    @api.constrains('sss')
+    def _check_sss(self):
+        for record in self:
+            if record.sss:
+                if any(char.isalpha() and char != '-' for char in record.sss):
+                    raise ValidationError(
+                        "Only numbers are allowed in the SSS Number.")
+
+    phic = fields.Char(string="PHIC ER No", size=14)
+
+    @api.onchange('phic')
+    def onchange_phic(self):
+        for record in self:
+            if record.phic and len(record.phic) == 12:
+                formatted_number = '-'.join([
+                    record.phic[:2],
+                    record.phic[2:11],
+                    record.phic[11:]
+                ])
+                record.phic = formatted_number
+
+    @api.constrains('phic')
+    def _check_phic(self):
+        for record in self:
+            if record.phic:
+                if any(char.isalpha() and char != '-' for char in record.phic):
+                    raise ValidationError(
+                        "Only numbers are allowed in the PHIC Number.")
+
+    hdmf = fields.Char(string="HDMF ER No", size=14)
+
+    @api.onchange('hdmf')
+    def onchange_hdmf(self):
+        for record in self:
+            if record.hdmf and len(record.hdmf) == 12:
+                formatted_number = '-'.join([
+                    record.hdmf[:4],
+                    record.hdmf[4:8],
+                    record.hdmf[8:]
+                ])
+                record.hdmf = formatted_number
+
+    @api.constrains('hdmf')
+    def _check_hdmf(self):
+        for record in self:
+            if record.hdmf:
+                if any(char.isalpha() and char != '-' for char in record.hdmf):
+                    raise ValidationError(
+                        "Only numbers are allowed in the HDMF Number.")
+
     sss_filing = fields.Selection([('manual', 'Manual'), ('online', 'Online (AMS-CCL)')], string="Filing")
     phic_filing = fields.Selection([('manual', 'Manual'), ('online', 'Online (ERPS)')], string="Filing")
     hdmf_filing = fields.Selection([('manual', 'Manual'), ('online', 'Online (eSRS)')], string="Filing")

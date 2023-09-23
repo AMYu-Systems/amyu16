@@ -19,16 +19,15 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'mail', 'resource'],
+    'depends': ['base', 'mail', 'resource',],
 
     # always loaded
     'data': [
         'security/ir.model.access.csv',
-        'views/cmps_menu_view.xml',
+        'views/cpms_associate_profile_view.xml',
         'security/cpms_groups.xml',
         'views/cpms_state_view.xml',
         'views/client_profile_view.xml',
-        'views/cpms_associate_profile_view.xml',
         'views/cpms_client_list_view.xml',
         'views/cpms_report_view.xml',
         'views/cpms_team_view.xml',
@@ -37,6 +36,8 @@
         'views/corporate_officer_view.xml',
         'views/class_of_shares_view.xml',
         'views/escalation_contact.xml',
+        'views/cmps_menu_view.xml',
+
     ],
     'application': True,
     'license': 'LGPL-3',
