@@ -7,4 +7,4 @@ class GeneralPartnership(models.Model):
 
     name = fields.Char(string="Managing Partner")
     partner = fields.Char(string="Partner")
-    client_profile_id = fields.Many2one(comodel_name='client.profile', string="General Partnership")
+    general_partnership_id = fields.Many2one(comodel_name='client.profile', string="General Partnership")

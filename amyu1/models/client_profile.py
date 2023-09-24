@@ -27,24 +27,25 @@ class ClientProfile(models.Model):
          ('foreign_nsnp_corp', 'Branch of Foreign NSNP Corporation'),
          ('roqh_foreign_corp', 'ROHQ of Foreign Corporation'),
          ('representative_office', 'Representative Office')], string="Organization Type", required=True)
-    sole_proprietor_ids = fields.One2many(comodel_name='sole.proprietor', inverse_name='client_profile_id',
+    sole_proprietor_ids = fields.One2many(comodel_name='sole.proprietor', inverse_name='sole_proprietor_id',
                                           string="Sole")
-    general_partnership_ids = fields.One2many(comodel_name='general.partnership', inverse_name='client_profile_id',
+    general_partnership_ids = fields.One2many(comodel_name='general.partnership', inverse_name='general_partnership_id',
                                               string="General")
     general_professional_partnership_ids = fields.One2many(comodel_name='general.professional.partnership',
-                                                           inverse_name='client_profile_id',
+                                                           inverse_name='general_professional_partnership_id',
                                                            string="General Professional")
-    domestic_stock_ids = fields.One2many(comodel_name='domestic.stock', inverse_name='client_profile_id',
+    domestic_stock_ids = fields.One2many(comodel_name='domestic.stock', inverse_name='domestic_stock_id',
                                          string="Domestic")
-    domestic_corp_ids = fields.One2many(comodel_name='domestic.corp', inverse_name='client_profile_id',
+    domestic_corp_ids = fields.One2many(comodel_name='domestic.corp', inverse_name='domestic_corp_id',
                                         string="Domestic NSNP")
-    foreign_corp_ids = fields.One2many(comodel_name='foreign.corp', inverse_name='client_profile_id',
+    foreign_corp_ids = fields.One2many(comodel_name='foreign.corp', inverse_name='foreign_corp_id',
                                        string="Foreign Corp")
-    foreign_nsnp_corp_ids = fields.One2many(comodel_name='foreign.nsnp.corp', inverse_name='client_profile_id',
+    foreign_nsnp_corp_ids = fields.One2many(comodel_name='foreign.nsnp.corp', inverse_name='foreign_nsnp_corp_id',
                                             string="Foreign NSNP Corp")
-    roqh_foreign_corp_ids = fields.One2many(comodel_name='roqh.foreign.corp', inverse_name='client_profile_id',
+    roqh_foreign_corp_ids = fields.One2many(comodel_name='roqh.foreign.corp', inverse_name='roqh_foreign_corp_id',
                                             string="ROQH Foreign Corp")
-    representative_office_ids = fields.One2many(comodel_name='representative.office', inverse_name='client_profile_id',
+    representative_office_ids = fields.One2many(comodel_name='representative.office',
+                                                inverse_name='representative_office_id',
                                                 string="Representative Office")
     industry_class = fields.Selection(
         [('agricultural', 'Agricultural Products & Farming Operations'), ('automotive', 'Automotive & Spare Parts'),
@@ -496,153 +497,143 @@ class ClientProfile(models.Model):
         self.trade_name = str(self.trade_name).upper()
         return
 
+    date_per_law = fields.Char(string="Date per By-Laws")
+    actual_date_meeting = fields.Date('date')
+    ask_1 = fields.Selection([('yes', 'Yes'), ('no', 'No')], default="no")
+    ask_2 = fields.Text(string="If Yes what type of security is the Company permit to sell?")
+    capitalization_ids = fields.One2many(comodel_name='capitalization.share', inverse_name='capitalization_id',
+                                         string="Class of Shares")
+    ask_3 = fields.Selection([('yes', 'Yes'), ('no', 'No')], default="no")
+    bureau_of_custom = fields.Boolean(string="Bureau of Customs")
+    boc_attachment = fields.Many2many('ir.attachment', 'attachment_rel', 'pro_id', 'attach_id', string='Attachments', )
+    boc_attachment_fname = fields.Char(string="Attachment Filename")
+    bangko_sentral_pilipinas = fields.Boolean(string="Bangko Sentral ng Pilipinas")
+    bsp_attachment = fields.Many2many('ir.attachment', 'attachment_rel', 'pro_id', 'attach_id', string='Attachments', )
+    bsp_attachment_fname = fields.Char(string="Attachment Filename")
+    professional_regulation_commission = fields.Boolean(string="Professional Regulation Commission")
+    prc_attachment = fields.Many2many('ir.attachment', 'attachment_rel', 'pro_id', 'attach_id', string='Attachments', )
+    prc_attachment_fname = fields.Char(string="Attachment Filename")
+    philippines_council_ngo_certification = fields.Boolean(string="Philippine Council for NGO Certification")
+    pcnc_attachment = fields.Many2many('ir.attachment', 'attachment_rel', 'pro_id', 'attach_id', string='Attachments', )
+    pcnc_attachment_fname = fields.Char(string="Attachment Filename")
+    cooperative_development_authority = fields.Boolean(string="Cooperative Development Authority")
+    cda_attachment = fields.Many2many('ir.attachment', 'attachment_rel', 'pro_id', 'attach_id', string='Attachments', )
+    cda_attachment_fname = fields.Char(string="Attachment Filename")
+    insurance_commission = fields.Boolean(string="Insurance Commission")
+    ic_attachment = fields.Many2many('ir.attachment', 'attachment_rel', 'pro_id', 'attach_id', string='Attachments', )
+    ic_attachment_fname = fields.Char(string="Attachment Filename")
+    integrated_bar_philippines = fields.Boolean(string="Integrated Bar of the Philippines")
+    ibp_attachment = fields.Many2many('ir.attachment', 'attachment_rel', 'pro_id', 'attach_id', string='Attachments', )
+    ibp_attachment_fname = fields.Char(string="Attachment Filename")
+    philippines_stock_exchange = fields.Boolean(string="Philippine Stock Exchange")
+    pse_attachment = fields.Many2many('ir.attachment', 'attachment_rel', 'pro_id', 'attach_id', string='Attachments', )
+    pse_attachment_fname = fields.Char(string="Attachment Filename")
+    construction_industry_authority_philippines = fields.Boolean(
+        string="Construction Industry authority of the Philippines (PCAB)")
+    ciap_attachment = fields.Many2many('ir.attachment', 'attachment_rel', 'pro_id', 'attach_id', string='Attachments', )
+    ciap_attachment_fname = fields.Char(string="Attachment Filename")
+    philippine_amusement_gaming_corporation = fields.Boolean(string="Philippine Amusement and Gaming Corporation")
+    pagc_attachment = fields.Many2many('ir.attachment', 'attachment_rel', 'pro_id', 'attach_id', string='Attachments', )
+    pagc_attachment_fname = fields.Char(string="Attachment Filename")
+    land_transportation_franchising_regulatory_board = fields.Boolean(
+        string="Land Transportation Franchising and Regulatory Board")
+    lto_attachment = fields.Many2many('ir.attachment', 'attachment_rel', 'pro_id', 'attach_id', string='Attachments', )
+    lto_attachment_fname = fields.Char(string="Attachment Filename")
+    others_ri = fields.Boolean(string="Others")
+    others_reg = fields.Char(string="Others")
+    sss = fields.Char(string="SSS ER No", size=15)
 
-date_per_law = fields.Char(string="Date per By-Laws")
-actual_date_meeting = fields.Date('date')
-ask_1 = fields.Selection([('yes', 'Yes'), ('no', 'No')], default="no")
-ask_2 = fields.Text(string="If Yes what type of security is the Company permit to sell?")
-capitalization_ids = fields.One2many(comodel_name='capitalization', inverse_name='client_profile_id',
-                                     string="Class of Shares")
-ask_3 = fields.Selection([('yes', 'Yes'), ('no', 'No')], default="no")
-bureau_of_custom = fields.Boolean(string="Bureau of Customs")
-boc_attachment = fields.Many2many('ir.attachment', 'attachment_rel', 'pro_id', 'attach_id', string='Attachments', )
-boc_attachment_fname = fields.Char(string="Attachment Filename")
-bangko_sentral_pilipinas = fields.Boolean(string="Bangko Sentral ng Pilipinas")
-bsp_attachment = fields.Many2many('ir.attachment', 'attachment_rel', 'pro_id', 'attach_id', string='Attachments', )
-bsp_attachment_fname = fields.Char(string="Attachment Filename")
-professional_regulation_commission = fields.Boolean(string="Professional Regulation Commission")
-prc_attachment = fields.Many2many('ir.attachment', 'attachment_rel', 'pro_id', 'attach_id', string='Attachments', )
-prc_attachment_fname = fields.Char(string="Attachment Filename")
-philippines_council_ngo_certification = fields.Boolean(string="Philippine Council for NGO Certification")
-pcnc_attachment = fields.Many2many('ir.attachment', 'attachment_rel', 'pro_id', 'attach_id', string='Attachments', )
-pcnc_attachment_fname = fields.Char(string="Attachment Filename")
-cooperative_development_authority = fields.Boolean(string="Cooperative Development Authority")
-cda_attachment = fields.Many2many('ir.attachment', 'attachment_rel', 'pro_id', 'attach_id', string='Attachments', )
-cda_attachment_fname = fields.Char(string="Attachment Filename")
-insurance_commission = fields.Boolean(string="Insurance Commission")
-ic_attachment = fields.Many2many('ir.attachment', 'attachment_rel', 'pro_id', 'attach_id', string='Attachments', )
-ic_attachment_fname = fields.Char(string="Attachment Filename")
-integrated_bar_philippines = fields.Boolean(string="Integrated Bar of the Philippines")
-ibp_attachment = fields.Many2many('ir.attachment', 'attachment_rel', 'pro_id', 'attach_id', string='Attachments', )
-ibp_attachment_fname = fields.Char(string="Attachment Filename")
-philippines_stock_exchange = fields.Boolean(string="Philippine Stock Exchange")
-pse_attachment = fields.Many2many('ir.attachment', 'attachment_rel', 'pro_id', 'attach_id', string='Attachments', )
-pse_attachment_fname = fields.Char(string="Attachment Filename")
-construction_industry_authority_philippines = fields.Boolean(
-    string="Construction Industry authority of the Philippines (PCAB)")
-ciap_attachment = fields.Many2many('ir.attachment', 'attachment_rel', 'pro_id', 'attach_id', string='Attachments', )
-ciap_attachment_fname = fields.Char(string="Attachment Filename")
-philippine_amusement_gaming_corporation = fields.Boolean(string="Philippine Amusement and Gaming Corporation")
-pagc_attachment = fields.Many2many('ir.attachment', 'attachment_rel', 'pro_id', 'attach_id', string='Attachments', )
-pagc_attachment_fname = fields.Char(string="Attachment Filename")
-land_transportation_franchising_regulatory_board = fields.Boolean(
-    string="Land Transportation Franchising and Regulatory Board")
-lto_attachment = fields.Many2many('ir.attachment', 'attachment_rel', 'pro_id', 'attach_id', string='Attachments', )
-lto_attachment_fname = fields.Char(string="Attachment Filename")
-others_ri = fields.Boolean(string="Others")
-others_reg = fields.Char(string="Others")
-sss = fields.Char(string="SSS ER No", size=15)
+    @api.onchange('sss')
+    def onchange_sss(self):
+        for record in self:
+            if record.sss and len(record.sss) == 13:
+                formatted_number = '-'.join([
+                    record.sss[:2],
+                    record.sss[2:10],
+                    record.sss[10:]
+                ])
+                record.sss = formatted_number
 
+    @api.constrains('sss')
+    def _check_sss(self):
+        for record in self:
+            if record.sss:
+                if any(char.isalpha() and char != '-' for char in record.sss):
+                    raise ValidationError(
+                        "Only numbers are allowed in the SSS Number.")
 
-@api.onchange('sss')
-def onchange_sss(self):
-    for record in self:
-        if record.sss and len(record.sss) == 13:
-            formatted_number = '-'.join([
-                record.sss[:2],
-                record.sss[2:10],
-                record.sss[10:]
-            ])
-            record.sss = formatted_number
+    phic = fields.Char(string="PHIC ER No", size=14)
 
+    @api.onchange('phic')
+    def onchange_phic(self):
+        for record in self:
+            if record.phic and len(record.phic) == 12:
+                formatted_number = '-'.join([
+                    record.phic[:2],
+                    record.phic[2:11],
+                    record.phic[11:]
+                ])
+                record.phic = formatted_number
 
-@api.constrains('sss')
-def _check_sss(self):
-    for record in self:
-        if record.sss:
-            if any(char.isalpha() and char != '-' for char in record.sss):
-                raise ValidationError(
-                    "Only numbers are allowed in the SSS Number.")
+    @api.constrains('phic')
+    def _check_phic(self):
+        for record in self:
+            if record.phic:
+                if any(char.isalpha() and char != '-' for char in record.phic):
+                    raise ValidationError(
+                        "Only numbers are allowed in the PHIC Number.")
 
+    hdmf = fields.Char(string="HDMF ER No", size=14)
 
-phic = fields.Char(string="PHIC ER No", size=14)
+    @api.onchange('hdmf')
+    def onchange_hdmf(self):
+        for record in self:
+            if record.hdmf and len(record.hdmf) == 12:
+                formatted_number = '-'.join([
+                    record.hdmf[:4],
+                    record.hdmf[4:8],
+                    record.hdmf[8:]
+                ])
+                record.hdmf = formatted_number
 
+    @api.constrains('hdmf')
+    def _check_hdmf(self):
+        for record in self:
+            if record.hdmf:
+                if any(char.isalpha() and char != '-' for char in record.hdmf):
+                    raise ValidationError(
+                        "Only numbers are allowed in the HDMF Number.")
 
-@api.onchange('phic')
-def onchange_phic(self):
-    for record in self:
-        if record.phic and len(record.phic) == 12:
-            formatted_number = '-'.join([
-                record.phic[:2],
-                record.phic[2:11],
-                record.phic[11:]
-            ])
-            record.phic = formatted_number
+    sss_filing = fields.Selection([('manual', 'Manual'), ('online', 'Online (AMS-CCL)')], string="Filing")
+    phic_filing = fields.Selection([('manual', 'Manual'), ('online', 'Online (ERPS)')], string="Filing")
+    hdmf_filing = fields.Selection([('manual', 'Manual'), ('online', 'Online (eSRS)')], string="Filing")
+    sss_pay = fields.Selection([('cash', 'Cash'), ('check', 'Check'), ('online_banking', 'Online Banking (EPS)')],
+                               string="Payment")
+    phic_pay = fields.Selection([('cash', 'Cash'), ('check', 'Check'), ('online_banking', 'Online Banking (EPS)')],
+                                string="Payment")
+    hdmf_pay = fields.Selection([('cash', 'Cash'), ('check', 'Check'), ('online_banking', 'Online Banking (EPS)')],
+                                string="Payment")
+    escalation = fields.One2many(comodel_name='escalation.contact', inverse_name='escalation_id',
+                                 string="Escalation Point")
+    # # client_records
+    # documents_count = fields.Integer(compute="action_attach_documents")
+    #
+    # def action_attach_documents(self):
+    #     for rec in self:
+    #         rec.documents_count = self.env['client.records'].search_count([
+    #             ('client_profile_id', '=', rec.id)
+    #         ])
+    #     return {
+    #         'type': 'ir.actions.act_window',
+    #         'name': 'Working Papers',
+    #         'res_model': 'client.records',
+    #         'view_mode': 'kanban,form',
+    #         'domain': [('client_profile_id', '=', rec.id)],
+    #         'context': {'default_client_profile_id': rec.id},
+    #         'target': 'current',
+    #     }
 
-
-@api.constrains('phic')
-def _check_phic(self):
-    for record in self:
-        if record.phic:
-            if any(char.isalpha() and char != '-' for char in record.phic):
-                raise ValidationError(
-                    "Only numbers are allowed in the PHIC Number.")
-
-
-hdmf = fields.Char(string="HDMF ER No", size=14)
-
-
-@api.onchange('hdmf')
-def onchange_hdmf(self):
-    for record in self:
-        if record.hdmf and len(record.hdmf) == 12:
-            formatted_number = '-'.join([
-                record.hdmf[:4],
-                record.hdmf[4:8],
-                record.hdmf[8:]
-            ])
-            record.hdmf = formatted_number
-
-
-@api.constrains('hdmf')
-def _check_hdmf(self):
-    for record in self:
-        if record.hdmf:
-            if any(char.isalpha() and char != '-' for char in record.hdmf):
-                raise ValidationError(
-                    "Only numbers are allowed in the HDMF Number.")
-
-
-sss_filing = fields.Selection([('manual', 'Manual'), ('online', 'Online (AMS-CCL)')], string="Filing")
-phic_filing = fields.Selection([('manual', 'Manual'), ('online', 'Online (ERPS)')], string="Filing")
-hdmf_filing = fields.Selection([('manual', 'Manual'), ('online', 'Online (eSRS)')], string="Filing")
-sss_pay = fields.Selection([('cash', 'Cash'), ('check', 'Check'), ('online_banking', 'Online Banking (EPS)')],
-                           string="Payment")
-phic_pay = fields.Selection([('cash', 'Cash'), ('check', 'Check'), ('online_banking', 'Online Banking (EPS)')],
-                            string="Payment")
-hdmf_pay = fields.Selection([('cash', 'Cash'), ('check', 'Check'), ('online_banking', 'Online Banking (EPS)')],
-                            string="Payment")
-escalation = fields.One2many(comodel_name='escalation.contact', inverse_name='escalation_id',
-                             string="Escalation Point")
-# # client_records
-# documents_count = fields.Integer(compute="action_attach_documents")
-#
-# def action_attach_documents(self):
-#     for rec in self:
-#         rec.documents_count = self.env['client.records'].search_count([
-#             ('client_profile_id', '=', rec.id)
-#         ])
-#     return {
-#         'type': 'ir.actions.act_window',
-#         'name': 'Working Papers',
-#         'res_model': 'client.records',
-#         'view_mode': 'kanban,form',
-#         'domain': [('client_profile_id', '=', rec.id)],
-#         'context': {'default_client_profile_id': rec.id},
-#         'target': 'current',
-#     }
-
-# # working papers
-# upload_file = fields.Binary(string='File', attachment=True)
-# file_name = fields.Char(string='Filename')
-# year_field = fields.Date(string="Year")
+    # # working papers
+    # upload_file = fields.Binary(string='File', attachment=True)
+    # file_name = fields.Char(string='Filename')
+    # year_field = fields.Date(string="Year")

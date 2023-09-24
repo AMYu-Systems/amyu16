@@ -12,4 +12,4 @@ class DomesticCorp(models.Model):
     vice_chairman = fields.Char(string="Vice-Chairman of the BOT")
     asst_treasurer = fields.Char(string="Asst.Treasurer")
     asst_corp_secretary = fields.Char(string="Asst.Corporate Secretary")
-    client_profile_id = fields.Many2one(comodel_name='client.profile', string="Domestic NSNP Corporation")
+    domestic_corp_id = fields.Many2one(comodel_name='client.profile', string="Domestic NSNP Corporation")

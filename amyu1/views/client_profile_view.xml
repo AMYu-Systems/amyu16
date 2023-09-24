@@ -239,8 +239,7 @@
                                     </group>
                                     <group string="Paid-Up">
                                     </group>
-                                    <field name="capitalization_ids"
-                                           attrs="{'readonly': ['|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved')]}"/>
+                                    <field name="capitalization_ids"/>
                                 </group>
                                 <group col="3">
                                     <p>

@@ -1,8 +1,8 @@
 from odoo import models, fields
 
 
-class Capitalization(models.Model):
-    _name = 'capitalization'
+class CapitalizationShare(models.Model):
+    _name = 'capitalization.share'
     _description = "Capitalization Shares"
 
     name = fields.Char(string="Class of Shares")
@@ -19,4 +19,4 @@ class Capitalization(models.Model):
     column_6 = fields.Char(string="Paid-Up")
     paid_up_no = fields.Integer(string="No.")
     paid_up_amount = fields.Float(string="Amount")
-    client_profile_id = fields.Many2one(comodel_name='client.profile', string="Class")
+    capitalization_id = fields.Many2one(comodel_name='client.profile', string="Class")

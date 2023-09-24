@@ -1,6 +1,6 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access.client.profile,access.client_profile,amyu1.model_client_profile,base.group_user,1,1,1,1
-access.capitalization,access.capitalization,amyu1.model_capitalization,base.group_user,1,1,1,1
+access.capitalization.share,access.capitalization_share,amyu1.model_capitalization_share,base.group_user,1,1,1,1
 access.corporate.officer,access.corporate_officer,amyu1.model_corporate_officer,base.group_user,1,1,1,1
 access.sole.proprietor,access.sole_proprietor,amyu1.model_sole_proprietor,base.group_user,1,1,1,1
 access.general.partnership,access.general_partnership,amyu1.model_general_partnership,base.group_user,1,1,1,1
