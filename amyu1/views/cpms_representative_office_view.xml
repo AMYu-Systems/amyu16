@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <record id="representative_office_tree_view" model="ir.ui.view">
+            <field name="name">representative.office.tree.view</field>
+            <field name="model">representative.office</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom" create="1" edit="1" delete="0">
+                    <field name="name"/>
+                    <field name="asst_manager"/>
+                </tree>
+            </field>
+        </record>
+    </data>
+</odoo>

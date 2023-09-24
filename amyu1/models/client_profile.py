@@ -16,15 +16,36 @@ class ClientProfile(models.Model):
         if self.name:
             self.name = str(self.name).title()
 
-    is_company = fields.Selection([('individual', 'Individual'), ('company', 'Company')], default="company")
     image_101 = fields.Image(string="Image")
     organization_type = fields.Selection(
-        [('sole_proprietor', 'Sole Proprietor'), ('general_partnership', 'General Partnership'),
-         ('general_professional', 'General Professional Partnership'),
-         ('domestic_stock', 'Domestic Stock Corporation'), ('domestic_nsnp', 'Domestic NSNP Corporation'),
-         ('foreign_corporation', 'Branch of Foreign Corporation'),
-         ('foreign_nsnp', 'Branch of Foreign NSNP Corporation'), ('rohq', 'ROHQ of Foreign Corporation'),
-         ('representative_officer', 'Representative Office')], string="Organization Type")
+        [('sole_proprietor', 'Sole Proprietor'),
+         ('general_partnership', 'General Partnership'),
+         ('general_professional_partnership', 'General Professional Partnership'),
+         ('domestic_stock', 'Domestic Stock Corporation'),
+         ('domestic_corp', 'Domestic NSNP Corporation'),
+         ('foreign_corp', 'Branch of Foreign Corporation'),
+         ('foreign_nsnp_corp', 'Branch of Foreign NSNP Corporation'),
+         ('roqh_foreign_corp', 'ROHQ of Foreign Corporation'),
+         ('representative_office', 'Representative Office')], string="Organization Type", required=True)
+    sole_proprietor_ids = fields.One2many(comodel_name='sole.proprietor', inverse_name='client_profile_id',
+                                          string="Sole")
+    general_partnership_ids = fields.One2many(comodel_name='general.partnership', inverse_name='client_profile_id',
+                                              string="General")
+    general_professional_partnership_ids = fields.One2many(comodel_name='general.professional.partnership',
+                                                           inverse_name='client_profile_id',
+                                                           string="General Professional")
+    domestic_stock_ids = fields.One2many(comodel_name='domestic.stock', inverse_name='client_profile_id',
+                                         string="Domestic")
+    domestic_corp_ids = fields.One2many(comodel_name='domestic.corp', inverse_name='client_profile_id',
+                                        string="Domestic NSNP")
+    foreign_corp_ids = fields.One2many(comodel_name='foreign.corp', inverse_name='client_profile_id',
+                                       string="Foreign Corp")
+    foreign_nsnp_corp_ids = fields.One2many(comodel_name='foreign.nsnp.corp', inverse_name='client_profile_id',
+                                            string="Foreign NSNP Corp")
+    roqh_foreign_corp_ids = fields.One2many(comodel_name='roqh.foreign.corp', inverse_name='client_profile_id',
+                                            string="ROQH Foreign Corp")
+    representative_office_ids = fields.One2many(comodel_name='representative.office', inverse_name='client_profile_id',
+                                                string="Representative Office")
     industry_class = fields.Selection(
         [('agricultural', 'Agricultural Products & Farming Operations'), ('automotive', 'Automotive & Spare Parts'),
          ('', ''), ('utilities', 'Energy, Utilities & Telecommunications'), ('financial_service', 'Financial Services'),
@@ -42,6 +63,12 @@ class ClientProfile(models.Model):
          ('stationery', 'Stationery & Paper Products'), ('logistic', 'Warehousing & Logistics')],
         string="Industry Class")
     nature_of_business = fields.Text(string="Nature of Activities, Brands, Product & Services")
+
+    @api.onchange('nature_of_business')
+    def caps_nature_of_business(self):
+        if self.nature_of_business:
+            self.nature_of_business = str(self.nature_of_business).title()
+
     date_of_engagement = fields.Date(string="Date of Engagement", required=True)
     client_system_generated = fields.Char(string="Client ID")
     tax_reporting_compliance = fields.Boolean(string="Tax Reporting & Compliance")
@@ -64,13 +91,6 @@ class ClientProfile(models.Model):
     lead_partner_id = fields.Many2one(string="Lead Partner", related="associate_id.lead_partner_id", readonly=True)
     state_sequence = fields.Char(compute='_compute_state_sequence', string='Progress Status', store=True)
 
-    # client_fs_ids = fields.One2many(comodel_name='client.fs', inverse_name="client_fs_id", string="FS")
-    # is_editable = fields.Boolean(default=False)
-    #
-    # def toggle_edit_mode(self):
-    #     for record in self:
-    #         record.is_editable = not record.is_editable
-
     @api.depends('state')
     def _compute_state_sequence(self):
         for record in self:
@@ -91,15 +111,6 @@ class ClientProfile(models.Model):
 
     def action_submit_supervisor(self):
         self.state = 'supervisor'
-        # return {
-        #     'name':'Supervisor',
-        #     'view_type':'form',
-        #     'view_mode':'tree,form',
-        #     'res_model':'client.profile',
-        #     'type':'ir.actions.act_window',
-        #     'target':'inline',
-        #     'flags':{'form':{'action_button':True}},
-        # }
 
     def action_approve_supervisor(self):
         self.state = 'manager'
@@ -204,10 +215,40 @@ class ClientProfile(models.Model):
         return res
 
     unit_no = fields.Char(string="Unit/Floor")
+
+    @api.onchange('unit_no')
+    def caps_unit_no(self):
+        if self.unit_no:
+            self.unit_no = str(self.unit_no).title()
+
     building_name = fields.Char(string="Building Name")
+
+    @api.onchange('building_name')
+    def caps_building_name(self):
+        if self.building_name:
+            self.building_name = str(self.building_name).title()
+
     street = fields.Char(string="Street")
+
+    @api.onchange('street')
+    def caps_street(self):
+        if self.street:
+            self.street = str(self.street).title()
+
     district = fields.Char(string="District/Barangay/Village")
+
+    @api.onchange('district')
+    def caps_district(self):
+        if self.district:
+            self.district = str(self.district).title()
+
     city = fields.Char(string="City")
+
+    @api.onchange('city')
+    def caps_city(self):
+        if self.city:
+            self.city = str(self.city).title()
+
     zip = fields.Char(string="Zip Code", size=4)
 
     @api.constrains('zip')
@@ -217,30 +258,86 @@ class ClientProfile(models.Model):
             if record.zip and not re.match(pattern, record.zip):
                 raise ValidationError('Invalid Zip Code!')
 
-    landline = fields.Char(string="Telephone", help="This field includes a hyphen", size=13)
+    landline = fields.Char(string="Telephone", size=16)
+
+    @api.onchange('landline')
+    def onchange_landline(self):
+        for record in self:
+            if record.landline and len(record.landline) == 13:
+                formatted_number = '-'.join([
+                    record.landline[:2],
+                    record.landline[2:6],
+                    record.landline[6:10],
+                    record.landline[10:]
+                ])
+                record.landline = formatted_number
 
     @api.constrains('landline')
-    def _validate_landline(self):
+    def _check_landline(self):
         for record in self:
-            pattern = r'^\d{4}-\d{4}-\d{3}$'
-            if record.landline and not re.match(pattern, record.landline):
-                raise ValidationError('Invalid telephone number format ex:0000-0000-local number!')
+            if record.landline:
+                if any(char.isalpha() and char != '-' for char in record.landline):
+                    raise ValidationError(
+                        "Only numbers are allowed in the Telephone Number.")
 
-    facsimile_no = fields.Char(string="Facsimile", help="This field includes a hyphen", size=13)
+    facsimile_no = fields.Char(string="Facsimile", size=16)
+
+    @api.onchange('facsimile_no')
+    def onchange_facsimile_no(self):
+        for record in self:
+            if record.facsimile_no and len(record.facsimile_no) == 13:
+                formatted_number = '-'.join([
+                    record.facsimile_no[:2],
+                    record.facsimile_no[2:6],
+                    record.facsimile_no[6:10],
+                    record.facsimile_no[10:]
+                ])
+                record.facsimile_no = formatted_number
 
     @api.constrains('facsimile_no')
-    def _validate_facsimile_no(self):
+    def _check_facsimile_no(self):
         for record in self:
-            pattern = r'^\d{4}-\d{4}-\d{3}$'
-            if record.facsimile_no and not re.match(pattern, record.facsimile_no):
-                raise ValidationError('Invalid telephone number format ex:0000-0000-local number!')
+            if record.facsimile_no:
+                if any(char.isalpha() and char != '-' for char in record.facsimile_no):
+                    raise ValidationError(
+                        "Only numbers are allowed in the Telephone Number.")
 
     website = fields.Char(string="Website")
     unit_no2 = fields.Char(string="Unit/Floor")
+
+    @api.onchange('unit_no2')
+    def caps_unit_no2(self):
+        if self.unit_no2:
+            self.unit_no2 = str(self.unit_no2).title()
+
     building_name2 = fields.Char(string="Building Name")
+
+    @api.onchange('building_name2')
+    def caps_building_name2(self):
+        if self.building_name2:
+            self.building_name2 = str(self.building_name2).title()
+
     street2 = fields.Char(string="Street")
+
+    @api.onchange('street2')
+    def caps_street2(self):
+        if self.street2:
+            self.street2 = str(self.street2).title()
+
     district2 = fields.Char(string="District/Barangay/Village")
+
+    @api.onchange('district2')
+    def caps_district2(self):
+        if self.district2:
+            self.district2 = str(self.district2).title()
+
     city2 = fields.Char(string="City")
+
+    @api.onchange('city2')
+    def caps_city2(self):
+        if self.city2:
+            self.city2 = str(self.city2).title()
+
     zip2 = fields.Char(string="Zip Code", size=4)
 
     @api.constrains('zip2')
@@ -250,16 +347,35 @@ class ClientProfile(models.Model):
             if record.zip2 and not re.match(pattern, record.zip2):
                 raise ValidationError('Invalid Zip Code!')
 
-    landline2 = fields.Char(string="Telephone", help="This field includes a hyphen", size=13)
+    landline2 = fields.Char(string="Telephone", help="This field includes a hyphen", size=16)
+
+    @api.onchange('landline2')
+    def onchange_landline2(self):
+        for record in self:
+            if record.landline2 and len(record.landline2) == 13:
+                formatted_number = '-'.join([
+                    record.landline2[:2],
+                    record.landline2[2:6],
+                    record.landline2[6:10],
+                    record.landline2[10:]
+                ])
+                record.landline2 = formatted_number
 
     @api.constrains('landline2')
-    def _validate_landline2(self):
+    def _check_landline2(self):
         for record in self:
-            pattern = r'^\d{4}-\d{4}-\d{3}$'
-            if record.landline2 and not re.match(pattern, record.landline2):
-                raise ValidationError('Invalid telephone number format ex:0000-0000-local number!')
+            if record.landline2:
+                if any(char.isalpha() and char != '-' for char in record.landline2):
+                    raise ValidationError(
+                        "Only numbers are allowed in the Telephone Number.")
 
     primary_contact_person = fields.Char(string="Primary Contact")
+
+    @api.onchange('primary_contact_person')
+    def caps_primary_contact_person(self):
+        if self.primary_contact_person:
+            self.primary_contact_person = str(self.primary_contact_person).title()
+
     mobile_number = fields.Char(string="Mobile No.")
 
     @api.constrains('mobile_number')
@@ -271,14 +387,33 @@ class ClientProfile(models.Model):
 
     email_address = fields.Char(string="Email Address")
     principal_accounting_officer = fields.Char(string="Principal Accounting Officer")
-    landline3 = fields.Char(string="Telephone", help="This field includes a hyphen", size=13)
+
+    @api.onchange('principal_accounting_officer')
+    def caps_principal_accounting_officer(self):
+        if self.principal_accounting_officer:
+            self.principal_accounting_officer = str(self.principal_accounting_officer).title()
+
+    landline3 = fields.Char(string="Telephone", help="This field includes a hyphen", size=16)
+
+    @api.onchange('landline3')
+    def onchange_landline3(self):
+        for record in self:
+            if record.landline3 and len(record.landline3) == 13:
+                formatted_number = '-'.join([
+                    record.landline3[:2],
+                    record.landline3[2:6],
+                    record.landline3[6:10],
+                    record.landline3[10:]
+                ])
+                record.landline3 = formatted_number
 
     @api.constrains('landline3')
-    def _validate_landline3(self):
+    def _check_landline3(self):
         for record in self:
-            pattern = r'^\d{4}-\d{4}-\d{3}$'
-            if record.landline3 and not re.match(pattern, record.landline3):
-                raise ValidationError('Invalid telephone number format ex:0000-0000-local number!')
+            if record.landline3:
+                if any(char.isalpha() and char != '-' for char in record.landline3):
+                    raise ValidationError(
+                        "Only numbers are allowed in the Telephone Number.")
 
     mobile_number2 = fields.Char(string="Mobile No.")
 
@@ -290,7 +425,7 @@ class ClientProfile(models.Model):
                 raise ValidationError('Invalid mobile number format!')
 
     email_address2 = fields.Char(string="Email Address")
-    corporate_ids = fields.One2many(comodel_name='corporate.officer', inverse_name='client_profile_ids',
+    corporate_ids = fields.One2many(comodel_name='corporate.officer', inverse_name='client_profile_id',
                                     string="Corporate Officers")
     vat = fields.Char(string="Tax ID No.", size=11)
 
@@ -350,123 +485,164 @@ class ClientProfile(models.Model):
 
     registration_date_sec = fields.Date('Date')
     trade_name = fields.Char(string="Trade Name")
-    date_per_law = fields.Char(string="Date per By-Laws")
-    actual_date_meeting = fields.Date('date')
-    ask_1 = fields.Selection([('yes', 'Yes'), ('no', 'No')], default="no")
-    ask_2 = fields.Text(string="If Yes what type of security is the Company permit to sell?")
-    class_shares_id = fields.One2many(comodel_name='class.of.shares', inverse_name='client_share_ids',
-                                      string="Class of Shares")
-    ask_3 = fields.Selection([('yes', 'Yes'), ('no', 'No')], default="no")
-    bureau_of_custom = fields.Boolean(string="Bureau of Customs")
-    attachment = fields.Many2many('ir.attachment', 'attachment_rel', 'pro_id', 'attach_id', string='Attachments', )
-    attachment_fname = fields.Char(string="Attachment Filename")
-    bangko_sentral_pilipinas = fields.Boolean(string="Bangko Sentral ng Pilipinas")
-    professional_regulation_commission = fields.Boolean(string="Professional Regulation Commission")
-    philippines_council_ngo_certification = fields.Boolean(string="Philippine Council for NGO Certification")
-    cooperative_development_authority = fields.Boolean(string="Cooperative Development Authority")
-    insurance_commission = fields.Boolean(string="Insurance Commission")
-    integrated_bar_philippines = fields.Boolean(string="Integrated Bar of the Philippines")
-    philippines_stock_exchange = fields.Boolean(string="Philippine Stock Exchange")
-    construction_industry_authority_philippines = fields.Boolean(
-        string="Construction Industry authority of the Philippines (PCAB)")
-    philippine_amusement_gaming_corporation = fields.Boolean(string="Philippine Amusement and Gaming Corporation")
-    land_transportation_franchising_regulatory_board = fields.Boolean(
-        string="Land Transportation Franchising and Regulatory Board")
-    others_ri = fields.Boolean(string="Others")
-    others_reg = fields.Char(string="Others")
-    sss = fields.Char(string="SSS ER No", size=15)
 
-    @api.onchange('sss')
-    def onchange_sss(self):
+    @api.onchange('name')
+    def copy_client_name(self):
         for record in self:
-            if record.sss and len(record.sss) == 13:
-                formatted_number = '-'.join([
-                    record.sss[:2],
-                    record.sss[2:10],
-                    record.sss[10:]
-                ])
-                record.sss = formatted_number
+            record.trade_name = record.name
 
-    @api.constrains('sss')
-    def _check_sss(self):
-        for record in self:
-            if record.sss:
-                if any(char.isalpha() and char != '-' for char in record.sss):
-                    raise ValidationError(
-                        "Only numbers are allowed in the SSS Number.")
+    @api.onchange('trade_name')
+    def set_upper(self):
+        self.trade_name = str(self.trade_name).upper()
+        return
 
-    phic = fields.Char(string="PHIC ER No", size=14)
 
-    @api.onchange('phic')
-    def onchange_phic(self):
-        for record in self:
-            if record.phic and len(record.phic) == 12:
-                formatted_number = '-'.join([
-                    record.phic[:2],
-                    record.phic[2:11],
-                    record.phic[11:]
-                ])
-                record.phic = formatted_number
+date_per_law = fields.Char(string="Date per By-Laws")
+actual_date_meeting = fields.Date('date')
+ask_1 = fields.Selection([('yes', 'Yes'), ('no', 'No')], default="no")
+ask_2 = fields.Text(string="If Yes what type of security is the Company permit to sell?")
+capitalization_ids = fields.One2many(comodel_name='capitalization', inverse_name='client_profile_id',
+                                     string="Class of Shares")
+ask_3 = fields.Selection([('yes', 'Yes'), ('no', 'No')], default="no")
+bureau_of_custom = fields.Boolean(string="Bureau of Customs")
+boc_attachment = fields.Many2many('ir.attachment', 'attachment_rel', 'pro_id', 'attach_id', string='Attachments', )
+boc_attachment_fname = fields.Char(string="Attachment Filename")
+bangko_sentral_pilipinas = fields.Boolean(string="Bangko Sentral ng Pilipinas")
+bsp_attachment = fields.Many2many('ir.attachment', 'attachment_rel', 'pro_id', 'attach_id', string='Attachments', )
+bsp_attachment_fname = fields.Char(string="Attachment Filename")
+professional_regulation_commission = fields.Boolean(string="Professional Regulation Commission")
+prc_attachment = fields.Many2many('ir.attachment', 'attachment_rel', 'pro_id', 'attach_id', string='Attachments', )
+prc_attachment_fname = fields.Char(string="Attachment Filename")
+philippines_council_ngo_certification = fields.Boolean(string="Philippine Council for NGO Certification")
+pcnc_attachment = fields.Many2many('ir.attachment', 'attachment_rel', 'pro_id', 'attach_id', string='Attachments', )
+pcnc_attachment_fname = fields.Char(string="Attachment Filename")
+cooperative_development_authority = fields.Boolean(string="Cooperative Development Authority")
+cda_attachment = fields.Many2many('ir.attachment', 'attachment_rel', 'pro_id', 'attach_id', string='Attachments', )
+cda_attachment_fname = fields.Char(string="Attachment Filename")
+insurance_commission = fields.Boolean(string="Insurance Commission")
+ic_attachment = fields.Many2many('ir.attachment', 'attachment_rel', 'pro_id', 'attach_id', string='Attachments', )
+ic_attachment_fname = fields.Char(string="Attachment Filename")
+integrated_bar_philippines = fields.Boolean(string="Integrated Bar of the Philippines")
+ibp_attachment = fields.Many2many('ir.attachment', 'attachment_rel', 'pro_id', 'attach_id', string='Attachments', )
+ibp_attachment_fname = fields.Char(string="Attachment Filename")
+philippines_stock_exchange = fields.Boolean(string="Philippine Stock Exchange")
+pse_attachment = fields.Many2many('ir.attachment', 'attachment_rel', 'pro_id', 'attach_id', string='Attachments', )
+pse_attachment_fname = fields.Char(string="Attachment Filename")
+construction_industry_authority_philippines = fields.Boolean(
+    string="Construction Industry authority of the Philippines (PCAB)")
+ciap_attachment = fields.Many2many('ir.attachment', 'attachment_rel', 'pro_id', 'attach_id', string='Attachments', )
+ciap_attachment_fname = fields.Char(string="Attachment Filename")
+philippine_amusement_gaming_corporation = fields.Boolean(string="Philippine Amusement and Gaming Corporation")
+pagc_attachment = fields.Many2many('ir.attachment', 'attachment_rel', 'pro_id', 'attach_id', string='Attachments', )
+pagc_attachment_fname = fields.Char(string="Attachment Filename")
+land_transportation_franchising_regulatory_board = fields.Boolean(
+    string="Land Transportation Franchising and Regulatory Board")
+lto_attachment = fields.Many2many('ir.attachment', 'attachment_rel', 'pro_id', 'attach_id', string='Attachments', )
+lto_attachment_fname = fields.Char(string="Attachment Filename")
+others_ri = fields.Boolean(string="Others")
+others_reg = fields.Char(string="Others")
+sss = fields.Char(string="SSS ER No", size=15)
 
-    @api.constrains('phic')
-    def _check_phic(self):
-        for record in self:
-            if record.phic:
-                if any(char.isalpha() and char != '-' for char in record.phic):
-                    raise ValidationError(
-                        "Only numbers are allowed in the PHIC Number.")
 
-    hdmf = fields.Char(string="HDMF ER No", size=14)
+@api.onchange('sss')
+def onchange_sss(self):
+    for record in self:
+        if record.sss and len(record.sss) == 13:
+            formatted_number = '-'.join([
+                record.sss[:2],
+                record.sss[2:10],
+                record.sss[10:]
+            ])
+            record.sss = formatted_number
 
-    @api.onchange('hdmf')
-    def onchange_hdmf(self):
-        for record in self:
-            if record.hdmf and len(record.hdmf) == 12:
-                formatted_number = '-'.join([
-                    record.hdmf[:4],
-                    record.hdmf[4:8],
-                    record.hdmf[8:]
-                ])
-                record.hdmf = formatted_number
 
-    @api.constrains('hdmf')
-    def _check_hdmf(self):
-        for record in self:
-            if record.hdmf:
-                if any(char.isalpha() and char != '-' for char in record.hdmf):
-                    raise ValidationError(
-                        "Only numbers are allowed in the HDMF Number.")
+@api.constrains('sss')
+def _check_sss(self):
+    for record in self:
+        if record.sss:
+            if any(char.isalpha() and char != '-' for char in record.sss):
+                raise ValidationError(
+                    "Only numbers are allowed in the SSS Number.")
 
-    sss_filing = fields.Selection([('manual', 'Manual'), ('online', 'Online (AMS-CCL)')], string="Filing")
-    phic_filing = fields.Selection([('manual', 'Manual'), ('online', 'Online (ERPS)')], string="Filing")
-    hdmf_filing = fields.Selection([('manual', 'Manual'), ('online', 'Online (eSRS)')], string="Filing")
-    sss_pay = fields.Selection([('cash', 'Cash'), ('check', 'Check'), ('online_banking', 'Online Banking (EPS)')],
-                               string="Payment")
-    phic_pay = fields.Selection([('cash', 'Cash'), ('check', 'Check'), ('online_banking', 'Online Banking (EPS)')],
-                                string="Payment")
-    hdmf_pay = fields.Selection([('cash', 'Cash'), ('check', 'Check'), ('online_banking', 'Online Banking (EPS)')],
-                                string="Payment")
-    escalation = fields.One2many(comodel_name='escalation.contact', inverse_name='escalation_id',
-                                 string="Escalation Point")
-    # # client_records
-    # documents_count = fields.Integer(compute="action_attach_documents")
-    #
-    # def action_attach_documents(self):
-    #     for rec in self:
-    #         rec.documents_count = self.env['client.records'].search_count([
-    #             ('client_profile_id', '=', rec.id)
-    #         ])
-    #     return {
-    #         'type': 'ir.actions.act_window',
-    #         'name': 'Working Papers',
-    #         'res_model': 'client.records',
-    #         'view_mode': 'kanban,form',
-    #         'domain': [('client_profile_id', '=', rec.id)],
-    #         'context': {'default_client_profile_id': rec.id},
-    #         'target': 'current',
-    #     }
 
-    # # working papers
-    # upload_file = fields.Binary(string='File', attachment=True)
-    # file_name = fields.Char(string='Filename')
-    # year_field = fields.Date(string="Year")
+phic = fields.Char(string="PHIC ER No", size=14)
+
+
+@api.onchange('phic')
+def onchange_phic(self):
+    for record in self:
+        if record.phic and len(record.phic) == 12:
+            formatted_number = '-'.join([
+                record.phic[:2],
+                record.phic[2:11],
+                record.phic[11:]
+            ])
+            record.phic = formatted_number
+
+
+@api.constrains('phic')
+def _check_phic(self):
+    for record in self:
+        if record.phic:
+            if any(char.isalpha() and char != '-' for char in record.phic):
+                raise ValidationError(
+                    "Only numbers are allowed in the PHIC Number.")
+
+
+hdmf = fields.Char(string="HDMF ER No", size=14)
+
+
+@api.onchange('hdmf')
+def onchange_hdmf(self):
+    for record in self:
+        if record.hdmf and len(record.hdmf) == 12:
+            formatted_number = '-'.join([
+                record.hdmf[:4],
+                record.hdmf[4:8],
+                record.hdmf[8:]
+            ])
+            record.hdmf = formatted_number
+
+
+@api.constrains('hdmf')
+def _check_hdmf(self):
+    for record in self:
+        if record.hdmf:
+            if any(char.isalpha() and char != '-' for char in record.hdmf):
+                raise ValidationError(
+                    "Only numbers are allowed in the HDMF Number.")
+
+
+sss_filing = fields.Selection([('manual', 'Manual'), ('online', 'Online (AMS-CCL)')], string="Filing")
+phic_filing = fields.Selection([('manual', 'Manual'), ('online', 'Online (ERPS)')], string="Filing")
+hdmf_filing = fields.Selection([('manual', 'Manual'), ('online', 'Online (eSRS)')], string="Filing")
+sss_pay = fields.Selection([('cash', 'Cash'), ('check', 'Check'), ('online_banking', 'Online Banking (EPS)')],
+                           string="Payment")
+phic_pay = fields.Selection([('cash', 'Cash'), ('check', 'Check'), ('online_banking', 'Online Banking (EPS)')],
+                            string="Payment")
+hdmf_pay = fields.Selection([('cash', 'Cash'), ('check', 'Check'), ('online_banking', 'Online Banking (EPS)')],
+                            string="Payment")
+escalation = fields.One2many(comodel_name='escalation.contact', inverse_name='escalation_id',
+                             string="Escalation Point")
+# # client_records
+# documents_count = fields.Integer(compute="action_attach_documents")
+#
+# def action_attach_documents(self):
+#     for rec in self:
+#         rec.documents_count = self.env['client.records'].search_count([
+#             ('client_profile_id', '=', rec.id)
+#         ])
+#     return {
+#         'type': 'ir.actions.act_window',
+#         'name': 'Working Papers',
+#         'res_model': 'client.records',
+#         'view_mode': 'kanban,form',
+#         'domain': [('client_profile_id', '=', rec.id)],
+#         'context': {'default_client_profile_id': rec.id},
+#         'target': 'current',
+#     }
+
+# # working papers
+# upload_file = fields.Binary(string='File', attachment=True)
+# file_name = fields.Char(string='Filename')
+# year_field = fields.Date(string="Year")

@@ -19,7 +19,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'mail', 'resource',],
+    'depends': ['base', 'mail', 'resource', ],
 
     # always loaded
     'data': [
@@ -33,8 +33,17 @@
         'views/cpms_team_view.xml',
         'views/supervisor_view.xml',
         'views/manager_view.xml',
+        'views/cpms_capitalization_view.xml',
         'views/corporate_officer_view.xml',
-        'views/class_of_shares_view.xml',
+        'views/cpms_sole_proprietor_view.xml',
+        'views/cpms_gen_partnership_view.xml',
+        'views/cpms_gen_pro_partnership_view.xml',
+        'views/cpms_domestic_stock_view.xml',
+        'views/cpms_domestic_nsnp_corp_view.xml',
+        'views/cpms_foriegn_corp_view.xml',
+        'views/cpms_foreign_nsnp_corp_view.xml',
+        'views/cpms_roqh_foriegn_corp_view.xml',
+        'views/cpms_representative_office_view.xml',
         'views/escalation_contact.xml',
         'views/cmps_menu_view.xml',
 

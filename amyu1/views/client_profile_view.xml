@@ -56,7 +56,7 @@
                         </div>
                         <group>
                             <group>
-                                <field name="client_system_generated" placeholder="System generated"
+                                <field name="client_system_generated" placeholder="System generated" readonly="1"
                                        attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                 <field name="organization_type" options="{'no_open': True}"
                                        attrs="{'readonly': ['|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved')]}"/>
@@ -81,9 +81,9 @@
                                                attrs="{'readonly': ['|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved')]}"/>
                                         <field name="city"
                                                attrs="{'readonly': ['|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved')]}"/>
-                                        <field name="landline" widget="phone"
+                                        <field name="landline"
                                                attrs="{'readonly': ['|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved')]}"/>
-                                        <field name="facsimile_no" widget="phone"
+                                        <field name="facsimile_no"
                                                attrs="{'readonly': ['|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved')]}"/>
                                     </group>
                                     <group>
@@ -108,13 +108,11 @@
                                                attrs="{'readonly': ['|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved')]}"/>
                                         <field name="primary_contact_person"
                                                attrs="{'readonly': ['|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved')]}"/>
-                                        <field name="landline2" widget="phone"
-                                               placeholder="e.g 02-8236-4935-loc"
+                                        <field name="landline2"
                                                attrs="{'readonly': ['|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved')]}"/>
                                         <field name="principal_accounting_officer"
                                                attrs="{'readonly': ['|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved')]}"/>
-                                        <field name="landline3" widget="phone"
-                                               placeholder="e.g 02-8236-4935-loc"
+                                        <field name="landline3"
                                                attrs="{'readonly': ['|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved')]}"/>
                                     </group>
                                     <group>
@@ -137,7 +135,7 @@
 
                             </page>
 
-                            <page name="bir_registration_information" string="BIR REGISTRATION">
+                            <page string="BIR REGISTRATION">
                                 <group col="3">
                                     <group>
                                         <field name="vat"
@@ -163,7 +161,6 @@
                                         <field name="other_percentage_tax" nolabel="1"
                                                attrs="{'readonly': ['|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved')]}"/>
                                         <label for="other_percentage_tax"/>
-
                                     </group>
                                     <group>
                                         <field name="withholding_tax_compensation" nolabel="1"
@@ -215,7 +212,7 @@
                                 </p>
                             </page>
 
-                            <page name="sec_dti_registration_information" string="SEC/DTI REGISTRATION">
+                            <page string="SEC/DTI REGISTRATION">
                                 <group>
                                     <group>
                                         <field name="registration_number"
@@ -242,7 +239,7 @@
                                     </group>
                                     <group string="Paid-Up">
                                     </group>
-                                    <field name="class_shares_id"
+                                    <field name="capitalization_ids"
                                            attrs="{'readonly': ['|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved')]}"/>
                                 </group>
                                 <group col="3">
@@ -269,8 +266,26 @@
                                            nolabel="1"/>
                                 </p>
                                 <group string="Corporate Officers"/>
-                                <field name="corporate_ids"
-                                       attrs="{'readonly': ['|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved')]}"/>
+                                <field name="sole_proprietor_ids"
+                                       attrs="{'invisible': [('organization_type', '!=', 'sole_proprietor')]}"/>
+                                <field name="general_partnership_ids"
+                                       attrs="{'invisible': [('organization_type', '!=', 'general_partnership')]}"/>
+                                <field name="general_professional_partnership_ids"
+                                       attrs="{'invisible': [('organization_type', '!=', 'general_professional_partnership')]}"/>
+                                <field name="domestic_stock_ids"
+                                       attrs="{'invisible': [('organization_type', '!=', 'domestic_stock')]}"/>
+                                <field name="domestic_corp_ids"
+                                       attrs="{'invisible': [('organization_type', '!=', 'domestic_corp')]}"/>
+                                <field name="foreign_corp_ids"
+                                       attrs="{'invisible': [('organization_type', '!=', 'foreign_corp')]}"/>
+                                <field name="foreign_nsnp_corp_ids"
+                                       attrs="{'invisible': [('organization_type', '!=', 'foreign_nsnp_corp')]}"/>
+                                <field name="roqh_foreign_corp_ids"
+                                       attrs="{'invisible': [('organization_type', '!=', 'roqh_foreign_corp')]}"/>
+                                <field name="representative_office_ids"
+                                       attrs="{'invisible': [('organization_type', '!=', 'representative_office')]}"/>
+
+
                             </page>
 
                             <page name="regulatory_information" string="REGULATORY">
@@ -286,43 +301,49 @@
                                         <field name="bangko_sentral_pilipinas" nolabel="1"
                                                attrs="{'readonly':['|','|','|',('ask_3', '=','no'),  ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved')]}"/>
                                         <label for="bangko_sentral_pilipinas"/>
-                                        <field name="attachment_fname" invisible="1"/>
-                                        <field name="attachment" filename="attachment_fname" widget='many2many_binary'
+                                        <field name="bsp_attachment_fname" invisible="1"/>
+                                        <field name="bsp_attachment" filename="attachment_fname"
+                                               widget='many2many_binary'
                                                string=""
                                                attrs="{'invisible':[('bangko_sentral_pilipinas', '=', False)]}"/>
                                         <field name="bureau_of_custom" nolabel="1"
                                                attrs="{'readonly':['|','|','|',('ask_3', '=','no'),  ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved')]}"/>
                                         <label for="bureau_of_custom"/>
-                                        <field name="attachment_fname" invisible="1"/>
-                                        <field name="attachment" filename="attachment_fname" widget='many2many_binary'
+                                        <field name="boc_attachment_fname" invisible="1"/>
+                                        <field name="boc_attachment" filename="attachment_fname"
+                                               widget='many2many_binary'
                                                string=""
                                                attrs="{'invisible':[('bureau_of_custom', '=', False)]}"/>
                                         <field name="construction_industry_authority_philippines" nolabel="1"
                                                attrs="{'readonly':['|','|','|',('ask_3', '=','no'),  ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved')]}"/>
                                         <label for="construction_industry_authority_philippines"/>
-                                        <field name="attachment_fname" invisible="1"/>
-                                        <field name="attachment" filename="attachment_fname" widget='many2many_binary'
+                                        <field name="ciap_attachment_fname" invisible="1"/>
+                                        <field name="ciap_attachment" filename="attachment_fname"
+                                               widget='many2many_binary'
                                                string=""
                                                attrs="{'invisible':[('construction_industry_authority_philippines', '=', False)]}"/>
                                         <field name="cooperative_development_authority" nolabel="1"
                                                attrs="{'readonly':['|','|','|',('ask_3', '=','no'),  ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved')]}"/>
                                         <label for="cooperative_development_authority"/>
-                                        <field name="attachment_fname" invisible="1"/>
-                                        <field name="attachment" filename="attachment_fname" widget='many2many_binary'
+                                        <field name="cda_attachment_fname" invisible="1"/>
+                                        <field name="cda_attachment" filename="attachment_fname"
+                                               widget='many2many_binary'
                                                string=""
                                                attrs="{'invisible':[('cooperative_development_authority', '=', False)]}"/>
                                         <field name="insurance_commission" nolabel="1"
                                                attrs="{'readonly':['|','|','|',('ask_3', '=','no'),  ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved')]}"/>
                                         <label for="insurance_commission"/>
-                                        <field name="attachment_fname" invisible="1"/>
-                                        <field name="attachment" filename="attachment_fname" widget='many2many_binary'
+                                        <field name="ic_attachment_fname" invisible="1"/>
+                                        <field name="ic_attachment" filename="attachment_fname"
+                                               widget='many2many_binary'
                                                string=""
                                                attrs="{'invisible':[('insurance_commission', '=', False)]}"/>
                                         <field name="integrated_bar_philippines" nolabel="1"
                                                attrs="{'readonly':['|','|','|',('ask_3', '=','no'),  ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved')]}"/>
                                         <label for="integrated_bar_philippines"/>
-                                        <field name="attachment_fname" invisible="1"/>
-                                        <field name="attachment" filename="attachment_fname" widget='many2many_binary'
+                                        <field name="ibp_attachment_fname" invisible="1"/>
+                                        <field name="ibp_attachment" filename="attachment_fname"
+                                               widget='many2many_binary'
                                                string=""
                                                attrs="{'invisible':[('integrated_bar_philippines', '=', False)]}"/>
                                     </group>
@@ -330,36 +351,41 @@
                                         <field name="land_transportation_franchising_regulatory_board" nolabel="1"
                                                attrs="{'readonly':['|','|','|',('ask_3', '=','no'),  ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved')]}"/>
                                         <label for="land_transportation_franchising_regulatory_board"/>
-                                        <field name="attachment_fname" invisible="1"/>
-                                        <field name="attachment" filename="attachment_fname" widget='many2many_binary'
+                                        <field name="lto_attachment_fname" invisible="1"/>
+                                        <field name="lto_attachment" filename="attachment_fname"
+                                               widget='many2many_binary'
                                                string=""
                                                attrs="{'invisible':[('land_transportation_franchising_regulatory_board', '=', False)]}"/>
                                         <field name="philippine_amusement_gaming_corporation" nolabel="1"
                                                attrs="{'readonly':['|','|','|',('ask_3', '=','no'),  ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved')]}"/>
                                         <label for="philippine_amusement_gaming_corporation"/>
-                                        <field name="attachment_fname" invisible="1"/>
-                                        <field name="attachment" filename="attachment_fname" widget='many2many_binary'
+                                        <field name="pagc_attachment_fname" invisible="1"/>
+                                        <field name="pagc_attachment" filename="attachment_fname"
+                                               widget='many2many_binary'
                                                string=""
                                                attrs="{'invisible':[('philippine_amusement_gaming_corporation', '=', False)]}"/>
                                         <field name="philippines_council_ngo_certification" nolabel="1"
                                                attrs="{'readonly':['|','|','|',('ask_3', '=','no'),  ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved')]}"/>
                                         <label for="philippines_council_ngo_certification"/>
-                                        <field name="attachment_fname" invisible="1"/>
-                                        <field name="attachment" filename="attachment_fname" widget='many2many_binary'
+                                        <field name="pcnc_attachment_fname" invisible="1"/>
+                                        <field name="pcnc_attachment" filename="attachment_fname"
+                                               widget='many2many_binary'
                                                string=""
                                                attrs="{'invisible':[('philippines_council_ngo_certification', '=', False)]}"/>
                                         <field name="philippines_stock_exchange" nolabel="1"
                                                attrs="{'readonly':['|','|','|',('ask_3', '=','no'),  ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved')]}"/>
                                         <label for="philippines_stock_exchange"/>
-                                        <field name="attachment_fname" invisible="1"/>
-                                        <field name="attachment" filename="attachment_fname" widget='many2many_binary'
+                                        <field name="pse_attachment_fname" invisible="1"/>
+                                        <field name="pse_attachment" filename="attachment_fname"
+                                               widget='many2many_binary'
                                                string=""
                                                attrs="{'invisible':[('philippines_stock_exchange', '=', False)]}"/>
                                         <field name="professional_regulation_commission" nolabel="1"
                                                attrs="{'readonly':['|','|','|',('ask_3', '=','no'),  ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved')]}"/>
                                         <label for="professional_regulation_commission"/>
-                                        <field name="attachment_fname" invisible="1"/>
-                                        <field name="attachment" filename="attachment_fname" widget='many2many_binary'
+                                        <field name="prc_attachment_fname" invisible="1"/>
+                                        <field name="prc_attachment" filename="attachment_fname"
+                                               widget='many2many_binary'
                                                string=""
                                                attrs="{'invisible':[('professional_regulation_commission', '=', False)]}"/>
                                         <field name="others_ri" nolabel="1"

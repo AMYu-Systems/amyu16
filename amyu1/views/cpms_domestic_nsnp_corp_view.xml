@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <record id="domestic_corp_tree_view" model="ir.ui.view">
+            <field name="name">domestic.corp_tree.view</field>
+            <field name="model">domestic.corp</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom" create="1" edit="1" delete="0">
+                    <field name="name"/>
+                    <field name="president"/>
+                    <field name="treasurer"/>
+                    <field name="corporate_secretary"/>
+                    <field name="vice_chairman"/>
+                    <field name="asst_treasurer"/>
+                    <field name="asst_corp_secretary"/>
+                </tree>
+            </field>
+        </record>
+    </data>
+</odoo>

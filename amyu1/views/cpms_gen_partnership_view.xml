@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <record id="general_partnership_tree_view" model="ir.ui.view">
+            <field name="name">general.partnership.tree.view</field>
+            <field name="model">general.partnership</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom" create="1" edit="1" delete="0">
+                    <field name="name"/>
+                    <field name="partner"/>
+                </tree>
+            </field>
+        </record>
+    </data>
+</odoo>

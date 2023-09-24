@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <record id="capitalization_tree_view" model="ir.ui.view">
+            <field name="name">capitalization.tree.view</field>
+            <field name="model">capitalization</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom" create="1" edit="1" delete="0">
+                    <field name="name"/>
+                    <field name="par_value"/>
+                    <field name="column_3">
+                        <field name="authorized_no"/>
+                        <field name="authorized_amount"/>
+                    </field>
+                    <field name="column_4">
+                        <field name="subscribed_no"/>
+                        <field name="subscribed_amount"/>
+                    </field>
+                    <field name="column_5">
+                        <field name="treasury_no"/>
+                        <field name="treasury_amount"/>
+                    </field>
+                    <field name="column_6">
+                        <field name="paid_up_no"/>
+                        <field name="paid_up_amount"/>
+                    </field>
+                </tree>
+            </field>
+        </record>
+    </data>
+</odoo>
+

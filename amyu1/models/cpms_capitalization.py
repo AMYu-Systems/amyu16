@@ -1,9 +1,9 @@
 from odoo import models, fields
 
 
-class ClassOfShares(models.Model):
-    _name = 'class.of.shares'
-    _description = "Class of Shares"
+class Capitalization(models.Model):
+    _name = 'capitalization'
+    _description = "Capitalization Shares"
 
     name = fields.Char(string="Class of Shares")
     par_value = fields.Integer(string="Par Value per Share", default='')
@@ -19,4 +19,4 @@ class ClassOfShares(models.Model):
     column_6 = fields.Char(string="Paid-Up")
     paid_up_no = fields.Integer(string="No.")
     paid_up_amount = fields.Float(string="Amount")
-    client_share_ids = fields.Many2one(comodel_name='client.profile', string="Class")
+    client_profile_id = fields.Many2one(comodel_name='client.profile', string="Class")
