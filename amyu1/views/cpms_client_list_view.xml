@@ -1,16 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <data>
-        <record id="action_client_profile_card" model="ir.actions.report">
-            <field name="name">Preview</field>
-            <field name="model">client.profile</field>
-            <field name="report_type">qweb-pdf</field>
-            <field name="report_name">amyu1.report_client_profile_card</field>
-            <field name="report_file">amyu1.report_client_profile_card</field>
-            <field name="print_report_name">'Client Profile - %s' % (object.name)</field>
-            <field name="binding_model_id" ref="model_client_profile"/>
-        </record>
-
         <record id="client_tree_view" model="ir.ui.view">
             <field name="name">client.tree.view</field>
             <field name="model">client.profile</field>
