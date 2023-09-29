@@ -1,13 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <template id="report_clientprofile_document">
+        <t t-call="web.external_layout">
+            <h1>
+                I. General Information
+            </h1>
+            <br/>
+            <br/>
+            <table style="font-size:20px;" width="100%">
+                <tr>
+                    <td>Registered Name: </td>
+                    <td><span t-field="doc.name"/></td>
+                </tr>
+                <tr>
+                    <td style="background-color: #dce6f5;">Client ID:: </td>
+                    <td style="background-color: #dce6f5;"><span t-field="doc.client_system_generated"/></td>
+                </tr>
+                <tr>
+                    <td>Organizational Type: </td>
+                    <td><span t-field="doc.organization_type"/></td>
+                </tr>
+                <tr>
+                    <td style="background-color: #dce6f5;">Industry Class: </td>
+                    <td style="background-color: #dce6f5;"><span t-field="doc.industry_class"/></td>
+                </tr>
+                <tr>
+                    <td>Date of Engagement: </td>
+                    <td><span t-field="doc.date_of_engagement"/></td>
+                </tr>
+            </table>
+        </t>
+    </template>
+
+
+    <template id="report_clientprofile_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="amyu1.report_clientprofile_document"/>
+            </t>
+        </t>
+    </template>
+
+    <record id="paperformat_custom" model="report.paperformat">
+        <field name="name">Custom Paper</field>
+        <field name="default" eval="True"/>
+        <field name="format">custom</field>
+        <field name="page_height">297</field>
+        <field name="page_width">210</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">10.00</field>
+        <field name="margin_bottom">10.00</field>
+        <field name="margin_left">7.0</field>
+        <field name="margin_right">7.0</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">35</field>
+        <field name="dpi">125</field>
+    </record>
+
     <record id="action_report_client_profile" model="ir.actions.report">
         <field name="name">Client Profile</field>
         <field name="model">client.profile</field>
         <field name="report_type">qweb-pdf</field>
-        <field name="report_name">amyu1.report_clientprofile</field>
-        <field name="report_file">amyu1.report.client_profile_templates</field>
+        <field name="report_name">amyu1.report_clientprofile_template</field>
+        <field name="report_file">amyu1.cpms_preview_reports</field>
         <field name="print_report_name">'Client Profile - %s' % object.name</field>
         <field name="binding_model_id" ref="model_client_profile"/>
         <field name="binding_type">report</field>
+<!--        <field name="paperformat_id" ref="amyu1.paperformat_custom"/>-->
     </record>
 </odoo>
