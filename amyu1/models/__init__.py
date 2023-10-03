@@ -17,3 +17,11 @@ from . import cpms_foriegn_corp
 from . import cpms_foreign_nsnp_corp
 from . import cpms_roqh_foreign_corp
 from . import cpms_representative_office
+from . import cpms_capital_sole_proprietor
+from . import cpms_capital_general_partnership
+from . import cpms_capital_general_professional_partnership
+from . import cpms_capital_domestic_nsnp_corp
+from . import cpms_capital_foreign_corp
+from . import cpms_capital_foreign_nsnp
+from . import cpms_capital_roqh_foreign_corp
+from . import cpms_capital_representative_office

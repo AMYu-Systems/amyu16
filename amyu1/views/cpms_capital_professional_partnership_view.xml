@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <record id="capital_general_professional_partnership_tree_view" model="ir.ui.view">
+            <field name="name">capital.general.professional.partnership.tree.view</field>
+            <field name="model">capital.general.professional.partnership</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom" create="1" edit="1" delete="0">
+                    <field name="name"/>
+                    <field name="capital_contribution_amount"/>
+                </tree>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -487,10 +487,10 @@ class ClientProfile(models.Model):
     registration_date_sec = fields.Date('Date')
     trade_name = fields.Char(string="Trade Name")
 
-    @api.onchange('name')
-    def copy_client_name(self):
-        for record in self:
-            record.trade_name = record.name
+    # @api.onchange('name')
+    # def copy_client_name(self):
+    #     for record in self:
+    #         record.trade_name = record.name
 
     @api.onchange('trade_name')
     def set_upper(self):
@@ -503,42 +503,44 @@ class ClientProfile(models.Model):
     ask_2 = fields.Text(string="If Yes what type of security is the Company permit to sell?")
     capitalization_ids = fields.One2many(comodel_name='capitalization.share', inverse_name='capitalization_id',
                                          string="Class of Shares")
+    capital_sole_proprietor_ids = fields.One2many(comodel_name='capital.sole.proprietor',
+                                                  inverse_name='capital_sole_proprietor_id',
+                                                  string="Capital Sole Proprietor")
+    capital_general_partner_ids = fields.One2many(comodel_name='capital.general.partnership',
+                                                  inverse_name='capital_general_partner_id',
+                                                  string="Capital General Partnership")
+    capital_general_professional_partner_ids = fields.One2many(comodel_name='capital.general.professional.partnership',
+                                                               inverse_name='capital_general_professional_partner_id',
+                                                               string="Capital General Partnership")
+    capital_domestic_ids = fields.One2many(comodel_name='capital.domestic.nsnp', inverse_name='capital_domestic_id',
+                                           string="Capital Domestic NSNP")
+    capital_foreign_corp_ids = fields.One2many(comodel_name='capital.foreign.corp',
+                                               inverse_name='capital_foreign_corp_id',
+                                               string="Capital Foreign Corporation")
+    capital_foreign_nsnp_ids = fields.One2many(comodel_name='capital.foreign.nsnp.corp',
+                                               inverse_name='capital_foreign_nsnp_id', string="Capital Foreign NSNP")
+    capital_roqh_foreign_corp_ids = fields.One2many(comodel_name='capital.roqh.foreign.corp',
+                                                    inverse_name='capital_roqh_foreign_corp_id',
+                                                    string="Capital ROQH Foreign")
+    capital_representative_office_ids = fields.One2many(comodel_name='capital.representative.office',
+                                                        inverse_name='capital_representative_office_id',
+                                                        string="Capital Representative Office")
     ask_3 = fields.Selection([('yes', 'Yes'), ('no', 'No')], default="no")
     bureau_of_custom = fields.Boolean(string="Bureau of Customs")
-    boc_attachment = fields.Many2many('ir.attachment', 'attachment_rel', 'pro_id', 'attach_id', string='Attachments', )
-    boc_attachment_fname = fields.Char(string="Attachment Filename")
     bangko_sentral_pilipinas = fields.Boolean(string="Bangko Sentral ng Pilipinas")
-    bsp_attachment = fields.Many2many('ir.attachment', 'attachment_rel', 'pro_id', 'attach_id', string='Attachments', )
-    bsp_attachment_fname = fields.Char(string="Attachment Filename")
     professional_regulation_commission = fields.Boolean(string="Professional Regulation Commission")
-    prc_attachment = fields.Many2many('ir.attachment', 'attachment_rel', 'pro_id', 'attach_id', string='Attachments', )
-    prc_attachment_fname = fields.Char(string="Attachment Filename")
     philippines_council_ngo_certification = fields.Boolean(string="Philippine Council for NGO Certification")
-    pcnc_attachment = fields.Many2many('ir.attachment', 'attachment_rel', 'pro_id', 'attach_id', string='Attachments', )
-    pcnc_attachment_fname = fields.Char(string="Attachment Filename")
     cooperative_development_authority = fields.Boolean(string="Cooperative Development Authority")
-    cda_attachment = fields.Many2many('ir.attachment', 'attachment_rel', 'pro_id', 'attach_id', string='Attachments', )
-    cda_attachment_fname = fields.Char(string="Attachment Filename")
     insurance_commission = fields.Boolean(string="Insurance Commission")
-    ic_attachment = fields.Many2many('ir.attachment', 'attachment_rel', 'pro_id', 'attach_id', string='Attachments', )
-    ic_attachment_fname = fields.Char(string="Attachment Filename")
     integrated_bar_philippines = fields.Boolean(string="Integrated Bar of the Philippines")
-    ibp_attachment = fields.Many2many('ir.attachment', 'attachment_rel', 'pro_id', 'attach_id', string='Attachments', )
-    ibp_attachment_fname = fields.Char(string="Attachment Filename")
     philippines_stock_exchange = fields.Boolean(string="Philippine Stock Exchange")
-    pse_attachment = fields.Many2many('ir.attachment', 'attachment_rel', 'pro_id', 'attach_id', string='Attachments', )
-    pse_attachment_fname = fields.Char(string="Attachment Filename")
     construction_industry_authority_philippines = fields.Boolean(
         string="Construction Industry authority of the Philippines (PCAB)")
-    ciap_attachment = fields.Many2many('ir.attachment', 'attachment_rel', 'pro_id', 'attach_id', string='Attachments', )
-    ciap_attachment_fname = fields.Char(string="Attachment Filename")
     philippine_amusement_gaming_corporation = fields.Boolean(string="Philippine Amusement and Gaming Corporation")
-    pagc_attachment = fields.Many2many('ir.attachment', 'attachment_rel', 'pro_id', 'attach_id', string='Attachments', )
-    pagc_attachment_fname = fields.Char(string="Attachment Filename")
     land_transportation_franchising_regulatory_board = fields.Boolean(
         string="Land Transportation Franchising and Regulatory Board")
-    lto_attachment = fields.Many2many('ir.attachment', 'attachment_rel', 'pro_id', 'attach_id', string='Attachments', )
-    lto_attachment_fname = fields.Char(string="Attachment Filename")
+    attachment = fields.Many2many('ir.attachment', 'attachment_rel', 'pro_id', 'attach_id', string='Attachments', )
+    attachment_fname = fields.Char(string="Attachment Filename")
     others_ri = fields.Boolean(string="Others")
     others_reg = fields.Char(string="Others")
     sss = fields.Char(string="SSS ER No", size=15)

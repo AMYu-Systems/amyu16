@@ -2,7 +2,7 @@
 <odoo>
     <data>
         <record id="domestic_corp_tree_view" model="ir.ui.view">
-            <field name="name">domestic.corp_tree.view</field>
+            <field name="name">domestic.corp.tree.view</field>
             <field name="model">domestic.corp</field>
             <field name="arch" type="xml">
                 <tree editable="bottom" create="1" edit="1" delete="0">
