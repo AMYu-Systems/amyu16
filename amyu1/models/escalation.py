@@ -1,4 +1,6 @@
-from odoo import models, fields
+from odoo import models, fields, api
+from odoo.exceptions import ValidationError
+import re
 
 
 class EscalationContact(models.Model):
@@ -6,6 +8,18 @@ class EscalationContact(models.Model):
     _description = "Escalation Point of Contact"
 
     name = fields.Char(string='Point of Contact')
+
+    @api.onchange('name')
+    def caps_name(self):
+        if self.name:
+            self.name = str(self.name).title()
+
+    @api.constrains('name')
+    def _error_name(self):
+        for record in self:
+            if any(char.isdigit() for char in record.name):
+                raise ValidationError("Numbers are not allowed in Point of Contact Field.")
+
     level = fields.Selection([('level_1', '1st Level'), ('level_2', '2nd Level'), ('level_3', '3rd Level')],
                              string="Level")
     timeframe = fields.Selection(
@@ -14,5 +28,13 @@ class EscalationContact(models.Model):
          ('lvl3', 'unresolved issue after 3 days; 3 days delay in submission of documents')],
         string="Escalation Timeframe")
     contact_number = fields.Char(string="Contact Number")
+
+    @api.constrains('contact_number')
+    def _validate_contact_number(self):
+        for record in self:
+            pattern = r'^(?:\+63|0)\d{10}$'  # Modify the regular expression pattern according to your requirements
+            if record.contact_number and not re.match(pattern, record.contact_number):
+                raise ValidationError('Invalid Escalation Matrix Contact Number format!')
+
     email = fields.Char(string="Email Address")
     escalation_id = fields.Many2one(comodel_name='client.profile', string="Escalation")

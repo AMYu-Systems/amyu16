@@ -23,24 +23,29 @@
                         <button name="action_submit_supervisor" string="Submit" type="object" class="oe_highlight"
                                 groups="amyu1.associate_group"
                                 attrs="{'invisible': [('state', '!=', 'draft')]}"/>
-                        <button name="action_approve_supervisor" string="Verify" type="object" class="oe_highlight"
+                        <button name="action_approve_supervisor" string="Verify"
+                                confirm="Are you sure you want to continue with your verification?" type="object"
+                                class="oe_highlight"
                                 groups="amyu1.supervisor_group"
                                 attrs="{'invisible': [('state', '!=', 'supervisor')]}"/>
-                        <button name="action_approve_manager" string="Approve" type="object" class="oe_highlight"
+                        <button name="action_approve_manager" string="Approve"
+                                confirm="Are you sure you want to continue with your approval?" type="object"
+                                class="oe_highlight"
                                 groups="amyu1.manager_group"
                                 attrs="{'invisible': [('state', '!=', 'manager')]}"/>
                         <button name="action_return" string="Return" type="object"
                                 groups="amyu1.supervisor_group"
                                 attrs="{'invisible': [('state', '!=', 'supervisor')]}"/>
+                        <button name="action_return" string="Return" type="object"
+                                groups="amyu1.manager_group"
+                                attrs="{'invisible': [('state', '!=', 'manager')]}"/>
                         <button name="action_return" string="Edit" type="object"
                                 groups="amyu1.associate_group"
                                 attrs="{'invisible': [('state', '!=', 'approved')]}"
                                 class="oe_highlight"/>
-                        <button name="draft_action" confirm="Draft Again?" string="returned to Draft"
-                                groups="amyu1.supervisor_group,amyu1.manager_group"
-                                attrs="{'invisible': [('state', '!=', 'cancel')]}" type="object"/>
-                        <button name="draft_action" confirm="Draft Again?" string="returned to Draft"
-                                groups="amyu1.associate_group,amyu1.manager_group"
+                        <button name="draft_action" confirm="Are you sure you want to return this draft?"
+                                string="returned to Draft"
+                                groups="amyu1.supervisor_group,amyu1.supervisor_group,amyu1.manager_group"
                                 attrs="{'invisible': [('state', '!=', 'cancel')]}" type="object"/>
 
                         <field name="state" widget="statusbar"
@@ -245,7 +250,7 @@
                                        attrs="{'invisible': [('organization_type', '!=', 'foreign_corp')]}"/>
                                 <field name="capital_foreign_nsnp_ids"
                                        attrs="{'invisible': [('organization_type', '!=', 'foreign_nsnp_corp')]}"/>
-                                 <field name="capital_roqh_foreign_corp_ids"
+                                <field name="capital_roqh_foreign_corp_ids"
                                        attrs="{'invisible': [('organization_type', '!=', 'roqh_foreign_corp')]}"/>
                                 <field name="capital_representative_office_ids"
                                        attrs="{'invisible': [('organization_type', '!=', 'representative_office')]}"/>
@@ -423,7 +428,7 @@
                     </sheet>
                     <div class="oe_chatter">
                         <!--                        <field name="message_follower_ids"/>-->
-                        <field name="activity_ids"/>
+                        <!--                        <field name="activity_ids"/>-->
                         <field name="message_ids"/>
                     </div>
                 </form>

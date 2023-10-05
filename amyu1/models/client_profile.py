@@ -70,6 +70,12 @@ class ClientProfile(models.Model):
         if self.nature_of_business:
             self.nature_of_business = str(self.nature_of_business).title()
 
+    @api.onchange('nature_of_business')
+    def _onchange_nature_of_business(self):
+        for record in self:
+            if any(char.isdigit() for char in record.nature_of_business):
+                raise ValidationError("Numbers are not allowed in this Field.")
+
     date_of_engagement = fields.Date(string="Date of Engagement", required=True)
     client_system_generated = fields.Char(string="Client ID")
     tax_reporting_compliance = fields.Boolean(string="Tax Reporting & Compliance")
@@ -301,9 +307,16 @@ class ClientProfile(models.Model):
             if record.facsimile_no:
                 if any(char.isalpha() and char != '-' for char in record.facsimile_no):
                     raise ValidationError(
-                        "Only numbers are allowed in the Telephone Number.")
+                        "Only numbers are allowed in the Facsimile Number.")
 
     website = fields.Char(string="Website")
+
+    @api.onchange('website')
+    def _onchange_website(self):
+        for record in self:
+            if any(char.isdigit() for char in record.website):
+                raise ValidationError("Numbers are not allowed in the Website Field.")
+
     unit_no2 = fields.Char(string="Unit/Floor")
 
     @api.onchange('unit_no2')
@@ -377,6 +390,12 @@ class ClientProfile(models.Model):
         if self.primary_contact_person:
             self.primary_contact_person = str(self.primary_contact_person).title()
 
+    @api.onchange('primary_contact_person')
+    def _onchange_primary_contact_person(self):
+        for record in self:
+            if any(char.isdigit() for char in record.primary_contact_person):
+                raise ValidationError("Numbers are not allowed in the Primary Contact Person.")
+
     mobile_number = fields.Char(string="Mobile No.")
 
     @api.constrains('mobile_number')
@@ -393,6 +412,12 @@ class ClientProfile(models.Model):
     def caps_principal_accounting_officer(self):
         if self.principal_accounting_officer:
             self.principal_accounting_officer = str(self.principal_accounting_officer).title()
+
+    @api.onchange('principal_accounting_officer')
+    def _onchange_principal_accounting_officer(self):
+        for record in self:
+            if any(char.isdigit() for char in record.principal_accounting_officer):
+                raise ValidationError("Numbers are not allowed in this Field.")
 
     landline3 = fields.Char(string="Telephone", help="This field includes a hyphen", size=16)
 
@@ -444,12 +469,12 @@ class ClientProfile(models.Model):
                     raise ValidationError(
                         "Only numbers are allowed in the TAX ID Number.")
 
-    rdo_code = fields.Char(string="RDO Code", size=4)
+    rdo_code = fields.Char(string="RDO Code", size=3)
 
     @api.constrains('rdo_code')
     def _validate_rdo_code(self):
         for record in self:
-            pattern = r'^\d{4}$'  # Modify the regular expression pattern according to your requirements
+            pattern = r'^\d{3}$'  # Modify the regular expression pattern according to your requirements
             if record.rdo_code and not re.match(pattern, record.rdo_code):
                 raise ValidationError('Invalid RDO Code!')
 
@@ -475,7 +500,35 @@ class ClientProfile(models.Model):
         [('manual', 'Manual'), ('computer_aid_loose_leaf', 'Computer-aided (Loose-leaf)'),
          ('cas_generated', 'CAS-Generated')], string="Books of Accounts")
     psic_psoc = fields.Char(string="PSIC/PSOC")
+
+    @api.onchange('psic_psoc')
+    def onchange_psic_psoc(self):
+        for record in self:
+            if record.psic_psoc and len(record.psic_psoc) == 10:
+                formatted_number = '-'.join([
+                    record.psic_psoc[:4],
+                    record.psic_psoc[4:10],
+                ])
+                record.psic_psoc = formatted_number
+
+    @api.constrains('psic_psoc')
+    def _check_psic_psoc(self):
+        for record in self:
+            if record.psic_psoc:
+                if any(char.isalpha() and char != '-' for char in record.psic_psoc):
+                    raise ValidationError(
+                        "Only numbers are allowed in the PSIC/PSOC")
+
     ll_cas_permit_no = fields.Char(string="LL/CAS Permit No")
+
+    @api.constrains('ll_cas_permit_no')
+    def _check_ll_cas_permit_no(self):
+        for record in self:
+            if record.ll_cas_permit_no:
+                if any(char.isalpha() and char != '-' for char in record.ll_cas_permit_no):
+                    raise ValidationError(
+                        "Only numbers are allowed in the LL/CAS Permit No.")
+
     ask = fields.Selection([('yes', 'Yes'), ('no', 'No')], default="no")
     registration_number = fields.Char(string="Registration No", size=13)
 

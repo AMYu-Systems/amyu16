@@ -19,7 +19,7 @@
     <record id="cpms_client_profile_rule" model="ir.rule">
         <field name="name">User Own Client Documents</field>
         <field name="model_id" ref="model_client_profile"/>
-        <field name="domain_force">[('create_uid', '=', user.id)]</field>
+        <field name="domain_force">[(1,'=',1)]</field>
         <field name="groups" eval="[(4, ref('amyu1.associate_group'))]"/>
     </record>
 
