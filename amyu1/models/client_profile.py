@@ -70,8 +70,8 @@ class ClientProfile(models.Model):
         if self.nature_of_business:
             self.nature_of_business = str(self.nature_of_business).title()
 
-    @api.onchange('nature_of_business')
-    def _onchange_nature_of_business(self):
+    @api.constrains('nature_of_business')
+    def _error_nature_of_business(self):
         for record in self:
             if any(char.isdigit() for char in record.nature_of_business):
                 raise ValidationError("Numbers are not allowed in this Field.")
@@ -311,8 +311,8 @@ class ClientProfile(models.Model):
 
     website = fields.Char(string="Website")
 
-    @api.onchange('website')
-    def _onchange_website(self):
+    @api.constrains('website')
+    def _error_website(self):
         for record in self:
             if any(char.isdigit() for char in record.website):
                 raise ValidationError("Numbers are not allowed in the Website Field.")
@@ -390,8 +390,8 @@ class ClientProfile(models.Model):
         if self.primary_contact_person:
             self.primary_contact_person = str(self.primary_contact_person).title()
 
-    @api.onchange('primary_contact_person')
-    def _onchange_primary_contact_person(self):
+    @api.constrains('primary_contact_person')
+    def _error_primary_contact_person(self):
         for record in self:
             if any(char.isdigit() for char in record.primary_contact_person):
                 raise ValidationError("Numbers are not allowed in the Primary Contact Person.")
@@ -413,8 +413,8 @@ class ClientProfile(models.Model):
         if self.principal_accounting_officer:
             self.principal_accounting_officer = str(self.principal_accounting_officer).title()
 
-    @api.onchange('principal_accounting_officer')
-    def _onchange_principal_accounting_officer(self):
+    @api.constrains('principal_accounting_officer')
+    def _error_principal_accounting_officer(self):
         for record in self:
             if any(char.isdigit() for char in record.principal_accounting_officer):
                 raise ValidationError("Numbers are not allowed in this Field.")

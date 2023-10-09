@@ -83,25 +83,25 @@
                             <page string="CONTACT">
                                 <group string="Registered Address">
                                     <group>
-                                        <field name="unit_no"
+                                        <field name="unit_no" tabindex="1"
                                                attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
-                                        <field name="street"
+                                        <field name="street" tabindex="3"
                                                attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
-                                        <field name="city"
+                                        <field name="city" tabindex="5"
                                                attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
-                                        <field name="landline"
+                                        <field name="landline" tabindex="7"
                                                attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
-                                        <field name="facsimile_no"
+                                        <field name="facsimile_no" tabindex="9"
                                                attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                     </group>
                                     <group>
-                                        <field name="building_name"
+                                        <field name="building_name" tabindex="2"
                                                attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
-                                        <field name="district"
+                                        <field name="district" tabindex="4"
                                                attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
-                                        <field name="zip"
+                                        <field name="zip" tabindex="6"
                                                attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
-                                        <field name="website" widget="website"
+                                        <field name="website" widget="website" tabindex="8"
                                                attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                     </group>
                                 </group>
