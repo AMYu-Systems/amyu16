@@ -5,7 +5,7 @@
             <field name="name">client.profile.tree.view</field>
             <field name="model">client.profile</field>
             <field name="arch" type="xml">
-                <tree>
+                <tree export_xlsx="0">
                     <field name="name"/>
                     <field name="client_system_generated"/>
                     <field name="associate_id"/>
@@ -40,13 +40,21 @@
                                 groups="amyu1.manager_group"
                                 attrs="{'invisible': [('state', '!=', 'manager')]}"/>
                         <button name="action_return" string="Edit" type="object"
-                                groups="amyu1.associate_group"
+                                groups="amyu1.associate_group" confirm="Are you gonna edit this Document"
                                 attrs="{'invisible': [('state', '!=', 'approved')]}"
                                 class="oe_highlight"/>
-                        <button name="draft_action" confirm="Are you sure you want to return this draft?"
-                                string="returned to Draft"
-                                groups="amyu1.supervisor_group,amyu1.supervisor_group,amyu1.manager_group"
+                        <button name="draft_action"
+                                string="For Edit"
+                                groups="amyu1.associate_group"
                                 attrs="{'invisible': [('state', '!=', 'cancel')]}" type="object"/>
+<!--                        <button name="draft_action" confirm="Are you sure you want to return this draft?"-->
+<!--                                string="returned to Draft"-->
+<!--                                groups="amyu1.supervisor_group"-->
+<!--                                attrs="{'invisible': [('state', '!=', 'cancel')]}" type="object"/>-->
+<!--                        <button name="draft_action" confirm="Are you sure you want to return this draft?"-->
+<!--                                string="returned to Draft"-->
+<!--                                groups="amyu1.manager_group"-->
+<!--                                attrs="{'invisible': [('state', '!=', 'cancel')]}" type="object"/>-->
 
                         <field name="state" widget="statusbar"
                                status_invisible="draft,supervisor,manager,approved"/>
@@ -456,7 +464,7 @@
             <field name="name">Client Profile</field>
             <field name="res_model">client.profile</field>
             <field name="view_mode">tree,form</field>
-            <field name="domain">[('state','=','draft')]</field>
+            <field name="domain">['|',('state','=','draft'),('state','=','cancel')]</field>
         </record>
 
         <record model="ir.sequence" id="client_id_seq">

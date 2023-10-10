@@ -312,10 +312,10 @@ class ClientProfile(models.Model):
     website = fields.Char(string="Website")
 
     @api.constrains('website')
-    def _error_website(self):
+    def _check_website_format(self):
         for record in self:
-            if any(char.isdigit() for char in record.website):
-                raise ValidationError("Numbers are not allowed in the Website Field.")
+            if record.website and '.com' not in record.website:
+                raise ValidationError("Invalid Website")
 
     unit_no2 = fields.Char(string="Unit/Floor")
 
@@ -361,7 +361,7 @@ class ClientProfile(models.Model):
             if record.zip2 and not re.match(pattern, record.zip2):
                 raise ValidationError('Invalid Zip Code!')
 
-    landline2 = fields.Char(string="Telephone", help="This field includes a hyphen", size=16)
+    landline2 = fields.Char(string="Telephone", size=16)
 
     @api.onchange('landline2')
     def onchange_landline2(self):
@@ -381,9 +381,9 @@ class ClientProfile(models.Model):
             if record.landline2:
                 if any(char.isalpha() and char != '-' for char in record.landline2):
                     raise ValidationError(
-                        "Only numbers are allowed in the Telephone Number.")
+                        "Only numbers are allowed in the Telephone field.")
 
-    primary_contact_person = fields.Char(string="Primary Contact")
+    primary_contact_person = fields.Char(string="Primary Contact Person")
 
     @api.onchange('primary_contact_person')
     def caps_primary_contact_person(self):
@@ -396,7 +396,7 @@ class ClientProfile(models.Model):
             if any(char.isdigit() for char in record.primary_contact_person):
                 raise ValidationError("Numbers are not allowed in the Primary Contact Person.")
 
-    mobile_number = fields.Char(string="Mobile No.")
+    mobile_number = fields.Char(string="Mobile No.", size=13)
 
     @api.constrains('mobile_number')
     def _validate_mobile_number(self):
@@ -406,6 +406,13 @@ class ClientProfile(models.Model):
                 raise ValidationError('Invalid mobile number format!')
 
     email_address = fields.Char(string="Email Address")
+
+    @api.constrains('email_address')
+    def _check_email_format(self):
+        for record in self:
+            if record.email_address and '@' not in record.email_address:
+                raise ValidationError("Invalid email address")
+
     principal_accounting_officer = fields.Char(string="Principal Accounting Officer")
 
     @api.onchange('principal_accounting_officer')
@@ -417,7 +424,7 @@ class ClientProfile(models.Model):
     def _error_principal_accounting_officer(self):
         for record in self:
             if any(char.isdigit() for char in record.principal_accounting_officer):
-                raise ValidationError("Numbers are not allowed in this Field.")
+                raise ValidationError("Numbers are not allowed in Principal Accounting Officer field")
 
     landline3 = fields.Char(string="Telephone", help="This field includes a hyphen", size=16)
 
@@ -439,9 +446,9 @@ class ClientProfile(models.Model):
             if record.landline3:
                 if any(char.isalpha() and char != '-' for char in record.landline3):
                     raise ValidationError(
-                        "Only numbers are allowed in the Telephone Number.")
+                        "Only numbers are allowed in the Telephone field")
 
-    mobile_number2 = fields.Char(string="Mobile No.")
+    mobile_number2 = fields.Char(string="Mobile No.", size=13)
 
     @api.constrains('mobile_number2')
     def _validate_mobile_number2(self):
@@ -451,6 +458,13 @@ class ClientProfile(models.Model):
                 raise ValidationError('Invalid mobile number format!')
 
     email_address2 = fields.Char(string="Email Address")
+
+    @api.constrains('email_address2')
+    def _check_email2_format(self):
+        for record in self:
+            if record.email_address2 and '@' not in record.email_address2:
+                raise ValidationError("Invalid email address")
+
     corporate_ids = fields.One2many(comodel_name='corporate.officer', inverse_name='client_profile_id',
                                     string="Corporate Officers")
     vat = fields.Char(string="Tax ID No.", size=11)
@@ -467,7 +481,7 @@ class ClientProfile(models.Model):
             if record.vat:
                 if any(char.isalpha() and char != '-' for char in record.vat):
                     raise ValidationError(
-                        "Only numbers are allowed in the TAX ID Number.")
+                        "Only numbers are allowed in the TAX ID field")
 
     rdo_code = fields.Char(string="RDO Code", size=3)
 
@@ -517,17 +531,17 @@ class ClientProfile(models.Model):
             if record.psic_psoc:
                 if any(char.isalpha() and char != '-' for char in record.psic_psoc):
                     raise ValidationError(
-                        "Only numbers are allowed in the PSIC/PSOC")
+                        "Only numbers are allowed in the PSIC/PSOC field")
 
     ll_cas_permit_no = fields.Char(string="LL/CAS Permit No")
 
     @api.constrains('ll_cas_permit_no')
-    def _check_ll_cas_permit_no(self):
+    def _error_ll_cas_permit_no(self):
         for record in self:
             if record.ll_cas_permit_no:
                 if any(char.isalpha() and char != '-' for char in record.ll_cas_permit_no):
                     raise ValidationError(
-                        "Only numbers are allowed in the LL/CAS Permit No.")
+                        "Only numbers are allowed in the LL/CAS Permit No field")
 
     ask = fields.Selection([('yes', 'Yes'), ('no', 'No')], default="no")
     registration_number = fields.Char(string="Registration No", size=13)
@@ -548,7 +562,6 @@ class ClientProfile(models.Model):
     @api.onchange('trade_name')
     def set_upper(self):
         self.trade_name = str(self.trade_name).upper()
-        return
 
     date_per_law = fields.Char(string="Date per By-Laws")
     actual_date_meeting = fields.Date('date')
@@ -615,7 +628,7 @@ class ClientProfile(models.Model):
             if record.sss:
                 if any(char.isalpha() and char != '-' for char in record.sss):
                     raise ValidationError(
-                        "Only numbers are allowed in the SSS Number.")
+                        "Only numbers are allowed in the SSS field.")
 
     phic = fields.Char(string="PHIC ER No", size=14)
 
@@ -636,7 +649,7 @@ class ClientProfile(models.Model):
             if record.phic:
                 if any(char.isalpha() and char != '-' for char in record.phic):
                     raise ValidationError(
-                        "Only numbers are allowed in the PHIC Number.")
+                        "Only numbers are allowed in the PHIC field.")
 
     hdmf = fields.Char(string="HDMF ER No", size=14)
 
@@ -657,7 +670,7 @@ class ClientProfile(models.Model):
             if record.hdmf:
                 if any(char.isalpha() and char != '-' for char in record.hdmf):
                     raise ValidationError(
-                        "Only numbers are allowed in the HDMF Number.")
+                        "Only numbers are allowed in the HDMF field.")
 
     sss_filing = fields.Selection([('manual', 'Manual'), ('online', 'Online (AMS-CCL)')], string="Filing")
     phic_filing = fields.Selection([('manual', 'Manual'), ('online', 'Online (ERPS)')], string="Filing")

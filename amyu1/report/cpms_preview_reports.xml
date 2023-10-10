@@ -1,13 +1,397 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <template id="report_clientprofile_document">
+        <t t-call="web.external_layout">
+            <h1>
+                I. General Information
+            </h1>
+            <br/>
+            <table style="font-size:20px;" width="100%">
+                <tr>
+                    <td>Registered Name:</td>
+                    <td>
+                        <span t-field="doc.name"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color: #dce6f5;">Client ID:</td>
+                    <td style="background-color: #dce6f5;">
+                        <span t-field="doc.client_system_generated"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Organizational Type:</td>
+                    <td>
+                        <span t-field="doc.organization_type"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color: #dce6f5;">Industry Class:</td>
+                    <td style="background-color: #dce6f5;">
+                        <span t-field="doc.industry_class"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Date of Engagement:</td>
+                    <td>
+                        <span t-field="doc.date_of_engagement"/>
+                    </td>
+                </tr>
+            </table>
+            <br/>
+            <br/>
+            <h1>
+                II. Contact Information
+            </h1>
+            <br/>
+            <table style="font-size:20px;" width="100%">
+                <tr>
+                    <td>Registered Address:</td>
+                    <td>
+                        <span t-field="doc.unit_no"/>
+                        <span t-field="doc.building_name"/>
+                        <span t-field="doc.street"/>
+                        <span t-field="doc.district"/>
+                        <span t-field="doc.city"/>
+                        <span t-field="doc.zip"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color: #dce6f5;">Telephone:</td>
+                    <td style="background-color: #dce6f5;">
+                        <span t-field="doc.landline"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Website:</td>
+                    <td>
+                        <span t-field="doc.website"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color: #dce6f5;">Accounting or Office Admin Address:</td>
+                    <td style="background-color: #dce6f5;">
+                        <span t-field="doc.unit_no2"/>
+                        <span t-field="doc.building_name2"/>
+                        <span t-field="doc.street2"/>
+                        <span t-field="doc.district2"/>
+                        <span t-field="doc.city2"/>
+                        <span t-field="doc.zip2"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Primary Contact:</td>
+                    <td>
+                        <span t-field="doc.primary_contact_person"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color: #dce6f5;">Telephone:</td>
+                    <td style="background-color: #dce6f5;">
+                        <span t-field="doc.landline2"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Mobile No.:</td>
+                    <td>
+                        <span t-field="doc.mobile_number"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color: #dce6f5;">Email Address:</td>
+                    <td style="background-color: #dce6f5;">
+                        <span t-field="doc.email_address"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Principal Accounting Officer:</td>
+                    <td>
+                        <span t-field="doc.principal_accounting_officer"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color: #dce6f5;">Telephone:</td>
+                    <td style="background-color: #dce6f5;">
+                        <span t-field="doc.landline3"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Mobile No.:</td>
+                    <td>
+                        <span t-field="doc.mobile_number2"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color: #dce6f5;">Email Address:</td>
+                    <td style="background-color: #dce6f5;">
+                        <span t-field="doc.email_address2"/>
+                    </td>
+                </tr>
+            </table>
+            <br/>
+            <br/>
+            <h1>
+                III. B.I.R Information
+            </h1>
+            <br/>
+            <table style="font-size:20px;" width="100%">
+                <tr>
+                    <td>TAX ID No.:</td>
+                    <td>
+                        <span t-field="doc.vat"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color: #dce6f5;">RDO Code:</td>
+                    <td style="background-color: #dce6f5;">
+                        <span t-field="doc.rdo_code"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Registration Date:</td>
+                    <td>
+                        <span t-field="doc.registration_date"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color: #dce6f5;">Tax Type:</td>
+                    <td style="background-color: #dce6f5;">
+                        <span t-field="doc.income_tax"/>
+                        <span t-field="doc.excise_tax"/>
+                        <span t-field="doc.value_added_tax"/>
+                        <span t-field="doc.withholding_tax_expanded"/>
+                        <span t-field="doc.withholding_tax_compensation"/>
+                        <span t-field="doc.withholding_tax_final"/>
+                        <span t-field="doc.registration_fee"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Taxpayer Type:</td>
+                    <td>
+                        <span t-field="doc.tax_type"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color: #dce6f5;">Invoice Type:</td>
+                    <td style="background-color: #dce6f5;">
+                        <span t-field="doc.invoice_tax"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td><![CDATA[Filling & Payment:]]></td>
+                    <td>
+                        <span t-field="doc.filing_payment"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color: #dce6f5;">PSIC/PSOC:</td>
+                    <td style="background-color: #dce6f5;">
+                        <span t-field="doc.psic_psoc"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>LL/CAS Permit No.:</td>
+                    <td>
+                        <span t-field="doc.ll_cas_permit_no"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color: #dce6f5;">Is the Company using any
+                        <br/>
+                        point of sale (POS)
+                        <br/>
+                        cash register (CRM) or<br/>special purpose (SPM)
+                        Machines:
+                    </td>
+                    <td style="background-color: #dce6f5;">
+                        <span t-field="doc.ask"/>
+                    </td>
+                </tr>
+            </table>
+            <br/>
+            <h1>
+                IV. SEC/DTI Information
+            </h1>
+            <br/>
+            <table style="font-size:20px;" width="100%">
+                <tr>
+                    <td>Registration No.:</td>
+                    <td>
+                        <span t-field="doc.registration_number"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color: #dce6f5;">Trade Name:</td>
+                    <td style="background-color: #dce6f5;">
+                        <span t-field="doc.trade_name"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Registration Date:</td>
+                    <td>
+                        <span t-field="doc.registration_date"/>
+                    </td>
+                </tr>
+            </table>
+            <br/>
+            <h1>
+                V. Regulatory Information
+            </h1>
+            <br/>
+            <table style="font-size:20px;" width="100%">
+                <tr>
+                    <td>Is the entity regulated or
+                        accredited by or
+                        <br/>
+                        is license holder issued by any of the following
+                        <br/>
+                        Government Regulatory Agencies:
+                    </td>
+                    <td>
+                        <span t-field="doc.ask_3"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color: #dce6f5;">Regulatory Agencies:</td>
+                    <td style="background-color: #dce6f5;">
+                        <span t-field="doc.bureau_of_custom"/>
+                        <span t-field="doc.bangko_sentral_pilipinas"/>
+                        <span t-field="doc.professional_regulation_commission"/>
+                        <span t-field="doc.philippines_council_ngo_certification"/>
+                        <span t-field="doc.cooperative_development_authority"/>
+                        <span t-field="doc.insurance_commission"/>
+                        <span t-field="doc.integrated_bar_philippines"/>
+                        <span t-field="doc.philippines_stock_exchange"/>
+                        <span t-field="doc.construction_industry_authority_philippines"/>
+                        <span t-field="doc.philippine_amusement_gaming_corporation"/>
+                        <span t-field="doc.land_transportation_franchising_regulatory_board"/>
+                    </td>
+                </tr>
+            </table>
+            <br/>
+            <h1>
+                VI. Social Security Information
+            </h1>
+            <br/>
+            <table style="font-size:20px;" width="100%">
+                <tr>
+                    <td>SSS ER No.:</td>
+                    <td>
+                        <span t-field="doc.sss"/>
+                    </td>
+                    <td>Filing:</td>
+                    <td>
+                        <span t-field="doc.sss_filing"/>
+                    </td>
+                    <td>Payment:</td>
+                    <td>
+                        <span t-field="doc.sss_pay"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color: #dce6f5;">PHIC ER No.:</td>
+                    <td style="background-color: #dce6f5;">
+                        <span t-field="doc.phic"/>
+                    </td>
+                    <td style="background-color: #dce6f5;">Filing:</td>
+                    <td style="background-color: #dce6f5;">
+                        <span t-field="doc.phic_filing"/>
+                    </td>
+                    <td style="background-color: #dce6f5;">Payment:</td>
+                    <td style="background-color: #dce6f5;">
+                        <span t-field="doc.phic_pay"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>HDMF ER No:</td>
+                    <td>
+                        <span t-field="doc.hdmf"/>
+                    </td>
+                    <td>Filing:</td>
+                    <td>
+                        <span t-field="doc.hdmf_filing"/>
+                    </td>
+                    <td>Payment:</td>
+                    <td>
+                        <span t-field="doc.hdmf_pay"/>
+                    </td>
+                </tr>
+            </table>
+            <br/>
+            <h1>
+                VII. Engagement Administration
+            </h1>
+            <br/>
+            <table style="font-size:20px;" width="100%">
+                <tr>
+                    <h2>Engagement Team</h2>
+                    <td>Associate:</td>
+                    <td>
+                        <span t-field="doc.associate_id"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color: #dce6f5;">Supervisor.:</td>
+                    <td style="background-color: #dce6f5;">
+                        <span t-field="doc.supervisor_id"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Manager:</td>
+                    <td>
+                        <span t-field="doc.manager_id"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color: #dce6f5;">Lead Partner:</td>
+                    <td style="background-color: #dce6f5;">
+                        <span t-field="doc.lead_partner_id"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Cluster:</td>
+                    <td>
+                        <span t-field="doc.cluster_id"/>
+                    </td>
+                </tr>
+            </table>
+        </t>
+    </template>
+
+
+    <template id="report_clientprofile_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="amyu1.report_clientprofile_document"/>
+            </t>
+        </t>
+    </template>
+
+    <record id="paperformat_custom" model="report.paperformat">
+        <field name="name">Custom Paper</field>
+        <field name="default" eval="True"/>
+        <field name="format">custom</field>
+        <field name="page_height">297</field>
+        <field name="page_width">210</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">10.00</field>
+        <field name="margin_bottom">10.00</field>
+        <field name="margin_left">7.0</field>
+        <field name="margin_right">7.0</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">35</field>
+        <field name="dpi">125</field>
+    </record>
+
     <record id="action_report_client_profile" model="ir.actions.report">
-        <field name="name">Client Profile</field>
+        <field name="name">Preview</field>
         <field name="model">client.profile</field>
         <field name="report_type">qweb-pdf</field>
-        <field name="report_name">amyu1.report_clientprofile</field>
-        <field name="report_file">amyu1.report.client_profile_templates</field>
+        <field name="report_name">amyu1.report_clientprofile_template</field>
+        <field name="report_file">amyu1.cpms_preview_reports</field>
         <field name="print_report_name">'Client Profile - %s' % object.name</field>
         <field name="binding_model_id" ref="model_client_profile"/>
         <field name="binding_type">report</field>
+        <!--        <field name="paperformat_id" ref="amyu1.paperformat_custom"/>-->
     </record>
 </odoo>
