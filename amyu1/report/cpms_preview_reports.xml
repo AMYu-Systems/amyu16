@@ -296,20 +296,91 @@
                         <span t-field="doc.ask_3"/>
                     </td>
                 </tr>
+            </table>
+            <table style="font-size:20px;" width="100%">
                 <tr>
-                    <td style="background-color: #dce6f5;">Regulatory Agencies:</td>
+                    <h2>Regulatory Agencies</h2>
+                    <td>
+                        <t t-if="doc.bangko_sentral_pilipinas">
+                            <input type="checkbox" id="checkbox104_anything_you_give" checked="True"/>
+                        </t>
+                        Bangko Sentral ng Pilipinas
+                    </td>
+                    <td>
+                        <t t-if="doc.land_transportation_franchising_regulatory_board">
+                            <input type="checkbox" id="checkbox104_anything_you_give" checked="True"/>
+                        </t>
+                        Land Transportation Franchising and Regulatory Board
+                    </td>
+                </tr>
+                <tr>
                     <td style="background-color: #dce6f5;">
-                        <span t-field="doc.bureau_of_custom"/>
-                        <span t-field="doc.bangko_sentral_pilipinas"/>
-                        <span t-field="doc.professional_regulation_commission"/>
-                        <span t-field="doc.philippines_council_ngo_certification"/>
-                        <span t-field="doc.cooperative_development_authority"/>
-                        <span t-field="doc.insurance_commission"/>
-                        <span t-field="doc.integrated_bar_philippines"/>
-                        <span t-field="doc.philippines_stock_exchange"/>
-                        <span t-field="doc.construction_industry_authority_philippines"/>
-                        <span t-field="doc.philippine_amusement_gaming_corporation"/>
-                        <span t-field="doc.land_transportation_franchising_regulatory_board"/>
+                        <t t-if="doc.bureau_of_custom">
+                            <input type="checkbox" id="checkbox104_anything_you_give" checked="True"/>
+                        </t>
+                        Bureau of Custom
+                    </td>
+                    <td style="background-color: #dce6f5;">
+                        <t t-if="doc.philippine_amusement_gaming_corporation">
+                            <input type="checkbox" id="checkbox104_anything_you_give" checked="True"/>
+                        </t>
+                        Philippine Amusement and Gaming Corporation
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <t t-if="doc.construction_industry_authority_philippines">
+                            <input type="checkbox" id="checkbox104_anything_you_give" checked="True"/>
+                        </t>
+                        Construction Industry authority of the Philippines (PCAB)
+                    </td>
+                    <td>
+                        <t t-if="doc.philippines_council_ngo_certification">
+                            <input type="checkbox" id="checkbox104_anything_you_give" checked="True"/>
+                        </t>
+                        Philippine Council for NGO Certification
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color: #dce6f5;">
+                        <t t-if="doc.cooperative_development_authority">
+                            <input type="checkbox" id="checkbox104_anything_you_give" checked="True"/>
+                        </t>
+                        Cooperative Development Authority
+                    </td>
+                    <td style="background-color: #dce6f5;">
+                        <t t-if="doc.philippine_amusement_gaming_corporation">
+                            <input type="checkbox" id="checkbox104_anything_you_give" checked="True"/>
+                        </t>
+                        Philippine Amusement and Gaming Corporation
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <t t-if="doc.insurance_commission">
+                            <input type="checkbox" id="checkbox104_anything_you_give" checked="True"/>
+                        </t>
+                        Insurance Commission
+                    </td>
+                    <td>
+                        <t t-if="doc.professional_regulation_commission">
+                            <input type="checkbox" id="checkbox104_anything_you_give" checked="True"/>
+                        </t>
+                        Professional Regulation Commission
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color: #dce6f5;">
+                        <t t-if="doc.integrated_bar_philippines">
+                            <input type="checkbox" id="checkbox104_anything_you_give" checked="True"/>
+                        </t>
+                        Integrated Bar of the Philippines
+                    </td>
+                    <td style="background-color: #dce6f5;">
+                        <t t-if="doc.others_ri">
+                            <input type="checkbox" id="checkbox104_anything_you_give" checked="True"/>
+                        </t>
+                        Others
                     </td>
                 </tr>
             </table>

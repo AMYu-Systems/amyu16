@@ -681,7 +681,7 @@ class ClientProfile(models.Model):
                                 string="Payment")
     hdmf_pay = fields.Selection([('cash', 'Cash'), ('check', 'Check'), ('online_banking', 'Online Banking (EPS)')],
                                 string="Payment")
-    escalation = fields.One2many(comodel_name='escalation.contact', inverse_name='escalation_id',
+    escalation_ids = fields.One2many(comodel_name='escalation.contact', inverse_name='escalation_id',
                                  string="Escalation Point")
     # # client_records
     # documents_count = fields.Integer(compute="action_attach_documents")

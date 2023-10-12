@@ -417,7 +417,7 @@
                                     For any pertinent issues resolution, outstanding documentation for submission,
                                     and follow-up requests shall be escalated as:
                                 </p>
-                                <field name="escalation"
+                                <field name="escalation_ids"
                                        attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                             </page>
 
