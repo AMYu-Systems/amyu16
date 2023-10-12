@@ -80,7 +80,7 @@
                                        attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                             </group>
                             <group>
-                                <field name="date_of_engagement"
+                                <field name="date_of_engagement" options="{'datepicker':{'maxDate': 'now'}}"
                                        attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                 <field name="industry_class" options="{'no_open': True}"
                                        attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
@@ -162,7 +162,7 @@
                                                attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                     </group>
                                     <group>
-                                        <field name="registration_date" string="Registration Date" widget="date"
+                                        <field name="registration_date" string="Registration Date" widget="date" options="{'datepicker':{'maxDate': 'now'}}"
                                                attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                     </group>
                                 </group>
@@ -203,7 +203,7 @@
 
                                 <group col="2" string="">
                                     <group>
-                                        <field name="tax_type"
+                                        <field name="taxpayer_type"
                                                attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                         <field name="invoice_tax"
                                                attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
@@ -237,7 +237,7 @@
                                                attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                     </group>
                                     <group>
-                                        <field name="registration_date_sec" string="Registration Date" widget="date"
+                                        <field name="registration_date_sec" string="Registration Date" widget="date" options="{'datepicker':{'maxDate': 'now'}}"
                                                attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                     </group>
                                 </group>

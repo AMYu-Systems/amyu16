@@ -502,7 +502,7 @@ class ClientProfile(models.Model):
     registration_fee = fields.Boolean(string="Registration Fee")
     other_percentage_tax = fields.Boolean(string="Other Percentage Tax")
     other_percentage_tax1 = fields.Char()
-    tax_type = fields.Selection([
+    taxpayer_type = fields.Selection([
         ('regular', 'Regular'), ('top_5k_individual', 'Top 5k Individual'), (
             'top_20k_corporate', 'Top 20k Corporate'), ('medium_taxpayer', 'Medium Taxpayer'), (
             'large_taxpayer', 'Large Taxpayer')], string="Taxpayer Type")

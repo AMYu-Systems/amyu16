@@ -80,7 +80,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Primary Contact:</td>
+                    <td>Primary Contact Person:</td>
                     <td>
                         <span t-field="doc.primary_contact_person"/>
                     </td>
@@ -92,7 +92,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Mobile No.:</td>
+                    <td>Mobile No:</td>
                     <td>
                         <span t-field="doc.mobile_number"/>
                     </td>
@@ -116,7 +116,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Mobile No.:</td>
+                    <td>Mobile No:</td>
                     <td>
                         <span t-field="doc.mobile_number2"/>
                     </td>
@@ -136,7 +136,7 @@
             <br/>
             <table style="font-size:20px;" width="100%">
                 <tr>
-                    <td>TAX ID No.:</td>
+                    <td>TAX ID No:</td>
                     <td>
                         <span t-field="doc.vat"/>
                     </td>
@@ -154,57 +154,102 @@
                     </td>
                 </tr>
                 <tr>
-                    <td style="background-color: #dce6f5;">Tax Type:</td>
+                    <td style="background-color: #dce6f5;">Taxpayer Type:</td>
                     <td style="background-color: #dce6f5;">
-                        <span t-field="doc.income_tax"/>
-                        <span t-field="doc.excise_tax"/>
-                        <span t-field="doc.value_added_tax"/>
-                        <span t-field="doc.withholding_tax_expanded"/>
-                        <span t-field="doc.withholding_tax_compensation"/>
-                        <span t-field="doc.withholding_tax_final"/>
-                        <span t-field="doc.registration_fee"/>
+                        <span t-field="doc.taxpayer_type"/>
                     </td>
                 </tr>
                 <tr>
-                    <td>Taxpayer Type:</td>
+                    <td>Invoice Type:</td>
                     <td>
-                        <span t-field="doc.tax_type"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="background-color: #dce6f5;">Invoice Type:</td>
-                    <td style="background-color: #dce6f5;">
                         <span t-field="doc.invoice_tax"/>
                     </td>
                 </tr>
                 <tr>
-                    <td><![CDATA[Filling & Payment:]]></td>
-                    <td>
+                    <td style="background-color: #dce6f5;"><![CDATA[Filling & Payment:]]></td>
+                    <td style="background-color: #dce6f5;">
                         <span t-field="doc.filing_payment"/>
                     </td>
                 </tr>
                 <tr>
-                    <td style="background-color: #dce6f5;">PSIC/PSOC:</td>
-                    <td style="background-color: #dce6f5;">
+                    <td>PSIC/PSOC:</td>
+                    <td>
                         <span t-field="doc.psic_psoc"/>
                     </td>
                 </tr>
                 <tr>
-                    <td>LL/CAS Permit No.:</td>
-                    <td>
+                    <td style="background-color: #dce6f5;">LL/CAS Permit No:</td>
+                    <td style="background-color: #dce6f5;">
                         <span t-field="doc.ll_cas_permit_no"/>
                     </td>
                 </tr>
                 <tr>
-                    <td style="background-color: #dce6f5;">Is the Company using any
+                    <td>Is the Company using any
                         <br/>
                         point of sale (POS)
                         <br/>
                         cash register (CRM) or<br/>special purpose (SPM)
                         Machines:
                     </td>
-                    <td style="background-color: #dce6f5;">
+                    <td>
                         <span t-field="doc.ask"/>
+                    </td>
+                </tr>
+            </table>
+            <table style="font-size:20px;" width="100%">
+                <tr>
+                    <h2>Tax Type</h2>
+                    <td>
+                        <t t-if="doc.income_tax">
+                            <input type="checkbox" id="checkbox104_anything_you_give" checked="True"/>
+                        </t>
+                        Income Tax
+                    </td>
+                    <td>
+                        <t t-if="doc.withholding_tax_compensation">
+                            <input type="checkbox" id="checkbox104_anything_you_give" checked="True"/>
+                        </t>
+                        Withholding Tax - Compensation
+                    </td>
+                    <td>
+                        <t t-if="doc.excise_tax">
+                            <input type="checkbox" id="checkbox104_anything_you_give" checked="True"/>
+                        </t>
+                        Excise Tax
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color: #dce6f5;">
+                        <t t-if="doc.value_added_tax">
+                            <input type="checkbox" id="checkbox104_anything_you_give" checked="True"/>
+                        </t>
+                        Value Added Tax
+                    </td>
+                    <td style="background-color: #dce6f5;">
+                        <t t-if="doc.withholding_tax_expanded">
+                            <input type="checkbox" id="checkbox104_anything_you_give" checked="True"/>
+                        </t>
+                        Withholding Tax Expanded
+                    </td>
+                    <td style="background-color: #dce6f5;">
+                        <t t-if="doc.registration_fee">
+                            <input type="checkbox" id="checkbox104_anything_you_give" checked="True"/>
+                        </t>
+                        Registration Fee
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <t t-if="doc.other_percentage_tax">
+                            <input type="checkbox" id="checkbox104_anything_you_give" checked="True"/>
+                        </t>
+                        Other Percentage Tax
+                    </td>
+                    <td>
+                        <t t-if="doc.withholding_tax_final">
+                            <input type="checkbox" id="checkbox104_anything_you_give" checked="True"/>
+                        </t>
+                        Withholding Tax Final
                     </td>
                 </tr>
             </table>
@@ -215,7 +260,7 @@
             <br/>
             <table style="font-size:20px;" width="100%">
                 <tr>
-                    <td>Registration No.:</td>
+                    <td>Registration No:</td>
                     <td>
                         <span t-field="doc.registration_number"/>
                     </td>
@@ -275,7 +320,7 @@
             <br/>
             <table style="font-size:20px;" width="100%">
                 <tr>
-                    <td>SSS ER No.:</td>
+                    <td>SSS ER No:</td>
                     <td>
                         <span t-field="doc.sss"/>
                     </td>
@@ -289,7 +334,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td style="background-color: #dce6f5;">PHIC ER No.:</td>
+                    <td style="background-color: #dce6f5;">PHIC ER No:</td>
                     <td style="background-color: #dce6f5;">
                         <span t-field="doc.phic"/>
                     </td>
@@ -331,7 +376,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td style="background-color: #dce6f5;">Supervisor.:</td>
+                    <td style="background-color: #dce6f5;">Supervisor:</td>
                     <td style="background-color: #dce6f5;">
                         <span t-field="doc.supervisor_id"/>
                     </td>
