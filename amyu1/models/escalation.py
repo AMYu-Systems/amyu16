@@ -37,4 +37,11 @@ class EscalationContact(models.Model):
                 raise ValidationError('Invalid Escalation Matrix Contact Number format!')
 
     email = fields.Char(string="Email Address")
+
+    @api.constrains('email')
+    def _check_email_format(self):
+        for record in self:
+            if record.email and '@' not in record.email:
+                raise ValidationError("Invalid email address")
+
     escalation_id = fields.Many2one(comodel_name='client.profile', string="Escalation")

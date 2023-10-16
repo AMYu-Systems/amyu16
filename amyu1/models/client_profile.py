@@ -70,12 +70,6 @@ class ClientProfile(models.Model):
         if self.nature_of_business:
             self.nature_of_business = str(self.nature_of_business).title()
 
-    @api.constrains('nature_of_business')
-    def _error_nature_of_business(self):
-        for record in self:
-            if any(char.isdigit() for char in record.nature_of_business):
-                raise ValidationError("Numbers are not allowed in this Field.")
-
     date_of_engagement = fields.Date(string="Date of Engagement", required=True)
     client_system_generated = fields.Char(string="Client ID")
     tax_reporting_compliance = fields.Boolean(string="Tax Reporting & Compliance")
@@ -91,11 +85,13 @@ class ClientProfile(models.Model):
                               ('manager', 'Manager'),
                               ('approved', 'Approved'),
                               ('cancel', 'Returned')], default='draft', string="Status")
-    associate_id = fields.Many2one(string="Associate", comodel_name="associate.profile", required=True)
-    manager_id = fields.Many2one(string="Manager", related="associate_id.manager_id", readonly=True)
-    supervisor_id = fields.Many2one(string="Supervisor", related="associate_id.supervisor_id", readonly=True)
-    cluster_id = fields.Many2one(string="Cluster", related="associate_id.cluster_id", readonly=True)
-    lead_partner_id = fields.Many2one(string="Lead Partner", related="associate_id.lead_partner_id", readonly=True)
+    user_id = fields.Many2one(string="Associate", comodel_name='res.users', default=lambda self: self.env.user,
+                              readonly=True)
+    manager_id = fields.Many2one(string="Manager", related="team_id.manager_id", readonly=True)
+    supervisor_id = fields.Many2one(string="Supervisor", related="team_id.supervisor_id", readonly=True)
+    cluster_id = fields.Many2one(string="Cluster", related="team_id.cluster_id", readonly=True)
+    lead_partner_id = fields.Many2one(string="Lead Partner", related="team_id.lead_partner_id", readonly=True)
+    team_id = fields.Many2one(string="Team", comodel_name='associate.profile', required=True)
     state_sequence = fields.Char(compute='_compute_state_sequence', string='Progress Status', store=True)
 
     @api.depends('state')
@@ -314,7 +310,7 @@ class ClientProfile(models.Model):
     @api.constrains('website')
     def _check_website_format(self):
         for record in self:
-            if record.website and '.com' not in record.website:
+            if record.website and '.' not in record.website:
                 raise ValidationError("Invalid Website")
 
     unit_no2 = fields.Char(string="Unit/Floor")
@@ -390,12 +386,6 @@ class ClientProfile(models.Model):
         if self.primary_contact_person:
             self.primary_contact_person = str(self.primary_contact_person).title()
 
-    @api.constrains('primary_contact_person')
-    def _error_primary_contact_person(self):
-        for record in self:
-            if any(char.isdigit() for char in record.primary_contact_person):
-                raise ValidationError("Numbers are not allowed in the Primary Contact Person.")
-
     mobile_number = fields.Char(string="Mobile No.", size=13)
 
     @api.constrains('mobile_number')
@@ -419,12 +409,6 @@ class ClientProfile(models.Model):
     def caps_principal_accounting_officer(self):
         if self.principal_accounting_officer:
             self.principal_accounting_officer = str(self.principal_accounting_officer).title()
-
-    @api.constrains('principal_accounting_officer')
-    def _error_principal_accounting_officer(self):
-        for record in self:
-            if any(char.isdigit() for char in record.principal_accounting_officer):
-                raise ValidationError("Numbers are not allowed in Principal Accounting Officer field")
 
     landline3 = fields.Char(string="Telephone", help="This field includes a hyphen", size=16)
 
@@ -536,7 +520,7 @@ class ClientProfile(models.Model):
     ll_cas_permit_no = fields.Char(string="LL/CAS Permit No")
 
     @api.constrains('ll_cas_permit_no')
-    def _error_ll_cas_permit_no(self):
+    def _check_ll_cas_permit_no(self):
         for record in self:
             if record.ll_cas_permit_no:
                 if any(char.isalpha() and char != '-' for char in record.ll_cas_permit_no):
@@ -554,14 +538,10 @@ class ClientProfile(models.Model):
     registration_date_sec = fields.Date('Date')
     trade_name = fields.Char(string="Trade Name")
 
-    # @api.onchange('name')
-    # def copy_client_name(self):
-    #     for record in self:
-    #         record.trade_name = record.name
-
     @api.onchange('trade_name')
-    def set_upper(self):
-        self.trade_name = str(self.trade_name).upper()
+    def caps_trade_name(self):
+        if self.trade_name:
+            self.trade_name = str(self.trade_name).upper()
 
     date_per_law = fields.Char(string="Date per By-Laws")
     actual_date_meeting = fields.Date('date')
@@ -682,7 +662,7 @@ class ClientProfile(models.Model):
     hdmf_pay = fields.Selection([('cash', 'Cash'), ('check', 'Check'), ('online_banking', 'Online Banking (EPS)')],
                                 string="Payment")
     escalation_ids = fields.One2many(comodel_name='escalation.contact', inverse_name='escalation_id',
-                                 string="Escalation Point")
+                                     string="Escalation Point")
     # # client_records
     # documents_count = fields.Integer(compute="action_attach_documents")
     #

@@ -11,7 +11,7 @@
                     <field name="lead_partner_id"/>
                     <field name="manager_id"/>
                     <field name="supervisor_id"/>
-                    <field name="associate_id"/>
+                    <field name="user_id"/>
                 </tree>
             </field>
         </record>
