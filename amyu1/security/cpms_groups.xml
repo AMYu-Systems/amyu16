@@ -25,6 +25,11 @@
 <!--        <field name="category_id" ref="module_category_cpms"/>-->
     </record>
 
+     <record id="administrator_group" model="res.groups">
+        <field name="name">Administrator</field>
+<!--        <field name="category_id" ref="module_category_cpms"/>-->
+    </record>
+
     <record id="cpms_client_profile_rule" model="ir.rule">
         <field name="name">User Own Client Documents</field>
         <field name="model_id" ref="model_client_profile"/>

@@ -1,4 +1,6 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access.client.profile,access.client_profile,amyu1.model_client_profile,associate_group,1,1,1,0
+access.client.profile,access.client_profile,amyu1.model_client_profile,administrator_group,1,1,1,1
 access.capitalization.share,access.capitalization_share,amyu1.model_capitalization_share,base.group_user,1,1,1,1
 access.capital.general.partnership,access.capital_general_partnership,amyu1.model_capital_general_partnership,base.group_user,1,1,1,1
 access.capital.general.professional.partnership,access.capital_general_professional_partnership,amyu1.model_capital_general_professional_partnership,base.group_user,1,1,1,1
@@ -22,4 +24,6 @@ access.escalation.contact,access.escalation_contact,amyu1.model_escalation_conta
 access.organization.type,access.organization_type,amyu1.model_organization_type,base.group_user,1,1,1,1
 access.job.title,access.job_title,amyu1.model_job_title,base.group_user,1,1,1,1
 access.cluster.department,access.cluster_department,amyu1.model_cluster_department,base.group_user,1,1,1,1
+access.associate.profile,access.associate_profile,amyu1.model_associate_profile,associate_group,1,0,0,0
+access.associate.profile,access.associate_profile,amyu1.model_associate_profile,administrator_group,1,1,1,1
 access.team.department,access.team_department,amyu1.model_team_department,base.group_user,1,1,1,1
