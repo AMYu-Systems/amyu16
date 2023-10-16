@@ -21,7 +21,7 @@
             <field name="name">client.kanban.view</field>
             <field name="model">client.profile</field>
             <field name="arch" type="xml">
-                <kanban record_draggable="1">
+                <kanban create="False">
                     <field name="name"/>
                     <field name="id"/>
                     <field name="image_101"/>
