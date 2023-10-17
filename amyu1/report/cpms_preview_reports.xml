@@ -219,19 +219,19 @@
                     </td>
                 </tr>
                 <tr>
-                    <td style="background-color: #dce6f5;">
+                    <td>
                         <t t-if="doc.value_added_tax">
                             <input type="checkbox" id="checkbox104_anything_you_give" checked="True"/>
                         </t>
                         Value Added Tax
                     </td>
-                    <td style="background-color: #dce6f5;">
+                    <td>
                         <t t-if="doc.withholding_tax_expanded">
                             <input type="checkbox" id="checkbox104_anything_you_give" checked="True"/>
                         </t>
                         Withholding Tax Expanded
                     </td>
-                    <td style="background-color: #dce6f5;">
+                    <td>
                         <t t-if="doc.registration_fee">
                             <input type="checkbox" id="checkbox104_anything_you_give" checked="True"/>
                         </t>
@@ -314,13 +314,13 @@
                     </td>
                 </tr>
                 <tr>
-                    <td style="background-color: #dce6f5;">
+                    <td>
                         <t t-if="doc.bureau_of_custom">
                             <input type="checkbox" id="checkbox104_anything_you_give" checked="True"/>
                         </t>
                         Bureau of Custom
                     </td>
-                    <td style="background-color: #dce6f5;">
+                    <td>
                         <t t-if="doc.philippine_amusement_gaming_corporation">
                             <input type="checkbox" id="checkbox104_anything_you_give" checked="True"/>
                         </t>
@@ -342,13 +342,13 @@
                     </td>
                 </tr>
                 <tr>
-                    <td style="background-color: #dce6f5;">
+                    <td>
                         <t t-if="doc.cooperative_development_authority">
                             <input type="checkbox" id="checkbox104_anything_you_give" checked="True"/>
                         </t>
                         Cooperative Development Authority
                     </td>
-                    <td style="background-color: #dce6f5;">
+                    <td>
                         <t t-if="doc.philippine_amusement_gaming_corporation">
                             <input type="checkbox" id="checkbox104_anything_you_give" checked="True"/>
                         </t>
@@ -370,13 +370,13 @@
                     </td>
                 </tr>
                 <tr>
-                    <td style="background-color: #dce6f5;">
+                    <td>
                         <t t-if="doc.integrated_bar_philippines">
                             <input type="checkbox" id="checkbox104_anything_you_give" checked="True"/>
                         </t>
                         Integrated Bar of the Philippines
                     </td>
-                    <td style="background-color: #dce6f5;">
+                    <td>
                         <t t-if="doc.others_ri">
                             <input type="checkbox" id="checkbox104_anything_you_give" checked="True"/>
                         </t>
@@ -443,7 +443,7 @@
                     <h2>Engagement Team</h2>
                     <td>Associate:</td>
                     <td>
-                        <span t-field="doc.associate_id"/>
+                        <span t-field="doc.user_id"/>
                     </td>
                 </tr>
                 <tr>

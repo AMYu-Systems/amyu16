@@ -63,7 +63,7 @@ class ClientProfile(models.Model):
          ('real_estate', 'Real Estate Development & Construction'),
          ('stationery', 'Stationery & Paper Products'), ('logistic', 'Warehousing & Logistics')],
         string="Industry Class")
-    nature_of_business = fields.Text(string="Nature of Activities, Brands, Product & Services")
+    nature_of_business = fields.Char(string="Nature of Activities, Brands, Product & Services")
 
     @api.onchange('nature_of_business')
     def caps_nature_of_business(self):
@@ -85,8 +85,7 @@ class ClientProfile(models.Model):
                               ('manager', 'Manager'),
                               ('approved', 'Approved'),
                               ('cancel', 'Returned')], default='draft', string="Status")
-    user_id = fields.Many2one(string="Associate", comodel_name='res.users', default=lambda self: self.env.user,
-                              readonly=True)
+    user_id = fields.Many2one(string="Associate", comodel_name='res.users', default=lambda self: self.env.user)
     manager_id = fields.Many2one(string="Manager", related="team_id.manager_id", readonly=True)
     supervisor_id = fields.Many2one(string="Supervisor", related="team_id.supervisor_id", readonly=True)
     cluster_id = fields.Many2one(string="Cluster", related="team_id.cluster_id", readonly=True)

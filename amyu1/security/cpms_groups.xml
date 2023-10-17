@@ -33,14 +33,14 @@
     <record id="cpms_client_profile_rule" model="ir.rule">
         <field name="name">User Own Client Documents</field>
         <field name="model_id" ref="model_client_profile"/>
-        <field name="domain_force">[('user_id', '=', user.id)]</field>
+        <field name="domain_force">['|',('user_id','=',False),('user_id','=',user.id)]</field>
         <field name="groups" eval="[(4, ref('associate_group'))]"/>
     </record>
 
     <record id="cpms_associate_profile_rule" model="ir.rule">
         <field name="name">User Own Profile</field>
         <field name="model_id" ref="model_associate_profile"/>
-        <field name="domain_force">[('user_id', '=', user.id)]</field>
+        <field name="domain_force">['|',('user_id','=',False),('user_id','=',user.id)]</field>
         <field name="groups" eval="[(4, ref('associate_group'))]"/>
     </record>
 
