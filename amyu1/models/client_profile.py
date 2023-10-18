@@ -63,7 +63,7 @@ class ClientProfile(models.Model):
          ('real_estate', 'Real Estate Development & Construction'),
          ('stationery', 'Stationery & Paper Products'), ('logistic', 'Warehousing & Logistics')],
         string="Industry Class")
-    nature_of_business = fields.Text(string="Nature of Activities, Brands, Product & Services")
+    nature_of_business = fields.Text(string="Nature of Activities, Brands, Product & Services", required=True)
 
     @api.onchange('nature_of_business')
     def caps_nature_of_business(self):
@@ -384,7 +384,7 @@ class ClientProfile(models.Model):
                     raise ValidationError(
                         "Only numbers are allowed in the Telephone field.")
 
-    primary_contact_person = fields.Char(string="Primary Contact Person")
+    primary_contact_person = fields.Char(string="Primary Contact Person", required=True)
 
     @api.onchange('primary_contact_person')
     def caps_primary_contact_person(self):
@@ -414,7 +414,7 @@ class ClientProfile(models.Model):
             if record.email_address and '@' not in record.email_address:
                 raise ValidationError("Invalid email address")
 
-    principal_accounting_officer = fields.Char(string="Principal Accounting Officer")
+    principal_accounting_officer = fields.Char(string="Principal Accounting Officer", required=True)
 
     @api.onchange('principal_accounting_officer')
     def caps_principal_accounting_officer(self):
