@@ -5,7 +5,7 @@
             <field name="name">associate.profile.kanban.view</field>
             <field name="model">associate.profile</field>
             <field name="arch" type="xml">
-                <kanban create="false">
+                <kanban>
                     <field name="user_id"/>
                     <field name="id"/>
                     <field name="image"/>
@@ -43,7 +43,7 @@
             <field name="name">associate.profile.tree.view</field>
             <field name="model">associate.profile</field>
             <field name="arch" type="xml">
-                <tree export_xlsx="0">
+                <tree create="False" export_xlsx="0">
                     <field name="user_id"/>
                     <field name="job_work_id"/>
                     <field name="supervisor_id"/>
@@ -65,15 +65,22 @@
                     </div>
                     <group>
                         <group>
-                            <field name="user_id" options="{'no_open': True,'no_create': True}"/>
-                            <field name="supervisor_id" options="{'no_open': True}"/>
-                            <field name="manager_id" options="{'no_open': True}"/>
-                            <field name="lead_partner_id" options="{'no_open': True}"/>
+                            <field name="user_id" options="{'no_open': True,'no_create': True}"
+                                   attrs="{'readonly': [('id', '!=', False)]}"/>
+                            <field name="supervisor_id" options="{'no_open': True}"
+                                   attrs="{'readonly': [('id', '!=', False)]}"/>
+                            <field name="manager_id" options="{'no_open': True,'no_create': True}"
+                                   attrs="{'readonly': [('id', '!=', False)]}"/>
+                            <field name="lead_partner_id" options="{'no_open': True,'no_create': True}"
+                                   attrs="{'readonly': [('id', '!=', False)]}"/>
                         </group>
                         <group>
-                            <field name="team_id" options="{'no_open': True}"/>
-                            <field name="cluster_id" options="{'no_open': True}"/>
-                            <field name="job_work_id" options="{'no_open': True}"/>
+                            <field name="team_id" options="{'no_open': True,'no_create': True}"
+                                   attrs="{'readonly': [('id', '!=', False)]}"/>
+                            <field name="cluster_id" options="{'no_open': True,'no_create': True}"
+                                   attrs="{'readonly': [('id', '!=', False)]}"/>
+                            <field name="job_work_id" options="{'no_open': True,'no_create': True}"
+                                   attrs="{'readonly': [('id', '!=', False)]}"/>
                         </group>
                     </group>
                     <field name="client_profile_ids" readonly="1">

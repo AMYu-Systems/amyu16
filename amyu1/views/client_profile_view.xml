@@ -128,8 +128,6 @@
                                                attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                         <field name="principal_accounting_officer"
                                                attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
-                                        <field name="principal_accounting_officer"
-                                               attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                         <field name="landline3"
                                                attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                     </group>
@@ -414,7 +412,7 @@
                                     <group>
                                         <field name="lead_partner_id"/>
                                         <field name="cluster_id"/>
-                                        <field name="team_id"/>
+                                        <field name="team_id" options="{'no_open': True,'no_create': True}"/>
                                     </group>
                                 </group>
                                 <group string="Escalation Matrix"/>
