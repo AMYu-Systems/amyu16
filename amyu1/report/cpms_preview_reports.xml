@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <template id="report_clientprofile_document">
+        <t t-set="company_logo" t-value="logo"/>
         <t t-call="web.external_layout">
             <h1>
                 I. General Information
