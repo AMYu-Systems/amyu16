@@ -63,18 +63,15 @@ class ClientProfile(models.Model):
          ('real_estate', 'Real Estate Development & Construction'),
          ('stationery', 'Stationery & Paper Products'), ('logistic', 'Warehousing & Logistics')],
         string="Industry Class")
-    nature_of_business = fields.Text(string="Nature of Activities, Brands, Product & Services", required=True)
+    nature_of_business = fields.Text(string="Nature of Activities, Brands, Product & Services")
 
     @api.onchange('nature_of_business')
     def caps_nature_of_business(self):
         if self.nature_of_business:
             self.nature_of_business = str(self.nature_of_business).title()
-
-    @api.constrains('nature_of_business')
-    def _check_nature(self):
-        for record in self:
-            if any(text.isdigit() for text in record.nature_of_business):
-                raise ValidationError("Numbers are not allowed in Nature of Activities field.")
+            for record in self:
+                if any(text.isdigit() for text in record.nature_of_business):
+                    raise ValidationError("Numbers are not allowed in Nature of Activities field.")
 
     date_of_engagement = fields.Date(string="Date of Engagement", required=True)
     client_system_generated = fields.Char(string="Client ID")
@@ -384,18 +381,15 @@ class ClientProfile(models.Model):
                     raise ValidationError(
                         "Only numbers are allowed in the Telephone field.")
 
-    primary_contact_person = fields.Char(string="Primary Contact Person", required=True)
+    primary_contact_person = fields.Char(string="Primary Contact Person")
 
     @api.onchange('primary_contact_person')
     def caps_primary_contact_person(self):
         if self.primary_contact_person:
             self.primary_contact_person = str(self.primary_contact_person).title()
-
-    @api.constrains('primary_contact_person')
-    def _check_primary(self):
-        for record in self:
-            if any(char.isdigit() for char in record.primary_contact_person):
-                raise ValidationError("Numbers are not allowed in Primary Contact Person field.")
+            for record in self:
+                if any(char.isdigit() for char in record.primary_contact_person):
+                    raise ValidationError("Numbers are not allowed in Primary Contact Person field.")
 
     mobile_number = fields.Char(string="Mobile No.", size=13)
 
@@ -414,15 +408,12 @@ class ClientProfile(models.Model):
             if record.email_address and '@' not in record.email_address:
                 raise ValidationError("Invalid email address")
 
-    principal_accounting_officer = fields.Char(string="Principal Accounting Officer", required=True)
+    principal_accounting_officer = fields.Char(string="Principal Accounting Officer")
 
     @api.onchange('principal_accounting_officer')
     def caps_principal_accounting_officer(self):
         if self.principal_accounting_officer:
             self.principal_accounting_officer = str(self.principal_accounting_officer).title()
-
-    @api.constrains('principal_accounting_officer')
-    def _check_principal(self):
         for record in self:
             if any(char.isdigit() for char in record.principal_accounting_officer):
                 raise ValidationError("Numbers are not allowed in Principal Accounting field.")

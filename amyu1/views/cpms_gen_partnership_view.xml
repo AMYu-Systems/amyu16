@@ -5,7 +5,7 @@
             <field name="name">general.partnership.tree.view</field>
             <field name="model">general.partnership</field>
             <field name="arch" type="xml">
-                <tree editable="bottom" create="1" edit="1" delete="0">
+                <tree editable="bottom" create="1" delete="1">
                     <field name="name"/>
                     <field name="partner"/>
                 </tree>

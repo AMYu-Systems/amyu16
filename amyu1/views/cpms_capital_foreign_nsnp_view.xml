@@ -5,7 +5,7 @@
             <field name="name">capital.foreign.nsnp.corp.tree.view</field>
             <field name="model">capital.foreign.nsnp.corp</field>
             <field name="arch" type="xml">
-                <tree editable="bottom" create="1" edit="1" delete="0">
+                <tree editable="bottom" create="1" delete="1">
                     <field name="name"/>
                 </tree>
             </field>

@@ -18,7 +18,7 @@
             <field name="name">client.kanban.view</field>
             <field name="model">client.profile</field>
             <field name="arch" type="xml">
-                <kanban create="False">
+                <kanban create="False" default_group_by="user_id">
                     <field name="name"/>
                     <field name="id"/>
                     <field name="image_101"/>
@@ -56,7 +56,6 @@
         <record id="client_tree_action" model="ir.actions.act_window">
             <field name="name">Client List</field>
             <field name="res_model">client.profile</field>
-            <field name="context">{'group_by':'user_id'}</field>
             <field name="view_mode">tree,form,kanban</field>
             <field name="view_id" ref="client_tree_view"/>
             <field name="domain">[('state','=','approved')]</field>

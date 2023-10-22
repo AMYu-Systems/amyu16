@@ -12,21 +12,11 @@ class CapitalizationShare(models.Model):
     def caps_name(self):
         if self.name:
             self.name = str(self.name).title()
-
-    @api.constrains('name')
-    def _onchange_name(self):
         for record in self:
             if any(char.isdigit() for char in record.name):
-                raise ValidationError("Numbers are not allowed in this Field.")
+                raise ValidationError("Numbers are not allowed in Class of Share Field.")
 
-    par_value = fields.Char(string="Par Value per Share")
-
-    @api.constrains('par_value')
-    def _check_par_value(self):
-        for record in self:
-            if record.par_value and not record.par_value.isdigit():
-                raise ValidationError("Par Value per Share Field must contain numbers only.")
-
+    par_value = fields.Integer(string="Par Value per Share")
     # column_3 = fields.Char(string="Authorized")
     authorized_no = fields.Integer(string=" Authorized No.")
     authorized_amount = fields.Float(string="Amount")
