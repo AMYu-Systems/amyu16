@@ -414,9 +414,9 @@ class ClientProfile(models.Model):
     def caps_principal_accounting_officer(self):
         if self.principal_accounting_officer:
             self.principal_accounting_officer = str(self.principal_accounting_officer).title()
-        for record in self:
-            if any(char.isdigit() for char in record.principal_accounting_officer):
-                raise ValidationError("Numbers are not allowed in Principal Accounting field.")
+            for record in self:
+                if any(char.isdigit() for char in record.principal_accounting_officer):
+                    raise ValidationError("Numbers are not allowed in Principal Accounting field.")
 
     landline3 = fields.Char(string="Telephone", help="This field includes a hyphen", size=16)
 
