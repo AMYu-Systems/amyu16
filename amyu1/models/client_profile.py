@@ -1,7 +1,7 @@
 from odoo import models, fields, api
 import re
 from odoo.exceptions import ValidationError
-from datetime import datetime
+from datetime import datetime, date
 
 
 class ClientProfile(models.Model):
@@ -74,6 +74,13 @@ class ClientProfile(models.Model):
                     raise ValidationError("Numbers are not allowed in Nature of Activities field.")
 
     date_of_engagement = fields.Date(string="Date of Engagement", required=True)
+
+    @api.onchange('date_of_engagement')
+    def _check_future_date(self):
+        today = date.today()
+        if self.date_of_engagement and self.date_of_engagement > today:
+            raise ValidationError("Future dates are not allowed.")
+
     client_system_generated = fields.Char(string="Client ID")
     tax_reporting_compliance = fields.Boolean(string="Tax Reporting & Compliance")
     annual_registration_update = fields.Boolean(string="Annual Registration Update")
@@ -485,6 +492,13 @@ class ClientProfile(models.Model):
                 raise ValidationError('Invalid RDO Code!')
 
     registration_date = fields.Date('Date')
+
+    @api.onchange('registration_date')
+    def _check_future_registration_date(self):
+        today = date.today()
+        if self.registration_date and self.registration_date > today:
+            raise ValidationError("Future dates are not allowed.")
+
     income_tax = fields.Boolean(string="Income Tax")
     excise_tax = fields.Boolean(string="Excise Tax")
     value_added_tax = fields.Boolean(string="Value-added Tax")
@@ -538,6 +552,13 @@ class ClientProfile(models.Model):
     ask = fields.Selection([('yes', 'Yes'), ('no', 'No')], default="no")
     registration_number = fields.Char(string="Registration No", size=13)
     registration_date_sec = fields.Date('Date')
+
+    @api.onchange('registration_date_sec')
+    def _check_future_registration_date_sec(self):
+        today = date.today()
+        if self.registration_date_sec and self.registration_date_sec > today:
+            raise ValidationError("Future dates are not allowed.")
+
     trade_name = fields.Char(string="Trade Name")
 
     @api.onchange('trade_name')
