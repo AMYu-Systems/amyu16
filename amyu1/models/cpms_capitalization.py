@@ -12,9 +12,9 @@ class CapitalizationShare(models.Model):
     def caps_name(self):
         if self.name:
             self.name = str(self.name).title()
-        for record in self:
-            if any(char.isdigit() for char in record.name):
-                raise ValidationError("Numbers are not allowed in Class of Share Field.")
+            for record in self:
+                if any(char.isdigit() for char in record.name):
+                    raise ValidationError("Numbers are not allowed in Class of Share Field.")
 
     par_value = fields.Integer(string="Par Value per Share")
     # column_3 = fields.Char(string="Authorized")
