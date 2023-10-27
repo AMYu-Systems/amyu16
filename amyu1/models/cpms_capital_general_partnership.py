@@ -6,7 +6,7 @@ class CapitalGeneralPartnership(models.Model):
     _name = 'capital.general.partnership'
     _description = "Capital General Partnership"
 
-    name = fields.Char(string="Partner", required=True)
+    name = fields.Char(string="Partner")
 
     @api.onchange('name')
     def caps_name(self):

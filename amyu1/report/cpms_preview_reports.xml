@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <template id="report_clientprofile_document">
-        <t t-set="company_logo" t-value="logo"/>
         <t t-call="web.external_layout">
             <h1>
                 I. General Information
             </h1>
-            <br/>
             <table style="font-size:20px;" width="100%">
                 <tr>
                     <td>Registered Name:</td>
@@ -46,11 +44,9 @@
                 </tr>
             </table>
             <br/>
-            <br/>
             <h1>
                 II. Contact Information
             </h1>
-            <br/>
             <table style="font-size:20px;" width="100%">
                 <tr>
                     <td>Registered Address:</td>
@@ -142,11 +138,9 @@
                 </tr>
             </table>
             <br/>
-            <br/>
             <h1>
                 III. B.I.R Information
             </h1>
-            <br/>
             <table style="font-size:20px;" width="100%">
                 <tr>
                     <td>TAX ID No:</td>
@@ -199,7 +193,7 @@
                 <tr>
                     <td>Is the Company using any
                         point of sale (POS)
-                        cash register (CRM) or<br/>special purpose (SPM)
+                        cash register (CRM) or special purpose (SPM)
                         Machines:
                     </td>
                     <td>
@@ -207,9 +201,22 @@
                     </td>
                 </tr>
             </table>
+            <br/>
             <table style="font-size:20px;" width="100%">
                 <tr>
-                    <h2>Tax Type</h2>
+                    <h3>
+                        <p style="text-center;">Tax Type</p>
+                    </h3>
+                    <style>
+                        table, th, td {
+                        border: 2px solid black;
+                        border-collapse: collapse;
+                        }
+                        th, td {
+                        padding: 5px;
+                        text-align: left;
+                        }
+                    </style>
                     <td>
                         <t t-if="doc.income_tax">
                             <input type="checkbox" id="checkbox_true" checked="True"/>
@@ -292,7 +299,6 @@
             <h1>
                 IV. SEC/DTI Information
             </h1>
-            <br/>
             <table style="font-size:20px;" width="100%">
                 <tr>
                     <td>Registration No:</td>
@@ -313,19 +319,387 @@
                     </td>
                 </tr>
             </table>
+            <br/>
             <table style="font-size:20px;" width="100%">
-                <tr>
-                    <h2>Capitalization</h2>
-                    <t t-foreach="docs" t-as="o">
-                        <!--                       <span t-field="o.capital_domestic_id.name"/>-->
+                <h3>
+                    <p style="text-center;">Capitalization</p>
+                </h3>
+                <style>
+                    table, th, td {
+                    border: 2px solid black;
+                    border-collapse: collapse;
+                    }
+                    th, td {
+                    padding: 5px;
+                    text-align: left;
+                    }
+                </style>
+                <t t-if="doc.organization_type == 'sole_proprietor'">
+                    <t t-foreach='doc.capital_sole_proprietor_ids' t-as='line'>
+                        <tr>
+                            <td>Capital Contribution Amount
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span t-esc="line.name"/>
+                            </td>
+                        </tr>
                     </t>
-                </tr>
+                </t>
+                <t t-if="doc.organization_type == 'general_partnership'">
+                    <t t-foreach='doc.capital_general_partner_ids' t-as='line'>
+                        <tr>
+                            <td>Partner</td>
+                            <td>Capital Contribution Amount</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span t-esc="line.name"/>
+                            </td>
+                            <td>
+                                <span t-esc="line.capital_contribution_amount"/>
+                            </td>
+                        </tr>
+                    </t>
+                </t>
+                <t t-if="doc.organization_type == 'general_professional_partnership'">
+                    <t t-foreach='doc.capital_general_professional_partner_ids' t-as='line'>
+                        <tr>
+                            <td>Partner</td>
+                            <td>Capital Contribution Amount</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span t-esc="line.name"/>
+                            </td>
+                            <td>
+                                <span t-esc="line.capital_contribution_amount"/>
+                            </td>
+                        </tr>
+                    </t>
+                </t>
+                <t t-if="doc.organization_type == 'domestic_stock'">
+                    <t t-foreach='doc.capitalization_ids' t-as='line'>
+                        <tr>
+                            <td>Class of Shares</td>
+                            <td>Par Value per Share</td>
+                            <td>Authorized</td>
+                            <td></td>
+                            <td>Subscribed</td>
+                            <td></td>
+                            <td>Treasury</td>
+                            <td></td>
+                            <td>Paid-Up</td>
+                            <td></td>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td>No</td>
+                                <td>Amount</td>
+                                <td>No</td>
+                                <td>Amount</td>
+                                <td>No</td>
+                                <td>Amount</td>
+                                <td>No</td>
+                                <td>Amount</td>
+                            </tr>
+                        </tr>
+                        <tr>
+                            <td>
+                                <t t-esc="line.name"/>
+                            </td>
+                            <td>
+                                <t t-esc="line.par_value"/>
+                            </td>
+                            <td>
+                                <t t-esc="line.authorized_no"/>
+                            </td>
+                            <td>
+                                <t t-esc="line.authorized_amount"/>
+                            </td>
+                            <td>
+                                <t t-esc="line.subscribed_no"/>
+                            </td>
+                            <td>
+                                <t t-esc="line.subscribed_amount"/>
+                            </td>
+                            <td>
+                                <t t-esc="line.treasury_no"/>
+                            </td>
+                            <td>
+                                <t t-esc="line.treasury_amount"/>
+                            </td>
+                            <td>
+                                <t t-esc="line.paid_up_no"/>
+                            </td>
+                            <td>
+                                <t t-esc="line.paid_up_amount"/>
+                            </td>
+                        </tr>
+                    </t>
+                </t>
+                <t t-if="doc.organization_type == 'domestic_corp'">
+                    <t t-foreach='doc.capital_domestic_ids' t-as='line'>
+                        <tr>
+                            <td>Capital Contribution Amount</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span t-esc="line.name"/>
+                            </td>
+                        </tr>
+                    </t>
+                </t>
+                <t t-if="doc.organization_type == 'foreign_corp'">
+                    <t t-foreach='doc.capital_foreign_corp_ids' t-as='line'>
+                        <tr>
+                            <td>Assigned Capital Amount</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span t-esc="line.name"/>
+                            </td>
+                        </tr>
+                    </t>
+                </t>
+                <t t-if="doc.organization_type == 'foreign_nsnp_corp'">
+                    <t t-foreach='doc.capital_foreign_nsnp_ids' t-as='line'>
+                        <tr>
+                            <td>Assigned Capital Amount</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span t-esc="line.name"/>
+                            </td>
+                        </tr>
+                    </t>
+                </t>
+                <t t-if="doc.organization_type == 'roqh_foreign_corp'">
+                    <t t-foreach='doc.capital_roqh_foreign_corp_ids' t-as='line'>
+                        <tr>
+                            <td>Assigned Capital Amount</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span t-esc="line.name"/>
+                            </td>
+                        </tr>
+                    </t>
+                </t>
+                <t t-if="doc.organization_type == 'representative_office'">
+                    <t t-foreach='doc.capital_representative_office_ids' t-as='line'>
+                        <tr>
+                            <td>Assigned Capital Amount</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span t-esc="line.name"/>
+                            </td>
+                        </tr>
+                    </t>
+                </t>
+            </table>
+            <br/>
+            <table style="font-size:20px;" width="100%">
+                <h3>
+                    <p style="text-center;">Corporate Officers</p>
+                </h3>
+                <style>
+                    table, th, td {
+                    border: 2px solid black;
+                    border-collapse: collapse;
+                    }
+                    th, td {
+                    padding: 5px;
+                    text-align: left;
+                    }
+                </style>
+                <t t-if="doc.organization_type == 'sole_proprietor'">
+                    <t t-foreach='doc.sole_proprietor_ids' t-as='line'>
+                        <tr>
+                            <td>Proprietor/Proprietress</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span t-esc="line.name"/>
+                            </td>
+                        </tr>
+                    </t>
+                </t>
+                <t t-if="doc.organization_type == 'general_partnership'">
+                    <t t-foreach='doc.general_partnership_ids' t-as='line'>
+                        <tr>
+                            <td>Managing Partner</td>
+                            <td>Partner</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span t-esc="line.name"/>
+                            </td>
+                            <td>
+                                <span t-esc="line.partner"/>
+                            </td>
+                        </tr>
+                    </t>
+                </t>
+                <t t-if="doc.organization_type == 'general_professional_partnership'">
+                    <t t-foreach='doc.general_professional_partnership_ids' t-as='line'>
+                        <tr>
+                            <td>Managing Partner</td>
+                            <td>Partner</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span t-esc="line.name"/>
+                            </td>
+                            <td>
+                                <span t-esc="line.partner"/>
+                            </td>
+                        </tr>
+                    </t>
+                </t>
+                <t t-if="doc.organization_type == 'domestic_stock'">
+                    <t t-foreach='doc.domestic_stock_ids' t-as='line'>
+                        <tr>
+                            <td>Chairman of the BOD</td>
+                            <td>President/CEO</td>
+                            <td>Treasurer/CFO</td>
+                            <td>Corporate Secretary</td>
+                            <td>Vice-Chairman of the BOD</td>
+                            <td>Asst.Treasurer</td>
+                            <td>Asst.Corporate Secretary</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span t-esc="line.name"/>
+                            </td>
+                            <td>
+                                <span t-esc="line.president"/>
+                            </td>
+                            <td>
+                                <span t-esc="line.treasurer"/>
+                            </td>
+                            <td>
+                                <span t-esc="line.corporate_secretary"/>
+                            </td>
+                            <td>
+                                <span t-esc="line.vice_chairman"/>
+                            </td>
+                            <td>
+                                <span t-esc="line.asst_treasurer"/>
+                            </td>
+                            <td>
+                                <span t-esc="line.asst_corp_secretary"/>
+                            </td>
+                        </tr>
+                    </t>
+                </t>
+                <t t-if="doc.organization_type == 'domestic_corp'">
+                    <t t-foreach='doc.domestic_corp_ids' t-as='line'>
+                        <tr>
+                            <td>Chairman of the BOT</td>
+                            <td>President/CEO</td>
+                            <td>Treasurer/CFO</td>
+                            <td>Corporate Secretary</td>
+                            <td>Vice-Chairman of the BOT</td>
+                            <td>Asst.Treasurer</td>
+                            <td>Asst.Corporate Secretary</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span t-esc="line.name"/>
+                            </td>
+                            <td>
+                                <span t-esc="line.president"/>
+                            </td>
+                            <td>
+                                <span t-esc="line.treasurer"/>
+                            </td>
+                            <td>
+                                <span t-esc="line.corporate_secretary"/>
+                            </td>
+                            <td>
+                                <span t-esc="line.vice_chairman"/>
+                            </td>
+                            <td>
+                                <span t-esc="line.asst_treasurer"/>
+                            </td>
+                            <td>
+                                <span t-esc="line.asst_corp_secretary"/>
+                            </td>
+                        </tr>
+                    </t>
+                </t>
+                <t t-if="doc.organization_type == 'foreign_corp'">
+                    <t t-foreach='doc.foreign_corp_ids' t-as='line'>
+                        <tr>
+                            <td>Country Manager</td>
+                            <td>Asst.Country Manager</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span t-esc="line.name"/>
+                            </td>
+                            <td>
+                                <span t-esc="line.asst_manager"/>
+                            </td>
+                        </tr>
+                    </t>
+                </t>
+                <t t-if="doc.organization_type == 'foreign_nsnp_corp'">
+                    <t t-foreach='doc.foreign_nsnp_corp_ids' t-as='line'>
+                        <tr>
+                            <td>Country Manager</td>
+                            <td>Asst.Country Manager</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span t-esc="line.name"/>
+                            </td>
+                            <td>
+                                <span t-esc="line.asst_manager"/>
+                            </td>
+                        </tr>
+                    </t>
+                </t>
+                <t t-if="doc.organization_type == 'roqh_foreign_corp'">
+                    <t t-foreach='doc.roqh_foreign_corp_ids' t-as='line'>
+                        <tr>
+                            <td>Country Manager</td>
+                            <td>Asst.Country Manager</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span t-esc="line.name"/>
+                            </td>
+                            <td>
+                                <span t-esc="line.asst_manager"/>
+                            </td>
+                        </tr>
+                    </t>
+                </t>
+                <t t-if="doc.organization_type == 'representative_office'">
+                    <t t-foreach='doc.representative_office_ids' t-as='line'>
+                        <tr>
+                            <td>Country Manager</td>
+                            <td>Asst.Country Manager</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span t-esc="line.name"/>
+                            </td>
+                            <td>
+                                <span t-esc="line.asst_manager"/>
+                            </td>
+                        </tr>
+                    </t>
+                </t>
             </table>
             <br/>
             <h1>
                 V. Regulatory Information
             </h1>
-            <br/>
             <table style="font-size:20px;" width="100%">
                 <tr>
                     <td>Is the entity regulated or
@@ -338,9 +712,22 @@
                     </td>
                 </tr>
             </table>
+            <br/>
             <table style="font-size:20px;" width="100%">
                 <tr>
-                    <h2>Regulatory Agencies</h2>
+                    <h3>
+                        <p style="text-center;">Regulatory Agencies</p>
+                    </h3>
+                    <style>
+                        table, th, td {
+                        border: 2px solid black;
+                        border-collapse: collapse;
+                        }
+                        th, td {
+                        padding: 5px;
+                        text-align: left;
+                        }
+                    </style>
                     <td>
                         <t t-if="doc.bangko_sentral_pilipinas">
                             <input type="checkbox" id="checkbox_true" checked="True"/>
@@ -461,11 +848,23 @@
                     </td>
                 </tr>
             </table>
+            <table style="font-size:20px;" width="100%">
+                <h3>
+                    Attachment
+                </h3>
+                <tr>
+                    <t t-foreach="doc.attachment" t-as="attachment">
+                        <a t-attf-href="/web/content/{{ attachment.id }}?download=true"
+                           t-attf-download="{{ attachment.name }}">
+                            <t t-esc="attachment.name"/>
+                        </a>
+                    </t>
+                </tr>
+            </table>
             <br/>
             <h1>
                 VI. Social Security Information
             </h1>
-            <br/>
             <table style="font-size:20px;" width="100%">
                 <tr>
                     <td>SSS ER No:</td>
@@ -514,10 +913,21 @@
             <h1>
                 VII. Engagement Administration
             </h1>
-            <br/>
             <table style="font-size:20px;" width="100%">
                 <tr>
-                    <h2>Engagement Team</h2>
+                    <h2>
+                        <p style="text-center;">Engagement Team</p>
+                    </h2>
+                    <style>
+                        table, th, td {
+                        border: 2px solid black;
+                        border-collapse: collapse;
+                        }
+                        th, td {
+                        padding: 5px;
+                        text-align: left;
+                        }
+                    </style>
                     <td>Associate:</td>
                     <td>
                         <span t-field="doc.user_id"/>
@@ -548,6 +958,44 @@
                     </td>
                 </tr>
             </table>
+            <br/>
+            <table style="font-size:20px;" width="100%">
+                <h3>
+                    <p style="text-center;">Escalation Matrix</p>
+                </h3>
+                <style>
+                    table, th, td {
+                    border: 2px solid black;
+                    border-collapse: collapse;
+                    }
+                    th, td {
+                    padding: 5px;
+                    text-align: left;
+                    }
+                </style>
+                <tr>
+                    <td>Level</td>
+                    <td>Point of Contact</td>
+                    <td>Contact Number</td>
+                    <td>Email Address</td>
+                </tr>
+                <t t-foreach='doc.escalation_ids' t-as='line'>
+                    <tr>
+                        <td>
+                            <span t-esc="line.level"/>
+                        </td>
+                        <td>
+                            <span t-esc="line.name"/>
+                        </td>
+                        <td>
+                            <span t-esc="line.contact_number"/>
+                        </td>
+                        <td>
+                            <span t-esc="line.email"/>
+                        </td>
+                    </tr>
+                </t>
+            </table>
         </t>
     </template>
 
@@ -576,7 +1024,7 @@
     </record>
 
     <record id="action_report_client_profile" model="ir.actions.report">
-        <field name="name">Preview</field>
+        <field name="name">Generate Report</field>
         <field name="model">client.profile</field>
         <field name="report_type">qweb-pdf</field>
         <field name="report_name">amyu1.report_clientprofile_template</field>

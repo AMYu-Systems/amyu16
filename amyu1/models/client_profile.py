@@ -412,7 +412,7 @@ class ClientProfile(models.Model):
     @api.constrains('email_address')
     def _check_email_format(self):
         for record in self:
-            if record.email_address and '@' not in record.email_address:
+            if record.email_address and '.' not in record.email_address:
                 raise ValidationError("Invalid email address")
 
     principal_accounting_officer = fields.Char(string="Principal Accounting Officer")
@@ -461,7 +461,7 @@ class ClientProfile(models.Model):
     @api.constrains('email_address2')
     def _check_email2_format(self):
         for record in self:
-            if record.email_address2 and '@' not in record.email_address2:
+            if record.email_address2 and '.' not in record.email_address2:
                 raise ValidationError("Invalid email address")
 
     corporate_ids = fields.One2many(comodel_name='corporate.officer', inverse_name='client_profile_id',

@@ -13,12 +13,9 @@ class EscalationContact(models.Model):
     def caps_name(self):
         if self.name:
             self.name = str(self.name).title()
-
-    @api.constrains('name')
-    def _error_name(self):
-        for record in self:
-            if any(char.isdigit() for char in record.name):
-                raise ValidationError("Numbers are not allowed in Point of Contact Field.")
+            for record in self:
+                if any(char.isdigit() for char in record.name):
+                    raise ValidationError("Numbers are not allowed in Point of Contact Field.")
 
     level = fields.Selection([('level_1', '1st Level'), ('level_2', '2nd Level'), ('level_3', '3rd Level')],
                              string="Level")
