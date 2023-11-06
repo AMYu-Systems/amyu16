@@ -9,7 +9,7 @@ class ClientProfile(models.Model):
     _description = "Profile"
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
-    name = fields.Char(string="Client Name", required=True)
+    name = fields.Char(string="Client Name", required=True, tracking=True)
 
     @api.onchange('name')
     def caps_name(self):
@@ -95,7 +95,8 @@ class ClientProfile(models.Model):
                               ('manager', 'Manager'),
                               ('approved', 'Approved'),
                               ('cancel', 'Returned')], default='draft', string="Status")
-    user_id = fields.Many2one(string="Associate", comodel_name='res.users', default=lambda self: self.env.user)
+    user_id = fields.Many2one(string="Associate", comodel_name='res.users', default=lambda self: self.env.user,
+                              tracking=True)
     manager_id = fields.Many2one(string="Manager", related="team_id.manager_id", readonly=True)
     supervisor_id = fields.Many2one(string="Supervisor", related="team_id.supervisor_id", readonly=True)
     cluster_id = fields.Many2one(string="Cluster", related="team_id.cluster_id", readonly=True)
