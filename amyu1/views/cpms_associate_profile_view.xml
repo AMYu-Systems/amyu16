@@ -83,7 +83,7 @@
                                    attrs="{'readonly': [('id', '!=', False)]}"/>
                         </group>
                     </group>
-                    <field name="client_profile_ids" readonly="1">
+                    <field name="client_profile_ids" style="pointer-events:none;">
                         <tree create="False" delete="False" edit="False">
                             <field name="name"/>
                             <field name="state"

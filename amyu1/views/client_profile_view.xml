@@ -44,7 +44,7 @@
                                 attrs="{'invisible': [('state', '!=', 'approved')]}"
                                 class="oe_highlight"/>
                         <button name="draft_action"
-                                string="For Edit"
+                                string="Edit"
                                 groups="amyu1.associate_group"
                                 attrs="{'invisible': [('state', '!=', 'cancel')]}" type="object"/>
                         <!--                        <button name="draft_action" confirm="Are you sure you want to return this draft?"-->
@@ -316,8 +316,6 @@
                                        attrs="{'invisible': [('organization_type', '!=', 'roqh_foreign_corp')]}"/>
                                 <field name="representative_office_ids"
                                        attrs="{'invisible': [('organization_type', '!=', 'representative_office')]}"/>
-
-
                             </page>
 
                             <page name="regulatory_information" string="REGULATORY">
