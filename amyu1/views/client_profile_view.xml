@@ -459,14 +459,8 @@
             <field name="model">client.profile</field>
             <field name="arch" type="xml">
                 <search>
-                    <field name="name" string="Client"
-                           filter_domain="['|','|','|',('name','ilike',self),('user_id','ilike',self),('client_system_generated','ilike',self),('organization_type','ilike',self)]"/>
+                    <field name="name" string="Client"/>
                     <field name="user_id" string="Associates"/>
-                    <field name="client_system_generated" string="Industry"/>
-                    <field name="organization_type" string="Organization"/>
-                    <searchpanel>
-                        <!--                        <field name="state" widget="state_sequence" enable_counters="1" string="Status"/>-->
-                    </searchpanel>
                 </search>
             </field>
         </record>

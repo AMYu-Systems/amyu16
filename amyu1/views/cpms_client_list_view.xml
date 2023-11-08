@@ -7,6 +7,9 @@
             <field name="arch" type="xml">
                 <tree create="False" export_xlsx="0">
                     <field name="name"/>
+                    <field name="vat"/>
+                    <field name="rdo_code"/>
+                    <field name="registration_number"/>
                     <field name="supervisor_id" groups="amyu1.associate_group"/>
                     <field name="supervisor_id" groups="amyu1.manager_group"/>
                     <field name="supervisor_id" groups="amyu1.cluster_group"/>
@@ -22,9 +25,6 @@
                     <field name="name"/>
                     <field name="id"/>
                     <field name="image_101"/>
-                    <kanban>
-                        <field name="state_sequence" invisible="1"/>
-                    </kanban>
                     <templates>
                         <t t-name="kanban-box">
                             <div t-attf-class="oe_kanban_global_click">

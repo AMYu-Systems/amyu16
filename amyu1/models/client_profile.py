@@ -94,7 +94,7 @@ class ClientProfile(models.Model):
                               ('supervisor', 'Supervisor'),
                               ('manager', 'Manager'),
                               ('approved', 'Approved'),
-                              ('cancel', 'Returned')], default='draft', string="Status")
+                              ('cancel', 'Returned')], tracking=True, string="Status")
     user_id = fields.Many2one(string="Associate", comodel_name='res.users', default=lambda self: self.env.user,
                               tracking=True)
     manager_id = fields.Many2one(string="Manager", related="team_id.manager_id", readonly=True)
