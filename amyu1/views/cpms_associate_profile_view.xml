@@ -120,7 +120,7 @@
         </record>
 
         <record id="maintain_associates_profile_action" model="ir.actions.act_window">
-            <field name="name">Associates Profile</field>
+            <field name="name">Members Profile</field>
             <field name="res_model">associate.profile</field>
             <field name="view_mode">tree,kanban,form</field>
             <field name="view_id" ref="associates_profile_kanban_view"/>

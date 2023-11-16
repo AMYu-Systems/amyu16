@@ -21,8 +21,8 @@
                     </td>
                 </tr>
                 <tr>
-                    <td style="background-color: #dce6f5;">Client ID:</td>
-                    <td style="background-color: #dce6f5;">
+                    <td>Client ID:</td>
+                    <td>
                         <span t-field="doc.client_system_generated"/>
                     </td>
                 </tr>
@@ -33,8 +33,8 @@
                     </td>
                 </tr>
                 <tr>
-                    <td style="background-color: #dce6f5;">Industry Class:</td>
-                    <td style="background-color: #dce6f5;">
+                    <td>Industry Class:</td>
+                    <td>
                         <span t-field="doc.industry_class"/>
                     </td>
                 </tr>
@@ -45,8 +45,8 @@
                     </td>
                 </tr>
                 <tr>
-                    <td style="background-color: #dce6f5;">Nature of Activities, Brands, Product &amp; Services:</td>
-                    <td style="background-color: #dce6f5;">
+                    <td>Nature of Activities, Brands, Product &amp; Services:</td>
+                    <td>
                         <span t-field="doc.nature_of_business"/>
                     </td>
                 </tr>
@@ -59,18 +59,18 @@
                 <tr>
                     <td>Registered Address:</td>
                     <td>
-                        <span t-field="doc.unit_no"/>
-                        <span t-field="doc.building_name"/>
-                        <span t-field="doc.street"/>
-                        <span t-field="doc.district"/>
-                        <span t-field="doc.city"/>
-                        <span t-field="doc.zip"/>
+                        <span t-field="doc.registered_unit_no"/>
+                        <span t-field="doc.registered_building_name"/>
+                        <span t-field="doc.registered_street"/>
+                        <span t-field="doc.registered_district"/>
+                        <span t-field="doc.registered_city"/>
+                        <span t-field="doc.registered_zip"/>
                     </td>
                 </tr>
                 <tr>
-                    <td style="background-color: #dce6f5;">Telephone:</td>
-                    <td style="background-color: #dce6f5;">
-                        <span t-field="doc.landline"/>
+                    <td>Telephone:</td>
+                    <td>
+                        <span t-field="doc.registered_landline"/>
                     </td>
                 </tr>
                 <tr>
@@ -80,68 +80,68 @@
                     </td>
                 </tr>
                 <tr>
-                    <td style="background-color: #dce6f5;">Website:</td>
-                    <td style="background-color: #dce6f5;">
+                    <td>Website:</td>
+                    <td>
                         <span t-field="doc.website"/>
                     </td>
                 </tr>
                 <tr>
                     <td>Accounting or Office Admin Address:</td>
                     <td>
-                        <span t-field="doc.unit_no2"/>
-                        <span t-field="doc.building_name2"/>
-                        <span t-field="doc.street2"/>
-                        <span t-field="doc.district2"/>
-                        <span t-field="doc.city2"/>
-                        <span t-field="doc.zip2"/>
+                        <span t-field="doc.office_admin_unit_no"/>
+                        <span t-field="doc.office_admin_building_name"/>
+                        <span t-field="doc.office_admin_street"/>
+                        <span t-field="doc.office_admin_district"/>
+                        <span t-field="doc.office_admin_city"/>
+                        <span t-field="doc.office_admin_zip"/>
                     </td>
                 </tr>
                 <tr>
-                    <td style="background-color: #dce6f5;">Primary Contact Person:</td>
-                    <td style="background-color: #dce6f5;">
+                    <td>Primary Contact Person:</td>
+                    <td>
                         <span t-field="doc.primary_contact_person"/>
                     </td>
                 </tr>
                 <tr>
                     <td>Telephone:</td>
                     <td>
-                        <span t-field="doc.landline2"/>
+                        <span t-field="doc.primary_contact_landline"/>
                     </td>
                 </tr>
                 <tr>
-                    <td style="background-color: #dce6f5;">Mobile No:</td>
-                    <td style="background-color: #dce6f5;">
-                        <span t-field="doc.mobile_number"/>
+                    <td>Mobile No:</td>
+                    <td>
+                        <span t-field="doc.primary_contact_mobile"/>
                     </td>
                 </tr>
                 <tr>
                     <td>Email Address:</td>
                     <td>
-                        <span t-field="doc.email_address"/>
+                        <span t-field="doc.primary_contact_email"/>
                     </td>
                 </tr>
                 <tr>
-                    <td style="background-color: #dce6f5;">Principal Accounting Officer:</td>
-                    <td style="background-color: #dce6f5;">
+                    <td>Principal Accounting Officer:</td>
+                    <td>
                         <span t-field="doc.principal_accounting_officer"/>
                     </td>
                 </tr>
                 <tr>
                     <td>Telephone:</td>
                     <td>
-                        <span t-field="doc.landline3"/>
+                        <span t-field="doc.principal_accounting_landline"/>
                     </td>
                 </tr>
                 <tr>
-                    <td style="background-color: #dce6f5;">Mobile No:</td>
-                    <td style="background-color: #dce6f5;">
-                        <span t-field="doc.mobile_number2"/>
+                    <td>Mobile No:</td>
+                    <td>
+                        <span t-field="doc.principal_accounting_mobile"/>
                     </td>
                 </tr>
                 <tr>
                     <td>Email Address:</td>
                     <td>
-                        <span t-field="doc.email_address2"/>
+                        <span t-field="doc.principal_accounting_email"/>
                     </td>
                 </tr>
             </table>
@@ -151,14 +151,14 @@
             </h1>
             <table style="font-size:20px;" width="100%">
                 <tr>
-                    <td>TAX ID No:</td>
+                    <td>TIN ID No:</td>
                     <td>
                         <span t-field="doc.vat"/>
                     </td>
                 </tr>
                 <tr>
-                    <td style="background-color: #dce6f5;">RDO Code:</td>
-                    <td style="background-color: #dce6f5;">
+                    <td>RDO Code:</td>
+                    <td>
                         <span t-field="doc.rdo_code"/>
                     </td>
                 </tr>
@@ -169,8 +169,8 @@
                     </td>
                 </tr>
                 <tr>
-                    <td style="background-color: #dce6f5;">Taxpayer Type:</td>
-                    <td style="background-color: #dce6f5;">
+                    <td>Taxpayer Type:</td>
+                    <td>
                         <span t-field="doc.taxpayer_type"/>
                     </td>
                 </tr>
@@ -181,8 +181,8 @@
                     </td>
                 </tr>
                 <tr>
-                    <td style="background-color: #dce6f5;"><![CDATA[Filling & Payment:]]></td>
-                    <td style="background-color: #dce6f5;">
+                    <td><![CDATA[Filling & Payment:]]></td>
+                    <td>
                         <span t-field="doc.filing_payment"/>
                     </td>
                 </tr>
@@ -193,8 +193,8 @@
                     </td>
                 </tr>
                 <tr>
-                    <td style="background-color: #dce6f5;">LL/CAS Permit No:</td>
-                    <td style="background-color: #dce6f5;">
+                    <td>LL/CAS Permit No:</td>
+                    <td>
                         <span t-field="doc.ll_cas_permit_no"/>
                     </td>
                 </tr>
@@ -205,7 +205,7 @@
                         Machines:
                     </td>
                     <td>
-                        <span t-field="doc.ask"/>
+                        <span t-field="doc.pos_crm_spm_yes_no"/>
                     </td>
                 </tr>
             </table>
@@ -315,8 +315,8 @@
                     </td>
                 </tr>
                 <tr>
-                    <td style="background-color: #dce6f5;">Trade Name:</td>
-                    <td style="background-color: #dce6f5;">
+                    <td>Trade Name:</td>
+                    <td>
                         <span t-field="doc.trade_name"/>
                     </td>
                 </tr>
@@ -716,7 +716,7 @@
                         Government Regulatory Agencies:
                     </td>
                     <td>
-                        <span t-field="doc.ask_3"/>
+                        <span t-field="doc.regulatory_yes_no"/>
                     </td>
                 </tr>
             </table>
@@ -846,10 +846,10 @@
                         Integrated Bar of the Philippines
                     </td>
                     <td>
-                        <t t-if="doc.others_ri">
+                        <t t-if="doc.others_regulatory ">
                             <input type="checkbox" id="checkbox_true" checked="True"/>
                         </t>
-                        <t t-if="not doc.others_ri">
+                        <t t-if="not doc.others_regulatory ">
                             <input type="checkbox" id="checkbox_false"/>
                         </t>
                         Others
@@ -861,7 +861,7 @@
                     Attachment
                 </h3>
                 <tr>
-                    <t t-foreach="doc.attachment" t-as="attachment">
+                    <t t-foreach="doc.regulatory_attachment" t-as="attachment">
                         <a t-attf-href="/web/content/{{ attachment.id }}?download=true"
                            t-attf-download="{{ attachment.name }}">
                             <t t-esc="attachment.name"/>
@@ -889,16 +889,16 @@
                     </td>
                 </tr>
                 <tr>
-                    <td style="background-color: #dce6f5;">PHIC ER No:</td>
-                    <td style="background-color: #dce6f5;">
+                    <td>PHIC ER No:</td>
+                    <td>
                         <span t-field="doc.phic"/>
                     </td>
-                    <td style="background-color: #dce6f5;">Filing:</td>
-                    <td style="background-color: #dce6f5;">
+                    <td>Filing:</td>
+                    <td>
                         <span t-field="doc.phic_filing"/>
                     </td>
-                    <td style="background-color: #dce6f5;">Payment:</td>
-                    <td style="background-color: #dce6f5;">
+                    <td>Payment:</td>
+                    <td>
                         <span t-field="doc.phic_pay"/>
                     </td>
                 </tr>
@@ -942,8 +942,8 @@
                     </td>
                 </tr>
                 <tr>
-                    <td style="background-color: #dce6f5;">Supervisor:</td>
-                    <td style="background-color: #dce6f5;">
+                    <td>Supervisor:</td>
+                    <td>
                         <span t-field="doc.supervisor_id"/>
                     </td>
                 </tr>
@@ -954,8 +954,8 @@
                     </td>
                 </tr>
                 <tr>
-                    <td style="background-color: #dce6f5;">Lead Partner:</td>
-                    <td style="background-color: #dce6f5;">
+                    <td>Lead Partner:</td>
+                    <td>
                         <span t-field="doc.lead_partner_id"/>
                     </td>
                 </tr>

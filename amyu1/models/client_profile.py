@@ -11,10 +11,15 @@ class ClientProfile(models.Model):
 
     name = fields.Char(string="Client Name", required=True, tracking=True)
 
-    @api.onchange('name')
-    def caps_name(self):
-        if self.name:
-            self.name = str(self.name).title()
+    # @api.onchange('name')
+    # def caps_name(self):
+    #     if self.name:
+    #         self.name = str(self.name).upper()
+
+    # @api.onchange('name')
+    # def caps_name(self):
+    #     if self.name:
+    #         self.name = str(self.name).title()
 
     image_101 = fields.Image(string="Image")
     organization_type = fields.Selection(
@@ -82,14 +87,6 @@ class ClientProfile(models.Model):
             raise ValidationError("Future dates are not allowed.")
 
     client_system_generated = fields.Char(string="Client ID")
-    tax_reporting_compliance = fields.Boolean(string="Tax Reporting & Compliance")
-    annual_registration_update = fields.Boolean(string="Annual Registration Update")
-    agree_upon_procedure = fields.Boolean(string="Agree-Upon Procedures")
-    audit_assurance = fields.Boolean(string="Audit & Assurance")
-    tax_advocacy = fields.Boolean(string="Tax Advocacy(Investigation)")
-    advisory_consultancy = fields.Boolean(string="Advisory & Consultancy")
-    compilation = fields.Boolean(string="Compilation")
-    others = fields.Char(string="Others")
     state = fields.Selection([('draft', 'Draft'),
                               ('supervisor', 'Supervisor'),
                               ('manager', 'Manager'),
@@ -102,22 +99,6 @@ class ClientProfile(models.Model):
     cluster_id = fields.Many2one(string="Cluster", related="team_id.cluster_id", readonly=True)
     lead_partner_id = fields.Many2one(string="Lead Partner", related="team_id.lead_partner_id", readonly=True)
     team_id = fields.Many2one(string="Team", comodel_name='associate.profile', required=True)
-    state_sequence = fields.Char(compute='_compute_state_sequence', string='Progress Status', store=True)
-
-    @api.depends('state')
-    def _compute_state_sequence(self):
-        for record in self:
-            if record.state == 'draft':
-                record.state_sequence = '1.Draft'
-            elif record.state == 'supervisor':
-                record.state_sequence = '2.Supervisor'
-            elif record.state == 'manager':
-                record.state_sequence = '3.Manager'
-            elif record.state == 'approved':
-                record.state_sequence = '4.Approved'
-
-            else:
-                record.state_sequence = 'Unknown'
 
     def draft_action(self):
         self.state = 'draft'
@@ -227,69 +208,69 @@ class ClientProfile(models.Model):
             })
         return res
 
-    unit_no = fields.Char(string="Unit/Floor")
+    registered_unit_no = fields.Char(string="Unit/Floor")
 
-    @api.onchange('unit_no')
-    def caps_unit_no(self):
-        if self.unit_no:
-            self.unit_no = str(self.unit_no).title()
+    @api.onchange('registered_unit_no')
+    def caps_registered_unit_no(self):
+        if self.registered_unit_no:
+            self.registered_unit_no = str(self.registered_unit_no).title()
 
-    building_name = fields.Char(string="Building Name")
+    registered_building_name = fields.Char(string="Building Name")
 
-    @api.onchange('building_name')
-    def caps_building_name(self):
-        if self.building_name:
-            self.building_name = str(self.building_name).title()
+    @api.onchange('registered_building_name')
+    def caps_registered_building_name(self):
+        if self.registered_building_name:
+            self.registered_building_name = str(self.registered_building_name).title()
 
-    street = fields.Char(string="Street")
+    registered_street = fields.Char(string="Street")
 
-    @api.onchange('street')
-    def caps_street(self):
-        if self.street:
-            self.street = str(self.street).title()
+    @api.onchange('registered_street')
+    def caps_registered_street(self):
+        if self.registered_street:
+            self.registered_street = str(self.registered_street).title()
 
-    district = fields.Char(string="District/Barangay/Village")
+    registered_district = fields.Char(string="District/Barangay/Village")
 
-    @api.onchange('district')
-    def caps_district(self):
-        if self.district:
-            self.district = str(self.district).title()
+    @api.onchange('registered_district')
+    def caps_registered_district(self):
+        if self.registered_district:
+            self.registered_district = str(self.registered_district).title()
 
-    city = fields.Char(string="City")
+    registered_city = fields.Char(string="City")
 
-    @api.onchange('city')
-    def caps_city(self):
-        if self.city:
-            self.city = str(self.city).title()
+    @api.onchange('registered_city')
+    def caps_registered_city(self):
+        if self.registered_city:
+            self.registered_city = str(self.registered_city).title()
 
-    zip = fields.Char(string="Zip Code", size=4)
+    registered_zip = fields.Char(string="Zip Code", size=4)
 
-    @api.constrains('zip')
-    def _validate_zip(self):
+    @api.constrains('registered_zip')
+    def _validate_registered_zip(self):
         for record in self:
             pattern = r'^\d{4}$'  # Modify the regular expression pattern according to your requirements
-            if record.zip and not re.match(pattern, record.zip):
+            if record.registered_zip and not re.match(pattern, record.registered_zip):
                 raise ValidationError('Invalid Zip Code!')
 
-    landline = fields.Char(string="Telephone", size=16)
+    registered_landline = fields.Char(string="Telephone", size=16)
 
-    @api.onchange('landline')
-    def onchange_landline(self):
+    @api.onchange('registered_landline')
+    def onchange_registered_landline(self):
         for record in self:
-            if record.landline and len(record.landline) == 13:
+            if record.registered_landline and len(record.registered_landline) == 13:
                 formatted_number = '-'.join([
-                    record.landline[:2],
-                    record.landline[2:6],
-                    record.landline[6:10],
-                    record.landline[10:]
+                    record.registered_landline[:2],
+                    record.registered_landline[2:6],
+                    record.registered_landline[6:10],
+                    record.registered_landline[10:]
                 ])
-                record.landline = formatted_number
+                record.registered_landline = formatted_number
 
-    @api.constrains('landline')
-    def _check_landline(self):
+    @api.constrains('registered_landline')
+    def _check_registered_landline(self):
         for record in self:
-            if record.landline:
-                if any(char.isalpha() and char != '-' for char in record.landline):
+            if record.registered_landline:
+                if any(char.isalpha() and char != '-' for char in record.registered_landline):
                     raise ValidationError(
                         "Only numbers are allowed in the Telephone Number.")
 
@@ -323,69 +304,69 @@ class ClientProfile(models.Model):
             if record.website and '.' not in record.website:
                 raise ValidationError("Invalid Website")
 
-    unit_no2 = fields.Char(string="Unit/Floor")
+    office_admin_unit_no = fields.Char(string="Unit/Floor")
 
-    @api.onchange('unit_no2')
-    def caps_unit_no2(self):
-        if self.unit_no2:
-            self.unit_no2 = str(self.unit_no2).title()
+    @api.onchange('office_admin_unit_no')
+    def caps_office_admin_unit_no(self):
+        if self.office_admin_unit_no:
+            self.office_admin_unit_no = str(self.office_admin_unit_no).title()
 
-    building_name2 = fields.Char(string="Building Name")
+    office_admin_building_name = fields.Char(string="Building Name")
 
-    @api.onchange('building_name2')
-    def caps_building_name2(self):
-        if self.building_name2:
-            self.building_name2 = str(self.building_name2).title()
+    @api.onchange('office_admin_building_name')
+    def caps_office_admin_building_name(self):
+        if self.office_admin_building_name:
+            self.office_admin_building_name = str(self.office_admin_building_name).title()
 
-    street2 = fields.Char(string="Street")
+    office_admin_street = fields.Char(string="Street")
 
-    @api.onchange('street2')
-    def caps_street2(self):
-        if self.street2:
-            self.street2 = str(self.street2).title()
+    @api.onchange('office_admin_street')
+    def caps_office_admin_street(self):
+        if self.office_admin_street:
+            self.office_admin_street = str(self.office_admin_street).title()
 
-    district2 = fields.Char(string="District/Barangay/Village")
+    office_admin_district = fields.Char(string="District/Barangay/Village")
 
-    @api.onchange('district2')
-    def caps_district2(self):
-        if self.district2:
-            self.district2 = str(self.district2).title()
+    @api.onchange('office_admin_district')
+    def caps_office_admin_district(self):
+        if self.office_admin_district:
+            self.office_admin_district = str(self.office_admin_district).title()
 
-    city2 = fields.Char(string="City")
+    office_admin_city = fields.Char(string="City")
 
-    @api.onchange('city2')
-    def caps_city2(self):
-        if self.city2:
-            self.city2 = str(self.city2).title()
+    @api.onchange('office_admin_city')
+    def caps_office_admin_city(self):
+        if self.office_admin_city:
+            self.office_admin_city = str(self.office_admin_city).title()
 
-    zip2 = fields.Char(string="Zip Code", size=4)
+    office_admin_zip = fields.Char(string="Zip Code", size=4)
 
-    @api.constrains('zip2')
-    def _validate_zip2(self):
+    @api.constrains('office_admin_zip')
+    def _validate_office_admin_zip(self):
         for record in self:
             pattern = r'^\d{4}$'  # Modify the regular expression pattern according to your requirements
-            if record.zip2 and not re.match(pattern, record.zip2):
+            if record.office_admin_zip and not re.match(pattern, record.office_admin_zip):
                 raise ValidationError('Invalid Zip Code!')
 
-    landline2 = fields.Char(string="Telephone", size=16)
+    primary_contact_landline = fields.Char(string="Telephone", size=16)
 
-    @api.onchange('landline2')
-    def onchange_landline2(self):
+    @api.onchange('primary_contact_landline')
+    def onchange_primary_contact_landline(self):
         for record in self:
-            if record.landline2 and len(record.landline2) == 13:
+            if record.primary_contact_landline and len(record.primary_contact_landline) == 13:
                 formatted_number = '-'.join([
-                    record.landline2[:2],
-                    record.landline2[2:6],
-                    record.landline2[6:10],
-                    record.landline2[10:]
+                    record.primary_contact_landline[:2],
+                    record.primary_contact_landline[2:6],
+                    record.primary_contact_landline[6:10],
+                    record.primary_contact_landline[10:]
                 ])
-                record.landline2 = formatted_number
+                record.primary_contact_landline = formatted_number
 
-    @api.constrains('landline2')
-    def _check_landline2(self):
+    @api.constrains('primary_contact_landline')
+    def _check_primary_contact_landline(self):
         for record in self:
-            if record.landline2:
-                if any(char.isalpha() and char != '-' for char in record.landline2):
+            if record.primary_contact_landline:
+                if any(char.isalpha() and char != '-' for char in record.primary_contact_landline):
                     raise ValidationError(
                         "Only numbers are allowed in the Telephone field.")
 
@@ -399,21 +380,21 @@ class ClientProfile(models.Model):
                 if any(char.isdigit() for char in record.primary_contact_person):
                     raise ValidationError("Numbers are not allowed in Primary Contact Person field.")
 
-    mobile_number = fields.Char(string="Mobile No.", size=13)
+    primary_contact_mobile = fields.Char(string="Mobile No.", size=13)
 
-    @api.constrains('mobile_number')
-    def _validate_mobile_number(self):
+    @api.constrains('primary_contact_mobile')
+    def _validate_primary_contact_mobile(self):
         for record in self:
             pattern = r'^(?:\+63|0)\d{10}$'  # Modify the regular expression pattern according to your requirements
-            if record.mobile_number and not re.match(pattern, record.mobile_number):
+            if record.primary_contact_mobile and not re.match(pattern, record.primary_contact_mobile):
                 raise ValidationError('Invalid mobile number format!')
 
-    email_address = fields.Char(string="Email Address")
+    primary_contact_email = fields.Char(string="Email Address")
 
-    @api.constrains('email_address')
-    def _check_email_format(self):
+    @api.constrains('primary_contact_email')
+    def _check_primary_contact_email_format(self):
         for record in self:
-            if record.email_address and '.' not in record.email_address:
+            if record.primary_contact_email and '.' not in record.primary_contact_email:
                 raise ValidationError("Invalid email address")
 
     principal_accounting_officer = fields.Char(string="Principal Accounting Officer")
@@ -426,48 +407,48 @@ class ClientProfile(models.Model):
                 if any(char.isdigit() for char in record.principal_accounting_officer):
                     raise ValidationError("Numbers are not allowed in Principal Accounting field.")
 
-    landline3 = fields.Char(string="Telephone", help="This field includes a hyphen", size=16)
+    principal_accounting_landline = fields.Char(string="Telephone", size=16)
 
-    @api.onchange('landline3')
-    def onchange_landline3(self):
+    @api.onchange('principal_accounting_landline')
+    def onchange_principal_accounting_landline(self):
         for record in self:
-            if record.landline3 and len(record.landline3) == 13:
+            if record.principal_accounting_landline and len(record.principal_accounting_landline) == 13:
                 formatted_number = '-'.join([
-                    record.landline3[:2],
-                    record.landline3[2:6],
-                    record.landline3[6:10],
-                    record.landline3[10:]
+                    record.principal_accounting_landline[:2],
+                    record.principal_accounting_landline[2:6],
+                    record.principal_accounting_landline[6:10],
+                    record.principal_accounting_landline[10:]
                 ])
-                record.landline3 = formatted_number
+                record.principal_accounting_landline = formatted_number
 
-    @api.constrains('landline3')
-    def _check_landline3(self):
+    @api.constrains('principal_accounting_landline')
+    def _check_principal_accounting_landline(self):
         for record in self:
-            if record.landline3:
-                if any(char.isalpha() and char != '-' for char in record.landline3):
+            if record.principal_accounting_landline:
+                if any(char.isalpha() and char != '-' for char in record.principal_accounting_landline):
                     raise ValidationError(
                         "Only numbers are allowed in the Telephone field")
 
-    mobile_number2 = fields.Char(string="Mobile No.", size=13)
+    principal_accounting_mobile = fields.Char(string="Mobile No.", size=13)
 
-    @api.constrains('mobile_number2')
-    def _validate_mobile_number2(self):
+    @api.constrains('principal_accounting_mobile')
+    def _validate_principal_accounting_mobile(self):
         for record in self:
             pattern = r'^(?:\+63|0)\d{10}$'  # Modify the regular expression pattern according to your requirements
-            if record.mobile_number2 and not re.match(pattern, record.mobile_number2):
+            if record.principal_accounting_mobile and not re.match(pattern, record.principal_accounting_mobile):
                 raise ValidationError('Invalid mobile number format!')
 
-    email_address2 = fields.Char(string="Email Address")
+    principal_accounting_email = fields.Char(string="Email Address")
 
-    @api.constrains('email_address2')
-    def _check_email2_format(self):
+    @api.constrains('principal_accounting_email')
+    def _check_principal_accounting_email_format(self):
         for record in self:
-            if record.email_address2 and '.' not in record.email_address2:
+            if record.principal_accounting_email and '.' not in record.principal_accounting_email:
                 raise ValidationError("Invalid email address")
 
     corporate_ids = fields.One2many(comodel_name='corporate.officer', inverse_name='client_profile_id',
                                     string="Corporate Officers")
-    vat = fields.Char(string="Tax ID No.", size=11)
+    vat = fields.Char(string="Tin No.", size=11, required=True)
 
     @api.onchange('vat')
     def onchange_vat(self):
@@ -483,16 +464,21 @@ class ClientProfile(models.Model):
                     raise ValidationError(
                         "Only numbers are allowed in the TAX ID field")
 
-    rdo_code = fields.Char(string="RDO Code", size=3)
+    rdo_code = fields.Char(string="RDO Code", size=4, required=True)
 
-    @api.constrains('rdo_code')
-    def _validate_rdo_code(self):
-        for record in self:
-            pattern = r'^\d{3}$'  # Modify the regular expression pattern according to your requirements
-            if record.rdo_code and not re.match(pattern, record.rdo_code):
-                raise ValidationError('Invalid RDO Code!')
+    @api.onchange('rdo_code')
+    def caps_rdo_code(self):
+        if self.rdo_code:
+            self.rdo_code = str(self.rdo_code).upper()
 
-    registration_date = fields.Date('Date')
+    # @api.constrains('rdo_code')
+    # def _validate_rdo_code(self):
+    #     for record in self:
+    #         pattern = r'^\d{3}$'  # Modify the regular expression pattern according to your requirements
+    #         if record.rdo_code and not re.match(pattern, record.rdo_code):
+    #             raise ValidationError('Invalid RDO Code!')
+
+    registration_date = fields.Date(string="Registration Date", required=True)
 
     @api.onchange('registration_date')
     def _check_future_registration_date(self):
@@ -508,19 +494,20 @@ class ClientProfile(models.Model):
     withholding_tax_final = fields.Boolean(string="Withholding Tax - Final")
     registration_fee = fields.Boolean(string="Registration Fee")
     other_percentage_tax = fields.Boolean(string="Other Percentage Tax")
-    other_percentage_tax1 = fields.Char()
+    other_percentage_tax_text = fields.Char()
     taxpayer_type = fields.Selection([
         ('regular', 'Regular'), ('top_5k_individual', 'Top 5k Individual'), (
             'top_20k_corporate', 'Top 20k Corporate'), ('medium_taxpayer', 'Medium Taxpayer'), (
-            'large_taxpayer', 'Large Taxpayer')], string="Taxpayer Type")
+            'large_taxpayer', 'Large Taxpayer')], string="Taxpayer Type", required=True)
     invoice_tax = fields.Selection([
         ('bound_padded', 'Bound (Padded)'), ('computer_aid_loose_leaf', 'Computer-aided (Loose-leaf)'), (
-            'cas_generated', 'CAS-Generated')], string="Invoice Type")
-    filing_payment = fields.Selection([('ebir_manual', 'eBIR (Manual)'), ('efps', 'EFPS')], string="Filling & Payment")
+            'cas_generated', 'CAS-Generated')], string="Invoice Type", required=True)
+    filing_payment = fields.Selection([('ebir_manual', 'eBIR (Manual)'), ('efps', 'EFPS')], string="Filling & Payment",
+                                      required=True)
     books_of_account = fields.Selection(
         [('manual', 'Manual'), ('computer_aid_loose_leaf', 'Computer-aided (Loose-leaf)'),
-         ('cas_generated', 'CAS-Generated')], string="Books of Accounts")
-    psic_psoc = fields.Char(string="PSIC/PSOC")
+         ('cas_generated', 'CAS-Generated')], string="Books of Accounts", required=True)
+    psic_psoc = fields.Char(string="PSIC/PSOC", size=10, required=True)
 
     @api.onchange('psic_psoc')
     def onchange_psic_psoc(self):
@@ -540,7 +527,7 @@ class ClientProfile(models.Model):
                     raise ValidationError(
                         "Only numbers are allowed in the PSIC/PSOC field")
 
-    ll_cas_permit_no = fields.Char(string="LL/CAS Permit No")
+    ll_cas_permit_no = fields.Char(string="LL/CAS Permit No", size=15, required=True)
 
     @api.constrains('ll_cas_permit_no')
     def _check_ll_cas_permit_no(self):
@@ -550,9 +537,15 @@ class ClientProfile(models.Model):
                     raise ValidationError(
                         "Only numbers are allowed in the LL/CAS Permit No field")
 
-    ask = fields.Selection([('yes', 'Yes'), ('no', 'No')], default="no")
-    registration_number = fields.Char(string="Registration No", size=13)
-    registration_date_sec = fields.Date('Date')
+    pos_crm_spm_yes_no = fields.Selection([('yes', 'Yes'), ('no', 'No')], default="no")
+    registration_number = fields.Char(string="Registration No", size=13, required=True)
+
+    @api.onchange('registration_number')
+    def caps_registration_number(self):
+        if self.registration_number:
+            self.registration_number = str(self.registration_number).upper()
+
+    registration_date_sec = fields.Date("Registration Date", required=True)
 
     @api.onchange('registration_date_sec')
     def _check_future_registration_date_sec(self):
@@ -560,17 +553,17 @@ class ClientProfile(models.Model):
         if self.registration_date_sec and self.registration_date_sec > today:
             raise ValidationError("Future dates are not allowed.")
 
-    trade_name = fields.Char(string="Trade Name")
+    trade_name = fields.Char(string="Trade Name", required=True)
 
     @api.onchange('trade_name')
     def caps_trade_name(self):
         if self.trade_name:
             self.trade_name = str(self.trade_name).upper()
 
-    date_per_law = fields.Char(string="Date per By-Laws")
+    date_per_law = fields.Char(string="Date per By-Laws", required=True)
     actual_date_meeting = fields.Date('date')
-    ask_1 = fields.Selection([('yes', 'Yes'), ('no', 'No')], default="no")
-    ask_2 = fields.Text(string="If Yes what type of security is the Company permit to sell?")
+    sec_yes_no = fields.Selection([('yes', 'Yes'), ('no', 'No')], default="no")
+    company_permit_yes = fields.Text(string="If Yes what type of security is the Company permit to sell?")
     capitalization_ids = fields.One2many(comodel_name='capitalization.share', inverse_name='capitalization_id',
                                          string="Class of Shares")
     capital_sole_proprietor_ids = fields.One2many(comodel_name='capital.sole.proprietor',
@@ -595,7 +588,7 @@ class ClientProfile(models.Model):
     capital_representative_office_ids = fields.One2many(comodel_name='capital.representative.office',
                                                         inverse_name='capital_representative_office_id',
                                                         string="Capital Representative Office")
-    ask_3 = fields.Selection([('yes', 'Yes'), ('no', 'No')], default="no")
+    regulatory_yes_no = fields.Selection([('yes', 'Yes'), ('no', 'No')], default="no")
     bureau_of_custom = fields.Boolean(string="Bureau of Customs")
     bangko_sentral_pilipinas = fields.Boolean(string="Bangko Sentral ng Pilipinas")
     professional_regulation_commission = fields.Boolean(string="Professional Regulation Commission")
@@ -609,10 +602,11 @@ class ClientProfile(models.Model):
     philippine_amusement_gaming_corporation = fields.Boolean(string="Philippine Amusement and Gaming Corporation")
     land_transportation_franchising_regulatory_board = fields.Boolean(
         string="Land Transportation Franchising and Regulatory Board")
-    attachment = fields.Many2many('ir.attachment', 'attachment_rel', 'pro_id', 'attach_id', string='Attachments', )
+    regulatory_attachment = fields.Many2many('ir.attachment', 'attachment_rel', 'pro_id', 'attach_id',
+                                             string='Attachments', )
     attachment_fname = fields.Char(string="Attachment Filename")
-    others_ri = fields.Boolean(string="Others")
-    others_reg = fields.Char(string="Others")
+    others_regulatory = fields.Boolean(string="Others")
+    others_regulatory_text = fields.Char(string="Others")
     sss = fields.Char(string="SSS ER No", size=15)
 
     @api.onchange('sss')
@@ -687,6 +681,7 @@ class ClientProfile(models.Model):
                                 string="Payment")
     escalation_ids = fields.One2many(comodel_name='escalation.contact', inverse_name='escalation_id',
                                      string="Escalation Point")
+
     # # client_records
     # documents_count = fields.Integer(compute="action_attach_documents")
     #

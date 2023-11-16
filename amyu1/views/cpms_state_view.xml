@@ -10,9 +10,6 @@
                     <field name="name"/>
                     <field name="id"/>
                     <field name="image_101"/>
-                    <kanban>
-                        <field name="state_sequence" invisible="1"/>
-                    </kanban>
                     <templates>
                         <t t-name="kanban-box">
                             <!--                            <div t-attf-class="oe_kanban_global_click">-->

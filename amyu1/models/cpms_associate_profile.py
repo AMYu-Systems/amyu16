@@ -6,7 +6,7 @@ class AssociateProfile(models.Model):
     _description = "Associate Profile"
     _rec_name = 'team_id'
 
-    user_id = fields.Many2one(string="Associate", comodel_name='res.users', default=lambda self: self.env.user,
+    user_id = fields.Many2one(string="User", comodel_name='res.users', default=lambda self: self.env.user,
                               readonly=True)
     supervisor_id = fields.Many2one(string="Supervisor", comodel_name='res.users')
     manager_id = fields.Many2one(string="Manager", comodel_name='res.users')
