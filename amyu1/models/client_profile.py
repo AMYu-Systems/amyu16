@@ -252,17 +252,15 @@ class ClientProfile(models.Model):
             if record.registered_zip and not re.match(pattern, record.registered_zip):
                 raise ValidationError('Invalid Zip Code!')
 
-    registered_landline = fields.Char(string="Telephone", size=16)
+    registered_landline = fields.Char(string="Registered Phone", size=9)
 
     @api.onchange('registered_landline')
     def onchange_registered_landline(self):
         for record in self:
-            if record.registered_landline and len(record.registered_landline) == 13:
+            if record.registered_landline and len(record.registered_landline) == 8:
                 formatted_number = '-'.join([
-                    record.registered_landline[:2],
-                    record.registered_landline[2:6],
-                    record.registered_landline[6:10],
-                    record.registered_landline[10:]
+                    record.registered_landline[:4],
+                    record.registered_landline[4:8]
                 ])
                 record.registered_landline = formatted_number
 
@@ -274,17 +272,15 @@ class ClientProfile(models.Model):
                     raise ValidationError(
                         "Only numbers are allowed in the Telephone Number.")
 
-    facsimile_no = fields.Char(string="Facsimile", size=16)
+    facsimile_no = fields.Char(string="Facsimile", size=9)
 
     @api.onchange('facsimile_no')
     def onchange_facsimile_no(self):
         for record in self:
-            if record.facsimile_no and len(record.facsimile_no) == 13:
+            if record.facsimile_no and len(record.facsimile_no) == 8:
                 formatted_number = '-'.join([
-                    record.facsimile_no[:2],
-                    record.facsimile_no[2:6],
-                    record.facsimile_no[6:10],
-                    record.facsimile_no[10:]
+                    record.facsimile_no[:4],
+                    record.facsimile_no[4:8]
                 ])
                 record.facsimile_no = formatted_number
 
@@ -348,17 +344,15 @@ class ClientProfile(models.Model):
             if record.office_admin_zip and not re.match(pattern, record.office_admin_zip):
                 raise ValidationError('Invalid Zip Code!')
 
-    primary_contact_landline = fields.Char(string="Telephone", size=16)
+    primary_contact_landline = fields.Char(string="Primary Contact Phone", size=9)
 
     @api.onchange('primary_contact_landline')
     def onchange_primary_contact_landline(self):
         for record in self:
-            if record.primary_contact_landline and len(record.primary_contact_landline) == 13:
+            if record.primary_contact_landline and len(record.primary_contact_landline) == 8:
                 formatted_number = '-'.join([
-                    record.primary_contact_landline[:2],
-                    record.primary_contact_landline[2:6],
-                    record.primary_contact_landline[6:10],
-                    record.primary_contact_landline[10:]
+                    record.primary_contact_landline[:4],
+                    record.primary_contact_landline[4:8]
                 ])
                 record.primary_contact_landline = formatted_number
 
@@ -380,7 +374,7 @@ class ClientProfile(models.Model):
                 if any(char.isdigit() for char in record.primary_contact_person):
                     raise ValidationError("Numbers are not allowed in Primary Contact Person field.")
 
-    primary_contact_mobile = fields.Char(string="Mobile No.", size=13)
+    primary_contact_mobile = fields.Char(string="Primary Contact Mobile", size=13)
 
     @api.constrains('primary_contact_mobile')
     def _validate_primary_contact_mobile(self):
@@ -389,7 +383,7 @@ class ClientProfile(models.Model):
             if record.primary_contact_mobile and not re.match(pattern, record.primary_contact_mobile):
                 raise ValidationError('Invalid mobile number format!')
 
-    primary_contact_email = fields.Char(string="Email Address")
+    primary_contact_email = fields.Char(string="Primary Contact Email")
 
     @api.constrains('primary_contact_email')
     def _check_primary_contact_email_format(self):
@@ -407,17 +401,15 @@ class ClientProfile(models.Model):
                 if any(char.isdigit() for char in record.principal_accounting_officer):
                     raise ValidationError("Numbers are not allowed in Principal Accounting field.")
 
-    principal_accounting_landline = fields.Char(string="Telephone", size=16)
+    principal_accounting_landline = fields.Char(string="Principal Accounting Phone", size=9)
 
     @api.onchange('principal_accounting_landline')
     def onchange_principal_accounting_landline(self):
         for record in self:
-            if record.principal_accounting_landline and len(record.principal_accounting_landline) == 13:
+            if record.principal_accounting_landline and len(record.principal_accounting_landline) == 8:
                 formatted_number = '-'.join([
-                    record.principal_accounting_landline[:2],
-                    record.principal_accounting_landline[2:6],
-                    record.principal_accounting_landline[6:10],
-                    record.principal_accounting_landline[10:]
+                    record.principal_accounting_landline[:4],
+                    record.principal_accounting_landline[4:8]
                 ])
                 record.principal_accounting_landline = formatted_number
 
@@ -429,7 +421,7 @@ class ClientProfile(models.Model):
                     raise ValidationError(
                         "Only numbers are allowed in the Telephone field")
 
-    principal_accounting_mobile = fields.Char(string="Mobile No.", size=13)
+    principal_accounting_mobile = fields.Char(string="Principal Accounting Mobile", size=13)
 
     @api.constrains('principal_accounting_mobile')
     def _validate_principal_accounting_mobile(self):
@@ -438,7 +430,7 @@ class ClientProfile(models.Model):
             if record.principal_accounting_mobile and not re.match(pattern, record.principal_accounting_mobile):
                 raise ValidationError('Invalid mobile number format!')
 
-    principal_accounting_email = fields.Char(string="Email Address")
+    principal_accounting_email = fields.Char(string="Principal Accounting Email")
 
     @api.constrains('principal_accounting_email')
     def _check_principal_accounting_email_format(self):
@@ -470,13 +462,6 @@ class ClientProfile(models.Model):
     def caps_rdo_code(self):
         if self.rdo_code:
             self.rdo_code = str(self.rdo_code).upper()
-
-    # @api.constrains('rdo_code')
-    # def _validate_rdo_code(self):
-    #     for record in self:
-    #         pattern = r'^\d{3}$'  # Modify the regular expression pattern according to your requirements
-    #         if record.rdo_code and not re.match(pattern, record.rdo_code):
-    #             raise ValidationError('Invalid RDO Code!')
 
     registration_date = fields.Date(string="Registration Date", required=True)
 

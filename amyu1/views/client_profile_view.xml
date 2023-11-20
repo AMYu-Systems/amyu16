@@ -89,76 +89,82 @@
 
                         <notebook>
                             <page string="CONTACT">
-                                <group string="Registered Address">
-                                    <group>
-                                        <field name="registered_unit_no"
-                                               attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
-                                        <field name="registered_building_name"
-                                               attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
-                                        <field name="registered_street"
-                                               attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
-                                    </group>
-                                    <group>
-                                        <field name="registered_district"
-                                               attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
-                                        <field name="registered_city"
-                                               attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
-                                        <field name="registered_zip"
-                                               attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
-                                    </group>
-                                </group>
                                 <group>
                                     <group>
-                                        <field name="registered_landline"
+                                        <label for="registered_unit_no" string="Registered Address"/>
+                                        <div clas="o_address_format">
+                                            <field name="registered_unit_no" placeholder="unit/floor..."
+                                                   class="o_address_registered_unit_no"
+                                                   attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                            <field name="registered_building_name" placeholder="building name..."
+                                                   class="o_address_registered_building_name"
+                                                   attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                            <field name="registered_street" placeholder="street..."
+                                                   class="o_address_registered_street"
+                                                   attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                            <field name="registered_district" placeholder="district/barangay/village..."
+                                                   class="o_address_registered_district"
+                                                   attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                            <field name="registered_city" placeholder="city..."
+                                                   class="o_address_registered_city"
+                                                   attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                            <field name="registered_zip" placeholder="zip..."
+                                                   class="o_address_registered_zip"
+                                                   attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                        </div>
+                                    </group>
+                                    <group>
+                                        <field name="registered_landline" placeholder="input 8 digit only"
                                                attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                         <field name="facsimile_no"
                                                attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
-                                    </group>
-                                    <group>
-                                        <field name="website" widget="website"
+                                        <field name="website"
                                                attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                     </group>
                                 </group>
 
                                 <group string="Accounting or Office Admin Address">
                                     <group>
-                                        <field name="office_admin_unit_no"
-                                               attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
-                                        <field name="office_admin_building_name"
-                                               attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
-                                        <field name="office_admin_street"
-                                               attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                        <label for="office_admin_unit_no" string="Address"/>
+                                        <div clas="o_address_format">
+                                            <field name="office_admin_unit_no" placeholder="unit/floor..."
+                                                   class="o_address_office_admin_unit_no"
+                                                   attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                            <field name="office_admin_building_name" placeholder="building name..."
+                                                   class="o_address_office_admin_building_name"
+                                                   attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                            <field name="office_admin_street" placeholder="street..."
+                                                   class="o_address_registered_street"
+                                                   attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                            <field name="office_admin_district"
+                                                   placeholder="district/barangay/village..."
+                                                   class="o_address_office_admin_district"
+                                                   attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                            <field name="office_admin_city" placeholder="city..."
+                                                   class="o_address_office_admin_city"
+                                                   attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                            <field name="office_admin_zip" placeholder="zip..."
+                                                   class="o_address_office_admin_zip"
+                                                   attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                        </div>
                                     </group>
-                                    <group>
-                                        <field name="office_admin_district"
-                                               attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
-                                        <field name="office_admin_city"
-                                               attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
-                                        <field name="office_admin_zip"
-                                               attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
-                                    </group>
-                                </group>
-                                <group>
                                     <group>
                                         <field name="primary_contact_person"
                                                attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
-                                        <field name="primary_contact_landline"
+                                        <field name="primary_contact_landline" placeholder="input only 8 digit"
+                                               attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                        <field name="primary_contact_mobile"
+                                               attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                        <field name="primary_contact_email"
                                                attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                         <field name="principal_accounting_officer"
                                                attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
-                                        <field name="principal_accounting_landline"
+                                        <field name="principal_accounting_landline" placeholder="input only 8 digit"
                                                attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
-                                    </group>
-                                    <group>
-                                        <field name="primary_contact_mobile" widget="phone"
+                                        <field name="principal_accounting_mobile"
                                                attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
-                                        <field name="primary_contact_email" widget="email"
+                                        <field name="principal_accounting_email"
                                                attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
-                                        <field name="principal_accounting_mobile" widget="phone"
-                                               attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
-                                        <field name="principal_accounting_email" widget="email"
-                                               attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
-
                                     </group>
                                 </group>
                             </page>
@@ -166,7 +172,7 @@
                             <page string="BIR REGISTRATION">
                                 <group col="3">
                                     <group>
-                                        <field name="vat" placeholder="Please input 9 Digit Only"
+                                        <field name="vat" placeholder="input 9 Digit Only"
                                                attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                     </group>
                                     <group>
@@ -294,7 +300,8 @@
                                     If Yes, what type of security is the Company permitted to sell?
                                 </p>
                                 <p>
-                                    <field name="company_permit_yes" attrs="{'invisible': [('sec_yes_no', '=', 'no')]}" widget="text"
+                                    <field name="company_permit_yes" attrs="{'invisible': [('sec_yes_no', '=', 'no')]}"
+                                           widget="text"
                                            nolabel="1"/>
                                 </p>
                                 <group string="Corporate Officers"/>
@@ -322,7 +329,8 @@
                                 <p>
                                     Is the Entity regulated or accredited by or is a license holder issued by any of the
                                     following Government Regulatory Agencies?
-                                    <field name="regulatory_yes_no" style="margin-left: 20px; margin-bottom:10px; " widget="radio"
+                                    <field name="regulatory_yes_no" style="margin-left: 20px; margin-bottom:10px; "
+                                           widget="radio"
                                            options="{'horizontal':True}"
                                            attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                 </p>
@@ -383,11 +391,11 @@
                             <page name="social_security_information" string="SOCIAL SECURITY">
                                 <group col="3">
                                     <group>
-                                        <field name="sss" placeholder="Please input 13 Digit Only"
+                                        <field name="sss" placeholder="input 13 Digit Only"
                                                attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
-                                        <field name="phic" placeholder="Please input 12 Digit Only"
+                                        <field name="phic" placeholder="input 12 Digit Only"
                                                attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
-                                        <field name="hdmf" placeholder="Please input 12 Digit Only"
+                                        <field name="hdmf" placeholder="input 12 Digit Only"
                                                attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                     </group>
                                     <group>
