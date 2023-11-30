@@ -91,7 +91,7 @@
                             <page string="CONTACT">
                                 <group>
                                     <group>
-                                        <label for="registered_unit_no" string="Registered Address"/>
+                                        <label for="registered_unit_no" string="Registered Address:"/>
                                         <div clas="o_address_format">
                                             <field name="registered_unit_no" placeholder="unit/floor..."
                                                    class="o_address_registered_unit_no"
@@ -116,7 +116,7 @@
                                     <group>
                                         <field name="registered_landline" placeholder="input 8 digit only"
                                                attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
-                                        <field name="facsimile_no"
+                                        <field name="facsimile_no" placeholder="input 8 digit only"
                                                attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                         <field name="website"
                                                attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
@@ -125,7 +125,7 @@
 
                                 <group string="Accounting or Office Admin Address">
                                     <group>
-                                        <label for="office_admin_unit_no" string="Address"/>
+                                        <label for="office_admin_unit_no" string="Address:"/>
                                         <div clas="o_address_format">
                                             <field name="office_admin_unit_no" placeholder="unit/floor..."
                                                    class="o_address_office_admin_unit_no"
@@ -393,23 +393,23 @@
                                     <group>
                                         <field name="sss" placeholder="input 13 Digit Only"
                                                attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
-                                        <field name="phic" placeholder="input 12 Digit Only"
+                                        <field name="sss_filing"
                                                attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
-                                        <field name="hdmf" placeholder="input 12 Digit Only"
+                                        <field name="sss_pay"
                                                attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                     </group>
                                     <group>
-                                        <field name="sss_filing"
+                                        <field name="phic" placeholder="input 12 Digit Only"
                                                attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                         <field name="phic_filing"
                                                attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
-                                        <field name="hdmf_filing"
+                                        <field name="phic_pay"
                                                attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                     </group>
                                     <group>
-                                        <field name="sss_pay"
+                                        <field name="hdmf" placeholder="input 12 Digit Only"
                                                attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
-                                        <field name="phic_pay"
+                                        <field name="hdmf_filing"
                                                attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                         <field name="hdmf_pay"
                                                attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
@@ -429,6 +429,19 @@
                                         <field name="lead_partner_id"/>
                                         <field name="cluster_id"/>
                                         <field name="team_id" options="{'no_open': True,'no_create': True}"/>
+                                    </group>
+                                </group>
+                                <group string="Engagement Types" col="3">
+                                    <group>
+                                        <field name="tax_report_compliance" nolabel="1"  attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                        <label for="tax_report_compliance"/>
+                                    </group>
+                                    <group>
+                                        <field name="audit_fs" nolabel="1"  attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                        <label for="audit_fs"/>
+                                    </group>
+                                    <group>
+                                        <field name="other_services"  attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                     </group>
                                 </group>
                                 <group string="Escalation Matrix"/>

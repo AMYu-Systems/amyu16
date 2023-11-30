@@ -31,27 +31,27 @@ class ClientProfile(models.Model):
          ('foreign_corp', 'Branch of Foreign Corporation'),
          ('foreign_nsnp_corp', 'Branch of Foreign NSNP Corporation'),
          ('roqh_foreign_corp', 'ROHQ of Foreign Corporation'),
-         ('representative_office', 'Representative Office')], string="Organization Type", required=True)
+         ('representative_office', 'Representative Office')], string="Organization Type:", required=True, tracking=True)
     sole_proprietor_ids = fields.One2many(comodel_name='sole.proprietor', inverse_name='sole_proprietor_id',
-                                          string="Sole")
+                                          string="Sole", tracking=True)
     general_partnership_ids = fields.One2many(comodel_name='general.partnership', inverse_name='general_partnership_id',
-                                              string="General")
+                                              string="General", tracking=True)
     general_professional_partnership_ids = fields.One2many(comodel_name='general.professional.partnership',
                                                            inverse_name='general_professional_partnership_id',
-                                                           string="General Professional")
+                                                           string="General Professional", tracking=True)
     domestic_stock_ids = fields.One2many(comodel_name='domestic.stock', inverse_name='domestic_stock_id',
-                                         string="Domestic")
+                                         string="Domestic", tracking=True)
     domestic_corp_ids = fields.One2many(comodel_name='domestic.corp', inverse_name='domestic_corp_id',
-                                        string="Domestic NSNP")
+                                        string="Domestic NSNP", tracking=True)
     foreign_corp_ids = fields.One2many(comodel_name='foreign.corp', inverse_name='foreign_corp_id',
-                                       string="Foreign Corp")
+                                       string="Foreign Corp", tracking=True)
     foreign_nsnp_corp_ids = fields.One2many(comodel_name='foreign.nsnp.corp', inverse_name='foreign_nsnp_corp_id',
-                                            string="Foreign NSNP Corp")
+                                            string="Foreign NSNP Corp", tracking=True)
     roqh_foreign_corp_ids = fields.One2many(comodel_name='roqh.foreign.corp', inverse_name='roqh_foreign_corp_id',
-                                            string="ROQH Foreign Corp")
+                                            string="ROQH Foreign Corp", tracking=True)
     representative_office_ids = fields.One2many(comodel_name='representative.office',
                                                 inverse_name='representative_office_id',
-                                                string="Representative Office")
+                                                string="Representative Office", tracking=True)
     industry_class = fields.Selection(
         [('agricultural', 'Agricultural Products & Farming Operations'), ('automotive', 'Automotive & Spare Parts'),
          ('', ''), ('utilities', 'Energy, Utilities & Telecommunications'), ('financial_service', 'Financial Services'),
@@ -67,8 +67,8 @@ class ClientProfile(models.Model):
          ('consultancy', 'Professional & Consultancy Services'), ('transport', 'Public Transport Services'),
          ('real_estate', 'Real Estate Development & Construction'),
          ('stationery', 'Stationery & Paper Products'), ('logistic', 'Warehousing & Logistics')],
-        string="Industry Class")
-    nature_of_business = fields.Text(string="Nature of Activities, Brands, Product & Services")
+        string="Industry Class:", tracking=True)
+    nature_of_business = fields.Text(string="Nature of Activities, Brands, Product & Services:", tracking=True)
 
     @api.onchange('nature_of_business')
     def caps_nature_of_business(self):
@@ -78,7 +78,7 @@ class ClientProfile(models.Model):
                 if any(text.isdigit() for text in record.nature_of_business):
                     raise ValidationError("Numbers are not allowed in Nature of Activities field.")
 
-    date_of_engagement = fields.Date(string="Date of Engagement", required=True)
+    date_of_engagement = fields.Date(string="Date of Engagement:", required=True, tracking=True)
 
     @api.onchange('date_of_engagement')
     def _check_future_date(self):
@@ -86,19 +86,19 @@ class ClientProfile(models.Model):
         if self.date_of_engagement and self.date_of_engagement > today:
             raise ValidationError("Future dates are not allowed.")
 
-    client_system_generated = fields.Char(string="Client ID")
+    client_system_generated = fields.Char(string="Client ID:", tracking=True)
     state = fields.Selection([('draft', 'Draft'),
                               ('supervisor', 'Supervisor'),
                               ('manager', 'Manager'),
                               ('approved', 'Approved'),
                               ('cancel', 'Returned')], tracking=True, default='draft', string="Status")
-    user_id = fields.Many2one(string="Associate", comodel_name='res.users', default=lambda self: self.env.user,
+    user_id = fields.Many2one(string="Associate:", comodel_name='res.users', default=lambda self: self.env.user,
                               tracking=True)
-    manager_id = fields.Many2one(string="Manager", related="team_id.manager_id", readonly=True)
-    supervisor_id = fields.Many2one(string="Supervisor", related="team_id.supervisor_id", readonly=True)
-    cluster_id = fields.Many2one(string="Cluster", related="team_id.cluster_id", readonly=True)
-    lead_partner_id = fields.Many2one(string="Lead Partner", related="team_id.lead_partner_id", readonly=True)
-    team_id = fields.Many2one(string="Team", comodel_name='associate.profile', required=True)
+    manager_id = fields.Many2one(string="Manager:", related="team_id.manager_id", readonly=True)
+    supervisor_id = fields.Many2one(string="Supervisor:", related="team_id.supervisor_id", readonly=True)
+    cluster_id = fields.Many2one(string="Cluster:", related="team_id.cluster_id", readonly=True)
+    lead_partner_id = fields.Many2one(string="Lead Partner:", related="team_id.lead_partner_id", readonly=True)
+    team_id = fields.Many2one(string="Team:", comodel_name='associate.profile', required=True)
 
     def draft_action(self):
         self.state = 'draft'
@@ -208,42 +208,42 @@ class ClientProfile(models.Model):
             })
         return res
 
-    registered_unit_no = fields.Char(string="Unit/Floor")
+    registered_unit_no = fields.Char(string="Unit/Floor", tracking=True)
 
     @api.onchange('registered_unit_no')
     def caps_registered_unit_no(self):
         if self.registered_unit_no:
             self.registered_unit_no = str(self.registered_unit_no).title()
 
-    registered_building_name = fields.Char(string="Building Name")
+    registered_building_name = fields.Char(string="Building Name", tracking=True)
 
     @api.onchange('registered_building_name')
     def caps_registered_building_name(self):
         if self.registered_building_name:
             self.registered_building_name = str(self.registered_building_name).title()
 
-    registered_street = fields.Char(string="Street")
+    registered_street = fields.Char(string="Street", tracking=True)
 
     @api.onchange('registered_street')
     def caps_registered_street(self):
         if self.registered_street:
             self.registered_street = str(self.registered_street).title()
 
-    registered_district = fields.Char(string="District/Barangay/Village")
+    registered_district = fields.Char(string="District/Barangay/Village", tracking=True)
 
     @api.onchange('registered_district')
     def caps_registered_district(self):
         if self.registered_district:
             self.registered_district = str(self.registered_district).title()
 
-    registered_city = fields.Char(string="City")
+    registered_city = fields.Char(string="City", tracking=True)
 
     @api.onchange('registered_city')
     def caps_registered_city(self):
         if self.registered_city:
             self.registered_city = str(self.registered_city).title()
 
-    registered_zip = fields.Char(string="Zip Code", size=4)
+    registered_zip = fields.Char(string="Zip Code", size=4, tracking=True)
 
     @api.constrains('registered_zip')
     def _validate_registered_zip(self):
@@ -252,7 +252,7 @@ class ClientProfile(models.Model):
             if record.registered_zip and not re.match(pattern, record.registered_zip):
                 raise ValidationError('Invalid Zip Code!')
 
-    registered_landline = fields.Char(string="Registered Phone", size=9)
+    registered_landline = fields.Char(string="Registered Phone:", size=9, tracking=True)
 
     @api.onchange('registered_landline')
     def onchange_registered_landline(self):
@@ -272,7 +272,7 @@ class ClientProfile(models.Model):
                     raise ValidationError(
                         "Only numbers are allowed in the Telephone Number.")
 
-    facsimile_no = fields.Char(string="Facsimile", size=9)
+    facsimile_no = fields.Char(string="Facsimile:", size=9, tracking=True)
 
     @api.onchange('facsimile_no')
     def onchange_facsimile_no(self):
@@ -292,7 +292,7 @@ class ClientProfile(models.Model):
                     raise ValidationError(
                         "Only numbers are allowed in the Facsimile Number.")
 
-    website = fields.Char(string="Website")
+    website = fields.Char(string="Website:", tracking=True)
 
     @api.constrains('website')
     def _check_website_format(self):
@@ -300,42 +300,42 @@ class ClientProfile(models.Model):
             if record.website and '.' not in record.website:
                 raise ValidationError("Invalid Website")
 
-    office_admin_unit_no = fields.Char(string="Unit/Floor")
+    office_admin_unit_no = fields.Char(string="Unit/Floor", tracking=True)
 
     @api.onchange('office_admin_unit_no')
     def caps_office_admin_unit_no(self):
         if self.office_admin_unit_no:
             self.office_admin_unit_no = str(self.office_admin_unit_no).title()
 
-    office_admin_building_name = fields.Char(string="Building Name")
+    office_admin_building_name = fields.Char(string="Building Name", tracking=True)
 
     @api.onchange('office_admin_building_name')
     def caps_office_admin_building_name(self):
         if self.office_admin_building_name:
             self.office_admin_building_name = str(self.office_admin_building_name).title()
 
-    office_admin_street = fields.Char(string="Street")
+    office_admin_street = fields.Char(string="Street", tracking=True)
 
     @api.onchange('office_admin_street')
     def caps_office_admin_street(self):
         if self.office_admin_street:
             self.office_admin_street = str(self.office_admin_street).title()
 
-    office_admin_district = fields.Char(string="District/Barangay/Village")
+    office_admin_district = fields.Char(string="District/Barangay/Village", tracking=True)
 
     @api.onchange('office_admin_district')
     def caps_office_admin_district(self):
         if self.office_admin_district:
             self.office_admin_district = str(self.office_admin_district).title()
 
-    office_admin_city = fields.Char(string="City")
+    office_admin_city = fields.Char(string="City", tracking=True)
 
     @api.onchange('office_admin_city')
     def caps_office_admin_city(self):
         if self.office_admin_city:
             self.office_admin_city = str(self.office_admin_city).title()
 
-    office_admin_zip = fields.Char(string="Zip Code", size=4)
+    office_admin_zip = fields.Char(string="Zip Code", size=4, tracking=True)
 
     @api.constrains('office_admin_zip')
     def _validate_office_admin_zip(self):
@@ -344,7 +344,7 @@ class ClientProfile(models.Model):
             if record.office_admin_zip and not re.match(pattern, record.office_admin_zip):
                 raise ValidationError('Invalid Zip Code!')
 
-    primary_contact_landline = fields.Char(string="Primary Contact Phone", size=9)
+    primary_contact_landline = fields.Char(string="Primary Contact Phone:", size=9, tracking=True)
 
     @api.onchange('primary_contact_landline')
     def onchange_primary_contact_landline(self):
@@ -364,7 +364,7 @@ class ClientProfile(models.Model):
                     raise ValidationError(
                         "Only numbers are allowed in the Telephone field.")
 
-    primary_contact_person = fields.Char(string="Primary Contact Person")
+    primary_contact_person = fields.Char(string="Primary Contact Person:", tracking=True)
 
     @api.onchange('primary_contact_person')
     def caps_primary_contact_person(self):
@@ -374,7 +374,7 @@ class ClientProfile(models.Model):
                 if any(char.isdigit() for char in record.primary_contact_person):
                     raise ValidationError("Numbers are not allowed in Primary Contact Person field.")
 
-    primary_contact_mobile = fields.Char(string="Primary Contact Mobile", size=13)
+    primary_contact_mobile = fields.Char(string="Primary Contact Mobile:", size=13, tracking=True)
 
     @api.constrains('primary_contact_mobile')
     def _validate_primary_contact_mobile(self):
@@ -383,7 +383,7 @@ class ClientProfile(models.Model):
             if record.primary_contact_mobile and not re.match(pattern, record.primary_contact_mobile):
                 raise ValidationError('Invalid mobile number format!')
 
-    primary_contact_email = fields.Char(string="Primary Contact Email")
+    primary_contact_email = fields.Char(string="Primary Contact Email:", tracking=True)
 
     @api.constrains('primary_contact_email')
     def _check_primary_contact_email_format(self):
@@ -391,7 +391,7 @@ class ClientProfile(models.Model):
             if record.primary_contact_email and '.' not in record.primary_contact_email:
                 raise ValidationError("Invalid email address")
 
-    principal_accounting_officer = fields.Char(string="Principal Accounting Officer")
+    principal_accounting_officer = fields.Char(string="Principal Accounting Officer:", tracking=True)
 
     @api.onchange('principal_accounting_officer')
     def caps_principal_accounting_officer(self):
@@ -401,7 +401,7 @@ class ClientProfile(models.Model):
                 if any(char.isdigit() for char in record.principal_accounting_officer):
                     raise ValidationError("Numbers are not allowed in Principal Accounting field.")
 
-    principal_accounting_landline = fields.Char(string="Principal Accounting Phone", size=9)
+    principal_accounting_landline = fields.Char(string="Principal Accounting Phone:", size=9, tracking=True)
 
     @api.onchange('principal_accounting_landline')
     def onchange_principal_accounting_landline(self):
@@ -421,7 +421,7 @@ class ClientProfile(models.Model):
                     raise ValidationError(
                         "Only numbers are allowed in the Telephone field")
 
-    principal_accounting_mobile = fields.Char(string="Principal Accounting Mobile", size=13)
+    principal_accounting_mobile = fields.Char(string="Principal Accounting Mobile:", size=13, tracking=True)
 
     @api.constrains('principal_accounting_mobile')
     def _validate_principal_accounting_mobile(self):
@@ -430,7 +430,7 @@ class ClientProfile(models.Model):
             if record.principal_accounting_mobile and not re.match(pattern, record.principal_accounting_mobile):
                 raise ValidationError('Invalid mobile number format!')
 
-    principal_accounting_email = fields.Char(string="Principal Accounting Email")
+    principal_accounting_email = fields.Char(string="Principal Accounting Email:", tracking=True)
 
     @api.constrains('principal_accounting_email')
     def _check_principal_accounting_email_format(self):
@@ -439,8 +439,8 @@ class ClientProfile(models.Model):
                 raise ValidationError("Invalid email address")
 
     corporate_ids = fields.One2many(comodel_name='corporate.officer', inverse_name='client_profile_id',
-                                    string="Corporate Officers")
-    vat = fields.Char(string="Tin No.", size=11, required=True)
+                                    string="Corporate Officers", tracking=True)
+    vat = fields.Char(string="Tin No:", size=11, required=True, tracking=True)
 
     @api.onchange('vat')
     def onchange_vat(self):
@@ -456,14 +456,14 @@ class ClientProfile(models.Model):
                     raise ValidationError(
                         "Only numbers are allowed in the TAX ID field")
 
-    rdo_code = fields.Char(string="RDO Code", size=4, required=True)
+    rdo_code = fields.Char(string="RDO Code:", size=4, required=True, tracking=True)
 
     @api.onchange('rdo_code')
     def caps_rdo_code(self):
         if self.rdo_code:
             self.rdo_code = str(self.rdo_code).upper()
 
-    registration_date = fields.Date(string="Registration Date", required=True)
+    registration_date = fields.Date(string="Registration Date:", required=True, tracking=True)
 
     @api.onchange('registration_date')
     def _check_future_registration_date(self):
@@ -471,28 +471,28 @@ class ClientProfile(models.Model):
         if self.registration_date and self.registration_date > today:
             raise ValidationError("Future dates are not allowed.")
 
-    income_tax = fields.Boolean(string="Income Tax")
-    excise_tax = fields.Boolean(string="Excise Tax")
-    value_added_tax = fields.Boolean(string="Value-added Tax")
-    withholding_tax_expanded = fields.Boolean(string="Withholding Tax - Expanded")
-    withholding_tax_compensation = fields.Boolean(string="Withholding Tax - Compensation")
-    withholding_tax_final = fields.Boolean(string="Withholding Tax - Final")
-    registration_fee = fields.Boolean(string="Registration Fee")
-    other_percentage_tax = fields.Boolean(string="Other Percentage Tax")
-    other_percentage_tax_text = fields.Char()
+    income_tax = fields.Boolean(string="Income Tax", tracking=True)
+    excise_tax = fields.Boolean(string="Excise Tax", tracking=True)
+    value_added_tax = fields.Boolean(string="Value-added Tax", tracking=True)
+    withholding_tax_expanded = fields.Boolean(string="Withholding Tax - Expanded", tracking=True)
+    withholding_tax_compensation = fields.Boolean(string="Withholding Tax - Compensation", tracking=True)
+    withholding_tax_final = fields.Boolean(string="Withholding Tax - Final", tracking=True)
+    registration_fee = fields.Boolean(string="Registration Fee", tracking=True)
+    other_percentage_tax = fields.Boolean(string="Other Percentage Tax", tracking=True)
+    other_percentage_tax_text = fields.Char(tracking=True)
     taxpayer_type = fields.Selection([
         ('regular', 'Regular'), ('top_5k_individual', 'Top 5k Individual'), (
             'top_20k_corporate', 'Top 20k Corporate'), ('medium_taxpayer', 'Medium Taxpayer'), (
-            'large_taxpayer', 'Large Taxpayer')], string="Taxpayer Type", required=True)
+            'large_taxpayer', 'Large Taxpayer')], string="Taxpayer Type:", required=True, tracking=True)
     invoice_tax = fields.Selection([
         ('bound_padded', 'Bound (Padded)'), ('computer_aid_loose_leaf', 'Computer-aided (Loose-leaf)'), (
-            'cas_generated', 'CAS-Generated')], string="Invoice Type", required=True)
-    filing_payment = fields.Selection([('ebir_manual', 'eBIR (Manual)'), ('efps', 'EFPS')], string="Filling & Payment",
-                                      required=True)
+            'cas_generated', 'CAS-Generated')], string="Invoice Type:", required=True, tracking=True)
+    filing_payment = fields.Selection([('ebir_manual', 'eBIR (Manual)'), ('efps', 'EFPS')], string="Filling & Payment:",
+                                      required=True, tracking=True)
     books_of_account = fields.Selection(
         [('manual', 'Manual'), ('computer_aid_loose_leaf', 'Computer-aided (Loose-leaf)'),
-         ('cas_generated', 'CAS-Generated')], string="Books of Accounts", required=True)
-    psic_psoc = fields.Char(string="PSIC/PSOC", size=10, required=True)
+         ('cas_generated', 'CAS-Generated')], string="Books of Accounts:", required=True, tracking=True)
+    psic_psoc = fields.Char(string="PSIC/PSOC:", size=10, required=True, tracking=True)
 
     @api.onchange('psic_psoc')
     def onchange_psic_psoc(self):
@@ -512,7 +512,7 @@ class ClientProfile(models.Model):
                     raise ValidationError(
                         "Only numbers are allowed in the PSIC/PSOC field")
 
-    ll_cas_permit_no = fields.Char(string="LL/CAS Permit No", size=15, required=True)
+    ll_cas_permit_no = fields.Char(string="LL/CAS Permit No:", size=15, required=True, tracking=True)
 
     @api.constrains('ll_cas_permit_no')
     def _check_ll_cas_permit_no(self):
@@ -522,15 +522,15 @@ class ClientProfile(models.Model):
                     raise ValidationError(
                         "Only numbers are allowed in the LL/CAS Permit No field")
 
-    pos_crm_spm_yes_no = fields.Selection([('yes', 'Yes'), ('no', 'No')], default="no")
-    registration_number = fields.Char(string="Registration No", size=13, required=True)
+    pos_crm_spm_yes_no = fields.Selection([('yes', 'Yes'), ('no', 'No')], default="no", tracking=True)
+    registration_number = fields.Char(string="Registration No:", size=13, required=True, tracking=True)
 
     @api.onchange('registration_number')
     def caps_registration_number(self):
         if self.registration_number:
             self.registration_number = str(self.registration_number).upper()
 
-    registration_date_sec = fields.Date("Registration Date", required=True)
+    registration_date_sec = fields.Date("Registration Date:", required=True, tracking=True)
 
     @api.onchange('registration_date_sec')
     def _check_future_registration_date_sec(self):
@@ -538,61 +538,65 @@ class ClientProfile(models.Model):
         if self.registration_date_sec and self.registration_date_sec > today:
             raise ValidationError("Future dates are not allowed.")
 
-    trade_name = fields.Char(string="Trade Name", required=True)
+    trade_name = fields.Char(string="Trade Name:", required=True, tracking=True)
 
     @api.onchange('trade_name')
     def caps_trade_name(self):
         if self.trade_name:
             self.trade_name = str(self.trade_name).upper()
 
-    date_per_law = fields.Char(string="Date per By-Laws", required=True)
-    actual_date_meeting = fields.Date('date')
-    sec_yes_no = fields.Selection([('yes', 'Yes'), ('no', 'No')], default="no")
-    company_permit_yes = fields.Text(string="If Yes what type of security is the Company permit to sell?")
+    date_per_law = fields.Char(string="Date per By-Laws:", required=True, tracking=True)
+    actual_date_meeting = fields.Date('date', tracking=True)
+    sec_yes_no = fields.Selection([('yes', 'Yes'), ('no', 'No')], default="no", tracking=True)
+    company_permit_yes = fields.Text(string="If Yes what type of security is the Company permit to sell?",
+                                     tracking=True)
     capitalization_ids = fields.One2many(comodel_name='capitalization.share', inverse_name='capitalization_id',
-                                         string="Class of Shares")
+                                         string="Class of Shares", tracking=True)
     capital_sole_proprietor_ids = fields.One2many(comodel_name='capital.sole.proprietor',
                                                   inverse_name='capital_sole_proprietor_id',
-                                                  string="Capital Sole Proprietor")
+                                                  string="Capital Sole Proprietor", tracking=True)
     capital_general_partner_ids = fields.One2many(comodel_name='capital.general.partnership',
                                                   inverse_name='capital_general_partner_id',
-                                                  string="Capital General Partnership")
+                                                  string="Capital General Partnership", tracking=True)
     capital_general_professional_partner_ids = fields.One2many(comodel_name='capital.general.professional.partnership',
                                                                inverse_name='capital_general_professional_partner_id',
-                                                               string="Capital General Partnership")
+                                                               string="Capital General Partnership", tracking=True)
     capital_domestic_ids = fields.One2many(comodel_name='capital.domestic.nsnp', inverse_name='capital_domestic_id',
-                                           string="Capital Domestic NSNP")
+                                           string="Capital Domestic NSNP", tracking=True)
     capital_foreign_corp_ids = fields.One2many(comodel_name='capital.foreign.corp',
                                                inverse_name='capital_foreign_corp_id',
-                                               string="Capital Foreign Corporation")
+                                               string="Capital Foreign Corporation", tracking=True)
     capital_foreign_nsnp_ids = fields.One2many(comodel_name='capital.foreign.nsnp.corp',
-                                               inverse_name='capital_foreign_nsnp_id', string="Capital Foreign NSNP")
+                                               inverse_name='capital_foreign_nsnp_id', string="Capital Foreign NSNP",
+                                               tracking=True)
     capital_roqh_foreign_corp_ids = fields.One2many(comodel_name='capital.roqh.foreign.corp',
                                                     inverse_name='capital_roqh_foreign_corp_id',
-                                                    string="Capital ROQH Foreign")
+                                                    string="Capital ROQH Foreign", tracking=True)
     capital_representative_office_ids = fields.One2many(comodel_name='capital.representative.office',
                                                         inverse_name='capital_representative_office_id',
-                                                        string="Capital Representative Office")
-    regulatory_yes_no = fields.Selection([('yes', 'Yes'), ('no', 'No')], default="no")
-    bureau_of_custom = fields.Boolean(string="Bureau of Customs")
-    bangko_sentral_pilipinas = fields.Boolean(string="Bangko Sentral ng Pilipinas")
-    professional_regulation_commission = fields.Boolean(string="Professional Regulation Commission")
-    philippines_council_ngo_certification = fields.Boolean(string="Philippine Council for NGO Certification")
-    cooperative_development_authority = fields.Boolean(string="Cooperative Development Authority")
-    insurance_commission = fields.Boolean(string="Insurance Commission")
-    integrated_bar_philippines = fields.Boolean(string="Integrated Bar of the Philippines")
-    philippines_stock_exchange = fields.Boolean(string="Philippine Stock Exchange")
+                                                        string="Capital Representative Office", tracking=True)
+    regulatory_yes_no = fields.Selection([('yes', 'Yes'), ('no', 'No')], default="no", tracking=True)
+    bureau_of_custom = fields.Boolean(string="Bureau of Customs", tracking=True)
+    bangko_sentral_pilipinas = fields.Boolean(string="Bangko Sentral ng Pilipinas", tracking=True)
+    professional_regulation_commission = fields.Boolean(string="Professional Regulation Commission", tracking=True)
+    philippines_council_ngo_certification = fields.Boolean(string="Philippine Council for NGO Certification",
+                                                           tracking=True)
+    cooperative_development_authority = fields.Boolean(string="Cooperative Development Authority", tracking=True)
+    insurance_commission = fields.Boolean(string="Insurance Commission", tracking=True)
+    integrated_bar_philippines = fields.Boolean(string="Integrated Bar of the Philippines", tracking=True)
+    philippines_stock_exchange = fields.Boolean(string="Philippine Stock Exchange", tracking=True)
     construction_industry_authority_philippines = fields.Boolean(
-        string="Construction Industry authority of the Philippines (PCAB)")
-    philippine_amusement_gaming_corporation = fields.Boolean(string="Philippine Amusement and Gaming Corporation")
+        string="Construction Industry authority of the Philippines (PCAB)", tracking=True)
+    philippine_amusement_gaming_corporation = fields.Boolean(string="Philippine Amusement and Gaming Corporation",
+                                                             tracking=True)
     land_transportation_franchising_regulatory_board = fields.Boolean(
-        string="Land Transportation Franchising and Regulatory Board")
+        string="Land Transportation Franchising and Regulatory Board", tracking=True)
     regulatory_attachment = fields.Many2many('ir.attachment', 'attachment_rel', 'pro_id', 'attach_id',
-                                             string='Attachments', )
+                                             string='Attachments', tracking=True)
     attachment_fname = fields.Char(string="Attachment Filename")
-    others_regulatory = fields.Boolean(string="Others")
-    others_regulatory_text = fields.Char(string="Others")
-    sss = fields.Char(string="SSS ER No", size=15)
+    others_regulatory = fields.Boolean(string="Others", tracking=True)
+    others_regulatory_text = fields.Char(string="Others", tracking=True)
+    sss = fields.Char(string="SSS ER No:", size=15, tracking=True)
 
     @api.onchange('sss')
     def onchange_sss(self):
@@ -613,7 +617,7 @@ class ClientProfile(models.Model):
                     raise ValidationError(
                         "Only numbers are allowed in the SSS field.")
 
-    phic = fields.Char(string="PHIC ER No", size=14)
+    phic = fields.Char(string="PHIC ER No:", size=14, tracking=True)
 
     @api.onchange('phic')
     def onchange_phic(self):
@@ -634,7 +638,7 @@ class ClientProfile(models.Model):
                     raise ValidationError(
                         "Only numbers are allowed in the PHIC field.")
 
-    hdmf = fields.Char(string="HDMF ER No", size=14)
+    hdmf = fields.Char(string="HDMF ER No:", size=14, tracking=True)
 
     @api.onchange('hdmf')
     def onchange_hdmf(self):
@@ -655,17 +659,25 @@ class ClientProfile(models.Model):
                     raise ValidationError(
                         "Only numbers are allowed in the HDMF field.")
 
-    sss_filing = fields.Selection([('manual', 'Manual'), ('online', 'Online (AMS-CCL)')], string="Filing")
-    phic_filing = fields.Selection([('manual', 'Manual'), ('online', 'Online (ERPS)')], string="Filing")
-    hdmf_filing = fields.Selection([('manual', 'Manual'), ('online', 'Online (eSRS)')], string="Filing")
+    sss_filing = fields.Selection([('manual', 'Manual'), ('online', 'Online (AMS-CCL)')], string="SSS Filing:",
+                                  tracking=True)
+    phic_filing = fields.Selection([('manual', 'Manual'), ('online', 'Online (ERPS)')], string="PHIC Filing:",
+                                   tracking=True)
+    hdmf_filing = fields.Selection([('manual', 'Manual'), ('online', 'Online (eSRS)')], string=" HDMF Filing:",
+                                   tracking=True)
     sss_pay = fields.Selection([('cash', 'Cash'), ('check', 'Check'), ('online_banking', 'Online Banking (EPS)')],
-                               string="Payment")
+                               string="SSS Payment:", tracking=True)
     phic_pay = fields.Selection([('cash', 'Cash'), ('check', 'Check'), ('online_banking', 'Online Banking (EPS)')],
-                                string="Payment")
+                                string="PHIC Payment:", tracking=True)
     hdmf_pay = fields.Selection([('cash', 'Cash'), ('check', 'Check'), ('online_banking', 'Online Banking (EPS)')],
-                                string="Payment")
+                                string="HDMF Payment:", tracking=True)
     escalation_ids = fields.One2many(comodel_name='escalation.contact', inverse_name='escalation_id',
-                                     string="Escalation Point")
+                                     string="Escalation Point", tracking=True)
+    tax_report_compliance = fields.Boolean(string="Tax Reporting and Compliance Service")
+    audit_fs = fields.Boolean(string="Audit of Financial Statements Service")
+    other_services = fields.Selection([('general_information_sheet', 'General Information Sheet'),
+                           ('renewal_of_business', 'Renewal of Business Permits'),
+                           ('renewal_books', 'Renewal of Books of Accounts')], string="Other Services:")
 
     # # client_records
     # documents_count = fields.Integer(compute="action_attach_documents")

@@ -7,7 +7,7 @@ class EscalationContact(models.Model):
     _name = "escalation.contact"
     _description = "Escalation Point of Contact"
 
-    name = fields.Char(string="Point of Contact", required=True)
+    name = fields.Char(string="Point of Contact")
 
     @api.onchange('name')
     def caps_name(self):
@@ -24,7 +24,7 @@ class EscalationContact(models.Model):
          ('lvl2', 'unresolved issue after 2 days; 2 days delay in submission of documents'),
          ('lvl3', 'unresolved issue after 3 days; 3 days delay in submission of documents')],
         string="Escalation Timeframe")
-    contact_number = fields.Char(string="Contact Number", size=13, required=True)
+    contact_number = fields.Char(string="Contact Number", size=13)
 
     @api.constrains('contact_number')
     def _validate_contact_number(self):
@@ -33,7 +33,7 @@ class EscalationContact(models.Model):
             if record.contact_number and not re.match(pattern, record.contact_number):
                 raise ValidationError('Invalid Escalation Matrix Contact Number format!')
 
-    email = fields.Char(string="Email Address", required=True)
+    email = fields.Char(string="Email Address")
 
     @api.constrains('email')
     def _check_email_format(self):

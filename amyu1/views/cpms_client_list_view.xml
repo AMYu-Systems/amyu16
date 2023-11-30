@@ -7,9 +7,12 @@
             <field name="arch" type="xml">
                 <tree create="False" export_xlsx="0">
                     <field name="name"/>
+                    <field name="user_id" string="Associate in Charge"/>
                     <field name="vat"/>
                     <field name="rdo_code"/>
-                    <field name="registration_number"/>
+                    <field name="registration_number" string="SEC Registration No"/>
+                    <field name="primary_contact_person" string="Contact Person"/>
+                    <field name="primary_contact_email" string="Email Address"/>
                     <field name="supervisor_id" groups="amyu1.associate_group"/>
                     <field name="supervisor_id" groups="amyu1.manager_group"/>
                     <field name="supervisor_id" groups="amyu1.cluster_group"/>

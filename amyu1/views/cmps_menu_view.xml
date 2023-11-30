@@ -32,5 +32,13 @@
                   name="Report"
                   action="master_list_action"
                   parent="menu_dashboard_root"/>
+        <menuitem id="menu_supervisor_root"
+                  name="Configuration"
+                  sequence="3"
+                  parent="cpms_root_menu"/>
+        <menuitem id="menu_supervisor_list"
+                  name="Related Users"
+                  action="supervisor_profile_action"
+                  parent="menu_supervisor_root"/>
     </data>
 </odoo>

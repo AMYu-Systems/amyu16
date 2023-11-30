@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import fields, models, api
 
 
 class AssociateProfile(models.Model):
@@ -17,3 +17,4 @@ class AssociateProfile(models.Model):
                                          inverse_name="team_id")
     job_work_id = fields.Many2one(comodel_name='job.title', string="Job Position")
     lead_partner_id = fields.Many2one(string="Lead Partner", comodel_name='res.users')
+

@@ -879,11 +879,11 @@
                     <td>
                         <span t-field="doc.sss"/>
                     </td>
-                    <td>Filing:</td>
+                    <td>SSS Filing:</td>
                     <td>
                         <span t-field="doc.sss_filing"/>
                     </td>
-                    <td>Payment:</td>
+                    <td>SSS Payment:</td>
                     <td>
                         <span t-field="doc.sss_pay"/>
                     </td>
@@ -893,11 +893,11 @@
                     <td>
                         <span t-field="doc.phic"/>
                     </td>
-                    <td>Filing:</td>
+                    <td>PHIC Filing:</td>
                     <td>
                         <span t-field="doc.phic_filing"/>
                     </td>
-                    <td>Payment:</td>
+                    <td>PHIC Payment:</td>
                     <td>
                         <span t-field="doc.phic_pay"/>
                     </td>
@@ -907,11 +907,11 @@
                     <td>
                         <span t-field="doc.hdmf"/>
                     </td>
-                    <td>Filing:</td>
+                    <td>HDMF Filing:</td>
                     <td>
                         <span t-field="doc.hdmf_filing"/>
                     </td>
-                    <td>Payment:</td>
+                    <td>HDMF Payment:</td>
                     <td>
                         <span t-field="doc.hdmf_pay"/>
                     </td>
@@ -963,6 +963,45 @@
                     <td>Cluster:</td>
                     <td>
                         <span t-field="doc.cluster_id"/>
+                    </td>
+                </tr>
+            </table>
+            <table style="font-size:20px;" width="100%">
+                <tr>
+                    <h3>
+                        <p style="text-center;">Engagement Type</p>
+                    </h3>
+                    <style>
+                        table, th, td {
+                        border: 2px solid black;
+                        border-collapse: collapse;
+                        }
+                        th, td {
+                        padding: 5px;
+                        text-align: left;
+                        }
+                    </style>
+                    <td>
+                        <t t-if="doc.tax_report_compliance">
+                            <input type="checkbox" id="checkbox_true" checked="True"/>
+                        </t>
+                        <t t-if="not doc.tax_report_compliance">
+                            <input type="checkbox" id="checkbox_false"/>
+                        </t>
+                        Tax Reporting and Compliance Service
+                    </td>
+                    <td>
+                        <t t-if="doc.audit_fs">
+                            <input type="checkbox" id="checkbox_true" checked="True"/>
+                        </t>
+                        <t t-if="not doc.audit_fs">
+                            <input type="checkbox" id="checkbox_false"/>
+                        </t>
+                        Audit of Financial Statements Service
+                    </td>
+                    <td>Other Services:</td>
+                    <td>
+                        <span t-field="doc.other_services"/>
                     </td>
                 </tr>
             </table>

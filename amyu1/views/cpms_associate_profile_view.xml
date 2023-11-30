@@ -60,27 +60,20 @@
             <field name="arch" type="xml">
                 <form create="false">
                     <div>
-                        <field name="image" widget="image" nolabel="1" class="oe_avatar"
-                               attrs="{'readonly': [('id', '!=', False)]}"/>
+                        <field name="image" widget="image" nolabel="1" class="oe_avatar"/>
                     </div>
                     <group>
                         <group>
                             <field name="user_id" options="{'no_open': True,'no_create': True}"
-                                   attrs="{'readonly': [('id', '!=', False)]}"/>
-                            <field name="supervisor_id" options="{'no_open': True}"
-                                   attrs="{'readonly': [('id', '!=', False)]}"/>
-                            <field name="manager_id" options="{'no_open': True,'no_create': True}"
-                                   attrs="{'readonly': [('id', '!=', False)]}"/>
-                            <field name="lead_partner_id" options="{'no_open': True,'no_create': True}"
-                                   attrs="{'readonly': [('id', '!=', False)]}"/>
+                                   invisible="1"/>
+                            <field name="supervisor_id" options="{'no_open': True}"/>
+                            <field name="manager_id" options="{'no_open': True,'no_create': True}"/>
+                            <field name="lead_partner_id" options="{'no_open': True,'no_create': True}"/>
                         </group>
                         <group>
-                            <field name="team_id" options="{'no_open': True}"
-                                   attrs="{'readonly': [('id', '!=', False)]}"/>
-                            <field name="cluster_id" options="{'no_open': True}"
-                                   attrs="{'readonly': [('id', '!=', False)]}"/>
-                            <field name="job_work_id" options="{'no_open': True}"
-                                   attrs="{'readonly': [('id', '!=', False)]}"/>
+                            <field name="team_id" options="{'no_open': True}"/>
+                            <field name="cluster_id" options="{'no_open': True}"/>
+                            <field name="job_work_id" options="{'no_open': True}"/>
                         </group>
                     </group>
                     <field name="client_profile_ids" style="pointer-events:none;">
@@ -111,7 +104,7 @@
                         <field name="job_work_id" enable_counters="1" groups="amyu1.supervisor_group" string="My Team"/>
                         <field name="team_id" enable_counters="1" groups="amyu1.manager_group"
                                string="Manager Overview"/>
-                        <field name="job_work_id" enable_counters="1" groups="amyu1.manager_group" string="Associates"/>
+                        <field name="job_work_id" enable_counters="1" groups="amyu1.manager_group"/>
                         <field name="team_id" enable_counters="1" groups="amyu1.cluster_group" string="Team Overview"/>
                         <field name="job_work_id" enable_counters="1" groups="amyu1.cluster_group" string="Associates"/>
                     </searchpanel>

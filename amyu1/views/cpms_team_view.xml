@@ -30,6 +30,7 @@
                 </form>
             </field>
         </record>
+
          <record id="team_action" model="ir.actions.act_window">
             <field name="name">Team</field>
             <field name="res_model">team.department</field>
