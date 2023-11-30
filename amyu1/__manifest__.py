@@ -54,7 +54,7 @@
         'views/escalation_contact.xml',
         'views/cmps_menu_view.xml',
         'report/cpms_preview_reports.xml',
-        'views/cpms_supervisor_view.xml',
+        # 'views/cpms_supervisor_view.xml',
 
     ],
     'application': True,
