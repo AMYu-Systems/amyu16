@@ -982,26 +982,40 @@
                         }
                     </style>
                     <td>
-                        <t t-if="doc.tax_report_compliance">
+                        <t t-if="doc.tax_services">
                             <input type="checkbox" id="checkbox_true" checked="True"/>
                         </t>
-                        <t t-if="not doc.tax_report_compliance">
+                        <t t-if="not doc.tax_services">
                             <input type="checkbox" id="checkbox_false"/>
                         </t>
-                        Tax Reporting and Compliance Service
+                        Tax Services
                     </td>
                     <td>
-                        <t t-if="doc.audit_fs">
+                        <t t-if="doc.assurance_services">
                             <input type="checkbox" id="checkbox_true" checked="True"/>
                         </t>
-                        <t t-if="not doc.audit_fs">
+                        <t t-if="not doc.assurance_services">
                             <input type="checkbox" id="checkbox_false"/>
                         </t>
-                        Audit of Financial Statements Service
+                        Assurance and Audit Services
                     </td>
-                    <td>Other Services:</td>
                     <td>
-                        <span t-field="doc.other_services"/>
+                        <t t-if="doc.advisory_services">
+                            <input type="checkbox" id="checkbox_true" checked="True"/>
+                        </t>
+                        <t t-if="not doc.advisory_services">
+                            <input type="checkbox" id="checkbox_false"/>
+                        </t>
+                        Advisory and Consultancy Services
+                    </td>
+                    <td>
+                        <t t-if="doc.business_services">
+                            <input type="checkbox" id="checkbox_true" checked="True"/>
+                        </t>
+                        <t t-if="not doc.business_services">
+                            <input type="checkbox" id="checkbox_false"/>
+                        </t>
+                        Business Support and Process Outsourcing Services
                     </td>
                 </tr>
             </table>
