@@ -440,7 +440,7 @@ class ClientProfile(models.Model):
 
     corporate_ids = fields.One2many(comodel_name='corporate.officer', inverse_name='client_profile_id',
                                     string="Corporate Officers", tracking=True)
-    vat = fields.Char(string="Tin No:", size=11, required=True, tracking=True)
+    vat = fields.Char(string="Tin No", size=11, required=True, tracking=True)
 
     @api.onchange('vat')
     def onchange_vat(self):
@@ -673,11 +673,36 @@ class ClientProfile(models.Model):
                                 string="HDMF Payment", tracking=True)
     escalation_ids = fields.One2many(comodel_name='escalation.contact', inverse_name='escalation_id',
                                      string="Escalation Point", tracking=True)
-    tax_report_compliance = fields.Boolean(string="Tax Reporting and Compliance Service")
-    audit_fs = fields.Boolean(string="Audit of Financial Statements Service")
-    other_services = fields.Selection([('general_information_sheet', 'General Information Sheet'),
-                           ('renewal_of_business', 'Renewal of Business Permits'),
-                           ('renewal_books', 'Renewal of Books of Accounts')], string="Other Services")
+    # Tax
+    tax_services = fields.Boolean(string="Tax Services")
+    tax_report = fields.Boolean(string="Tax Reporting and Filing of Tax Returns")
+    tax_investigation = fields.Boolean(string="Tax Investigation Support/Advocate Services")
+    tax_review = fields.Boolean(string="Tax Review and Compliance")
+    tax_advisory = fields.Boolean(string="Tax Advisory, Opinion and Studies")
+    tax_refund = fields.Boolean(string="Application for Tax Refund")
+    tax_rule = fields.Boolean(string="Request for Tax Rulings")
+    # Assurance
+    assurance_services = fields.Boolean(string="Assurance and Audit Services")
+    review = fields.Boolean(string="Financial Statement Reviews and Audits")
+    extend_audit = fields.Boolean(string="Special/Extended Audits")
+    assurance_engagement = fields.Boolean(string="Assurance Engagements on Pro Forma Financial Information")
+    # Advisory
+    advisory_services = fields.Boolean(string="Advisory and Consultancy Services")
+    business_review = fields.Boolean(string="Business Process Review")
+    internal_audit = fields.Boolean(string="Internal Audit and Controls Evaluation")
+    risk_management = fields.Boolean(string="Enterprise Risk Management")
+    procedures_engagement = fields.Boolean(string="Agreed-upon Procedures Engagements")
+    corporate_finance = fields.Boolean(string="Corporate Finance and Financial Planning")
+    organizational = fields.Boolean(string="Organizational Structures, Mergers and Acquisition Advisory")
+    # Business
+    business_services = fields.Boolean(string="Business Support and Process Outsourcing Services")
+    accounting = fields.Boolean(string="Accounting Process Outsourcing")
+    compilation = fields.Boolean(string="Compilation Engagements")
+    accounts_restructuring = fields.Boolean(string="Accounts Restructuring")
+    amendment = fields.Boolean(string="Amendment of Articles of Incorporation and By-Laws")
+    preparation_gis = fields.Boolean(string="Preparation of General Information Sheet")
+    business_registration = fields.Boolean(string="Start-up,Renewal and Closure of Business Registrations")
+    staff_arrangement = fields.Boolean(string="Staffing Augmentation Arrangements")
 
     # # client_records
     # documents_count = fields.Integer(compute="action_attach_documents")

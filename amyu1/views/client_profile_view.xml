@@ -431,17 +431,94 @@
                                         <field name="team_id" options="{'no_open': True,'no_create': True}"/>
                                     </group>
                                 </group>
-                                <group string="Engagement Types" col="3">
+                                <group string="Engagement Types" col="4">
                                     <group>
-                                        <field name="tax_report_compliance" nolabel="1"  attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
-                                        <label for="tax_report_compliance"/>
+                                        <field name="tax_services" nolabel="1"/>
+                                        <label for="tax_services"/>
                                     </group>
                                     <group>
-                                        <field name="audit_fs" nolabel="1"  attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
-                                        <label for="audit_fs"/>
+                                        <field name="assurance_services" nolabel="1"/>
+                                        <label for="assurance_services"/>
                                     </group>
                                     <group>
-                                        <field name="other_services"  attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                        <field name="advisory_services" nolabel="1"/>
+                                        <label for="advisory_services"/>
+                                    </group>
+                                    <group>
+                                        <field name="business_services" nolabel="1"/>
+                                        <label for="business_services"/>
+                                    </group>
+                                </group>
+                                <group string="TAX Services" attrs="{'invisible': [('tax_services', '!=', True)]}">
+                                    <group>
+                                        <field name="tax_report" nolabel="1"/>
+                                        <label for="tax_report"/>
+                                        <field name="tax_investigation" nolabel="1"/>
+                                        <label for="tax_investigation"/>
+                                        <field name="tax_review" nolabel="1"/>
+                                        <label for="tax_review"/>
+                                    </group>
+                                    <group>
+                                        <field name="tax_advisory" nolabel="1"/>
+                                        <label for="tax_advisory"/>
+                                        <field name="tax_refund" nolabel="1"/>
+                                        <label for="tax_refund"/>
+                                        <field name="tax_rule" nolabel="1"/>
+                                        <label for="tax_rule"/>
+                                    </group>
+                                </group>
+                                <group string="Assurance and Audit Services" col="3"
+                                       attrs="{'invisible': [('assurance_services', '!=', True)]}">
+                                    <group>
+                                        <field name="review" nolabel="1"/>
+                                        <label for="review"/>
+                                    </group>
+                                    <group>
+                                        <field name="extend_audit" nolabel="1"/>
+                                        <label for="extend_audit"/>
+                                    </group>
+                                    <group>
+                                        <field name="assurance_engagement" nolabel="1"/>
+                                        <label for="assurance_engagement"/>
+                                    </group>
+                                </group>
+                                <group string="Advisory And Consultancy Services"
+                                       attrs="{'invisible': [('advisory_services', '!=', True)]}">
+                                    <group>
+                                        <field name="business_review" nolabel="1"/>
+                                        <label for="business_review"/>
+                                        <field name="internal_audit" nolabel="1"/>
+                                        <label for="internal_audit"/>
+                                        <field name="risk_management" nolabel="1"/>
+                                        <label for="risk_management"/>
+                                    </group>
+                                    <group>
+                                        <field name="procedures_engagement" nolabel="1"/>
+                                        <label for="procedures_engagement"/>
+                                        <field name="corporate_finance" nolabel="1"/>
+                                        <label for="corporate_finance"/>
+                                        <field name="organizational" nolabel="1"/>
+                                        <label for="organizational"/>
+                                    </group>
+                                </group>
+                                <group string="Business Support and Process Outsourcing Services" attrs="{'invisible': [('business_services', '!=', True)]}">
+                                    <group>
+                                        <field name="accounting" nolabel="1"/>
+                                        <label for="accounting"/>
+                                        <field name="compilation" nolabel="1"/>
+                                        <label for="compilation"/>
+                                        <field name="accounts_restructuring" nolabel="1"/>
+                                        <label for="accounts_restructuring"/>
+                                        <field name="amendment" nolabel="1"/>
+                                        <label for="amendment"/>
+                                    </group>
+                                    <group>
+                                        <field name="preparation_gis" nolabel="1"/>
+                                        <label for="preparation_gis"/>
+                                        <field name="business_registration" nolabel="1"/>
+                                        <label for="business_registration"/>
+                                        <field name="staff_arrangement" nolabel="1"/>
+                                        <label for="staff_arrangement"/>
                                     </group>
                                 </group>
                                 <group string="Escalation Matrix"/>
