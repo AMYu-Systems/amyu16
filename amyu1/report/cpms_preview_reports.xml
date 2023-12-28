@@ -212,9 +212,9 @@
             <br/>
             <table style="font-size:20px;" width="100%">
                 <tr>
-                    <h3>
+                    <h4>
                         <p style="text-center;">Tax Type</p>
-                    </h3>
+                    </h4>
                     <style>
                         table, th, td {
                         border: 2px solid black;
@@ -225,79 +225,55 @@
                         text-align: left;
                         }
                     </style>
-                    <td>
+                    <td t-if="doc.income_tax == True">
                         <t t-if="doc.income_tax">
                             <input type="checkbox" id="checkbox_true" checked="True"/>
                         </t>
-                        <t t-if="not doc.income_tax">
-                            <input type="checkbox" id="checkbox_false"/>
-                        </t>
                         Income Tax
                     </td>
-                    <td>
+                    <td t-if="doc.withholding_tax_compensation == True">
                         <t t-if="doc.withholding_tax_compensation">
                             <input type="checkbox" id="checkbox_true" checked="True"/>
                         </t>
-                        <t t-if="not doc.withholding_tax_compensation">
-                            <input type="checkbox" id="checkbox_false"/>
-                        </t>
                         Withholding Tax - Compensation
                     </td>
-                    <td>
+                    <td t-if="doc.excise_tax == True">
                         <t t-if="doc.excise_tax">
                             <input type="checkbox" id="checkbox_true" checked="True"/>
-                        </t>
-                        <t t-if="not doc.excise_tax">
-                            <input type="checkbox" id="checkbox_false"/>
                         </t>
                         Excise Tax
                     </td>
                 </tr>
                 <tr>
-                    <td>
+                    <td t-if="doc.value_added_tax == True">
                         <t t-if="doc.value_added_tax">
                             <input type="checkbox" id="checkbox_true" checked="True"/>
                         </t>
-                        <t t-if="not doc.value_added_tax">
-                            <input type="checkbox" id="checkbox_false"/>
-                        </t>
                         Value Added Tax
                     </td>
-                    <td>
+                    <td t-if="doc.withholding_tax_expanded == True">
                         <t t-if="doc.withholding_tax_expanded">
                             <input type="checkbox" id="checkbox_true" checked="True"/>
                         </t>
-                        <t t-if="not doc.withholding_tax_expanded">
-                            <input type="checkbox" id="checkbox_false"/>
-                        </t>
                         Withholding Tax Expanded
                     </td>
-                    <td>
+                    <td t-if="doc.registration_fee == True">
                         <t t-if="doc.registration_fee">
                             <input type="checkbox" id="checkbox_true" checked="True"/>
-                        </t>
-                        <t t-if="not doc.registration_fee">
-                            <input type="checkbox" id="checkbox_false"/>
                         </t>
                         Registration Fee
                     </td>
                 </tr>
                 <tr>
-                    <td>
+                    <td t-if="doc.other_percentage_tax == True">
                         <t t-if="doc.other_percentage_tax">
                             <input type="checkbox" id="checkbox_true" checked="True"/>
                         </t>
-                        <t t-if="not doc.other_percentage_tax">
-                            <input type="checkbox" id="checkbox_false"/>
-                        </t>
                         Other Percentage Tax
                     </td>
-                    <td>
+                    <td t-if="doc.withholding_tax_final == True">
                         <t t-if="doc.withholding_tax_final">
                             <input type="checkbox" id="checkbox_true" checked="True"/>
-                        </t>
-                        <t t-if="not doc.withholding_tax_final">
-                            <input type="checkbox" id="checkbox_false"/>
                         </t>
                         Withholding Tax Final
                     </td>
@@ -723,9 +699,9 @@
             <br/>
             <table style="font-size:20px;" width="100%">
                 <tr>
-                    <h3>
+                    <h4>
                         <p style="text-center;">Regulatory Agencies</p>
-                    </h3>
+                    </h4>
                     <style>
                         table, th, td {
                         border: 2px solid black;
@@ -736,121 +712,85 @@
                         text-align: left;
                         }
                     </style>
-                    <td>
+                    <td t-if="doc.bangko_sentral_pilipinas == True">
                         <t t-if="doc.bangko_sentral_pilipinas">
                             <input type="checkbox" id="checkbox_true" checked="True"/>
                         </t>
-                        <t t-if="not doc.bangko_sentral_pilipinas">
-                            <input type="checkbox" id="checkbox_false"/>
-                        </t>
                         Bangko Sentral ng Pilipinas
                     </td>
-                    <td>
+                    <td t-if="doc.land_transportation_franchising_regulatory_board == True">
                         <t t-if="doc.land_transportation_franchising_regulatory_board">
                             <input type="checkbox" id="checkbox_true" checked="True"/>
-                        </t>
-                        <t t-if="not doc.land_transportation_franchising_regulatory_board">
-                            <input type="checkbox" id="checkbox_false"/>
                         </t>
                         Land Transportation Franchising and Regulatory Board
                     </td>
                 </tr>
                 <tr>
-                    <td>
+                    <td t-if="doc.bureau_of_custom == True">
                         <t t-if="doc.bureau_of_custom">
                             <input type="checkbox" id="checkbox_true" checked="True"/>
                         </t>
-                        <t t-if="not doc.bureau_of_custom">
-                            <input type="checkbox" id="checkbox_false"/>
-                        </t>
                         Bureau of Custom
                     </td>
-                    <td>
+                    <td t-if="doc.philippine_amusement_gaming_corporation == True">
                         <t t-if="doc.philippine_amusement_gaming_corporation">
                             <input type="checkbox" id="checkbox_true" checked="True"/>
-                        </t>
-                        <t t-if="not doc.philippine_amusement_gaming_corporation">
-                            <input type="checkbox" id="checkbox_false"/>
                         </t>
                         Philippine Amusement and Gaming Corporation
                     </td>
                 </tr>
                 <tr>
-                    <td>
+                    <td t-if="doc.construction_industry_authority_philippines == True">
                         <t t-if="doc.construction_industry_authority_philippines">
                             <input type="checkbox" id="checkbox_true" checked="True"/>
                         </t>
-                        <t t-if="not doc.construction_industry_authority_philippines">
-                            <input type="checkbox" id="checkbox_false"/>
-                        </t>
                         Construction Industry authority of the Philippines (PCAB)
                     </td>
-                    <td>
+                    <td t-if="doc.philippines_council_ngo_certification == True">
                         <t t-if="doc.philippines_council_ngo_certification">
                             <input type="checkbox" id="checkbox_true" checked="True"/>
-                        </t>
-                        <t t-if="not doc.philippines_council_ngo_certification">
-                            <input type="checkbox" id="checkbox_false"/>
                         </t>
                         Philippine Council for NGO Certification
                     </td>
                 </tr>
                 <tr>
-                    <td>
+                    <td t-if="doc.cooperative_development_authority == True">
                         <t t-if="doc.cooperative_development_authority">
                             <input type="checkbox" id="checkbox_true" checked="True"/>
                         </t>
-                        <t t-if="not doc.cooperative_development_authority">
-                            <input type="checkbox" id="checkbox_false"/>
-                        </t>
                         Cooperative Development Authority
                     </td>
-                    <td>
+                    <td t-if="doc.philippine_amusement_gaming_corporation == True">
                         <t t-if="doc.philippine_amusement_gaming_corporation">
                             <input type="checkbox" id="checkbox_true" checked="True"/>
-                        </t>
-                        <t t-if="not doc.philippine_amusement_gaming_corporation">
-                            <input type="checkbox" id="checkbox_false"/>
                         </t>
                         Philippine Amusement and Gaming Corporation
                     </td>
                 </tr>
                 <tr>
-                    <td>
+                    <td t-if="doc.insurance_commission == True">
                         <t t-if="doc.insurance_commission">
                             <input type="checkbox" id="checkbox_true" checked="True"/>
                         </t>
-                        <t t-if="not doc.insurance_commission">
-                            <input type="checkbox" id="checkbox_false"/>
-                        </t>
                         Insurance Commission
                     </td>
-                    <td>
+                    <td t-if="doc.professional_regulation_commission == True">
                         <t t-if="doc.professional_regulation_commission">
                             <input type="checkbox" id="checkbox_true" checked="True"/>
-                        </t>
-                        <t t-if="not doc.professional_regulation_commission">
-                            <input type="checkbox" id="checkbox_false"/>
                         </t>
                         Professional Regulation Commission
                     </td>
                 </tr>
                 <tr>
-                    <td>
+                    <td t-if="doc.integrated_bar_philippines == True">
                         <t t-if="doc.integrated_bar_philippines">
                             <input type="checkbox" id="checkbox_true" checked="True"/>
                         </t>
-                        <t t-if="not doc.integrated_bar_philippines">
-                            <input type="checkbox" id="checkbox_false"/>
-                        </t>
                         Integrated Bar of the Philippines
                     </td>
-                    <td>
-                        <t t-if="doc.others_regulatory ">
+                    <td t-if="doc.others_regulatory == True">
+                        <t t-if="doc.others_regulatory">
                             <input type="checkbox" id="checkbox_true" checked="True"/>
-                        </t>
-                        <t t-if="not doc.others_regulatory ">
-                            <input type="checkbox" id="checkbox_false"/>
                         </t>
                         Others
                     </td>
@@ -968,9 +908,9 @@
             </table>
             <table style="font-size:20px;" width="100%">
                 <tr>
-                    <h3>
+                    <h4>
                         <p style="text-center;">Engagement Type</p>
-                    </h3>
+                    </h4>
                     <style>
                         table, th, td {
                         border: 2px solid black;
@@ -981,49 +921,274 @@
                         text-align: left;
                         }
                     </style>
-                    <td>
-                        <t t-if="doc.tax_services">
-                            <input type="checkbox" id="checkbox_true" checked="True"/>
-                        </t>
-                        <t t-if="not doc.tax_services">
-                            <input type="checkbox" id="checkbox_false"/>
-                        </t>
-                        Tax Services
-                    </td>
-                    <td>
-                        <t t-if="doc.assurance_services">
-                            <input type="checkbox" id="checkbox_true" checked="True"/>
-                        </t>
-                        <t t-if="not doc.assurance_services">
-                            <input type="checkbox" id="checkbox_false"/>
-                        </t>
-                        Assurance and Audit Services
-                    </td>
-                    <td>
-                        <t t-if="doc.advisory_services">
-                            <input type="checkbox" id="checkbox_true" checked="True"/>
-                        </t>
-                        <t t-if="not doc.advisory_services">
-                            <input type="checkbox" id="checkbox_false"/>
-                        </t>
-                        Advisory and Consultancy Services
-                    </td>
-                    <td>
-                        <t t-if="doc.business_services">
-                            <input type="checkbox" id="checkbox_true" checked="True"/>
-                        </t>
-                        <t t-if="not doc.business_services">
-                            <input type="checkbox" id="checkbox_false"/>
-                        </t>
-                        Business Support and Process Outsourcing Services
-                    </td>
+                    <tr>
+                        <td t-if="doc.tax_services == True">
+                            <t t-if="doc.tax_services">
+                                <input type="checkbox" id="checkbox_true" checked="True"/>
+                            </t>
+                            Tax Services
+                        </td>
+                        <td t-if="doc.assurance_services == True">
+                            <t t-if="doc.assurance_services">
+                                <input type="checkbox" id="checkbox_true" checked="True"/>
+                            </t>
+                            Assurance and Audit Services
+                        </td>
+                    </tr>
+                    <tr>
+                        <td t-if="doc.advisory_services == True">
+                            <t t-if="doc.advisory_services">
+                                <input type="checkbox" id="checkbox_true" checked="True"/>
+                            </t>
+                            Advisory and Consultancy Services
+                        </td>
+                        <td t-if="doc.business_services == True">
+                            <t t-if="doc.business_services">
+                                <input type="checkbox" id="checkbox_true" checked="True"/>
+                            </t>
+                            Business Support and Process Outsourcing Services
+                        </td>
+                    </tr>
                 </tr>
             </table>
             <br/>
             <table style="font-size:20px;" width="100%">
-                <h3>
+                <tr>
+                    <style>
+                        table, th, td {
+                        border: 2px solid black;
+                        border-collapse: collapse;
+                        }
+                        th, td {
+                        padding: 5px;
+                        text-align: left;
+                        }
+                    </style>
+                    <t t-if="doc.tax_services == True ">
+                        <h4>
+                            <p style="text-center;">Tax Services</p>
+                        </h4>
+                        <tr>
+                            <td t-if="doc.tax_report == True">
+                                <t t-if="doc.tax_report">
+                                    <input type="checkbox" id="checkbox_true" checked="True"/>
+                                </t>
+                                Tax Reporting and Filing of Tax Returns
+                            </td>
+                            <td t-if="doc.tax_investigation == True">
+                                <t t-if="doc.tax_investigation">
+                                    <input type="checkbox" id="checkbox_true" checked="True"/>
+                                </t>
+                                Tax Investigation Support/Advocate Services
+                            </td>
+                        </tr>
+                        <tr>
+                            <td t-if="doc.tax_review == True">
+                                <t t-if="doc.tax_review">
+                                    <input type="checkbox" id="checkbox_true" checked="True"/>
+                                </t>
+                                Tax Review and Compliance
+                            </td>
+                            <td t-if="doc.tax_advisory == True">
+                                <t t-if="doc.tax_advisory">
+                                    <input type="checkbox" id="checkbox_true" checked="True"/>
+                                </t>
+                                Tax Advisory, Opinion and Studies
+                            </td>
+                        </tr>
+                        <tr>
+                            <td t-if="doc.tax_refund == True">
+                                <t t-if="doc.tax_refund">
+                                    <input type="checkbox" id="checkbox_true" checked="True"/>
+                                </t>
+                                Application for Tax Refund
+                            </td>
+                            <td t-if="doc.tax_rule == True">
+                                <t t-if="doc.tax_rule">
+                                    <input type="checkbox" id="checkbox_true" checked="True"/>
+                                </t>
+                                Request for Tax Rulings
+                            </td>
+                        </tr>
+                    </t>
+                </tr>
+            </table>
+            <table style="font-size:20px;" width="100%">
+                <tr>
+                    <style>
+                        table, th, td {
+                        border: 2px solid black;
+                        border-collapse: collapse;
+                        }
+                        th, td {
+                        padding: 5px;
+                        text-align: left;
+                        }
+                    </style>
+                    <t t-if="doc.assurance_services == True ">
+                        <h4>
+                            <p style="text-center;">Assurance and Audit Services</p>
+                        </h4>
+                        <tr>
+                            <td t-if="doc.review == True">
+                                <t t-if="doc.review">
+                                    <input type="checkbox" id="checkbox_true" checked="True"/>
+                                </t>
+                                Financial Statement Reviews and Audits
+                            </td>
+                            <td t-if="doc.extend_audit == True">
+                                <t t-if="doc.extend_audit">
+                                    <input type="checkbox" id="checkbox_true" checked="True"/>
+                                </t>
+                                Special/Extended Audits
+                            </td>
+                        </tr>
+                        <tr>
+                            <td t-if="doc.assurance_engagement == True">
+                                <t t-if="doc.assurance_engagement">
+                                    <input type="checkbox" id="checkbox_true" checked="True"/>
+                                </t>
+                                Assurance Engagements on Pro Forma Financial Information
+                            </td>
+                        </tr>
+                    </t>
+                </tr>
+            </table>
+            <table style="font-size:20px;" width="100%">
+                <tr>
+                    <style>
+                        table, th, td {
+                        border: 2px solid black;
+                        border-collapse: collapse;
+                        }
+                        th, td {
+                        padding: 5px;
+                        text-align: left;
+                        }
+                    </style>
+                    <t t-if="doc.advisory_services == True ">
+                        <h4>
+                            <p style="text-center;">Advisory and Consultancy Services</p>
+                        </h4>
+                        <tr>
+                            <td t-if="doc.business_review == True">
+                                <t t-if="doc.business_review">
+                                    <input type="checkbox" id="checkbox_true" checked="True"/>
+                                </t>
+                                Business Process Review
+                            </td>
+                            <td t-if="doc.internal_audit == True">
+                                <t t-if="doc.internal_audit">
+                                    <input type="checkbox" id="checkbox_true" checked="True"/>
+                                </t>
+                                Internal Audit and Controls Evaluation
+                            </td>
+                        </tr>
+                        <tr>
+                            <td t-if="doc.risk_management == True">
+                                <t t-if="doc.risk_management">
+                                    <input type="checkbox" id="checkbox_true" checked="True"/>
+                                </t>
+                                Enterprise Risk Management
+                            </td>
+                            <td t-if="doc.procedures_engagement == True">
+                                <t t-if="doc.procedures_engagement">
+                                    <input type="checkbox" id="checkbox_true" checked="True"/>
+                                </t>
+                                Agreed-upon Procedures Engagements
+                            </td>
+                        </tr>
+                        <tr>
+                            <td t-if="doc.corporate_finance == True">
+                                <t t-if="doc.corporate_finance">
+                                    <input type="checkbox" id="checkbox_true" checked="True"/>
+                                </t>
+                                Corporate Finance and Financial Planning
+                            </td>
+                            <td t-if="doc.organizational == True">
+                                <t t-if="doc.organizational">
+                                    <input type="checkbox" id="checkbox_true" checked="True"/>
+                                </t>
+                                Organizational Structures, Mergers and Acquisition Advisory
+                            </td>
+                        </tr>
+                    </t>
+                </tr>
+            </table>
+            <table style="font-size:20px;" width="100%">
+                <tr>
+                    <style>
+                        table, th, td {
+                        border: 2px solid black;
+                        border-collapse: collapse;
+                        }
+                        th, td {
+                        padding: 5px;
+                        text-align: left;
+                        }
+                    </style>
+                    <t t-if="doc.business_services == True ">
+                        <h4>
+                            <p style="text-center;">Business Support and Process Outsourcing Services</p>
+                        </h4>
+                        <tr>
+                            <td t-if="doc.accounting == True">
+                                <t t-if="doc.accounting">
+                                    <input type="checkbox" id="checkbox_true" checked="True"/>
+                                </t>
+                                Accounting Process Outsourcing
+                            </td>
+                            <td t-if="doc.compilation == True">
+                                <t t-if="doc.compilation">
+                                    <input type="checkbox" id="checkbox_true" checked="True"/>
+                                </t>
+                                Compilation Engagements
+                            </td>
+                        </tr>
+                        <tr>
+                            <td t-if="doc.accounts_restructuring == True">
+                                <t t-if="doc.accounts_restructuring">
+                                    <input type="checkbox" id="checkbox_true" checked="True"/>
+                                </t>
+                                Accounts Restructuring
+                            </td>
+                            <td t-if="doc.amendment == True">
+                                <t t-if="doc.amendment">
+                                    <input type="checkbox" id="checkbox_true" checked="True"/>
+                                </t>
+                                Amendment of Articles of Incorporation and By-Laws
+                            </td>
+                        </tr>
+                        <tr>
+                            <td t-if="doc.preparation_gis == True">
+                                <t t-if="doc.preparation_gis">
+                                    <input type="checkbox" id="checkbox_true" checked="True"/>
+                                </t>
+                                Preparation of General Information Sheet
+                            </td>
+                            <td t-if="doc.business_registration == True">
+                                <t t-if="doc.business_registration">
+                                    <input type="checkbox" id="checkbox_true" checked="True"/>
+                                </t>
+                                Start-up,Renewal and Closure of Business Registrations
+                            </td>
+                        </tr>
+                        <tr>
+                            <td t-if="doc.staff_arrangement == True">
+                                <t t-if="doc.staff_arrangement">
+                                    <input type="checkbox" id="checkbox_true" checked="True"/>
+                                </t>
+                                Staffing Augmentation Arrangements
+                            </td>
+                        </tr>
+                    </t>
+                </tr>
+            </table>
+            <br/>
+            <table style="font-size:20px;" width="100%">
+                <h5>
                     <p style="text-center;">Escalation Matrix</p>
-                </h3>
+                </h5>
                 <style>
                     table, th, td {
                     border: 2px solid black;
