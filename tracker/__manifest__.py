@@ -24,11 +24,11 @@
     # always loaded
     'data': [
         'security/ir.model.access.csv',
+        'security/groups_view.xml',
+        'security/menu_view.xml',
         'views/main_view.xml',
         'views/process_view.xml',
         'views/tracker_process_view.xml',
-        'views/groups_view.xml',
-        'views/menu_view.xml',
 
     ],
     'application': True,
