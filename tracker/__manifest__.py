@@ -25,10 +25,10 @@
     'data': [
         'security/ir.model.access.csv',
         'security/groups_view.xml',
-        'views/main_view.xml',
-        'views/tracker_process_view.xml',
         'views/tracker_menu_view.xml',
         'views/process_view.xml',
+        'views/main_view.xml',
+        'views/tracker_process_view.xml',
 
     ],
     'application': True,
