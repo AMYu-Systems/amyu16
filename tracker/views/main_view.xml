@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <record id="main_kanban_view" model="ir.ui.view">
+            <field name="name">main.kanban.view</field>
+            <field name="model">main.view</field>
+            <field name="arch" type="xml">
+                <kanban default_group_by="state" records_draggable="0" create="False">
+                    <field name="state"/>
+                    <field name="name"/>
+                    <field name="user_id"/>
+                    <field name="date_start"/>
+                    <field name="date_end"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_global_click">
+                                <div class="oe_kanban_content">
+                                    <div class="oe_kanban_details">
+                                        <div class="oe_kanban_title">
+                                            <h3>
+                                                <field name="name"/>
+                                            </h3>
+                                        </div>
+                                        <!--                                        <span style="font-weight: bold; color: blue;">-->
+                                        <!--                                            <field name="state"/>-->
+                                        <!--                                        </span>-->
+                                        <div class="oe_kanban_description">
+                                            Associate:
+                                            <span style="font-weight: regular; color: green;">
+                                                <field name="user_id"/>
+                                            </span>
+                                        </div>
+                                        <div class="oe_kanban_date">
+                                            Date Start:
+                                            <span style="font-weight: regular; color: blue;">
+                                                <field name="date_start"/>
+                                            </span>
+                                        </div>
+                                        <div class="oe_kanban_date">
+                                            Date End:
+                                            <span style="font-weight: regular; color: red;">
+                                                <field name="date_end"
+                                                       attrs="{'invisible': [('state', '!=', 'filed')]}"/>
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <span style="float:right">
+                                                <p class="text-info">
+                                                    <field name="revision"/>
+                                                </p>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="main_graph_view" model="ir.ui.view">
+            <field name="name">main.graph.view</field>
+            <field name="model">main.view</field>
+            <field name="arch" type="xml">
+                <graph>
+                    <field name="user_id"/>
+                    <field name="state"/>
+                </graph>
+            </field>
+        </record>
+
+        <record id="status_view_action" model="ir.actions.act_window">
+            <field name="name">Client Status</field>
+            <field name="res_model">main.view</field>
+            <field name="view_mode">kanban,graph</field>
+        </record>
+    </data>
+</odoo>
