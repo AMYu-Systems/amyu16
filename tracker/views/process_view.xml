@@ -246,7 +246,6 @@
             <field name="res_model">main.view</field>
             <field name="view_mode">tree,form</field>
             <field name="domain">[('state','=','preparation')]</field>
-            <field name="view_id" ref="main_tree_view"/>
         </record>
     </data>
 </odoo>

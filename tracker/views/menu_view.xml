@@ -6,7 +6,7 @@
                   action="status_view_action"/>
         <menuitem id="menu_preparation_root"
                   name="Preparation"
-                  sequence="10"
+                  sequence="1"
                   parent="fsms_root_menu"/>
         <menuitem id="menu_preparation_client"
                   name="Client List"
@@ -14,7 +14,7 @@
                   action="preparation_view_action"/>
         <menuitem id="menu_checking_root"
                   name="For Checking"
-                  sequence="20"
+                  sequence="2"
                   parent="fsms_root_menu"/>
         <menuitem id="menu_checking_client"
                   name="Checking"
@@ -26,7 +26,7 @@
                   action="final_checking_view_action"/>
         <menuitem id="menu_review_root"
                   name="For Review"
-                  sequence="30"
+                  sequence="3"
                   parent="fsms_root_menu"/>
         <menuitem id="menu_review_client"
                   name="Review"
@@ -38,7 +38,7 @@
                   action="final_review_view_action"/>
         <menuitem id="menu_approval_root"
                   name="For Approval"
-                  sequence="40"
+                  sequence="4"
                   parent="fsms_root_menu"/>
         <menuitem id="menu_initial_approval_client"
                   name="Initial Approval"
@@ -50,7 +50,7 @@
                   action="final_approval_view_action"/>
         <menuitem id="menu_proofread_root"
                   name="For Proofread"
-                  sequence="50"
+                  sequence="5"
                   parent="fsms_root_menu"/>
         <menuitem id="menu_proofread_client"
                   name="Proofread"
@@ -62,7 +62,7 @@
                   action="final_proofread_view_action"/>
         <menuitem id="menu_process_root"
                   name="Process"
-                  sequence="60"
+                  sequence="6"
                   parent="fsms_root_menu"/>
         <menuitem id="menu_iar_client"
                   name="IAR"
