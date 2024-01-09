@@ -5,7 +5,7 @@
             <field name="name">main.tree.view</field>
             <field name="model">main.view</field>
             <field name="arch" type="xml">
-                <tree create="False" delete="False" export_xlsx="False">
+                <tree create="False" export_xlsx="False">
                     <field name="name"/>
                     <field name="user_id"/>
                     <field name="date_start"/>

@@ -102,15 +102,31 @@ class ClientProfile(models.Model):
 
     def draft_action(self):
         self.state = 'draft'
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
 
     def action_submit_supervisor(self):
         self.state = 'supervisor'
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
 
     def action_approve_supervisor(self):
         self.state = 'manager'
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
 
     def action_return(self):
         self.state = 'cancel'
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
 
     def action_approve_manager(self):
         self.state = 'approved'
@@ -545,7 +561,7 @@ class ClientProfile(models.Model):
         if self.trade_name:
             self.trade_name = str(self.trade_name).upper()
 
-    date_per_law = fields.Char(string="Date per By-Laws", required=True, tracking=True)
+    date_per_law = fields.Char(string="Date per By-Laws", tracking=True)
     actual_date_meeting = fields.Date('date', tracking=True)
     sec_yes_no = fields.Selection([('yes', 'Yes'), ('no', 'No')], default="no", tracking=True)
     company_permit_yes = fields.Text(string="If Yes what type of security is the Company permit to sell?",
