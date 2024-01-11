@@ -337,47 +337,47 @@
                                 <group col="2">
                                     <group>
                                         <field name="bangko_sentral_pilipinas" nolabel="1"
-                                               attrs="{'readonly':['|','|','|',('regulatory_yes_no', '=','no'),  ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved')]}"/>
+                                               attrs="{'readonly':['|','|','|',('regulatory_yes_no', '=','no'),  ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                         <label for="bangko_sentral_pilipinas"/>
                                         <field name="bureau_of_custom" nolabel="1"
-                                               attrs="{'readonly':['|','|','|',('regulatory_yes_no', '=','no'),  ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved')]}"/>
+                                               attrs="{'readonly':['|','|','|',('regulatory_yes_no', '=','no'),  ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                         <label for="bureau_of_custom"/>
                                         <field name="construction_industry_authority_philippines" nolabel="1"
-                                               attrs="{'readonly':['|','|','|',('regulatory_yes_no', '=','no'),  ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved')]}"/>
+                                               attrs="{'readonly':['|','|','|',('regulatory_yes_no', '=','no'),  ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                         <label for="construction_industry_authority_philippines"/>
                                         <field name="cooperative_development_authority" nolabel="1"
-                                               attrs="{'readonly':['|','|','|',('regulatory_yes_no', '=','no'),  ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved')]}"/>
+                                               attrs="{'readonly':['|','|','|',('regulatory_yes_no', '=','no'),  ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                         <label for="cooperative_development_authority"/>
                                         <field name="insurance_commission" nolabel="1"
-                                               attrs="{'readonly':['|','|','|',('regulatory_yes_no', '=','no'),  ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved')]}"/>
+                                               attrs="{'readonly':['|','|','|',('regulatory_yes_no', '=','no'),  ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                         <label for="insurance_commission"/>
                                         <field name="integrated_bar_philippines" nolabel="1"
-                                               attrs="{'readonly':['|','|','|',('regulatory_yes_no', '=','no'),  ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved')]}"/>
+                                               attrs="{'readonly':['|','|','|',('regulatory_yes_no', '=','no'),  ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                         <label for="integrated_bar_philippines"/>
                                         <field name="attachment_fname" invisible="1"/>
                                         <field name="regulatory_attachment" filename="attachment_fname"
                                                widget='many2many_binary'
                                                string=""
-                                               attrs="{'readonly':['|','|','|',('regulatory_yes_no', '=','no'),  ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved')]}"/>
+                                               attrs="{'readonly':['|','|','|',('regulatory_yes_no', '=','no'),  ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                     </group>
                                     <group>
                                         <field name="land_transportation_franchising_regulatory_board" nolabel="1"
-                                               attrs="{'readonly':['|','|','|',('regulatory_yes_no', '=','no'),  ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved')]}"/>
+                                               attrs="{'readonly':['|','|','|',('regulatory_yes_no', '=','no'),  ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                         <label for="land_transportation_franchising_regulatory_board"/>
                                         <field name="philippine_amusement_gaming_corporation" nolabel="1"
-                                               attrs="{'readonly':['|','|','|',('regulatory_yes_no', '=','no'),  ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved')]}"/>
+                                               attrs="{'readonly':['|','|','|',('regulatory_yes_no', '=','no'),  ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                         <label for="philippine_amusement_gaming_corporation"/>
                                         <field name="philippines_council_ngo_certification" nolabel="1"
-                                               attrs="{'readonly':['|','|','|',('regulatory_yes_no', '=','no'),  ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved')]}"/>
+                                               attrs="{'readonly':['|','|','|',('regulatory_yes_no', '=','no'),  ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                         <label for="philippines_council_ngo_certification"/>
                                         <field name="philippines_stock_exchange" nolabel="1"
-                                               attrs="{'readonly':['|','|','|',('regulatory_yes_no', '=','no'),  ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved')]}"/>
+                                               attrs="{'readonly':['|','|','|',('regulatory_yes_no', '=','no'),  ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                         <label for="philippines_stock_exchange"/>
                                         <field name="professional_regulation_commission" nolabel="1"
-                                               attrs="{'readonly':['|','|','|',('regulatory_yes_no', '=','no'),  ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved')]}"/>
+                                               attrs="{'readonly':['|','|','|',('regulatory_yes_no', '=','no'),  ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                         <label for="professional_regulation_commission"/>
                                         <field name="others_regulatory" nolabel="1"
-                                               attrs="{'readonly':['|','|','|',('regulatory_yes_no', '=','no'),  ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved')]}"/>
+                                               attrs="{'readonly':['|','|','|',('regulatory_yes_no', '=','no'),  ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                         <label for="others_regulatory"/>
                                         <field name="others_regulatory_text" nolabel="1" colspan="2"
                                                attrs="{'invisible': [('others_regulatory', '=', False)]}"/>
