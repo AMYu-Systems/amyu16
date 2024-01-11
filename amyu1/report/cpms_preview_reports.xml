@@ -802,10 +802,10 @@
                 </h3>
                 <tr>
                     <t t-foreach="doc.regulatory_attachment" t-as="attachment">
-                        <a t-attf-href="/web/content/{{ attachment.id }}?download=true"
+                        <br t-attf-href="/web/content/{{ attachment.id }}?download=true"
                            t-attf-download="{{ attachment.name }}">
                             <t t-esc="attachment.name"/>
-                        </a>
+                        </br>
                     </t>
                 </tr>
             </table>
