@@ -21,7 +21,7 @@
                 <form create="false">
                     <header>
                         <button name="action_submit_supervisor" string="Submit" type="object" class="oe_highlight"
-                                confirm="Confirm to submitted to supervisor?"
+                                confirm="Are you sure you want to continue to your submission?"
                                 groups="amyu1.associate_group"
                                 attrs="{'invisible': [('state', '!=', 'draft')]}"/>
                         <button name="action_approve_supervisor" string="Verify"
@@ -35,9 +35,11 @@
                                 groups="amyu1.manager_group"
                                 attrs="{'invisible': [('state', '!=', 'manager')]}"/>
                         <button name="action_return" string="Return" type="object"
+                                confirm="Are you sure you want to returned this form?"
                                 groups="amyu1.supervisor_group"
                                 attrs="{'invisible': [('state', '!=', 'supervisor')]}"/>
                         <button name="action_return" string="Return" type="object"
+                                confirm="Are you sure you want to returned this form?"
                                 groups="amyu1.manager_group"
                                 attrs="{'invisible': [('state', '!=', 'manager')]}"/>
                         <button name="action_return" string="Edit" type="object"
