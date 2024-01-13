@@ -360,11 +360,6 @@
                                         <field name="integrated_bar_philippines" nolabel="1"
                                                attrs="{'readonly':['|','|','|','|',('regulatory_yes_no', '=','no'),  ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                         <label for="integrated_bar_philippines"/>
-                                        <field name="attachment_fname" invisible="1"/>
-                                        <field name="regulatory_attachment" filename="attachment_fname"
-                                               widget='many2many_binary'
-                                               string=""
-                                               attrs="{'readonly':['|','|','|','|',('regulatory_yes_no', '=','no'),  ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                     </group>
                                     <group>
                                         <field name="land_transportation_franchising_regulatory_board" nolabel="1"
@@ -389,9 +384,39 @@
                                                attrs="{'invisible': [('others_regulatory', '=', False)]}"/>
                                     </group>
                                 </group>
-                                <!--                                <field name="attachment_fname" invisible="1"/>-->
-                                <!--                                <field name="attachment" filename="attachment_fname"-->
-                                <!--                                       attrs="{'readonly':[('ask_3', '=','no')]}"/>-->
+                                <field name="bsp_filename" invisible="1"/>
+                                <field name="attachment_bsp" widget="many2many_binary" filename="bsp_filename"
+                                       attrs="{'invisible': [('bangko_sentral_pilipinas', '=', False)],'readonly':['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                <field name="boc_filename" invisible="1"/>
+                                <field name="attachment_boc" widget="many2many_binary" filename="boc_filename"
+                                       attrs="{'invisible': [('bureau_of_custom', '=', False)],'readonly':['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                <field name="prc_filename" invisible="1"/>
+                                <field name="attachment_prc" widget="many2many_binary" filename="prc_filename"
+                                       attrs="{'invisible': [('professional_regulation_commission', '=', False)],'readonly':['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                <field name="pcnc_filename" invisible="1"/>
+                                <field name="attachment_pcnc" widget="many2many_binary" filename="pcnc_filename"
+                                       attrs="{'invisible': [('philippines_council_ngo_certification', '=', False)],'readonly':['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                <field name="cda_filename" invisible="1"/>
+                                <field name="attachment_cda" widget="many2many_binary" filename="cda_filename"
+                                       attrs="{'invisible': [('cooperative_development_authority', '=', False)],'readonly':['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                <field name="ic_filename" invisible="1"/>
+                                <field name="attachment_ic" widget="many2many_binary" filename="ic_filename"
+                                       attrs="{'invisible': [('insurance_commission', '=', False)],'readonly':['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                <field name="ibp_filename" invisible="1"/>
+                                <field name="attachment_ibp" widget="many2many_binary" filename="ibp_filename"
+                                       attrs="{'invisible': [('integrated_bar_philippines', '=', False)],'readonly':['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                <field name="pse_filename" invisible="1"/>
+                                <field name="attachment_pse" widget="many2many_binary" filename="pse_filename"
+                                       attrs="{'invisible': [('philippines_stock_exchange', '=', False)],'readonly':['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                <field name="ciap_filename" invisible="1"/>
+                                <field name="attachment_ciap" widget="many2many_binary" filename="ciap_filename"
+                                       attrs="{'invisible': [('construction_industry_authority_philippines', '=', False)],'readonly':['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                <field name="pagc_filename" invisible="1"/>
+                                <field name="attachment_pagc" widget="many2many_binary" filename="pagc_filename"
+                                       attrs="{'invisible': [('philippine_amusement_gaming_corporation', '=', False)],'readonly':['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                <field name="ltfrb_filename" invisible="1"/>
+                                <field name="attachment_ltfrb" widget="many2many_binary" filename="ltfrb_filename"
+                                       attrs="{'invisible': [('land_transportation_franchising_regulatory_board', '=', False)],'readonly':['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                             </page>
 
                             <page name="social_security_information" string="SOCIAL SECURITY">

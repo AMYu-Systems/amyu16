@@ -801,12 +801,114 @@
                     Attachment
                 </h3>
                 <tr>
-                    <t t-foreach="doc.regulatory_attachment" t-as="attachment">
-                        <br t-attf-href="/web/content/{{ attachment.id }}?download=true"
-                           t-attf-download="{{ attachment.name }}">
-                            <t t-esc="attachment.name"/>
-                        </br>
-                    </t>
+                    <td t-if="doc.bangko_sentral_pilipinas == True">
+                        <t t-foreach="doc.attachment_bsp" t-as="attachment">
+                            <br t-attf-href="/web/content/{{ attachment.id }}?download=true"
+                                t-attf-download="{{ attachment.name }}">
+                                <t t-esc="attachment.name"/>
+                            </br>
+                        </t>
+                    </td>
+                </tr>
+                <tr>
+                    <td t-if="doc.bureau_of_custom == True">
+                        <t t-foreach="doc.attachment_boc" t-as="attachment">
+                            <br t-attf-href="/web/content/{{ attachment.id }}?download=true"
+                                t-attf-download="{{ attachment.name }}">
+                                <t t-esc="attachment.name"/>
+                            </br>
+                        </t>
+                    </td>
+                </tr>
+                <tr>
+                    <td t-if="doc.professional_regulation_commission == True">
+                        <t t-foreach="doc.attachment_prc" t-as="attachment">
+                            <br t-attf-href="/web/content/{{ attachment.id }}?download=true"
+                                t-attf-download="{{ attachment.name }}">
+                                <t t-esc="attachment.name"/>
+                            </br>
+                        </t>
+                    </td>
+                </tr>
+                <tr>
+                    <td t-if="doc.philippines_council_ngo_certification == True">
+                        <t t-foreach="doc.attachment_pcnc" t-as="attachment">
+                            <br t-attf-href="/web/content/{{ attachment.id }}?download=true"
+                                t-attf-download="{{ attachment.name }}">
+                                <t t-esc="attachment.name"/>
+                            </br>
+                        </t>
+                    </td>
+                </tr>
+                <tr>
+                    <td t-if="doc.cooperative_development_authority == True">
+                        <t t-foreach="doc.attachment_cda" t-as="attachment">
+                            <br t-attf-href="/web/content/{{ attachment.id }}?download=true"
+                                t-attf-download="{{ attachment.name }}">
+                                <t t-esc="attachment.name"/>
+                            </br>
+                        </t>
+                    </td>
+                </tr>
+                <tr>
+                    <td t-if="doc.insurance_commission == True">
+                        <t t-foreach="doc.attachment_ic" t-as="attachment">
+                            <br t-attf-href="/web/content/{{ attachment.id }}?download=true"
+                                t-attf-download="{{ attachment.name }}">
+                                <t t-esc="attachment.name"/>
+                            </br>
+                        </t>
+                    </td>
+                </tr>
+                <tr>
+                    <td t-if="doc.integrated_bar_philippines == True">
+                        <t t-foreach="doc.attachment_ibp" t-as="attachment">
+                            <br t-attf-href="/web/content/{{ attachment.id }}?download=true"
+                                t-attf-download="{{ attachment.name }}">
+                                <t t-esc="attachment.name"/>
+                            </br>
+                        </t>
+                    </td>
+                </tr>
+                <tr>
+                    <td t-if="doc.philippines_stock_exchange == True">
+                        <t t-foreach="doc.attachment_pse" t-as="attachment">
+                            <br t-attf-href="/web/content/{{ attachment.id }}?download=true"
+                                t-attf-download="{{ attachment.name }}">
+                                <t t-esc="attachment.name"/>
+                            </br>
+                        </t>
+                    </td>
+                </tr>
+                 <tr>
+                    <td t-if="doc.construction_industry_authority_philippines == True">
+                        <t t-foreach="doc.attachment_ciap" t-as="attachment">
+                            <br t-attf-href="/web/content/{{ attachment.id }}?download=true"
+                                t-attf-download="{{ attachment.name }}">
+                                <t t-esc="attachment.name"/>
+                            </br>
+                        </t>
+                    </td>
+                </tr>
+                 <tr>
+                    <td t-if="doc.philippine_amusement_gaming_corporation == True">
+                        <t t-foreach="doc.attachment_pagc" t-as="attachment">
+                            <br t-attf-href="/web/content/{{ attachment.id }}?download=true"
+                                t-attf-download="{{ attachment.name }}">
+                                <t t-esc="attachment.name"/>
+                            </br>
+                        </t>
+                    </td>
+                </tr>
+                <tr>
+                    <td t-if="doc.land_transportation_franchising_regulatory_board == True">
+                        <t t-foreach="doc.attachment_ltfrb" t-as="attachment">
+                            <br t-attf-href="/web/content/{{ attachment.id }}?download=true"
+                                t-attf-download="{{ attachment.name }}">
+                                <t t-esc="attachment.name"/>
+                            </br>
+                        </t>
+                    </td>
                 </tr>
             </table>
             <br/>
@@ -1211,7 +1313,7 @@
                         <td>
                             <span t-esc="line.level"/>
                         </td>
-                         <td>
+                        <td>
                             <span t-esc="line.timeframe"/>
                         </td>
                         <td>

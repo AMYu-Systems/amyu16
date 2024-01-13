@@ -596,24 +596,65 @@ class ClientProfile(models.Model):
                                                         inverse_name='capital_representative_office_id',
                                                         string="Capital Representative Office", tracking=True)
     regulatory_yes_no = fields.Selection([('yes', 'Yes'), ('no', 'No')], default="no", tracking=True)
-    bureau_of_custom = fields.Boolean(string="Bureau of Customs", tracking=True)
     bangko_sentral_pilipinas = fields.Boolean(string="Bangko Sentral ng Pilipinas", tracking=True)
+    bsp_filename = fields.Char(string="Attachment Filename")
+    attachment_bsp = fields.Many2many(comodel_name="ir.attachment", relation="m2m_ir_attachment_bsp_rel",
+                                      column1="m2m_id", column2="attachment_id", string="Bangko Sentral ng Pilipinas")
+    bureau_of_custom = fields.Boolean(string="Bureau of Customs", tracking=True)
+    boc_filename = fields.Char(string="Attachment Filename")
+    attachment_boc = fields.Many2many(comodel_name="ir.attachment", relation="m2m_ir_attachment_boc_rel",
+                                      column1="m2m_id", column2="attachment_id", string="Bureau of Custom")
     professional_regulation_commission = fields.Boolean(string="Professional Regulation Commission", tracking=True)
+    prc_filename = fields.Char(string="Attachment Filename")
+    attachment_prc = fields.Many2many(comodel_name="ir.attachment", relation="m2m_ir_attachment_prc_rel",
+                                      column1="m2m_id", column2="attachment_id",
+                                      string="Professional Regulation Commission")
     philippines_council_ngo_certification = fields.Boolean(string="Philippine Council for NGO Certification",
                                                            tracking=True)
+    pcnc_filename = fields.Char(string="Attachment Filename")
+    attachment_pcnc = fields.Many2many(comodel_name="ir.attachment", relation="m2m_ir_attachment_pcnc_rel",
+                                       column1="m2m_id", column2="attachment_id",
+                                       string="Philippine Council for NGO Certification")
     cooperative_development_authority = fields.Boolean(string="Cooperative Development Authority", tracking=True)
+    cda_filename = fields.Char(string="Attachment Filename")
+    attachment_cda = fields.Many2many(comodel_name="ir.attachment", relation="m2m_ir_attachment_cda_rel",
+                                      column1="m2m_id", column2="attachment_id",
+                                      string="Cooperative Development Authority")
     insurance_commission = fields.Boolean(string="Insurance Commission", tracking=True)
+    ic_filename = fields.Char(string="Attachment Filename")
+    attachment_ic = fields.Many2many(comodel_name="ir.attachment", relation="m2m_ir_attachment_ic_rel",
+                                     column1="m2m_id", column2="attachment_id",
+                                     string="Insurance Commission")
     integrated_bar_philippines = fields.Boolean(string="Integrated Bar of the Philippines", tracking=True)
+    ibp_filename = fields.Char(string="Attachment Filename")
+    attachment_ibp = fields.Many2many(comodel_name="ir.attachment", relation="m2m_ir_attachment_ibp_rel",
+                                      column1="m2m_id", column2="attachment_id",
+                                      string="Integrated Bar of the Philippines")
     philippines_stock_exchange = fields.Boolean(string="Philippine Stock Exchange", tracking=True)
+    pse_filename = fields.Char(string="Attachment Filename")
+    attachment_pse = fields.Many2many(comodel_name="ir.attachment", relation="m2m_ir_attachment_pse_rel",
+                                      column1="m2m_id", column2="attachment_id",
+                                      string="Philippine Stock Exchange")
     construction_industry_authority_philippines = fields.Boolean(
         string="Construction Industry authority of the Philippines (PCAB)", tracking=True)
+    ciap_filename = fields.Char(string="Attachment Filename")
+    attachment_ciap = fields.Many2many(comodel_name="ir.attachment", relation="m2m_ir_attachment_ciap_rel",
+                                       column1="m2m_id", column2="attachment_id",
+                                       string="Construction Industry authority of the Philippines (PCAB)")
     philippine_amusement_gaming_corporation = fields.Boolean(string="Philippine Amusement and Gaming Corporation",
                                                              tracking=True)
+    pagc_filename = fields.Char(string="Attachment Filename")
+    attachment_pagc = fields.Many2many(comodel_name="ir.attachment", relation="m2m_ir_attachment_pagc_rel",
+                                       column1="m2m_id", column2="attachment_id",
+                                       string="Philippine Amusement and Gaming Corporation")
     land_transportation_franchising_regulatory_board = fields.Boolean(
         string="Land Transportation Franchising and Regulatory Board", tracking=True)
-    regulatory_attachment = fields.Many2many('ir.attachment',
-                                             string='Attachments')
-    attachment_fname = fields.Char(string="Attachment Filename")
+    ltfrb_filename = fields.Char(string="Attachment Filename")
+    attachment_ltfrb = fields.Many2many(comodel_name="ir.attachment", relation="m2m_ir_attachment_ltfrb_rel",
+                                        column1="m2m_id", column2="attachment_id",
+                                        string="Land Transportation Franchising and Regulatory Board")
+    regulatory_attachment = fields.Many2many('ir.attachment',string='Attachments')
+    attachment_filename = fields.Char(string="Attachment Filename")
     others_regulatory = fields.Boolean(string="Others", tracking=True)
     others_regulatory_text = fields.Char(string="Others", tracking=True)
     sss = fields.Char(string="SSS ER No:", size=15, tracking=True)
