@@ -1201,6 +1201,7 @@
                 </style>
                 <tr>
                     <td>Level</td>
+                    <td>Time Frame</td>
                     <td>Point of Contact</td>
                     <td>Contact Number</td>
                     <td>Email Address</td>
@@ -1209,6 +1210,9 @@
                     <tr>
                         <td>
                             <span t-esc="line.level"/>
+                        </td>
+                         <td>
+                            <span t-esc="line.timeframe"/>
                         </td>
                         <td>
                             <span t-esc="line.name"/>

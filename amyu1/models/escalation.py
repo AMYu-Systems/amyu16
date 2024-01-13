@@ -17,12 +17,15 @@ class EscalationContact(models.Model):
                 if any(char.isdigit() for char in record.name):
                     raise ValidationError("Numbers are not allowed in Point of Contact Field.")
 
-    level = fields.Selection([('level_1', '1st Level'), ('level_2', '2nd Level'), ('level_3', '3rd Level')],
+    level = fields.Selection([('1st Level', '1st Level'), ('2nd Level', '2nd Level'), ('3rd Level', '3rd Level')],
                              string="Level")
     timeframe = fields.Selection(
-        [('lvl1', 'upon encounter of issue; unresolved issue after 1 day; 1 day delay in submission of documents'),
-         ('lvl2', 'unresolved issue after 2 days; 2 days delay in submission of documents'),
-         ('lvl3', 'unresolved issue after 3 days; 3 days delay in submission of documents')],
+        [('upon encounter of issue; unresolved issue after 1 day; 1 day delay in submission of documents',
+          'Upon encounter of issue; unresolved issue after 1 day; 1 day delay in submission of documents'),
+         ('Unresolved issue after 2 days; 2 days delay in submission of documents',
+          'Unresolved issue after 2 days; 2 days delay in submission of documents'),
+         ('unresolved issue after 3 days; 3 days delay in submission of documents',
+          'Unresolved issue after 3 days; 3 days delay in submission of documents')],
         string="Escalation Timeframe")
     contact_number = fields.Char(string="Contact Number", size=13)
 

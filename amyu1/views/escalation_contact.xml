@@ -5,9 +5,9 @@
             <field name="name">escalation.contact.tree.view</field>
             <field name="model">escalation.contact</field>
             <field name="arch" type="xml">
-                <tree editable="bottom" create="0" edit="1" delete="0">
-                    <field name="level" readonly="1"/>
-                    <field name="timeframe" readonly="1"/>
+                <tree editable="bottom" create="1" delete="0">
+                    <field name="level"/>
+                    <field name="timeframe"/>
                     <field name="name"/>
                     <field name="contact_number"/>
                     <field name="email"/>

@@ -35,11 +35,11 @@
                                 groups="amyu1.manager_group"
                                 attrs="{'invisible': [('state', '!=', 'manager')]}"/>
                         <button name="action_return" string="Return" type="object"
-                                confirm="Are you sure you want to returned this form?"
+                                confirm="Are you sure you want to return this form?"
                                 groups="amyu1.supervisor_group"
                                 attrs="{'invisible': [('state', '!=', 'supervisor')]}"/>
                         <button name="action_return" string="Return" type="object"
-                                confirm="Are you sure you want to returned this form?"
+                                confirm="Are you sure you want to return this form?"
                                 groups="amyu1.manager_group"
                                 attrs="{'invisible': [('state', '!=', 'manager')]}"/>
                         <button name="action_return" string="Edit" type="object"
@@ -126,7 +126,7 @@
                                     </group>
                                 </group>
 
-                                <group string="Accounting or Office Admin Address">
+                                <group string="Accounting or Office Admin Address" col="3">
                                     <group>
                                         <label for="office_admin_unit_no" string="Address:"/>
                                         <div clas="o_address_format">
@@ -151,7 +151,7 @@
                                                    attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                         </div>
                                     </group>
-                                    <group>
+                                    <group string="Primary Contact Information">
                                         <field name="primary_contact_person"
                                                attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                         <field name="primary_contact_landline" placeholder="input only 8 digit"
@@ -160,6 +160,8 @@
                                                attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                         <field name="primary_contact_email"
                                                attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                    </group>
+                                    <group string="Accounting Officer">
                                         <field name="principal_accounting_officer"
                                                attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                         <field name="principal_accounting_landline" placeholder="input only 8 digit"
@@ -221,8 +223,8 @@
                                 </group>
                                 <field name="other_percentage_tax_text" nolabel="1"
                                        attrs="{'invisible': [('other_percentage_tax', '=', False)]}"/>
-
-                                <group col="2" string="">
+                                <br/>
+                                <group col="2">
                                     <group>
                                         <field name="taxpayer_type"
                                                attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
@@ -250,10 +252,12 @@
                             </page>
 
                             <page string="SEC/DTI REGISTRATION">
-                                <group>
+                                <group col="3">
                                     <group>
                                         <field name="registration_number"
                                                attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                    </group>
+                                    <group>
                                         <field name="trade_name"
                                                attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                     </group>
@@ -263,8 +267,7 @@
                                     </group>
                                 </group>
 
-                                <group string="Capitalization">
-                                </group>
+                                <group string="Capitalization"/>
                                 <field name="capital_sole_proprietor_ids"
                                        attrs="{'invisible': [('organization_type', '!=', 'sole_proprietor')],'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                 <field name="capital_general_partner_ids"
@@ -464,70 +467,90 @@
                                         <field name="tax_investigation" nolabel="1"
                                                attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                         <label for="tax_investigation"/>
-                                        <field name="tax_review" nolabel="1" attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                        <field name="tax_review" nolabel="1"
+                                               attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                         <label for="tax_review"/>
                                     </group>
                                     <group>
-                                        <field name="tax_advisory" nolabel="1" attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                        <field name="tax_advisory" nolabel="1"
+                                               attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                         <label for="tax_advisory"/>
-                                        <field name="tax_refund" nolabel="1" attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                        <field name="tax_refund" nolabel="1"
+                                               attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                         <label for="tax_refund"/>
-                                        <field name="tax_rule" nolabel="1" attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                        <field name="tax_rule" nolabel="1"
+                                               attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                         <label for="tax_rule"/>
                                     </group>
                                 </group>
                                 <group string="Assurance and Audit Services" col="3"
                                        attrs="{'invisible': [('assurance_services', '!=', True)]}">
                                     <group>
-                                        <field name="review" nolabel="1" attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                        <field name="review" nolabel="1"
+                                               attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                         <label for="review"/>
                                     </group>
                                     <group>
-                                        <field name="extend_audit" nolabel="1" attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                        <field name="extend_audit" nolabel="1"
+                                               attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                         <label for="extend_audit"/>
                                     </group>
                                     <group>
-                                        <field name="assurance_engagement" nolabel="1" attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                        <field name="assurance_engagement" nolabel="1"
+                                               attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                         <label for="assurance_engagement"/>
                                     </group>
                                 </group>
                                 <group string="Advisory And Consultancy Services"
                                        attrs="{'invisible': [('advisory_services', '!=', True)]}">
                                     <group>
-                                        <field name="business_review" nolabel="1" attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                        <field name="business_review" nolabel="1"
+                                               attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                         <label for="business_review"/>
-                                        <field name="internal_audit" nolabel="1" attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                        <field name="internal_audit" nolabel="1"
+                                               attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                         <label for="internal_audit"/>
-                                        <field name="risk_management" nolabel="1" attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                        <field name="risk_management" nolabel="1"
+                                               attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                         <label for="risk_management"/>
                                     </group>
                                     <group>
-                                        <field name="procedures_engagement" nolabel="1" attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                        <field name="procedures_engagement" nolabel="1"
+                                               attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                         <label for="procedures_engagement"/>
-                                        <field name="corporate_finance" nolabel="1" attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                        <field name="corporate_finance" nolabel="1"
+                                               attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                         <label for="corporate_finance"/>
-                                        <field name="organizational" nolabel="1" attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                        <field name="organizational" nolabel="1"
+                                               attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                         <label for="organizational"/>
                                     </group>
                                 </group>
                                 <group string="Business Support and Process Outsourcing Services"
                                        attrs="{'invisible': [('business_services', '!=', True)]}">
                                     <group>
-                                        <field name="accounting" nolabel="1" attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                        <field name="accounting" nolabel="1"
+                                               attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                         <label for="accounting"/>
-                                        <field name="compilation" nolabel="1" attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                        <field name="compilation" nolabel="1"
+                                               attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                         <label for="compilation"/>
-                                        <field name="accounts_restructuring" nolabel="1" attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                        <field name="accounts_restructuring" nolabel="1"
+                                               attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                         <label for="accounts_restructuring"/>
-                                        <field name="amendment" nolabel="1" attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                        <field name="amendment" nolabel="1"
+                                               attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                         <label for="amendment"/>
                                     </group>
                                     <group>
-                                        <field name="preparation_gis" nolabel="1" attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                        <field name="preparation_gis" nolabel="1"
+                                               attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                         <label for="preparation_gis"/>
-                                        <field name="business_registration" nolabel="1" attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                        <field name="business_registration" nolabel="1"
+                                               attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                         <label for="business_registration"/>
-                                        <field name="staff_arrangement" nolabel="1" attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                        <field name="staff_arrangement" nolabel="1"
+                                               attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                         <label for="staff_arrangement"/>
                                     </group>
                                 </group>
