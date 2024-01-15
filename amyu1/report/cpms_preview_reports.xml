@@ -11,9 +11,6 @@
     <template id="report_clientprofile_document">
         <t t-call="web.external_layout">
             <div class="o_background_header">
-                <div class="float-end">
-                    <div class="mt0 text-end h3" t-field="company.report_header"/>
-                </div>
                 <img src='/web/binary/company_logo' style="width:60%" class="float-start" alt="Logo"/>
             </div>
             <h1>
