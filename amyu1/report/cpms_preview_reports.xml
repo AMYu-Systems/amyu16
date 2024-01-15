@@ -11,11 +11,8 @@
     <template id="report_clientprofile_document">
         <t t-call="web.external_layout">
             <div class="header">
-                <!-- Add logo here -->
-                <img src="data:image/png;base64,${company.logo}"/>
-                <!-- Other header content -->
+                <img src='/web/binary/company_logo' style="width:100%"/>
             </div>
-
             <h1>
                 I. General Information
             </h1>
