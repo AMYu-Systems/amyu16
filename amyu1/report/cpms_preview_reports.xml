@@ -1348,7 +1348,7 @@
     </record>
 
     <record id="action_report_client_profile" model="ir.actions.report">
-        <field name="name">Generate Report</field>
+        <field name="name">Download to PDF</field>
         <field name="model">client.profile</field>
         <field name="report_type">qweb-pdf</field>
         <field name="report_name">amyu1.report_clientprofile_template</field>
