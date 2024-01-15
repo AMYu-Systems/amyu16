@@ -10,6 +10,12 @@
 
     <template id="report_clientprofile_document">
         <t t-call="web.external_layout">
+            <div class="header">
+                <!-- Add logo here -->
+                <img src="data:image/png;base64,${company.logo}"/>
+                <!-- Other header content -->
+            </div>
+
             <h1>
                 I. General Information
             </h1>
@@ -880,7 +886,7 @@
                         </t>
                     </td>
                 </tr>
-                 <tr>
+                <tr>
                     <td t-if="doc.construction_industry_authority_philippines == True">
                         <t t-foreach="doc.attachment_ciap" t-as="attachment">
                             <br t-attf-href="/web/content/{{ attachment.id }}?download=true"
@@ -890,7 +896,7 @@
                         </t>
                     </td>
                 </tr>
-                 <tr>
+                <tr>
                     <td t-if="doc.philippine_amusement_gaming_corporation == True">
                         <t t-foreach="doc.attachment_pagc" t-as="attachment">
                             <br t-attf-href="/web/content/{{ attachment.id }}?download=true"

@@ -23,3 +23,4 @@ access.job.title,access.job_title,amyu1.model_job_title,base.group_user,1,1,1,1
 access.cluster.department,access.cluster_department,amyu1.model_cluster_department,base.group_user,1,1,1,1
 access.team.department,access.team_department,amyu1.model_team_department,base.group_user,1,1,1,1
 access.cpms.supervisor,access.cpms_supervisor,amyu1.model_cpms_supervisor,base.group_user,1,1,1,1
+access.capitalization.share,access.capitalization_share,amyu1.model_capitalization_share,base.group_user,1,1,1,1
