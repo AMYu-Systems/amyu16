@@ -59,7 +59,7 @@
                         <!--                                groups="amyu1.manager_group"-->
                         <!--                                attrs="{'invisible': [('state', '!=', 'cancel')]}" type="object"/>-->
 
-                        <field name="state" widget="statusbar"
+                        <field name="state" widget="statusbar" attrs="{'invisible': [('state', '==', 'approved')]}"
                                status_invisible="draft,supervisor,manager,approved"/>
                     </header>
                     <sheet>
