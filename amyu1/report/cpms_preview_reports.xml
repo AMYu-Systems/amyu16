@@ -10,7 +10,7 @@
 
     <template id="report_clientprofile_document">
         <t t-call="web.external_layout">
-            <div class="header">
+            <div style="width: 45%;float: left;">
                 <img src='/web/binary/company_logo' class="float-start" alt="Logo"/>
             </div>
             <h1>
