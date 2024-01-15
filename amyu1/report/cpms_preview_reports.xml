@@ -10,10 +10,17 @@
 
     <template id="report_clientprofile_document">
         <t t-call="web.external_layout">
-            <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" alt="Logo"/>
-            <h1>
-                I. General Information
-            </h1>
+            <div class="header">
+                <div>
+                    <img t-if="doc.company_id.logo" t-att-src="'data:image/png;base64,' + res_company.logo"
+                         style="height:50px;"/>
+                </div>
+                <div>
+                    <h1>
+                        I. General Information
+                    </h1>
+                </div>
+            </div>
             <table style="font-size:20px;" width="100%">
                 <tr>
                     <td>Registered Name:</td>
