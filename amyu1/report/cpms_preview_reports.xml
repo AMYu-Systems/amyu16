@@ -10,9 +10,7 @@
 
     <template id="report_clientprofile_document">
         <t t-call="web.external_layout">
-            <div class="o_background_header">
-                <img src='/web/binary/company_logo' style="width:60%" class="float-start" alt="Logo"/>
-            </div>
+            <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" alt="Logo"/>
             <h1>
                 I. General Information
             </h1>
