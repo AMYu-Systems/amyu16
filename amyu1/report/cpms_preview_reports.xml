@@ -4,7 +4,7 @@
         <t t-call="web.html_container">
             <div class="header">
                 <img src="/amyu1/static/src/img/MicrosoftTeams-image.png"
-                     style="height:200px;width:300px;left:20px;bottom:50px" class="float-start"
+                     style="height:150px;width:200px;left:20px;bottom:500px" class="float-start"
                      alt="Logo"/>
             </div>
 
@@ -16,10 +16,11 @@
 
     <template id="report_clientprofile_document">
         <t t-call="web.external_layout">
+            <br/>
+            <h1>
+                I. General Information
+            </h1>
             <table style="font-size:20px;" width="100%">
-                <h1>
-                    I. General Information
-                </h1>
                 <tr>
                     <td>Registered Name:</td>
                     <td>
