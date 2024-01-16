@@ -11,14 +11,14 @@
     <template id="report_clientprofile_document">
         <t t-call="web.external_layout">
             <div class="header">
-                <div>
-                    <img src='/web/binary/company_logo' style="height:50px;" class="float-start" alt="Logo"/>
-                </div>
+                <img src="/amyu1/static/src/img/MicrosoftTeams-image.png"
+                     style="position: fixed; middle: 10%; left: 10%; transform: translate(-10%, -10%); opacity: 0.5;"/>
             </div>
-            <h1>
-                I. General Information
-            </h1>
+            <br/>
             <table style="font-size:20px;" width="100%">
+                <h1>
+                    I. General Information
+                </h1>
                 <tr>
                     <td>Registered Name:</td>
                     <td>
