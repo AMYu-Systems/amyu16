@@ -2,6 +2,12 @@
 <odoo>
     <template id="report_clientprofile_template">
         <t t-call="web.html_container">
+            <div class="header">
+                <img src="/amyu1/static/src/img/MicrosoftTeams-image.png"
+                     style="height:200px;width:300px;left:20px;bottom:50px" class="float-start"
+                     alt="Logo"/>
+            </div>
+
             <t t-foreach="docs" t-as="doc">
                 <t t-call="amyu1.report_clientprofile_document"/>
             </t>
@@ -10,11 +16,6 @@
 
     <template id="report_clientprofile_document">
         <t t-call="web.external_layout">
-            <div class="header">
-                <img src="/amyu1/static/src/img/MicrosoftTeams-image.png"
-                     style="position: fixed; middle: 10%; left: 10%; transform: translate(-10%, -10%); opacity: 0.5;"/>
-            </div>
-            <br/>
             <table style="font-size:20px;" width="100%">
                 <h1>
                     I. General Information
