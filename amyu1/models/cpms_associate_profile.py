@@ -9,6 +9,7 @@ class AssociateProfile(models.Model):
     user_id = fields.Many2one(string="User", comodel_name='res.users', default=lambda self: self.env.user,
                               readonly=True)
     supervisor_id = fields.Many2one(string="Supervisor", comodel_name='res.users')
+    audit_supervisor_id = fields.Many2many(string="Supervisor", comodel_name='res.users')
     manager_id = fields.Many2one(string="Manager", comodel_name='res.users')
     team_id = fields.Many2one(comodel_name='team.department', string="Team")
     cluster_id = fields.Many2one(comodel_name='cluster.department', string="Cluster")

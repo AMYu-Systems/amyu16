@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "A.M.Yu & ASSOCIATES",
+    'name': "Client Profile Management System",
 
     'summary': """
-        Client Profile and Monitoring System""",
+        Client Information""",
 
     'description': """
         Long description of module's purpose
@@ -19,7 +19,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'mail', 'resource', ],
+    'depends': ['base', 'mail', 'resource'],
 
     # always loaded
     'data': [

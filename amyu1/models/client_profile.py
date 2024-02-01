@@ -11,10 +11,10 @@ class ClientProfile(models.Model):
 
     name = fields.Char(string="Client Name", required=True, tracking=True)
 
-    # @api.onchange('name')
-    # def caps_name(self):
-    #     if self.name:
-    #         self.name = str(self.name).upper()
+    @api.onchange('name')
+    def caps_name(self):
+        if self.name:
+            self.name = str(self.name).upper()
 
     # @api.onchange('name')
     # def caps_name(self):
@@ -96,9 +96,13 @@ class ClientProfile(models.Model):
                               tracking=True)
     manager_id = fields.Many2one(string="Manager", related="team_id.manager_id", readonly=True)
     supervisor_id = fields.Many2one(string="Supervisor", related="team_id.supervisor_id", readonly=True)
+    audit_supervisor_id = fields.Many2many(string="Supervisor", related="team_id.audit_supervisor_id", readonly=True)
     cluster_id = fields.Many2one(string="Cluster", related="team_id.cluster_id", readonly=True)
     lead_partner_id = fields.Many2one(string="Lead Partner", related="team_id.lead_partner_id", readonly=True)
     team_id = fields.Many2one(string="Team", comodel_name='associate.profile', required=True)
+    report_period = fields.Selection([('calendar', 'Calendar'), ('fiscal', 'Fiscal')], tracking=True)
+    fiscal = fields.Selection([('3', '3'), ('6', '6'), ('9', '9')], string="Fiscal Month", tracking=True)
+    calendar = fields.Selection([('12', '12')], default="12", string="Fiscal Year End", tracking=True)
 
     def draft_action(self):
         self.state = 'draft'
@@ -112,6 +116,7 @@ class ClientProfile(models.Model):
         return {
             'type': 'ir.actions.client',
             'tag': 'reload',
+
         }
 
     def action_approve_supervisor(self):
@@ -131,11 +136,9 @@ class ClientProfile(models.Model):
     def action_approve_manager(self):
         self.state = 'approved'
         return {
-            'effect': {
-                'fadeout': 'slow',
-                'message': 'Approved',
-                'type': 'rainbow_man'
-            }
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+
         }
 
     # @api.onchange("name")
@@ -653,7 +656,7 @@ class ClientProfile(models.Model):
     attachment_ltfrb = fields.Many2many(comodel_name="ir.attachment", relation="m2m_ir_attachment_ltfrb_rel",
                                         column1="m2m_id", column2="attachment_id",
                                         string="Land Transportation Franchising and Regulatory Board")
-    regulatory_attachment = fields.Many2many('ir.attachment',string='Attachments')
+    regulatory_attachment = fields.Many2many('ir.attachment', string='Attachments')
     attachment_filename = fields.Char(string="Attachment Filename")
     others_regulatory = fields.Boolean(string="Others", tracking=True)
     others_regulatory_text = fields.Char(string="Others", tracking=True)
@@ -735,35 +738,43 @@ class ClientProfile(models.Model):
     escalation_ids = fields.One2many(comodel_name='escalation.contact', inverse_name='escalation_id',
                                      string="Escalation Point", tracking=True)
     # Tax
-    tax_services = fields.Boolean(string="Tax Services")
-    tax_report = fields.Boolean(string="Tax Reporting and Filing of Tax Returns")
-    tax_investigation = fields.Boolean(string="Tax Investigation Support/Advocate Services")
-    tax_review = fields.Boolean(string="Tax Review and Compliance")
-    tax_advisory = fields.Boolean(string="Tax Advisory, Opinion and Studies")
-    tax_refund = fields.Boolean(string="Application for Tax Refund")
-    tax_rule = fields.Boolean(string="Request for Tax Rulings")
+    tax_services = fields.Boolean(string="Tax Services", tracking=True)
+    tax_report = fields.Boolean(string="Tax Reporting and Filing of Tax Returns", tracking=True)
+    tax_investigation = fields.Boolean(string="Tax Investigation Support/Advocate Services", tracking=True)
+    tax_review = fields.Boolean(string="Tax Review and Compliance", tracking=True)
+    tax_advisory = fields.Boolean(string="Tax Advisory, Opinion and Studies", tracking=True)
+    tax_refund = fields.Boolean(string="Application for Tax Refund", tracking=True)
+    tax_rule = fields.Boolean(string="Request for Tax Rulings", tracking=True)
     # Assurance
-    assurance_services = fields.Boolean(string="Assurance and Audit Services")
-    review = fields.Boolean(string="Financial Statement Reviews and Audits")
-    extend_audit = fields.Boolean(string="Special/Extended Audits")
-    assurance_engagement = fields.Boolean(string="Assurance Engagements on Pro Forma Financial Information")
+    assurance_services = fields.Boolean(string="Assurance and Audit Services", tracking=True)
+    review = fields.Boolean(string="Financial Statement Reviews and Audits", tracking=True)
+    extend_audit = fields.Boolean(string="Special/Extended Audits", tracking=True)
+    assurance_engagement = fields.Boolean(string="Assurance Engagements on Pro Forma Financial Information",
+                                          tracking=True)
     # Advisory
-    advisory_services = fields.Boolean(string="Advisory and Consultancy Services")
-    business_review = fields.Boolean(string="Business Process Review")
-    internal_audit = fields.Boolean(string="Internal Audit and Controls Evaluation")
-    risk_management = fields.Boolean(string="Enterprise Risk Management")
-    procedures_engagement = fields.Boolean(string="Agreed-upon Procedures Engagements")
-    corporate_finance = fields.Boolean(string="Corporate Finance and Financial Planning")
-    organizational = fields.Boolean(string="Organizational Structures, Mergers and Acquisition Advisory")
+    advisory_services = fields.Boolean(string="Advisory and Consultancy Services", tracking=True)
+    business_review = fields.Boolean(string="Business Process Review", tracking=True)
+    internal_audit = fields.Boolean(string="Internal Audit and Controls Evaluation", tracking=True)
+    risk_management = fields.Boolean(string="Enterprise Risk Management", tracking=True)
+    procedures_engagement = fields.Boolean(string="Agreed-upon Procedures Engagements", tracking=True)
+    corporate_finance = fields.Boolean(string="Corporate Finance and Financial Planning", tracking=True)
+    organizational = fields.Boolean(string="Organizational Structures, Mergers and Acquisition Advisory", tracking=True)
     # Business
-    business_services = fields.Boolean(string="Business Support and Process Outsourcing Services")
-    accounting = fields.Boolean(string="Accounting Process Outsourcing")
-    compilation = fields.Boolean(string="Compilation Engagements")
-    accounts_restructuring = fields.Boolean(string="Accounts Restructuring")
-    amendment = fields.Boolean(string="Amendment of Articles of Incorporation and By-Laws")
-    preparation_gis = fields.Boolean(string="Preparation of General Information Sheet")
-    business_registration = fields.Boolean(string="Start-up,Renewal and Closure of Business Registrations")
-    staff_arrangement = fields.Boolean(string="Staffing Augmentation Arrangements")
+    business_services = fields.Boolean(string="Business Support and Process Outsourcing Services", tracking=True)
+    accounting = fields.Boolean(string="Accounting Process Outsourcing", tracking=True)
+    compilation = fields.Boolean(string="Compilation Engagements", tracking=True)
+    accounts_restructuring = fields.Boolean(string="Accounts Restructuring", tracking=True)
+    amendment = fields.Boolean(string="Amendment of Articles of Incorporation and By-Laws", tracking=True)
+    preparation_gis = fields.Boolean(string="Preparation of General Information Sheet", tracking=True)
+    business_registration = fields.Boolean(string="Start-up,Renewal and Closure of Business Registrations",
+                                           tracking=True)
+    staff_arrangement = fields.Boolean(string="Staffing Augmentation Arrangements", tracking=True)
+    # non routinary
+    lis = fields.Boolean(string="LIS", tracking=True)
+    gis = fields.Boolean(string="GIS", tracking=True)
+    inv_list = fields.Boolean(string="Inventory List", tracking=True)
+    books_renewal = fields.Boolean(string="Books Renewal", tracking=True)
+    business_permit = fields.Boolean(string="Business Permit", tracking=True)
 
     # # client_records
     # documents_count = fields.Integer(compute="action_attach_documents")

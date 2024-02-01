@@ -42,7 +42,7 @@
                                 confirm="Are you sure you want to return this form?"
                                 groups="amyu1.manager_group"
                                 attrs="{'invisible': [('state', '!=', 'manager')]}"/>
-                        <button name="action_return" string="Edit" type="object"
+                        <button name="draft_action" string="Update Client" type="object"
                                 groups="amyu1.associate_group" confirm="Are you sure you want to edit?"
                                 attrs="{'invisible': [('state', '!=', 'approved')]}"
                                 class="oe_highlight"/>
@@ -75,7 +75,7 @@
                         </div>
                         <group>
                             <group>
-                                <field name="client_system_generated" placeholder="System generated" readonly="1"
+                                <field name="client_system_generated" placeholder="System generated"
                                        attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                 <field name="organization_type" options="{'no_open': True}"
                                        attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
@@ -87,6 +87,16 @@
                                        attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                 <field name="industry_class" options="{'no_open': True}"
                                        attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                <field name="report_period" widget="radio"
+                                       options="{'horizontal':True}"
+                                       attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                <field name="calendar" widget="radio"
+                                       options="{'horizontal':True}"
+                                       attrs="{'invisible': [('report_period', '!=', 'calendar')],'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}">
+                                </field>
+                                <field name="fiscal" widget="radio"
+                                       options="{'horizontal':True}"
+                                       attrs="{'invisible': [('report_period', '!=', 'fiscal')],'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                             </group>
                         </group>
 
@@ -578,6 +588,28 @@
                                                attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
                                         <label for="staff_arrangement"/>
                                     </group>
+                                </group>
+                                <group string="Non Routinary" col="2">
+                                    <group>
+                                        <field name="lis" nolabel="1"
+                                               attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                        <label for="lis"/>
+                                        <field name="gis" nolabel="1"
+                                               attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                        <label for="gis"/>
+                                        <field name="inv_list" nolabel="1"
+                                               attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                        <label for="inv_list"/>
+                                    </group>
+                                    <group>
+                                        <field name="books_renewal" nolabel="1"
+                                               attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                        <label for="books_renewal"/>
+                                        <field name="business_permit" nolabel="1"
+                                               attrs="{'readonly': ['|','|','|', ('state', '=', 'supervisor'), ('state', '=', 'manager'), ('state', '=', 'approved'), ('state', '=', 'cancel')]}"/>
+                                        <label for="business_permit"/>
+                                    </group>
+
                                 </group>
                                 <group string="Escalation Matrix"/>
                                 <p>
