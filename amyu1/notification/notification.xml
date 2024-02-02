@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="workflow_client_profile" model="wkf.workflows">
+        <field name="name">Client Profile Workflow</field>
+        <field name="osv">client.profile</field>
+        <field name="on_create">True</field>
+    </record>
+
+    <record id="workflow_client_profile_states" model="wkf.activity">
+        <field name="wkf_id" ref="amyu1.workflow_client_profile"/>
+        <field name="name">draft</field>
+        <field name="kind">function</field>
+        <field name="action">draft()</field>
+    </record>
+
+    <record id="workflow_client_profile_supervisor" model="wkf.transition">
+        <field name="act_from" ref="amyu1.workflow_client_profile_states"/>
+        <field name="act_to" ref="amyu1.workflow_client_profile_states"/>
+        <field name="signal">submitted to supervisor</field>
+        <field name="message" ref="amyu1.notification_template_for_transition"/>
+
+    </record>
+
+    <record id="workflow_client_profile_manager" model="wkf.transition">
+        <field name="act_from" ref="amyu1.workflow_client_profile_states"/>
+        <field name="act_to" ref="amyu1.workflow_client_profile_states"/>
+        <field name="signal">submitter to manager</field>
+        <field name="message" ref="amyu1.notification_template_for_transition"/>
+    </record>
+
+    <record id="workflow_client_profile_approved" model="wkf.transition">
+        <field name="act_from" ref="amyu1.workflow_client_profile_states"/>
+        <field name="act_to" ref="amyu1.workflow_client_profile_states"/>
+        <field name="signal">approved by manager</field>
+        <field name="message" ref="amyu1.notification_template_for_transition"/>
+    </record>
+
+    <record id="workflow_client_profile_returned" model="wkf.transition">
+        <field name="act_from" ref="amyu1.workflow_client_profile_states"/>
+        <field name="act_to" ref="amyu1.workflow_client_profile_states"/>
+        <field name="signal">returned to associate</field>
+        <field name="message" ref="amyu1.notification_template_for_transition"/>
+    </record>
+
+    <!-- Repeat similar records for other transitions -->
+</odoo>

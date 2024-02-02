@@ -776,7 +776,6 @@ class ClientProfile(models.Model):
     books_renewal = fields.Boolean(string="Books Renewal", tracking=True)
     business_permit = fields.Boolean(string="Business Permit", tracking=True)
 
-    # # client_records
     # documents_count = fields.Integer(compute="action_attach_documents")
     #
     # def action_attach_documents(self):

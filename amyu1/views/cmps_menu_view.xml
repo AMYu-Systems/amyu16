@@ -3,6 +3,7 @@
     <data>
         <menuitem id="cpms_root_menu"
                   name="CPMS"
+                  web_icon="amyu1,static/description/odoo_icon.png"
                   action="maintain_associates_profile_action"/>
         <menuitem id="menu_general_root"
                   name="General"

@@ -26,4 +26,3 @@ from . import cpms_capital_foreign_nsnp
 from . import cpms_capital_roqh_foreign_corp
 from . import cpms_capital_representative_office
 from . import cpms_tax_type
-from . import cpms_supervisor
