@@ -54,7 +54,7 @@
         'views/escalation_contact.xml',
         'views/cmps_menu_view.xml',
         'report/cpms_preview_reports.xml',
-        'notification/notification.xml',
+        # 'notification/notification.xml',
 
     ],
     'application': True,
