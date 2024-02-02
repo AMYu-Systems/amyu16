@@ -53,8 +53,8 @@
         'views/cpms_representative_office_view.xml',
         'views/escalation_contact.xml',
         'views/cmps_menu_view.xml',
-        'report/cpms_preview_reports.xml',
-        'notification/notification.xml',
+        # 'report/cpms_preview_reports.xml',
+        # 'notification/notification.xml',
 
     ],
     'application': True,
