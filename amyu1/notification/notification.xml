@@ -16,31 +16,30 @@
     <record id="workflow_client_profile_supervisor" model="wkf.transition">
         <field name="act_from" ref="amyu1.workflow_client_profile_states"/>
         <field name="act_to" ref="amyu1.workflow_client_profile_states"/>
-        <field name="signal">submitted to supervisor</field>
-        <field name="message" ref="amyu1.notification_template_for_transition"/>
-
+        <field name="signal">submit_to_supervisor</field>
+        <field name="message" ref="your_module.notification_template_for_supervisor"/>
     </record>
 
-    <record id="workflow_client_profile_manager" model="wkf.transition">
-        <field name="act_from" ref="amyu1.workflow_client_profile_states"/>
-        <field name="act_to" ref="amyu1.workflow_client_profile_states"/>
-        <field name="signal">submitter to manager</field>
-        <field name="message" ref="amyu1.notification_template_for_transition"/>
+    <record id="workflow_your_model_manager" model="wkf.transition">
+        <field name="act_from" ref="your_module.workflow_your_model_states"/>
+        <field name="act_to" ref="your_module.workflow_your_model_states"/>
+        <field name="signal">approve_by_manager</field>
+        <field name="message" ref="your_module.notification_template_for_manager"/>
     </record>
 
-    <record id="workflow_client_profile_approved" model="wkf.transition">
-        <field name="act_from" ref="amyu1.workflow_client_profile_states"/>
-        <field name="act_to" ref="amyu1.workflow_client_profile_states"/>
-        <field name="signal">approved by manager</field>
-        <field name="message" ref="amyu1.notification_template_for_transition"/>
-    </record>
+    <!--    <record id="workflow_client_profile_approved" model="wkf.transition">-->
+    <!--        <field name="act_from" ref="amyu1.workflow_client_profile_state"/>-->
+    <!--        <field name="act_to" ref="amyu1.workflow_client_profile_state"/>-->
+    <!--        <field name="signal">approved</field>-->
+    <!--        <field name="message" ref="amyu1.notification_template_approved"/>-->
+    <!--    </record>-->
 
-    <record id="workflow_client_profile_returned" model="wkf.transition">
-        <field name="act_from" ref="amyu1.workflow_client_profile_states"/>
-        <field name="act_to" ref="amyu1.workflow_client_profile_states"/>
-        <field name="signal">returned to associate</field>
-        <field name="message" ref="amyu1.notification_template_for_transition"/>
-    </record>
+    <!--    <record id="workflow_client_profile_returned" model="wkf.transition">-->
+    <!--        <field name="act_from" ref="amyu1.workflow_client_profile_state"/>-->
+    <!--        <field name="act_to" ref="amyu1.workflow_client_profile_state"/>-->
+    <!--        <field name="signal">cancel</field>-->
+    <!--        <field name="message" ref="amyu1.notification_template_cancel"/>-->
+    <!--    </record>-->
 
     <!-- Repeat similar records for other transitions -->
 </odoo>
