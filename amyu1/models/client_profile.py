@@ -31,7 +31,7 @@ class ClientProfile(models.Model):
          ('foreign_corp', 'Branch of Foreign Corporation'),
          ('foreign_nsnp_corp', 'Branch of Foreign NSNP Corporation'),
          ('roqh_foreign_corp', 'ROHQ of Foreign Corporation'),
-         ('representative_office', 'Representative Office')], string="Organization Type", required=True, tracking=True)
+         ('representative_office', 'Representative Office')], string="Organization Type", tracking=True)
     sole_proprietor_ids = fields.One2many(comodel_name='sole.proprietor', inverse_name='sole_proprietor_id',
                                           string="Sole", tracking=True)
     general_partnership_ids = fields.One2many(comodel_name='general.partnership', inverse_name='general_partnership_id',
@@ -78,7 +78,7 @@ class ClientProfile(models.Model):
                 if any(text.isdigit() for text in record.nature_of_business):
                     raise ValidationError("Numbers are not allowed in Nature of Activities field.")
 
-    date_of_engagement = fields.Date(string="Date of Engagement", required=True, tracking=True)
+    date_of_engagement = fields.Date(string="Date of Engagement", tracking=True)
 
     @api.onchange('date_of_engagement')
     def _check_future_date(self):
@@ -86,7 +86,7 @@ class ClientProfile(models.Model):
         if self.date_of_engagement and self.date_of_engagement > today:
             raise ValidationError("Future dates are not allowed.")
 
-    client_system_generated = fields.Char(string="Client ID", tracking=True)
+    client_system_generated = fields.Char(string="Client ID", required=True, tracking=True)
     state = fields.Selection([('draft', 'Draft'),
                               ('supervisor', 'Supervisor'),
                               ('manager', 'Manager'),
@@ -99,47 +99,47 @@ class ClientProfile(models.Model):
     audit_supervisor_id = fields.Many2many(string="Supervisor", related="team_id.audit_supervisor_id", readonly=True)
     cluster_id = fields.Many2one(string="Cluster", related="team_id.cluster_id", readonly=True)
     lead_partner_id = fields.Many2one(string="Lead Partner", related="team_id.lead_partner_id", readonly=True)
-    team_id = fields.Many2one(string="Team", comodel_name='associate.profile', required=True)
+    team_id = fields.Many2one(string="Team", comodel_name='associate.profile')
     report_period = fields.Selection([('calendar', 'Calendar'), ('fiscal', 'Fiscal')], tracking=True)
     fiscal = fields.Selection([('3', '3'), ('6', '6'), ('9', '9')], string="Fiscal Month", tracking=True)
     calendar = fields.Selection([('12', '12')], default="12", string="Fiscal Year End", tracking=True)
 
     def draft_action(self):
         self.state = 'draft'
-        return {
-            'type': 'ir.actions.client',
-            'tag': 'reload',
-        }
+        # return {
+        #     'type': 'ir.actions.client',
+        #     'tag': 'reload',
+        # }
 
     def action_submit_supervisor(self):
         self.state = 'supervisor'
-        return {
-            'type': 'ir.actions.client',
-            'tag': 'reload',
-
-        }
+        # return {
+        #     'type': 'ir.actions.client',
+        #     'tag': 'reload',
+        #
+        # }
 
     def action_approve_supervisor(self):
         self.state = 'manager'
-        return {
-            'type': 'ir.actions.client',
-            'tag': 'reload',
-        }
+        # return {
+        #     'type': 'ir.actions.client',
+        #     'tag': 'reload',
+        # }
 
     def action_return(self):
         self.state = 'cancel'
-        return {
-            'type': 'ir.actions.client',
-            'tag': 'reload',
-        }
+        # return {
+        #     'type': 'ir.actions.client',
+        #     'tag': 'reload',
+        # }
 
     def action_approve_manager(self):
         self.state = 'approved'
-        return {
-            'type': 'ir.actions.client',
-            'tag': 'reload',
-
-        }
+        # return {
+        #     'type': 'ir.actions.client',
+        #     'tag': 'reload',
+        #
+        # }
 
     # @api.onchange("name")
     # def compute_name(self):
@@ -459,7 +459,7 @@ class ClientProfile(models.Model):
 
     corporate_ids = fields.One2many(comodel_name='corporate.officer', inverse_name='client_profile_id',
                                     string="Corporate Officers", tracking=True)
-    vat = fields.Char(string="Tin No", size=11, required=True, tracking=True)
+    vat = fields.Char(string="Tin No", size=11, tracking=True)
 
     @api.onchange('vat')
     def onchange_vat(self):
@@ -475,14 +475,14 @@ class ClientProfile(models.Model):
                     raise ValidationError(
                         "Only numbers are allowed in the TAX ID field")
 
-    rdo_code = fields.Char(string="RDO Code", size=4, required=True, tracking=True)
+    rdo_code = fields.Char(string="RDO Code", size=4, tracking=True)
 
     @api.onchange('rdo_code')
     def caps_rdo_code(self):
         if self.rdo_code:
             self.rdo_code = str(self.rdo_code).upper()
 
-    registration_date = fields.Date(string="Registration Date", required=True, tracking=True)
+    registration_date = fields.Date(string="Registration Date", tracking=True)
 
     @api.onchange('registration_date')
     def _check_future_registration_date(self):
@@ -502,20 +502,18 @@ class ClientProfile(models.Model):
     taxpayer_type = fields.Selection([
         ('regular', 'Regular'), ('top_5k_individual', 'Top 5k Individual'), (
             'top_20k_corporate', 'Top 20k Corporate'), ('medium_taxpayer', 'Medium Taxpayer'), (
-            'large_taxpayer', 'Large Taxpayer'), ('not_applicable', 'N/A')], string="Taxpayer Type", required=True,
+            'large_taxpayer', 'Large Taxpayer'), ('not_applicable', 'N/A')], string="Taxpayer Type",
         tracking=True)
     invoice_tax = fields.Selection([
         ('bound_padded', 'Bound (Padded)'), ('computer_aid_loose_leaf', 'Computer-aided (Loose-leaf)'), (
-            'cas_generated', 'CAS-Generated'), ('not_applicable', 'N/A')], string="Invoice Type", required=True,
+            'cas_generated', 'CAS-Generated'), ('not_applicable', 'N/A')], string="Invoice Type",
         tracking=True)
     filing_payment = fields.Selection([('ebir_manual', 'eBIR (Manual)'), ('efps', 'EFPS'), ('not_applicable', 'N/A')],
-                                      string="Filling & Payment",
-                                      required=True, tracking=True)
+                                      string="Filling & Payment", tracking=True)
     books_of_account = fields.Selection(
         [('manual', 'Manual'), ('computer_aid_loose_leaf', 'Computer-aided (Loose-leaf)'),
-         ('cas_generated', 'CAS-Generated'), ('not_applicable', 'N/A')], string="Books of Accounts", required=True,
-        tracking=True)
-    psic_psoc = fields.Char(string="PSIC/PSOC", size=10, required=True, tracking=True)
+         ('cas_generated', 'CAS-Generated'), ('not_applicable', 'N/A')], string="Books of Accounts", tracking=True)
+    psic_psoc = fields.Char(string="PSIC/PSOC", size=10, tracking=True)
 
     @api.onchange('psic_psoc')
     def onchange_psic_psoc(self):
@@ -535,7 +533,7 @@ class ClientProfile(models.Model):
                     raise ValidationError(
                         "Only numbers are allowed in the PSIC/PSOC field")
 
-    ll_cas_permit_no = fields.Char(string="LL/CAS Permit No", size=15, required=True, tracking=True)
+    ll_cas_permit_no = fields.Char(string="LL/CAS Permit No", size=15, tracking=True)
 
     @api.constrains('ll_cas_permit_no')
     def _check_ll_cas_permit_no(self):
@@ -546,14 +544,14 @@ class ClientProfile(models.Model):
                         "Only numbers are allowed in the LL/CAS Permit No field")
 
     pos_crm_spm_yes_no = fields.Selection([('yes', 'Yes'), ('no', 'No')], default="no", tracking=True)
-    registration_number = fields.Char(string="Registration No", size=13, required=True, tracking=True)
+    registration_number = fields.Char(string="Registration No", size=13, tracking=True)
 
     @api.onchange('registration_number')
     def caps_registration_number(self):
         if self.registration_number:
             self.registration_number = str(self.registration_number).upper()
 
-    registration_date_sec = fields.Date("Registration Date", required=True, tracking=True)
+    registration_date_sec = fields.Date("Registration Date", tracking=True)
 
     @api.onchange('registration_date_sec')
     def _check_future_registration_date_sec(self):
@@ -561,7 +559,7 @@ class ClientProfile(models.Model):
         if self.registration_date_sec and self.registration_date_sec > today:
             raise ValidationError("Future dates are not allowed.")
 
-    trade_name = fields.Char(string="Trade Name", required=True, tracking=True)
+    trade_name = fields.Char(string="Trade Name", tracking=True)
 
     @api.onchange('trade_name')
     def caps_trade_name(self):
