@@ -78,7 +78,7 @@ class ClientProfile(models.Model):
                 if any(text.isdigit() for text in record.nature_of_business):
                     raise ValidationError("Numbers are not allowed in Nature of Activities field.")
 
-    date_of_engagement = fields.Date(string="Date of Engagement", tracking=True)
+    date_of_engagement = fields.Date(string="Date of Engagement", required=True, tracking=True)
 
     @api.onchange('date_of_engagement')
     def _check_future_date(self):
@@ -162,70 +162,54 @@ class ClientProfile(models.Model):
     #             client_id = name1[0:1] + name2[0:1] + name3[0:1]
     #
     #         print(client_id.upper())
-    # def write(self, vals):
-    #     if 'name' in vals:
-    #         old_id = self.client_system_generated.split("-")[0]
-    #         name = re.sub(r'\W+', ' ', vals['name'])
-    #         name_array = name.split()
-    #
-    #         if len(name_array) == 1:
-    #             client_system_generated = name_array[0][0:3]
-    #         elif len(name_array) == 2:
-    #             name1 = name_array[0]
-    #             name2 = name_array[1]
-    #             client_system_generated = (name1[0:2] if len(name1) >= 2 else name1[0:1]) + \
-    #                                       (name2[0:2] if len(name1) == 1 else name2[0:1])
-    #         elif len(name_array) >= 3:
-    #             name1 = name_array[0]
-    #             name2 = name_array[1]
-    #             name3 = name_array[2]
-    #             client_system_generated = name1[0:1] + name2[0:1] + name3[0:1]
-    #         vals.update({'client_system_generated': self.client_system_generated.replace(old_id,
-    #                                                                                      client_system_generated).upper()})
-    #     super(ClientProfile, self).write(vals)
-    #
-    # @api.model
-    # def create(self, vals):
-    #     name = re.sub(r'\W+', ' ', vals['name'])
-    #     name_array = name.split()
-    #     if len(name_array) == 1:
-    #         client_system_generated = name_array[0][0:3]
-    #     elif len(name_array) == 2:
-    #         name1 = name_array[0]
-    #         name2 = name_array[1]
-    #         client_system_generated = (name1[0:2] if len(name1) >= 2 else name1[0:1]) + \
-    #                                   (name2[0:2] if len(name1) == 1 else name2[0:1])
-    #     elif len(name_array) >= 3:
-    #         name1 = name_array[0]
-    #         name2 = name_array[1]
-    #         name3 = name_array[2]
-    #         client_system_generated = name1[0:1] + name2[0:1] + name3[0:1]
-    #     # Compute Client ID
-    #     client_system_generated += "-" + ("0" if int(
-    #         datetime.strftime(datetime.strptime(vals['date_of_engagement'], '%Y-%m-%d'), '%Y')) < 2000 else "1") + \
-    #                                str(vals['date_of_engagement'])[2:4] + \
-    #                                str(vals['date_of_engagement'])[5:7] + "-" + \
-    #                                self.env['ir.sequence'].next_by_code('client.id.seq')
-    #
-    #     vals.update({'client_system_generated': client_system_generated.upper()})
-    #     res = super(ClientProfile, self).create(vals)
-    #     # if res:
-    #     #     self.env['escalation.contact'].create({
-    #     #         'level': 'level_1',
-    #     #         'timeframe': 'lvl1',
-    #     #         'escalation_id': res.id
-    #     #     })
-    #     #     self.env['escalation.contact'].create({
-    #     #         'level': 'level_2',
-    #     #         'timeframe': 'lvl2',
-    #     #         'escalation_id': res.id
-    #     #     })
-    #     #     self.env['escalation.contact'].create({
-    #     #         'level': 'level_3',
-    #     #         'timeframe': 'lvl3',
-    #     #         'escalation_id': res.id
-    #     #     })
-    #     return res
+    def write(self, vals):
+        if 'name' in vals:
+            old_id = self.client_system_generated.split("-")[0]
+            name = re.sub(r'\W+', ' ', vals['name'])
+            name_array = name.split()
+
+            if len(name_array) == 1:
+                client_system_generated = name_array[0][0:3]
+            elif len(name_array) == 2:
+                name1 = name_array[0]
+                name2 = name_array[1]
+                client_system_generated = (name1[0:2] if len(name1) >= 2 else name1[0:1]) + \
+                                          (name2[0:2] if len(name1) == 1 else name2[0:1])
+            elif len(name_array) >= 3:
+                name1 = name_array[0]
+                name2 = name_array[1]
+                name3 = name_array[2]
+                client_system_generated = name1[0:1] + name2[0:1] + name3[0:1]
+            vals.update({'client_system_generated': self.client_system_generated.replace(old_id,
+                                                                                         client_system_generated).upper()})
+        super(ClientProfile, self).write(vals)
+
+    @api.model
+    def create(self, vals):
+        name = re.sub(r'\W+', ' ', vals['name'])
+        name_array = name.split()
+        if len(name_array) == 1:
+            client_system_generated = name_array[0][0:3]
+        elif len(name_array) == 2:
+            name1 = name_array[0]
+            name2 = name_array[1]
+            client_system_generated = (name1[0:2] if len(name1) >= 2 else name1[0:1]) + \
+                                      (name2[0:2] if len(name1) == 1 else name2[0:1])
+        elif len(name_array) >= 3:
+            name1 = name_array[0]
+            name2 = name_array[1]
+            name3 = name_array[2]
+            client_system_generated = name1[0:1] + name2[0:1] + name3[0:1]
+        # Compute Client ID
+        client_system_generated += "-" + ("0" if int(
+            datetime.strftime(datetime.strptime(vals['date_of_engagement'], '%Y-%m-%d'), '%Y')) < 2000 else "1") + \
+                                   str(vals['date_of_engagement'])[2:4] + \
+                                   str(vals['date_of_engagement'])[5:7] + "-" + \
+                                   self.env['ir.sequence'].next_by_code('client.id.seq')
+
+        vals.update({'client_system_generated': client_system_generated.upper()})
+        res = super(ClientProfile, self).create(vals)
+        return res
 
     registered_unit_no = fields.Char(string="Unit/Floor", tracking=True)
 
