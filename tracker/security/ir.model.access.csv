@@ -1,1 +1,7 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access.label_maintenance,access.label_maintenance,model_label_maintenance,base.group_user,1,1,1,1
+access.label_printer,access.label_printer,model_label_printer,base.group_user,1,1,1,1
+access.label_sorter,access.label_sorter,model_label_sorter,base.group_user,1,1,1,1
+access.label_qcc,access.label_qcc,model_label_qcc,base.group_user,1,1,1,1
+access.label_bir,access.label_bir,model_label_bir,base.group_user,1,1,1,1
+access.label_sec,access.label_sec,model_label_sec,base.group_user,1,1,1,1

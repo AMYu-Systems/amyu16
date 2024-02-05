@@ -86,12 +86,16 @@ class ClientProfile(models.Model):
         if self.date_of_engagement and self.date_of_engagement > today:
             raise ValidationError("Future dates are not allowed.")
 
-    client_system_generated = fields.Char(string="Client ID", required=True, tracking=True)
+    client_system_generated = fields.Char(string="Client ID", tracking=True)
     state = fields.Selection([('draft', 'Draft'),
                               ('supervisor', 'Supervisor'),
                               ('manager', 'Manager'),
                               ('approved', 'Approved'),
                               ('cancel', 'Returned')], tracking=True, default='draft', string="Status")
+
+    def state_waiting(self, cr, uid, ids, context=None):
+        return self.write(cr, uid, ids, {'state': 'draft'}, context=context)
+
     user_id = fields.Many2one(string="Associate", comodel_name='res.users', default=lambda self: self.env.user,
                               tracking=True)
     manager_id = fields.Many2one(string="Manager", related="team_id.manager_id", readonly=True)

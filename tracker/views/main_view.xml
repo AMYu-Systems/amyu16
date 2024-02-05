@@ -17,6 +17,13 @@
                                 <div class="oe_kanban_content">
                                     <div class="oe_kanban_details">
                                         <div class="oe_kanban_title">
+                                            <div>
+                                                <span style="float:right">
+                                                    <p class="text-info">
+                                                        <field name="revision"/>
+                                                    </p>
+                                                </span>
+                                            </div>
                                             <h3>
                                                 <field name="name"/>
                                             </h3>
@@ -44,12 +51,13 @@
                                             </span>
                                         </div>
                                         <div>
-                                            <span style="float:right">
+                                            <span style="float:left">
                                                 <p class="text-info">
-                                                    <field name="revision"/>
+                                                    <field name="label_note_ids"/>
                                                 </p>
                                             </span>
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -73,7 +81,7 @@
         <record id="status_view_action" model="ir.actions.act_window">
             <field name="name">Client Status</field>
             <field name="res_model">main.view</field>
-            <field name="view_mode">kanban,graph</field>
+            <field name="view_mode">kanban,form,graph</field>
         </record>
     </data>
 </odoo>
