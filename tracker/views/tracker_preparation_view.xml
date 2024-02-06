@@ -86,10 +86,10 @@
                             </div>
                         </div>
                     </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_ids"/>
+                    </div>
                 </form>
-                <div class="oe_chatter">
-                    <field name="message_ids"/>
-                </div>
             </field>
         </record>
 
