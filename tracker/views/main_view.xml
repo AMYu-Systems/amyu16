@@ -81,7 +81,7 @@
         <record id="status_view_action" model="ir.actions.act_window">
             <field name="name">Client Status</field>
             <field name="res_model">main.view</field>
-            <field name="view_mode">kanban,form,graph</field>
+            <field name="view_mode">kanban,graph</field>
         </record>
     </data>
 </odoo>

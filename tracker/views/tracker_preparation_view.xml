@@ -27,59 +27,7 @@
             <field name="model">main.view</field>
             <field name="arch" type="xml">
                 <form create="false">
-                    <!--                    <header>-->
-                    <!--                        <button name="action_review" string="Send to Review" type="object" class="oe_highlight"-->
-                    <!--                                attrs="{'invisible': ['|',('revision', '!=', 'done'),('state', '!=', 'checking')]}"-->
-                    <!--                                groups="tracker.preparation_group"/>-->
-                    <!--                        <button name="action_initial" string="Send to Initial" type="object" class="oe_highlight"-->
-                    <!--                                attrs="{'invisible': ['|',('revision', '!=', 'done'),('state', '!=', 'review')]}"-->
-                    <!--                                groups="tracker.preparation_group"/>-->
-                    <!--                        <button name="action_proofread" string="Send to Proofread" type="object" class="oe_highlight"-->
-                    <!--                                attrs="{'invisible': ['|',('revision', '!=', 'done'),('state', '!=', 'initial_approval')]}"-->
-                    <!--                                groups="tracker.preparation_group"/>-->
-                    <!--                        <button name="action_final_checking" string="Send to final Checking" type="object"-->
-                    <!--                                class="oe_highlight"-->
-                    <!--                                attrs="{'invisible': ['|',('revision', '!=', 'done'),('state', '!=', 'proofread')]}"-->
-                    <!--                                groups="tracker.preparation_group"/>-->
-                    <!--                        <button name="action_final_review" string="Send to final Review" type="object"-->
-                    <!--                                class="oe_highlight"-->
-                    <!--                                attrs="{'invisible': ['|',('revision', '!=', 'done'),('state', '!=', 'final_checking')]}"-->
-                    <!--                                groups="tracker.preparation_group"/>-->
-                    <!--                        <button name="action_final_approval" string="Send to final Approval" type="object"-->
-                    <!--                                class="oe_highlight"-->
-                    <!--                                attrs="{'invisible': ['|',('revision', '!=', 'done'),('state', '!=', 'final_review')]}"-->
-                    <!--                                groups="tracker.preparation_group"/>-->
-                    <!--                        <button name="action_final_proofread" string="Send to final Proofread" type="object"-->
-                    <!--                                class="oe_highlight"-->
-                    <!--                                attrs="{'invisible': ['|',('revision', '!=', 'done'),('state', '!=', 'final_approval')]}"-->
-                    <!--                                groups="tracker.preparation_group"/>-->
-                    <!--                        <button name="action_iar_review" string="Send to IAR Review" type="object"-->
-                    <!--                                class="oe_highlight"-->
-                    <!--                                attrs="{'invisible': ['|',('revision', '!=', 'done'),('state', '!=', 'final_proofread')]}"-->
-                    <!--                                groups="tracker.preparation_group"/>-->
-                    <!--                        <button name="action_printing" string="For Print" type="object"-->
-                    <!--                                class="oe_highlight"-->
-                    <!--                                attrs="{'invisible': ['|',('revision', '!=', 'done'),('state', '!=', 'iar_review')]}"-->
-                    <!--                                groups="tracker.preparation_group"/>-->
-                    <!--                        <button name="action_sorting" string="For Sorting" type="object"-->
-                    <!--                                class="oe_highlight"-->
-                    <!--                                attrs="{'invisible': ['|',('revision', '!=', 'done'),('state', '!=', 'printing')]}"-->
-                    <!--                                groups="tracker.printer_group"/>-->
-                    <!--                        <button name="action_qcc" string="For Quality Check Control" type="object"-->
-                    <!--                                class="oe_highlight"-->
-                    <!--                                attrs="{'invisible': ['|',('revision', '!=', 'done'),('state', '!=', 'sorting')]}"-->
-                    <!--                                groups="tracker.sorter_group"/>-->
-                    <!--                        <button name="action_filing" string="For Filing" type="object"-->
-                    <!--                                class="oe_highlight"-->
-                    <!--                                attrs="{'invisible': ['|',('revision', '!=', 'done'),('state', '!=', 'qcc')]}"-->
-                    <!--                                groups="tracker.qcc_group"/>-->
-                    <!--                        <button name="action_filed" string="Send to Filed" type="object"-->
-                    <!--                                class="oe_highlight"-->
-                    <!--                                attrs="{'invisible': ['|',('revision', '!=', 'done'),('state', '!=', 'filing')]}"-->
-                    <!--                                groups="tracker.filing_group"/>-->
-                    <!--                    </header>-->
-                    <field name="state" widget="statusbar" attrs="{'invisible': [('state', '==', 'filed')]}"
-                           status_invisible="preparation,checking,review,initial_approval,proofread,final_checking,final_review,final_approval,final_proofread,iar_review,printing,sorting,filing,filed"/>
+                    <field name="state" widget="statusbar" attrs="{'invisible': [('state', '==', 'filed')]}"/>
                     <sheet>
                         <div>
                             <span style="float:right">
@@ -136,22 +84,10 @@
                                     </group>
                                 </group>
                             </div>
-                            <!--                            <group attrs="{'invisible': [('state', '!=', 'qcc')]}">-->
-                            <!--                                <field name="qcc_ids" widget="many2many_tags"-->
-                            <!--                                       options="{'no_open': True,'no_create': True,'color_field': 'color'}"/>-->
-                            <!--                            </group>-->
-                            <!--                                                        <group attrs="{'invisible': [('state', '!=', 'filing')]}">-->
-                            <!--                                                            <field name="bir_ids" widget="many2many_tags"-->
-                            <!--                                                                   options="{'no_open': True,'no_create': True,'color_field': 'color'}"/>-->
-                            <!--                                                            <field name="sec_ids" widget="many2many_tags"-->
-                            <!--                                                                   options="{'no_open': True,'no_create': True,'color_field': 'color'}"/>-->
-                            <!--                                                        </group>-->
                         </div>
                     </sheet>
                 </form>
                 <div class="oe_chatter">
-                    <!--                    <field name="message_follower_ids"/>-->
-                    <!--                    <field name="activity_ids"/>-->
                     <field name="message_ids"/>
                 </div>
             </field>
@@ -160,7 +96,7 @@
         <record id="preparation_view_action" model="ir.actions.act_window">
             <field name="name">Client List</field>
             <field name="res_model">main.view</field>
-            <field name="view_mode">tree</field>
+            <field name="view_mode">tree,form</field>
             <field name="domain">[('state','=','preparation')]</field>
             <field name="view_id" ref="main_tree_view"/>
         </record>
