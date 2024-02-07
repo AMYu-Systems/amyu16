@@ -6,12 +6,15 @@
             <field name="model">main.view</field>
             <field name="arch" type="xml">
                 <tree create="False" delete="False" export_xlsx="False">
-                    <header>
-                        <button name="action_review" string="Send to Review" type="object" class="oe_highlight"
-                                groups="tracker.preparation_group"/>
-                    </header>
                     <field name="name"/>
                     <field name="user_id"/>
+                    <field name="state" widget="badge"
+                           decoration-danger="state == 'iar'"
+                           decoration-info="state == 'printing'"
+                           decoration-muted="state == 'sorting'"
+                           decoration-warning="state == 'qcc'"
+                           decoration-primary="state == 'filing'"
+                           decoration-success="state == 'filed'"/>
                     <field name="date_start"/>
                     <field name="date_end"/>
                     <field name="total_time"/>
@@ -32,12 +35,15 @@
             <field name="model">main.view</field>
             <field name="arch" type="xml">
                 <tree create="False" delete="False" export_xlsx="False">
-                    <header>
-                        <button name="action_initial" string="Send to Initial" type="object" class="oe_highlight"
-                                groups="tracker.preparation_group"/>
-                    </header>
                     <field name="name"/>
                     <field name="user_id"/>
+                    <field name="state" widget="badge"
+                           decoration-danger="state == 'iar'"
+                           decoration-info="state == 'printing'"
+                           decoration-muted="state == 'sorting'"
+                           decoration-warning="state == 'qcc'"
+                           decoration-primary="state == 'filing'"
+                           decoration-success="state == 'filed'"/>
                     <field name="date_start"/>
                     <field name="date_end"/>
                     <field name="total_time"/>
@@ -58,12 +64,15 @@
             <field name="model">main.view</field>
             <field name="arch" type="xml">
                 <tree create="False" delete="False" export_xlsx="False">
-                    <header>
-                        <button name="action_proofread" string="Send to Proofread" type="object" class="oe_highlight"
-                                groups="tracker.preparation_group"/>
-                    </header>
                     <field name="name"/>
                     <field name="user_id"/>
+                    <field name="state" widget="badge"
+                           decoration-danger="state == 'iar'"
+                           decoration-info="state == 'printing'"
+                           decoration-muted="state == 'sorting'"
+                           decoration-warning="state == 'qcc'"
+                           decoration-primary="state == 'filing'"
+                           decoration-success="state == 'filed'"/>
                     <field name="date_start"/>
                     <field name="date_end"/>
                     <field name="total_time"/>
@@ -84,13 +93,15 @@
             <field name="model">main.view</field>
             <field name="arch" type="xml">
                 <tree create="False" delete="False" export_xlsx="False">
-                    <header>
-                        <button name="action_final_checking" string="Send to final Checking" type="object"
-                                class="oe_highlight"
-                                groups="tracker.preparation_group"/>
-                    </header>
                     <field name="name"/>
                     <field name="user_id"/>
+                    <field name="state" widget="badge"
+                           decoration-danger="state == 'iar'"
+                           decoration-info="state == 'printing'"
+                           decoration-muted="state == 'sorting'"
+                           decoration-warning="state == 'qcc'"
+                           decoration-primary="state == 'filing'"
+                           decoration-success="state == 'filed'"/>
                     <field name="date_start"/>
                     <field name="date_end"/>
                     <field name="total_time"/>
@@ -111,13 +122,27 @@
             <field name="model">main.view</field>
             <field name="arch" type="xml">
                 <tree create="False" delete="False" export_xlsx="False">
-                    <header>
-                        <button name="action_final_review" string="Send to final Review" type="object"
-                                class="oe_highlight"
-                                groups="tracker.preparation_group"/>
-                    </header>
                     <field name="name"/>
                     <field name="user_id"/>
+                    <field name="state" widget="badge"
+                           decoration-danger="state == 'iar'"
+                           decoration-info="state == 'printing'"
+                           decoration-muted="state == 'sorting'"
+                           decoration-warning="state == 'qcc'"
+                           decoration-primary="state == 'filing'"
+                           decoration-success="state == 'filed'"/>
+                    <field name="date_start"/>
+                    <field name="date_end"/>
+                    <field name="total_time"/>
+                    <field name="name"/>
+                    <field name="user_id"/>
+                    <field name="state" widget="badge"
+                           decoration-danger="state == 'iar'"
+                           decoration-info="state == 'printing'"
+                           decoration-muted="state == 'sorting'"
+                           decoration-warning="state == 'qcc'"
+                           decoration-primary="state == 'filing'"
+                           decoration-success="state == 'filed'"/>
                     <field name="date_start"/>
                     <field name="date_end"/>
                     <field name="total_time"/>
@@ -138,12 +163,15 @@
             <field name="model">main.view</field>
             <field name="arch" type="xml">
                 <tree create="False" delete="False" export_xlsx="False">
-                    <header>
-                        <button name="action_final_approval" string="Send to final Approval" type="object"
-                                groups="tracker.preparation_group"/>
-                    </header>
                     <field name="name"/>
                     <field name="user_id"/>
+                    <field name="state" widget="badge"
+                           decoration-danger="state == 'iar'"
+                           decoration-info="state == 'printing'"
+                           decoration-muted="state == 'sorting'"
+                           decoration-warning="state == 'qcc'"
+                           decoration-primary="state == 'filing'"
+                           decoration-success="state == 'filed'"/>
                     <field name="date_start"/>
                     <field name="date_end"/>
                     <field name="total_time"/>
@@ -164,12 +192,15 @@
             <field name="model">main.view</field>
             <field name="arch" type="xml">
                 <tree create="False" delete="False" export_xlsx="False">
-                    <header>
-                        <button name="action_final_proofread" string="Send to final Proofread" type="object"
-                                groups="tracker.preparation_group"/>
-                    </header>
                     <field name="name"/>
                     <field name="user_id"/>
+                    <field name="state" widget="badge"
+                           decoration-danger="state == 'iar'"
+                           decoration-info="state == 'printing'"
+                           decoration-muted="state == 'sorting'"
+                           decoration-warning="state == 'qcc'"
+                           decoration-primary="state == 'filing'"
+                           decoration-success="state == 'filed'"/>
                     <field name="date_start"/>
                     <field name="date_end"/>
                     <field name="total_time"/>
@@ -190,13 +221,15 @@
             <field name="model">main.view</field>
             <field name="arch" type="xml">
                 <tree create="False" delete="False" export_xlsx="False">
-                    <header>
-                        <button name="action_iar_review" string="Send to IAR Review" type="object"
-                                class="oe_highlight"
-                                groups="tracker.preparation_group"/>
-                    </header>
                     <field name="name"/>
                     <field name="user_id"/>
+                    <field name="state" widget="badge"
+                           decoration-danger="state == 'iar'"
+                           decoration-info="state == 'printing'"
+                           decoration-muted="state == 'sorting'"
+                           decoration-warning="state == 'qcc'"
+                           decoration-primary="state == 'filing'"
+                           decoration-success="state == 'filed'"/>
                     <field name="date_start"/>
                     <field name="date_end"/>
                     <field name="total_time"/>
@@ -217,13 +250,15 @@
             <field name="model">main.view</field>
             <field name="arch" type="xml">
                 <tree create="False" delete="False" export_xlsx="False">
-                    <header>
-                        <button name="action_printing" string="For Print" type="object"
-                                class="oe_highlight"
-                                groups="tracker.preparation_group"/>
-                    </header>
                     <field name="name"/>
                     <field name="user_id"/>
+                    <field name="state" widget="badge"
+                           decoration-danger="state == 'iar'"
+                           decoration-info="state == 'printing'"
+                           decoration-muted="state == 'sorting'"
+                           decoration-warning="state == 'qcc'"
+                           decoration-primary="state == 'filing'"
+                           decoration-success="state == 'filed'"/>
                     <field name="date_start"/>
                     <field name="date_end"/>
                     <field name="total_time"/>
@@ -244,13 +279,15 @@
             <field name="model">main.view</field>
             <field name="arch" type="xml">
                 <tree create="False" delete="False" export_xlsx="False">
-                    <header>
-                        <button name="action_sorting" string="For Sorting" type="object"
-                                class="oe_highlight"
-                                groups="tracker.printer_group"/>
-                    </header>
                     <field name="name"/>
                     <field name="user_id"/>
+                    <field name="state" widget="badge"
+                           decoration-danger="state == 'iar'"
+                           decoration-info="state == 'printing'"
+                           decoration-muted="state == 'sorting'"
+                           decoration-warning="state == 'qcc'"
+                           decoration-primary="state == 'filing'"
+                           decoration-success="state == 'filed'"/>
                     <field name="date_start"/>
                     <field name="date_end"/>
                     <field name="total_time"/>
@@ -271,13 +308,15 @@
             <field name="model">main.view</field>
             <field name="arch" type="xml">
                 <tree create="False" delete="False" export_xlsx="False">
-                    <header>
-                        <button name="action_qcc" string="For Quality Check Control" type="object"
-                                class="oe_highlight"
-                                groups="tracker.sorter_group"/>
-                    </header>
                     <field name="name"/>
                     <field name="user_id"/>
+                    <field name="state" widget="badge"
+                           decoration-danger="state == 'iar'"
+                           decoration-info="state == 'printing'"
+                           decoration-muted="state == 'sorting'"
+                           decoration-warning="state == 'qcc'"
+                           decoration-primary="state == 'filing'"
+                           decoration-success="state == 'filed'"/>
                     <field name="date_start"/>
                     <field name="date_end"/>
                     <field name="total_time"/>
@@ -298,13 +337,15 @@
             <field name="model">main.view</field>
             <field name="arch" type="xml">
                 <tree create="False" delete="False" export_xlsx="False">
-                    <header>
-                        <button name="action_filing" string="For Filing" type="object"
-                                class="oe_highlight"
-                                groups="tracker.qcc_group"/>
-                    </header>
                     <field name="name"/>
                     <field name="user_id"/>
+                    <field name="state" widget="badge"
+                           decoration-danger="state == 'iar'"
+                           decoration-info="state == 'printing'"
+                           decoration-muted="state == 'sorting'"
+                           decoration-warning="state == 'qcc'"
+                           decoration-primary="state == 'filing'"
+                           decoration-success="state == 'filed'"/>
                     <field name="date_start"/>
                     <field name="date_end"/>
                     <field name="total_time"/>
@@ -325,13 +366,15 @@
             <field name="model">main.view</field>
             <field name="arch" type="xml">
                 <tree create="False" delete="False" export_xlsx="False">
-                    <header>
-                        <button name="action_filed" string="Send to Filed" type="object"
-                                class="oe_highlight"
-                                groups="tracker.filing_group"/>
-                    </header>
                     <field name="name"/>
                     <field name="user_id"/>
+                    <field name="state" widget="badge"
+                           decoration-danger="state == 'iar'"
+                           decoration-info="state == 'printing'"
+                           decoration-muted="state == 'sorting'"
+                           decoration-warning="state == 'qcc'"
+                           decoration-primary="state == 'filing'"
+                           decoration-success="state == 'filed'"/>
                     <field name="date_start"/>
                     <field name="date_end"/>
                     <field name="total_time"/>
@@ -354,6 +397,13 @@
                 <tree create="False">
                     <field name="name"/>
                     <field name="user_id"/>
+                    <field name="state" widget="badge"
+                           decoration-danger="state == 'iar'"
+                           decoration-info="state == 'printing'"
+                           decoration-muted="state == 'sorting'"
+                           decoration-warning="state == 'qcc'"
+                           decoration-primary="state == 'filing'"
+                           decoration-success="state == 'filed'"/>
                     <field name="date_start"/>
                     <field name="date_end"/>
                     <field name="total_time"/>

@@ -91,7 +91,7 @@
                   action="filed_view_action"/>
         <menuitem id="menu_label_list_root"
                   name="Configuration"
-                  sequence="20"
+                  sequence="7"
                   parent="fsms_root_menu"/>
         <menuitem id="menu_label_list_client"
                   name="Label"
@@ -117,5 +117,17 @@
                   name="SEC"
                   parent="menu_label_list_root"
                   action="label_sec_view_action"/>
+        <menuitem id="menu_group_list_root"
+                  name="Maintenance"
+                  sequence="8"
+                  parent="fsms_root_menu"/>
+        <menuitem id="menu_partner_list_client"
+                  name="Partner"
+                  parent="menu_group_list_root"
+                  action="partner_view_action"/>
+        <menuitem id="menu_manager_list_client"
+                  name="Manager"
+                  parent="menu_group_list_root"
+                  action="team_manager_view_action"/>
     </data>
 </odoo>

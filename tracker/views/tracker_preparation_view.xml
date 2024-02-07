@@ -6,15 +6,18 @@
             <field name="model">main.view</field>
             <field name="arch" type="xml">
                 <tree editable="bottom" create="1" export_xlsx="0">
-                    <header>
-                        <button name="action_checking" string="Send to Checking" type="object" class="oe_highlight"
-                                groups="tracker.preparation_group"/>
-                    </header>
                     <field name="name"/>
                     <field name="user_id" readonly="1"/>
                     <field name="supervisor_id" options="{'no_open': True,'no_create': True}"/>
-                    <field name="manager_id" options="{'no_open': True,'no_create': True}"/>
-                    <field name="partner_id" options="{'no_open': True,'no_create': True}"/>
+                    <field name="managers_id" options="{'no_open': True,'no_create': True}"/>
+                    <field name="cluster_id" options="{'no_open': True,'no_create': True}"/>
+                    <field name="state" widget="badge"
+                           decoration-danger="state == 'iar'"
+                           decoration-info="state == 'printing'"
+                           decoration-muted="state == 'sorting'"
+                           decoration-warning="state == 'qcc'"
+                           decoration-primary="state == 'filing'"
+                           decoration-success="state == 'filed'" readonly="1"/>
                     <field name="date_start" readonly="1"/>
                     <field name="date_end" readonly="1"/>
                     <field name="total_time" readonly="1"/>
@@ -27,7 +30,9 @@
             <field name="model">main.view</field>
             <field name="arch" type="xml">
                 <form create="false">
-                    <field name="state" widget="statusbar" attrs="{'invisible': [('state', '==', 'filed')]}"/>
+                    <header>
+                        <field name="state" readonly="1"/>
+                    </header>
                     <sheet>
                         <div>
                             <span style="float:right">
@@ -55,29 +60,29 @@
                             </group>
                             <div>
                                 <group col="5"
-                                       attrs="{'invisible': ['|','|','|','|','|','|','|','|',('state', '=', 'checking'),('state', '=', 'review'),('state', '=', 'initial_approval'),('state', '=', 'proofread')
+                                       attrs="{'invisible': ['|','|','|','|','|','|','|','|','|',('state', '=', 'preparation'),('state', '=', 'checking'),('state', '=', 'review'),('state', '=', 'initial_approval'),('state', '=', 'proofread')
                                        ,('state', '=', 'final_checking'),('state', '=', 'final_review'),('state', '=', 'final_approval'),('state', '=', 'final_proofread'),('state', '=', 'iar_review')]}">
                                     <group string="Printer Checklist">
                                         <field name="label_printer_ids" widget="many2many_tags" nolabel="1"
                                                attrs="{'readonly': ['|','|','|',('state', '=', 'sorting'),('state', '=', 'qcc'),('state', '=', 'filing'),('state', '=', 'filed')]}"
                                                options="{'no_open': True,'no_create': True,'color_field': 'color'}"/>
                                     </group>
-                                    <group string="Sorter Checklist">
+                                    <group string="Sorter Checklist" attrs="{'invisible':[('state', '=', 'printing')]}">
                                         <field name="label_sorter_ids" widget="many2many_tags" nolabel="1"
                                                attrs="{'readonly': ['|','|','|',('state', '=', 'printing'),('state', '=', 'qcc'),('state', '=', 'filing'),('state', '=', 'filed')]}"
                                                options="{'no_open': True,'no_create': True,'color_field': 'color'}"/>
                                     </group>
-                                    <group string="Quality Check Control Checklist">
+                                    <group string="Quality Check Control Checklist" attrs="{'invisible':['|',('state', '=', 'printing'),('state', '=', 'sorting')]}">
                                         <field name="label_qcc_ids" widget="many2many_tags" nolabel="1"
                                                attrs="{'readonly': ['|','|','|',('state', '=', 'printing'),('state', '=', 'sorting'),('state', '=', 'filing'),('state', '=', 'filed')]}"
                                                options="{'no_open': True,'no_create': True,'color_field': 'color'}"/>
                                     </group>
-                                    <group string="B.I.R Checklist">
+                                    <group string="B.I.R Checklist" attrs="{'invisible':['|','|',('state', '=', 'printing'),('state', '=', 'sorting'),('state', '=', 'qcc')]}">
                                         <field name="label_bir_ids" widget="many2many_tags" nolabel="1"
                                                attrs="{'readonly': ['|','|','|',('state', '=', 'printing'),('state', '=', 'sorting'),('state', '=', 'qcc'),('state', '=', 'filed')]}"
                                                options="{'no_open': True,'no_create': True,'color_field': 'color'}"/>
                                     </group>
-                                    <group string="S.E.C Checklist">
+                                    <group string="S.E.C Checklist" attrs="{'invisible':['|','|',('state', '=', 'printing'),('state', '=', 'sorting'),('state', '=', 'qcc')]}">
                                         <field name="label_sec_ids" widget="many2many_tags" nolabel="1"
                                                attrs="{'readonly': ['|','|','|',('state', '=', 'printing'),('state', '=', 'sorting'),('state', '=', 'sorting'),('state', '=', 'filed')]}"
                                                options="{'no_open': True,'no_create': True,'color_field': 'color'}"/>
