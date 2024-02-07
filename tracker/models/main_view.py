@@ -16,14 +16,14 @@ class MainView(models.Model):
     user_id = fields.Many2one(string="Associate", comodel_name='res.users', default=lambda self: self.env.user,
                               tracking=True)
     supervisor_id = fields.Many2one(string="Supervisor", comodel_name='res.users')
-    manager_id = fields.Many2one(string="Manager", comodel_name='res.users')
-    partner_id = fields.Many2one(string="Partner", comodel_name='res.users')
+    managers_id = fields.Many2one(string="Manager", comodel_name='team.manager')
+    cluster_id = fields.Many2one(string="Partner", comodel_name='group.cluster')
     state = fields.Selection([('preparation', 'Preparation'), ('checking', 'Checking'), ('review', 'Review'),
                               ('initial_approval', 'Init. Approval'), ('proofread', 'Proofread'),
                               ('final_checking', 'FNL Checking'), ('final_review', 'FNL Review'),
                               ('final_approval', 'FNL Approval'), ('final_proofread', 'FNL Proofread'),
-                              ('iar_review', 'IAR Review'), ('printing', 'Print'), ('sorting', 'Sort'),
-                              ('qcc', 'Quality Control Check'), ('filing', 'File'), ('filed', 'Filed')],
+                              ('iar_review', 'IAR Review'), ('printing', 'Printing'), ('sorting', 'Sorting'),
+                              ('qcc', 'Quality Control Check'), ('filing', 'Filing'), ('filed', 'Filed')],
                              string="Status", default='preparation', tracking=True, group_expand='_expand_states',
                              index=True)
 
@@ -134,7 +134,7 @@ class MainView(models.Model):
     date_start = fields.Datetime(string="Date Start", default=lambda self: fields.datetime.now())
     date_end = fields.Datetime(string="Date End")
     total_time = fields.Integer(string="Total Time", compute='_compute_total_time', store=True)
-    revision = fields.Selection([('process', 'In Progress'), ('revision', 'Revision'), ('done', 'Done')],
+    revision = fields.Selection([('process', 'In Progress'), ('revision', 'Revision'), ('done', 'Proceed')],
                                 string="Status", tracking=True,
                                 default='process')
 
