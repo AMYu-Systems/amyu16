@@ -100,7 +100,6 @@ class ClientProfile(models.Model):
                               tracking=True)
     manager_id = fields.Many2one(string="Manager", related="team_id.manager_id", readonly=True)
     supervisor_id = fields.Many2one(string="Supervisor", related="team_id.supervisor_id", readonly=True)
-    audit_supervisor_id = fields.Many2many(string="Supervisor", related="team_id.audit_supervisor_id", readonly=True)
     cluster_id = fields.Many2one(string="Cluster", related="team_id.cluster_id", readonly=True)
     lead_partner_id = fields.Many2one(string="Lead Partner", related="team_id.lead_partner_id", readonly=True)
     team_id = fields.Many2one(string="Team", comodel_name='associate.profile')

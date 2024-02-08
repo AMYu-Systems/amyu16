@@ -20,4 +20,4 @@ access.label_sec,access.label_sec,model_label_sec,base.group_user,1,1,1,1
 
 access.group_cluster,access.group_cluster,model_group_cluster,base.group_user,1,1,1,1
 access.team_manager,access.team_manager,model_team_manager,base.group_user,1,1,1,1
-
+access.team_supervisor,access.team_supervisor,model_team_supervisor,base.group_user,1,1,1,1

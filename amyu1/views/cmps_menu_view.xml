@@ -33,5 +33,21 @@
                   name="Report"
                   action="master_list_action"
                   parent="menu_dashboard_root"/>
+        <menuitem id="menu_maintenance_root"
+                  name="Maintenance"
+                  sequence="3"
+                  parent="cpms_root_menu"/>
+        <menuitem id="menu_department_details"
+                  name="Department"
+                  action="team_department_action"
+                  parent="menu_maintenance_root"/>
+        <menuitem id="menu_cluster_details"
+                  name="Cluster"
+                  action="associate_cluster_action"
+                  parent="menu_maintenance_root"/>
+        <menuitem id="menu_work_details"
+                  name="Job Position"
+                  action="job_work_action"
+                  parent="menu_maintenance_root"/>
     </data>
 </odoo>
