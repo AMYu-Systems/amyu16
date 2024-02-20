@@ -6,15 +6,18 @@
             <field name="model">main.view</field>
             <field name="arch" type="xml">
                 <tree editable="bottom" create="1" export_xlsx="0">
-                    <header>
-                        <button name="action_checking" string="Send to Checking" type="object" class="oe_highlight"
-                                groups="tracker.preparation_group"/>
-                    </header>
                     <field name="name"/>
                     <field name="user_id" readonly="1"/>
                     <field name="supervisor_id" options="{'no_open': True,'no_create': True}"/>
-                    <field name="manager_id" options="{'no_open': True,'no_create': True}"/>
-                    <field name="partner_id" options="{'no_open': True,'no_create': True}"/>
+                    <field name="managers_id" options="{'no_open': True,'no_create': True}"/>
+                    <field name="cluster_id" options="{'no_open': True,'no_create': True}"/>
+                    <field name="state" widget="badge"
+                           decoration-danger="state == 'iar'"
+                           decoration-info="state == 'printing'"
+                           decoration-muted="state == 'sorting'"
+                           decoration-warning="state == 'qcc'"
+                           decoration-primary="state == 'filing'"
+                           decoration-success="state == 'filed'" readonly="1"/>
                     <field name="date_start" readonly="1"/>
                     <field name="date_end" readonly="1"/>
                     <field name="total_time" readonly="1"/>
@@ -28,58 +31,8 @@
             <field name="arch" type="xml">
                 <form create="false">
                     <header>
-                        <button name="action_review" string="Send to Review" type="object" class="oe_highlight"
-                                attrs="{'invisible': ['|',('revision', '!=', 'done'),('state', '!=', 'checking')]}"
-                                groups="tracker.preparation_group"/>
-                        <button name="action_initial" string="Send to Initial" type="object" class="oe_highlight"
-                                attrs="{'invisible': ['|',('revision', '!=', 'done'),('state', '!=', 'review')]}"
-                                groups="tracker.preparation_group"/>
-                        <button name="action_proofread" string="Send to Proofread" type="object" class="oe_highlight"
-                                attrs="{'invisible': ['|',('revision', '!=', 'done'),('state', '!=', 'initial_approval')]}"
-                                groups="tracker.preparation_group"/>
-                        <button name="action_final_checking" string="Send to final Checking" type="object"
-                                class="oe_highlight"
-                                attrs="{'invisible': ['|',('revision', '!=', 'done'),('state', '!=', 'proofread')]}"
-                                groups="tracker.preparation_group"/>
-                        <button name="action_final_review" string="Send to final Review" type="object"
-                                class="oe_highlight"
-                                attrs="{'invisible': ['|',('revision', '!=', 'done'),('state', '!=', 'final_checking')]}"
-                                groups="tracker.preparation_group"/>
-                        <button name="action_final_approval" string="Send to final Approval" type="object"
-                                class="oe_highlight"
-                                attrs="{'invisible': ['|',('revision', '!=', 'done'),('state', '!=', 'final_review')]}"
-                                groups="tracker.preparation_group"/>
-                        <button name="action_final_proofread" string="Send to final Proofread" type="object"
-                                class="oe_highlight"
-                                attrs="{'invisible': ['|',('revision', '!=', 'done'),('state', '!=', 'final_approval')]}"
-                                groups="tracker.preparation_group"/>
-                        <button name="action_iar_review" string="Send to IAR Review" type="object"
-                                class="oe_highlight"
-                                attrs="{'invisible': ['|',('revision', '!=', 'done'),('state', '!=', 'final_proofread')]}"
-                                groups="tracker.preparation_group"/>
-                        <button name="action_printing" string="For Print" type="object"
-                                class="oe_highlight"
-                                attrs="{'invisible': ['|',('revision', '!=', 'done'),('state', '!=', 'iar_review')]}"
-                                groups="tracker.preparation_group"/>
-                        <button name="action_sorting" string="For Sorting" type="object"
-                                class="oe_highlight"
-                                attrs="{'invisible': ['|',('revision', '!=', 'done'),('state', '!=', 'printing')]}"
-                                groups="tracker.printer_group"/>
-                        <button name="action_qcc" string="For Quality Check Control" type="object"
-                                class="oe_highlight"
-                                attrs="{'invisible': ['|',('revision', '!=', 'done'),('state', '!=', 'sorting')]}"
-                                groups="tracker.sorter_group"/>
-                        <button name="action_filing" string="For Filing" type="object"
-                                class="oe_highlight"
-                                attrs="{'invisible': ['|',('revision', '!=', 'done'),('state', '!=', 'qcc')]}"
-                                groups="tracker.qcc_group"/>
-                        <button name="action_filed" string="Send to Filed" type="object"
-                                class="oe_highlight"
-                                attrs="{'invisible': ['|',('revision', '!=', 'done'),('state', '!=', 'filing')]}"
-                                groups="tracker.filing_group"/>
+                        <field name="state" readonly="1"/>
                     </header>
-                    <field name="state" widget="statusbar" attrs="{'invisible': [('state', '==', 'filed')]}"
-                           status_invisible="preparation,checking,review,initial_approval,proofread,final_checking,final_review,final_approval,final_proofread,print,sort,file,filed"/>
                     <sheet>
                         <div>
                             <span style="float:right">
@@ -88,10 +41,15 @@
                         </div>
                         <div class="oe_title">
                             <h1>
-                                <field name="name" readonly="1"/>
+                                <field name="name" placeholder="Client Name" attrs="{'readonly':[('id','!=', False)]}"/>
                             </h1>
                         </div>
                         <div>
+                            <group>
+                                <field name="label_note_ids" widget="many2many_tags"
+                                       attrs="{'readonly':[('state','=', 'filed')]}"
+                                       options="{'no_open': True,'no_create': True,'color_field': 'color'}"/>
+                            </group>
                             <group>
                                 <group>
                                     <field name="date_start" readonly="1"/>
@@ -100,143 +58,40 @@
                                     <field name="date_end" attrs="{'invisible': [('state', '!=', 'filed')]}"/>
                                 </group>
                             </group>
+                            <div>
+                                <group col="5"
+                                       attrs="{'invisible': ['|','|','|','|','|','|','|','|','|',('state', '=', 'preparation'),('state', '=', 'checking'),('state', '=', 'review'),('state', '=', 'initial_approval'),('state', '=', 'proofread')
+                                       ,('state', '=', 'final_checking'),('state', '=', 'final_review'),('state', '=', 'final_approval'),('state', '=', 'final_proofread'),('state', '=', 'iar_review')]}">
+                                    <group string="Printer Checklist">
+                                        <field name="label_printer_ids" widget="many2many_tags" nolabel="1"
+                                               attrs="{'readonly': ['|','|','|',('state', '=', 'sorting'),('state', '=', 'qcc'),('state', '=', 'filing'),('state', '=', 'filed')]}"
+                                               options="{'no_open': True,'no_create': True,'color_field': 'color'}"/>
+                                    </group>
+                                    <group string="Sorter Checklist" attrs="{'invisible':[('state', '=', 'printing')]}">
+                                        <field name="label_sorter_ids" widget="many2many_tags" nolabel="1"
+                                               attrs="{'readonly': ['|','|','|',('state', '=', 'printing'),('state', '=', 'qcc'),('state', '=', 'filing'),('state', '=', 'filed')]}"
+                                               options="{'no_open': True,'no_create': True,'color_field': 'color'}"/>
+                                    </group>
+                                    <group string="Quality Check Control Checklist" attrs="{'invisible':['|',('state', '=', 'printing'),('state', '=', 'sorting')]}">
+                                        <field name="label_qcc_ids" widget="many2many_tags" nolabel="1"
+                                               attrs="{'readonly': ['|','|','|',('state', '=', 'printing'),('state', '=', 'sorting'),('state', '=', 'filing'),('state', '=', 'filed')]}"
+                                               options="{'no_open': True,'no_create': True,'color_field': 'color'}"/>
+                                    </group>
+                                    <group string="B.I.R Checklist" attrs="{'invisible':['|','|',('state', '=', 'printing'),('state', '=', 'sorting'),('state', '=', 'qcc')]}">
+                                        <field name="label_bir_ids" widget="many2many_tags" nolabel="1"
+                                               attrs="{'readonly': ['|','|','|',('state', '=', 'printing'),('state', '=', 'sorting'),('state', '=', 'qcc'),('state', '=', 'filed')]}"
+                                               options="{'no_open': True,'no_create': True,'color_field': 'color'}"/>
+                                    </group>
+                                    <group string="S.E.C Checklist" attrs="{'invisible':['|','|',('state', '=', 'printing'),('state', '=', 'sorting'),('state', '=', 'qcc')]}">
+                                        <field name="label_sec_ids" widget="many2many_tags" nolabel="1"
+                                               attrs="{'readonly': ['|','|','|',('state', '=', 'printing'),('state', '=', 'sorting'),('state', '=', 'sorting'),('state', '=', 'filed')]}"
+                                               options="{'no_open': True,'no_create': True,'color_field': 'color'}"/>
+                                    </group>
+                                </group>
+                            </div>
                         </div>
-                        <notebook>
-                            <page string="Printer Checklist" attrs="{'invisible': [('state', '!=', 'printing')]}">
-                                <group>
-                                    <group>
-                                        <field name="print_itr_form" nolabel="1"/>
-                                        <label for="print_itr_form"/>
-                                        <field name="print_cs" nolabel="1"/>
-                                        <label for="print_cs"/>
-                                        <field name="print_iar" nolabel="1"/>
-                                        <label for="print_iar"/>
-                                        <field name="print_others" nolabel="1"/>
-                                        <label for="print_others"/>
-                                    </group>
-                                    <group>
-                                        <field name="print_fs" nolabel="1"/>
-                                        <label for="print_fs"/>
-                                        <field name="print_itr" nolabel="1"/>
-                                        <label for="print_itr"/>
-                                        <field name="print_afs" nolabel="1"/>
-                                        <label for="print_afs"/>
-                                        <field name="print_form1709" nolabel="1"/>
-                                        <label for="print_form1709"/>
-                                    </group>
-                                    <div>
-                                        <field name="print_text_others" nolabel="1"
-                                               attrs="{'invisible': [('print_others', '=', False)]}"/>
-                                    </div>
-                                </group>
-                            </page>
-                            <page string="Sorter Checklist" attrs="{'invisible': [('state', '!=', 'sorting')]}">
-                                <group>
-                                    <group>
-                                        <field name="sort_itr_form" nolabel="1"/>
-                                        <label for="sort_itr_form"/>
-                                        <field name="sort_cs" nolabel="1"/>
-                                        <label for="sort_cs"/>
-                                        <field name="sort_iar" nolabel="1"/>
-                                        <label for="sort_iar"/>
-                                        <field name="sort_others" nolabel="1"/>
-                                        <label for="sort_others"/>
-                                    </group>
-                                    <group>
-                                        <field name="sort_fs" nolabel="1"/>
-                                        <label for="sort_fs"/>
-                                        <field name="sort_itr" nolabel="1"/>
-                                        <label for="sort_itr"/>
-                                        <field name="sort_afs" nolabel="1"/>
-                                        <label for="sort_afs"/>
-                                        <field name="sort_form1709" nolabel="1"/>
-                                        <label for="sort_form1709"/>
-                                    </group>
-                                    <div>
-                                        <field name="sort_text_others" nolabel="1"
-                                               attrs="{'invisible': [('sort_others', '=', False)]}"/>
-                                    </div>
-                                </group>
-                            </page>
-                            <page string="Quality Control Checklist" attrs="{'invisible': [('state', '!=', 'qcc')]}">
-                                <group>
-                                    <group>
-                                        <field name="qcc_itr_form" nolabel="1"/>
-                                        <label for="qcc_itr_form"/>
-                                        <field name="qcc_cs" nolabel="1"/>
-                                        <label for="qcc_cs"/>
-                                        <field name="qcc_iar" nolabel="1"/>
-                                        <label for="qcc_iar"/>
-                                        <field name="qcc_others" nolabel="1"/>
-                                        <label for="qcc_others"/>
-                                    </group>
-                                    <group>
-                                        <field name="qcc_fs" nolabel="1"/>
-                                        <label for="qcc_fs"/>
-                                        <field name="qcc_itr" nolabel="1"/>
-                                        <label for="qcc_itr"/>
-                                        <field name="qcc_afs" nolabel="1"/>
-                                        <label for="qcc_afs"/>
-                                        <field name="qcc_form1709" nolabel="1"/>
-                                        <label for="qcc_form1709"/>
-                                    </group>
-                                    <div>
-                                        <field name="qcc_text_others" nolabel="1"
-                                               attrs="{'invisible': [('qcc_others', '=', False)]}"/>
-                                    </div>
-                                </group>
-                            </page>
-                            <page string="B.I.R/S.E.C" attrs="{'invisible': [('state', '!=', 'filing')]}">
-                                <group string="BIR Filing Checklist">
-                                    <group>
-                                        <field name="bir_itr_form" nolabel="1"/>
-                                        <label for="bir_itr_form"/>
-                                        <field name="bir_trrc" nolabel="1"/>
-                                        <label for="bir_trrc"/>
-                                        <field name="bir_iar" nolabel="1"/>
-                                        <label for="bir_iar"/>
-                                        <field name="bir_others" nolabel="1"/>
-                                        <label for="bir_others"/>
-                                    </group>
-                                    <group>
-                                        <field name="bir_itr" nolabel="1"/>
-                                        <label for="bir_itr"/>
-                                        <field name="bir_afs" nolabel="1"/>
-                                        <label for="bir_afs"/>
-                                        <field name="bir_form1709" nolabel="1"/>
-                                        <label for="bir_form1709"/>
-                                        <field name="bir_sawt" nolabel="1"/>
-                                        <label for="bir_sawt"/>
-                                        <field name="bir_sawt_validation" nolabel="1"/>
-                                        <label for="bir_sawt_validation"/>
-                                    </group>
-                                    <div>
-                                        <field name="qcc_text_others" nolabel="1"
-                                               attrs="{'invisible': [('bir_others', '=', False)]}"/>
-                                    </div>
-                                </group>
-                                <group string="SEC Filing Checklist">
-                                    <group>
-                                        <field name="sec_eafs" nolabel="1"/>
-                                        <label for="sec_eafs"/>
-                                        <field name="sec_iar" nolabel="1"/>
-                                        <label for="sec_iar"/>
-                                        <field name="sec_fs" nolabel="1"/>
-                                        <label for="sec_fs"/>
-                                    </group>
-                                    <group>
-                                        <field name="sec_afs" nolabel="1"/>
-                                        <label for="sec_afs"/>
-                                        <field name="sec_sws" nolabel="1"/>
-                                        <label for="sec_sws"/>
-                                    </group>
-                                </group>
-                            </page>
-                        </notebook>
                     </sheet>
                     <div class="oe_chatter">
-                        <field name="message_follower_ids"/>
-                        <field name="activity_ids"/>
                         <field name="message_ids"/>
                     </div>
                 </form>
@@ -246,7 +101,7 @@
         <record id="preparation_view_action" model="ir.actions.act_window">
             <field name="name">Client List</field>
             <field name="res_model">main.view</field>
-            <field name="view_mode">tree</field>
+            <field name="view_mode">tree,form</field>
             <field name="domain">[('state','=','preparation')]</field>
             <field name="view_id" ref="main_tree_view"/>
         </record>
