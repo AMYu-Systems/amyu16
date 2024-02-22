@@ -1,7 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access.associate_profile_adm,access.associate_profile_adm,model_associate_profile,administrator_group,1,1,1,1
-access.client_profile_adm,access.client_profile,model_client_profile,administrator_group,1,1,1,1
-
 access.capital.general.partnership,access.capital_general_partnership,amyu1.model_capital_general_partnership,base.group_user,1,1,1,1
 access.capital.general.professional.partnership,access.capital_general_professional_partnership,amyu1.model_capital_general_professional_partnership,base.group_user,1,1,1,1
 access.corporate.officer,access.corporate_officer,amyu1.model_corporate_officer,base.group_user,1,1,1,1

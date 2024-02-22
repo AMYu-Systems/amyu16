@@ -49,7 +49,6 @@ from odoo.modules import module
 
 
 class ScssEditor(models.AbstractModel):
-    
     _inherit = 'web_editor.assets'
 
     # ----------------------------------------------------------
@@ -84,7 +83,7 @@ class ScssEditor(models.AbstractModel):
         if not content:
             content = self._get_content_from_url(url)
         return self._get_theme_variables(content.decode('utf-8'), variables)
-    
+
     def replace_theme_variables_values(self, url, bundle, variables):
         original = self._get_content_from_url(url).decode('utf-8')
         content = self._replace_theme_variables(original, variables)

@@ -48,47 +48,46 @@ from odoo import api, fields, models
 
 
 class ResConfigSettings(models.TransientModel):
-
     _inherit = 'res.config.settings'
 
-    #----------------------------------------------------------
+    # ----------------------------------------------------------
     # Fields
-    #----------------------------------------------------------
-    
+    # ----------------------------------------------------------
+
     theme_favicon = fields.Binary(
         related='company_id.favicon',
         readonly=False
     )
-    
+
     theme_background_image = fields.Binary(
         related='company_id.background_image',
         readonly=False
     )
-    
+
     theme_color_brand = fields.Char(
         string='Theme Brand Color'
     )
-    
+
     theme_color_primary = fields.Char(
         string='Theme Primary Color'
     )
-    
+
     theme_color_menu = fields.Char(
         string='Theme Menu Color'
     )
-    
+
     theme_color_appbar_color = fields.Char(
         string='Theme AppBar Color'
     )
-    
+
     theme_color_appbar_background = fields.Char(
         string='Theme AppBar Background'
     )
-    
-    #----------------------------------------------------------
+
+    # ----------------------------------------------------------
     # Action
-    #----------------------------------------------------------
-    
+    # ----------------------------------------------------------
+
     def action_reset_theme_assets(self):
         self.env['web_editor.assets'].reset_asset(
             '/muk_web_theme/static/src/colors.scss', 'web._assets_primary_variables',
@@ -97,10 +96,10 @@ class ResConfigSettings(models.TransientModel):
             'type': 'ir.actions.client',
             'tag': 'reload',
         }
-    
-    #----------------------------------------------------------
+
+    # ----------------------------------------------------------
     # Functions
-    #----------------------------------------------------------
+    # ----------------------------------------------------------
 
     def set_values(self):
         res = super(ResConfigSettings, self).set_values()
@@ -120,7 +119,7 @@ class ResConfigSettings(models.TransientModel):
         colors_changed.append(self.theme_color_menu != colors['mk-menu-color'])
         colors_changed.append(self.theme_color_appbar_color != colors['mk-appbar-color'])
         colors_changed.append(self.theme_color_appbar_background != colors['mk-appbar-background'])
-        if(any(colors_changed)):
+        if (any(colors_changed)):
             variables = [
                 {'name': 'o-brand-odoo', 'value': self.theme_color_brand or "#243742"},
                 {'name': 'o-brand-primary', 'value': self.theme_color_primary or "#5D8DA8"},

@@ -41,11 +41,11 @@
 ###################################################################################
 
 {
-    'name': 'MuK Backend Theme', 
+    'name': 'MuK Backend Theme',
     'summary': 'Odoo Community Backend Theme',
-    'version': '16.0.1.0.6', 
-    'category': 'Themes/Backend', 
-    'license': 'LGPL-3', 
+    'version': '16.0.1.0.5',
+    'category': 'Themes/Backend',
+    'license': 'LGPL-3',
     'author': 'MuK IT',
     'website': 'http://www.mukit.at',
     'live_test_url': 'https://mukit.at/r/SgN',
@@ -68,8 +68,8 @@
     'assets': {
         'web._assets_primary_variables': [
             (
-                'after', 
-                'web/static/src/scss/primary_variables.scss', 
+                'after',
+                'web/static/src/scss/primary_variables.scss',
                 'muk_web_theme/static/src/colors.scss'
             ),
         ],
