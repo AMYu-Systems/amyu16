@@ -1,0 +1,15 @@
+
+- MANUAL TRIGGER
+	- If FAD presses a button "New Collection"
+	- The process starts below
+- PROCESS
+	- New [Collection](Collection.md) recordn and FAD fill out details
+		- Paid by - Client id
+		- Billing ids
+		- Collected by - User id Liaison
+		- Repository Bank
+		- Payment Method
+			- payment details
+			- (if check) vs (if online)
+	- Submits
+	- New [PaymentsCollection](PaymentsCollection.md) is either created automatically or manually, and is added to [ARJournal](ARJournal.md) of client

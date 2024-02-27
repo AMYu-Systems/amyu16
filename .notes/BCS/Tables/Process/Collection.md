@@ -1,0 +1,60 @@
+
+- Transaction ID : auto sequential with format
+- Paid by - Client id : many to one
+- [Billing](Billing.md) ids : many to many
+	- searchable through Billing.transaction_id or client name
+	- ***def onchange***
+		- if 0 item in BillingStatement ids, set self.collection_type as "Suspense Account"
+		- elif 1 item in BillingStatement ids, set self.collection_type as "Direct Payment"
+		- else, set self.collection_type as "Consolidated Payment"
+- Collection Type : selection, default "Suspense Account"
+	- readonly field
+- Collected By - user id: many to one # from hris
+- Date Collected : date 
+- Last Updated : datetime
+- Repository Bank: selection
+	- BPI - default
+	- BDO
+	- EastWest
+	- Metrobank
+- Payment Method : selection
+	- check
+	- cash
+	- online - default
+	- ***def onchange***
+		- get client's [ClientBillingInfo](ClientBillingInfo.md)
+		- if check, change value of self.physicalbank
+		- if online, change value of self.onlinebank
+- (if check) [PhysicalBank](PhysicalBank.md) id : many to one
+- (if check) check number : str with number constraint
+- (if check) check date : date
+- (if online) [OnlineBank](OnlineBank.md) id : many to one
+- (if online) transaction generated id : string
+- (if online) transaction date : date
+- Bank : compute ( return self.physicalbank_id | self.onlinebank_id )
+- Amount : float
+- Remarks : text
+- Pending Amount For AR : float | default=0  
+	- for consolidated payments
+	- readonly field
+	- maybe has another page where value is non-zero?
+	- to easily check undistributed consolidated payments
+	
+- ***OnSubmit***, process self.billing_ids first:
+	- For billing in billing_ids
+		- Need to set billing.collection_ids.add( self : current collection )
+	- Then if self.collection_type is :
+		- "Suspense Account", ignore.
+		- "Direct Payment", process new [PaymentsCollection](PaymentsCollection.md)( self : current collection, self.client_id )
+		- "Consolidated Payment",
+			- self.pending_amount_for_ar = self.amount
+			- Prompt for user to set multiple new PaymentsCollection records manually
+	
+-  ***OnEntry Manual PaymentsCollection***
+	- manual_entry_amount = from the manual entry
+	- manual_client_input = from the manual entry
+	- payment = new PaymentsCollection(self : current collection, manual_client_input)
+	- payment.set_amount(manual_entry_amount)
+	- self.pending_amount_for_ar -= manual_entry_amount
+
+#table
