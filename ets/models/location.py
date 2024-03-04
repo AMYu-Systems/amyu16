@@ -19,7 +19,7 @@ class Location(models.Model):
         (
             'unique_name', 
             'unique(name)',
-            'Can\'t be duplicate value for this field!'
+            'Can\'t be duplicate value for this record!'
         )
     ]
 
