@@ -1,5 +1,5 @@
 {
-    'name': 'ETS',
+    'name': 'Errand Tracking System',
     'author': 'Angelo Admin',
     'category': 'Application',
     'summary': 'Errand Tracking System',
@@ -7,7 +7,7 @@
     'description': """
         AMYu System - Errand Tracking System
     """,
-    'depends': ['base'],
+    'depends': ['base', 'hrad'],
     'data': [
         'security/ir.model.access.csv',
         'views/ets_errand_view_tree.xml',
@@ -18,6 +18,7 @@
         'views/ets_liaison_views.xml',
         'views/ets_menu_views.xml',
     ],
+    'auto_install': True,
     'installable': True,
     'application': True,
     'license': 'LGPL-3',
