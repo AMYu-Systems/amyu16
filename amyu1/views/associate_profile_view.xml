@@ -23,7 +23,7 @@
                                     </div>
                                     <div class="oe_kanban_description">
                                         <span style="font-weight: bold; color: blue;">
-                                            <field name="work_id"/>
+                                            <field name="job_id"/>
                                         </span>
                                     </div>
                                     <div class="oe_kanban_description">
@@ -45,7 +45,7 @@
             <field name="arch" type="xml">
                 <tree create="False" export_xlsx="0">
                     <field name="user_id"/>
-                    <field name="work_id"/>
+                    <field name="job_id"/>
                     <field name="supervisor_id"/>
                     <field name="manager_id"/>
                     <field name="cluster_id"/>
@@ -73,7 +73,7 @@
                         <group>
                             <field name="team_id" options="{'no_open': True,'no_create': True}"/>
                             <field name="cluster_id" options="{'no_open': True,'no_create': True}"/>
-                            <field name="work_id" options="{'no_open': True,'no_create': True}"/>
+                            <field name="job_id" options="{'no_open': True,'no_create': True}"/>
                         </group>
                     </group>
                     <field name="client_profile_ids" style="pointer-events:none;">
@@ -101,12 +101,12 @@
                            string="Associate"/>
                     <field name="client_profile_ids" string="Client"/>
                     <searchpanel>
-                        <field name="work_id" enable_counters="1" groups="amyu1.supervisor_group" string="My Team"/>
+                        <field name="job_id" enable_counters="1" groups="amyu1.supervisor_group" string="My Team"/>
                         <field name="team_id" enable_counters="1" groups="amyu1.manager_group"
                                string="Manager Overview"/>
-                        <field name="work_id" enable_counters="1" groups="amyu1.manager_group"/>
+                        <field name="job_id" enable_counters="1" groups="amyu1.manager_group"/>
                         <field name="team_id" enable_counters="1" groups="amyu1.cluster_group" string="Team Overview"/>
-                        <field name="work_id" enable_counters="1" groups="amyu1.cluster_group" string="Associates"/>
+                        <field name="job_id" enable_counters="1" groups="amyu1.cluster_group" string="Associates"/>
                     </searchpanel>
                 </search>
             </field>

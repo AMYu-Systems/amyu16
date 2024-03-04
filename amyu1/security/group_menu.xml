@@ -37,14 +37,14 @@
     <record id="supervisor_client_profile_rule" model="ir.rule">
         <field name="name">Supervisor see Client Documents</field>
         <field name="model_id" ref="model_client_profile"/>
-        <field name="domain_force">[('audit_supervisor_id', '=', user.id)]</field>
+        <field name="domain_force">[('supervisor_id', '=', user.id)]</field>
         <field name="groups" eval="[(4, ref('supervisor_group'))]"/>
     </record>
 
     <record id="supervisor_associate_profile_rule" model="ir.rule">
         <field name="name">Supervisor see Profile</field>
         <field name="model_id" ref="model_associate_profile"/>
-        <field name="domain_force">[('audit_supervisor_id', '=', user.id)]</field>
+        <field name="domain_force">[('supervisor_id', '=', user.id)]</field>
         <field name="groups" eval="[(4, ref('supervisor_group'))]"/>
     </record>
 

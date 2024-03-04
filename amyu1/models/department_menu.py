@@ -16,7 +16,6 @@ class ClusterDepartment(models.Model):
 
     name = fields.Char(string="Cluster")
     active = fields.Boolean(string="Active", default=True)
-    cluster_ids = fields.One2many(string="Job", comodel_name='associate.profile', inverse_name="cluster_id")
 
 
 class JobTitle(models.Model):
@@ -25,4 +24,3 @@ class JobTitle(models.Model):
 
     name = fields.Char(string="Work")
     active = fields.Boolean(string="Active", default=True)
-    work_ids = fields.One2many(string="Job", comodel_name='associate.profile', inverse_name="work_id")

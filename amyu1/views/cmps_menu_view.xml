@@ -38,7 +38,7 @@
                   sequence="3"
                   parent="cpms_root_menu"/>
         <menuitem id="menu_department_details"
-                  name="Department"
+                  name="Team"
                   action="team_department_action"
                   parent="menu_maintenance_root"/>
         <menuitem id="menu_cluster_details"
