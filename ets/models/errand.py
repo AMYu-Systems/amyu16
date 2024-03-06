@@ -7,7 +7,7 @@ class Errand(models.Model):
     _name = 'errand'
     _description = 'Errand Record'
 
-    # in sequence
+    # Values inside each array as dict value is in sequence
     CHOICES = {
         'type_of_request': [
             ('delivery', 'Delivery'), 
@@ -124,7 +124,7 @@ class Errand(models.Model):
         """ 
         Set the assigned liaison to the default liaison of the location  
         """
-        domain = [('assigned_location','=', self.location.id)]
+        domain = [('location_id','=', self.location.id)]
         default_liaison = self.env['liaison'].search(domain)
         self.liaison = default_liaison
     

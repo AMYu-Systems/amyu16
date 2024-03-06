@@ -44,9 +44,8 @@ from odoo import models, fields, api
 
 
 class IrAsset(models.Model):
-    
     _inherit = 'ir.asset'
-    
+
     # ----------------------------------------------------------
     # ORM
     # ----------------------------------------------------------

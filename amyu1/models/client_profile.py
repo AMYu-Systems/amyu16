@@ -22,16 +22,17 @@ class ClientProfile(models.Model):
     #         self.name = str(self.name).title()
 
     image_101 = fields.Image(string="Image")
-    organization_type = fields.Selection(
-        [('sole_proprietor', 'Sole Proprietor'),
-         ('general_partnership', 'General Partnership'),
-         ('general_professional_partnership', 'General Professional Partnership'),
-         ('domestic_stock', 'Domestic Stock Corporation'),
-         ('domestic_corp', 'Domestic NSNP Corporation'),
-         ('foreign_corp', 'Branch of Foreign Corporation'),
-         ('foreign_nsnp_corp', 'Branch of Foreign NSNP Corporation'),
-         ('roqh_foreign_corp', 'ROHQ of Foreign Corporation'),
-         ('representative_office', 'Representative Office')], string="Organization Type", tracking=True)
+    organization_type = fields.Selection(selection=
+                                         [('sole_proprietor', 'Sole Proprietor'),
+                                          ('general_partnership', 'General Partnership'),
+                                          ('general_professional_partnership', 'General Professional Partnership'),
+                                          ('domestic_stock', 'Domestic Stock Corporation'),
+                                          ('domestic_corp', 'Domestic NSNP Corporation'),
+                                          ('foreign_corp', 'Branch of Foreign Corporation'),
+                                          ('foreign_nsnp_corp', 'Branch of Foreign NSNP Corporation'),
+                                          ('roqh_foreign_corp', 'ROHQ of Foreign Corporation'),
+                                          ('representative_office', 'Representative Office')],
+                                         string="Organization Type", tracking=True)
     sole_proprietor_ids = fields.One2many(comodel_name='sole.proprietor', inverse_name='sole_proprietor_id',
                                           string="Sole", tracking=True)
     general_partnership_ids = fields.One2many(comodel_name='general.partnership', inverse_name='general_partnership_id',
@@ -52,22 +53,30 @@ class ClientProfile(models.Model):
     representative_office_ids = fields.One2many(comodel_name='representative.office',
                                                 inverse_name='representative_office_id',
                                                 string="Representative Office", tracking=True)
-    industry_class = fields.Selection(
-        [('agricultural', 'Agricultural Products & Farming Operations'), ('automotive', 'Automotive & Spare Parts'),
-         ('', ''), ('utilities', 'Energy, Utilities & Telecommunications'), ('financial_service', 'Financial Services'),
-         ('', ''), ('food', 'Food, Beverage & Restaurant Operations'),
-         ('organization', 'Foundations & Non-Profit Organizations'),
-         ('appliances', 'Furniture, Appliances & IT Equipment'), ('construction', 'Hardware & Construction Supplies'),
-         ('health', 'Healthcare & Pharmaceuticals'), ('hospital', 'Hospitality & Leisure'),
-         ('industrial', 'Industrial Manufacturing'),
-         ('information_technology', 'IT Services & Business Process Outsourcing'),
-         ('retail', 'Lifestyle & Retail Brands'), ('entertainment', 'Media & Entertainment'),
-         ('nothing', 'n.e.c. (not elsewhere classified)'),
-         ('', ''), ('other_service', 'Other Services'), ('print_service', 'Printing Services'),
-         ('consultancy', 'Professional & Consultancy Services'), ('transport', 'Public Transport Services'),
-         ('real_estate', 'Real Estate Development & Construction'),
-         ('stationery', 'Stationery & Paper Products'), ('logistic', 'Warehousing & Logistics')],
-        string="Industry Class", tracking=True)
+    industry_class = fields.Selection(selection=
+                                      [('agricultural', 'Agricultural Products & Farming Operations'),
+                                       ('automotive', 'Automotive & Spare Parts'),
+                                       ('', ''), ('utilities', 'Energy, Utilities & Telecommunications'),
+                                       ('financial_service', 'Financial Services'),
+                                       ('', ''), ('food', 'Food, Beverage & Restaurant Operations'),
+                                       ('organization', 'Foundations & Non-Profit Organizations'),
+                                       ('appliances', 'Furniture, Appliances & IT Equipment'),
+                                       ('construction', 'Hardware & Construction Supplies'),
+                                       ('health', 'Healthcare & Pharmaceuticals'),
+                                       ('hospital', 'Hospitality & Leisure'),
+                                       ('industrial', 'Industrial Manufacturing'),
+                                       ('information_technology', 'IT Services & Business Process Outsourcing'),
+                                       ('retail', 'Lifestyle & Retail Brands'),
+                                       ('entertainment', 'Media & Entertainment'),
+                                       ('nothing', 'n.e.c. (not elsewhere classified)'),
+                                       ('', ''), ('other_service', 'Other Services'),
+                                       ('print_service', 'Printing Services'),
+                                       ('consultancy', 'Professional & Consultancy Services'),
+                                       ('transport', 'Public Transport Services'),
+                                       ('real_estate', 'Real Estate Development & Construction'),
+                                       ('stationery', 'Stationery & Paper Products'),
+                                       ('logistic', 'Warehousing & Logistics')],
+                                      string="Industry Class", tracking=True)
     nature_of_business = fields.Text(string="Nature of Activities, Brands, Product & Services", tracking=True)
 
     @api.onchange('nature_of_business')
@@ -87,11 +96,11 @@ class ClientProfile(models.Model):
             raise ValidationError("Future dates are not allowed.")
 
     client_system_generated = fields.Char(string="Client ID", tracking=True)
-    state = fields.Selection([('draft', 'Draft'),
-                              ('supervisor', 'Supervisor'),
-                              ('manager', 'Manager'),
-                              ('approved', 'Approved'),
-                              ('cancel', 'Returned')], tracking=True, default='draft', string="Status")
+    state = fields.Selection(selection=[('draft', 'Draft'),
+                                        ('supervisor', 'Supervisor'),
+                                        ('manager', 'Manager'),
+                                        ('approved', 'Approved'),
+                                        ('cancel', 'Returned')], tracking=True, default='draft', string="Status")
 
     def state_waiting(self, cr, uid, ids, context=None):
         return self.write(cr, uid, ids, {'state': 'draft'}, context=context)
@@ -100,12 +109,11 @@ class ClientProfile(models.Model):
                               tracking=True)
     manager_id = fields.Many2one(string="Manager", related="team_id.manager_id", readonly=True)
     supervisor_id = fields.Many2one(string="Supervisor", related="team_id.supervisor_id", readonly=True)
-    audit_supervisor_id = fields.Many2many(string="Supervisor", related="team_id.audit_supervisor_id", readonly=True)
-    cluster_id = fields.Many2one(string="Cluster", related="team_id.cluster_id", readonly=True)
-    lead_partner_id = fields.Many2one(string="Lead Partner", related="team_id.lead_partner_id", readonly=True)
+    cluster_id = fields.Many2one(string="Department", related="team_id.cluster_id", readonly=True)
+    lead_partner_id = fields.Many2one(string="Partner", related="team_id.lead_partner_id", readonly=True)
     team_id = fields.Many2one(string="Team", comodel_name='associate.profile')
     report_period = fields.Selection([('calendar', 'Calendar'), ('fiscal', 'Fiscal')], tracking=True)
-    fiscal = fields.Selection([('3', '3'), ('6', '6'), ('9', '9')], string="Fiscal Month", tracking=True)
+    fiscal = fields.Selection(selection=[('3', '3'), ('6', '6'), ('9', '9')], string="Fiscal Month", tracking=True)
     calendar = fields.Selection([('12', '12')], default="12", string="Fiscal Year End", tracking=True)
 
     def draft_action(self):
@@ -205,10 +213,10 @@ class ClientProfile(models.Model):
             name3 = name_array[2]
             client_system_generated = name1[0:1] + name2[0:1] + name3[0:1]
         # Compute Client ID
-        client_system_generated +=("0" if int(
+        client_system_generated += ("0" if int(
             datetime.strftime(datetime.strptime(vals['date_of_engagement'], '%Y-%m-%d'), '%Y')) < 2000 else "1") + \
                                    str(vals['date_of_engagement'])[2:4] + \
-                                   str(vals['date_of_engagement'])[5:7] +  \
+                                   str(vals['date_of_engagement'])[5:7] + \
                                    self.env['ir.sequence'].next_by_code('client.id.seq')
 
         vals.update({'client_system_generated': client_system_generated.upper()})
@@ -487,20 +495,23 @@ class ClientProfile(models.Model):
     registration_fee = fields.Boolean(string="Registration Fee", tracking=True)
     other_percentage_tax = fields.Boolean(string="Other Percentage Tax", tracking=True)
     other_percentage_tax_text = fields.Char(tracking=True)
-    taxpayer_type = fields.Selection([
+    taxpayer_type = fields.Selection(selection=[
         ('regular', 'Regular'), ('top_5k_individual', 'Top 5k Individual'), (
             'top_20k_corporate', 'Top 20k Corporate'), ('medium_taxpayer', 'Medium Taxpayer'), (
             'large_taxpayer', 'Large Taxpayer'), ('not_applicable', 'N/A')], string="Taxpayer Type",
         tracking=True)
-    invoice_tax = fields.Selection([
+    invoice_tax = fields.Selection(selection=[
         ('bound_padded', 'Bound (Padded)'), ('computer_aid_loose_leaf', 'Computer-aided (Loose-leaf)'), (
             'cas_generated', 'CAS-Generated'), ('not_applicable', 'N/A')], string="Invoice Type",
         tracking=True)
-    filing_payment = fields.Selection([('ebir_manual', 'eBIR (Manual)'), ('efps', 'EFPS'), ('not_applicable', 'N/A')],
-                                      string="Filling & Payment", tracking=True)
-    books_of_account = fields.Selection(
-        [('manual', 'Manual'), ('computer_aid_loose_leaf', 'Computer-aided (Loose-leaf)'),
-         ('cas_generated', 'CAS-Generated'), ('not_applicable', 'N/A')], string="Books of Accounts", tracking=True)
+    filing_payment = fields.Selection(
+        selection=[('ebir_manual', 'eBIR (Manual)'), ('efps', 'EFPS'), ('not_applicable', 'N/A')],
+        string="Filling & Payment", tracking=True)
+    books_of_account = fields.Selection(selection=
+                                        [('manual', 'Manual'),
+                                         ('computer_aid_loose_leaf', 'Computer-aided (Loose-leaf)'),
+                                         ('cas_generated', 'CAS-Generated'), ('not_applicable', 'N/A')],
+                                        string="Books of Accounts", tracking=True)
     psic_psoc = fields.Char(string="PSIC/PSOC", size=10, tracking=True)
 
     @api.onchange('psic_psoc')
@@ -531,7 +542,7 @@ class ClientProfile(models.Model):
                     raise ValidationError(
                         "Only numbers are allowed in the LL/CAS Permit No field")
 
-    pos_crm_spm_yes_no = fields.Selection([('yes', 'Yes'), ('no', 'No')], default="no", tracking=True)
+    pos_crm_spm_yes_no = fields.Selection(selection=[('yes', 'Yes'), ('no', 'No')], default="no", tracking=True)
     registration_number = fields.Char(string="Registration No", size=13, tracking=True)
 
     @api.onchange('registration_number')
@@ -709,18 +720,21 @@ class ClientProfile(models.Model):
                     raise ValidationError(
                         "Only numbers are allowed in the HDMF field.")
 
-    sss_filing = fields.Selection([('manual', 'Manual'), ('online', 'Online (AMS-CCL)')], string="SSS Filing",
+    sss_filing = fields.Selection(selection=[('manual', 'Manual'), ('online', 'Online (AMS-CCL)')], string="SSS Filing",
                                   tracking=True)
-    phic_filing = fields.Selection([('manual', 'Manual'), ('online', 'Online (ERPS)')], string="PHIC Filing",
+    phic_filing = fields.Selection(selection=[('manual', 'Manual'), ('online', 'Online (ERPS)')], string="PHIC Filing",
                                    tracking=True)
-    hdmf_filing = fields.Selection([('manual', 'Manual'), ('online', 'Online (eSRS)')], string=" HDMF Filing",
+    hdmf_filing = fields.Selection(selection=[('manual', 'Manual'), ('online', 'Online (eSRS)')], string=" HDMF Filing",
                                    tracking=True)
-    sss_pay = fields.Selection([('cash', 'Cash'), ('check', 'Check'), ('online_banking', 'Online Banking (EPS)')],
-                               string="SSS Payment", tracking=True)
-    phic_pay = fields.Selection([('cash', 'Cash'), ('check', 'Check'), ('online_banking', 'Online Banking (EPS)')],
-                                string="PHIC Payment", tracking=True)
-    hdmf_pay = fields.Selection([('cash', 'Cash'), ('check', 'Check'), ('online_banking', 'Online Banking (EPS)')],
-                                string="HDMF Payment", tracking=True)
+    sss_pay = fields.Selection(
+        selection=[('cash', 'Cash'), ('check', 'Check'), ('online_banking', 'Online Banking (EPS)')],
+        string="SSS Payment", tracking=True)
+    phic_pay = fields.Selection(
+        selection=[('cash', 'Cash'), ('check', 'Check'), ('online_banking', 'Online Banking (EPS)')],
+        string="PHIC Payment", tracking=True)
+    hdmf_pay = fields.Selection(
+        selection=[('cash', 'Cash'), ('check', 'Check'), ('online_banking', 'Online Banking (EPS)')],
+        string="HDMF Payment", tracking=True)
     escalation_ids = fields.One2many(comodel_name='escalation.contact', inverse_name='escalation_id',
                                      string="Escalation Point", tracking=True)
     # Tax

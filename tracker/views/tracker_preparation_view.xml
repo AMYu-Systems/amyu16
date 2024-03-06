@@ -8,7 +8,7 @@
                 <tree editable="bottom" create="1" export_xlsx="0">
                     <field name="name"/>
                     <field name="user_id" readonly="1"/>
-                    <field name="supervisor_id" options="{'no_open': True,'no_create': True}"/>
+                    <field name="supervisors_id" options="{'no_open': True,'no_create': True}"/>
                     <field name="managers_id" options="{'no_open': True,'no_create': True}"/>
                     <field name="cluster_id" options="{'no_open': True,'no_create': True}"/>
                     <field name="state" widget="badge"
