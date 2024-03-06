@@ -1,4 +1,4 @@
-import logging, pytz, datetime, pandas, math
+import logging, datetime, math
 from odoo import api, fields, models
 
 class Liaison(models.Model):
@@ -13,7 +13,7 @@ class Liaison(models.Model):
     ]
 
     employee_id = fields.Many2one('hr.employee', 
-                                  domain=lambda self: f"[('job_id.name','ilike', 'Liaison')", 
+                                  domain=f"[('job_id.name','ilike', 'Liaison')]", 
                                   copy=False, index=True, required=True, ondelete='restrict')
     location_id = fields.Many2one('location', string="Assigned Location")
     name = fields.Char(compute="_compute_name", string="Displayed Name", readonly=True)
