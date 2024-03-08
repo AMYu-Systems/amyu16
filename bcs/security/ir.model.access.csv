@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_bcs_client_billing_info,amyu access client billing info,bcs.model_client_billing_info,base.group_user,1,1,1,1
+access_bcs_physical_bank,amyu access physical bank,bcs.model_bank,base.group_user,1,1,1,1
