@@ -43,8 +43,6 @@
                                 <field name="associate"/>
                             </group>
                         </group>
-                        <!--                        <button name="open_audit_form" string="Add Audit Service" type="object" class="oe_highlight"-->
-                        <!--                                attrs="{'invisible': [('type', '!=', 'audit')]}"/>-->
                         <notebook>
                             <page string="Audit" attrs="{'invisible': [('service_ids', 'not in', 1)]}">
                                 <field name="audit_ids" nolabel="1">

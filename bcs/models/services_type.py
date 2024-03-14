@@ -12,5 +12,5 @@ class ServicesType(models.Model):
                    ('consultancy_services', 'Consultancy Services'), ('strategy_services', 'Strategy Services')],
         string="Practice")
 
-    active = fields.Boolean(string="Active")
+    active = fields.Boolean(string="Active", default=True)
     service_ids = fields.One2many(string="Services", comodel_name='billing.summary', inverse_name="service_ids")

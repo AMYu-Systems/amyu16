@@ -17,7 +17,7 @@
     'website': "https://www.amyucpas.com",
     'category': 'Custom',
     'version': '0.1',
-    'depends': ['base', 'muk_web_theme', 'hrad'],
+    'depends': ['base', 'muk_web_theme', 'hrad', 'amyu1'],
 
     # always loaded
     'data': [
@@ -38,7 +38,7 @@
       'views/state_billing_view.xml',
       'views/bcs_group_view.xml',
       'views/bcs_client_billing_info_views.xml',
-      'views/bcs_bank_views.xml',
+      'views/bcs_bank_view.xml',
       'views/bcs_menu_view.xml',
      ],
     'application': True,

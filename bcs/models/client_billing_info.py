@@ -25,11 +25,6 @@ class ClientBillingInfo(models.Model):
     preferred_payment_method = fields.Selection(PAYMENT_METHOD_CHOICES, default=PAYMENT_METHOD_DEFAULT, required=True)
     payment_bank_id = fields.Many2one('bank', string="Bank for Payment", domain=f"[('bank_type', '=', '{BANK_TYPE_DEFAULT}')]")
     remarks = fields.Char()
-    
-    # create_uid <- automatic field by odoo16, res.user who created the record
-    # create_date <- automatic field by odoo16 to know when was the date the record got created
-    # write_uid <- automatic field by odoo16, res.user who updated the record
-    # write_date <- automatic field by odoo16 to know when was the last time the record got updated
 
     @api.depends('client')
     def _compute_name(self):

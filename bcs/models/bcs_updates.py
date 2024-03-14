@@ -2,8 +2,8 @@ from odoo import models, fields, api
 from datetime import datetime
 
 
-class BillingCollection(models.Model):
-    _name = 'billing.collection'
+class ForCollectionUpdates(models.Model):
+    _name = 'bcs.updates'
     _rec_name = 'billing_id'
 
     billing_id = fields.Many2one(comodel_name='bcs.billing', string="Client Name", required=True)
@@ -50,9 +50,9 @@ class BillingCollection(models.Model):
     @api.model
     def create(self, vals):
         vals['last_updated'] = fields.Datetime.now()
-        return super(BillingCollection, self).create(vals)
+        return super(ForCollectionUpdates, self).create(vals)
 
     def write(self, vals):
         if vals:
             vals['last_updated'] = fields.Datetime.now()
-        return super(BillingCollection, self).write(vals)
+        return super(ForCollectionUpdates, self).write(vals)
