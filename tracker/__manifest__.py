@@ -28,8 +28,9 @@
         'views/tracker_process_view.xml',
         'views/groups_view.xml',
         'views/tracker_preparation_view.xml',
+        'views/label_note_view.xml',
+        'views/group_maintenance_view.xml',
         'views/menu_view.xml',
-
     ],
     'application': True,
     'license': 'LGPL-3',
