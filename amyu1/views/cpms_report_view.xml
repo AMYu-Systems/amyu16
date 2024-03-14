@@ -7,7 +7,7 @@
             <field name="arch" type="xml">
                 <tree create="False">
                     <field name="name" string="Clients Name"/>
-                    <field name="cluster_id"/>
+                    <field name="cluster_id" string="Cluster"/>
                     <field name="lead_partner_id"/>
                     <field name="manager_id"/>
                     <field name="supervisor_id"/>

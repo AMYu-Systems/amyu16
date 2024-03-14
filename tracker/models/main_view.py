@@ -15,7 +15,7 @@ class MainView(models.Model):
 
     user_id = fields.Many2one(string="Associate", comodel_name='res.users', default=lambda self: self.env.user,
                               tracking=True)
-    supervisor_id = fields.Many2one(string="Supervisor", comodel_name='res.users')
+    supervisors_id = fields.Many2one(string="Supervisor", comodel_name='team.supervisor')
     managers_id = fields.Many2one(string="Manager", comodel_name='team.manager')
     cluster_id = fields.Many2one(string="Partner", comodel_name='group.cluster')
     state = fields.Selection([('preparation', 'Preparation'), ('checking', 'Checking'), ('review', 'Review'),

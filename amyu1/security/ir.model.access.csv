@@ -18,7 +18,6 @@ access.capital.roqh.foreign.corp,access.capital_roqh_foreign_corp,amyu1.model_ca
 access.representative.office,access.representative_office,amyu1.model_representative_office,base.group_user,1,1,1,1
 access.capital.representative.office,access.capital_representative_office,amyu1.model_capital_representative_office,base.group_user,1,1,1,1
 access.escalation.contact,access.escalation_contact,amyu1.model_escalation_contact,base.group_user,1,1,1,1
-access.organization.type,access.organization_type,amyu1.model_organization_type,base.group_user,1,1,1,1
 access.job.title,access.job_title,amyu1.model_job_title,base.group_user,1,1,1,1
 access.cluster.department,access.cluster_department,amyu1.model_cluster_department,base.group_user,1,1,1,1
 access.team.department,access.team_department,amyu1.model_team_department,base.group_user,1,1,1,1
