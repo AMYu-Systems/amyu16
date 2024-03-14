@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="billing_collection_tree_view" model="ir.ui.view">
+            <field name="name">billing_collection_tree_view</field>
+            <field name="model">billing.collection</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="billing_id"/>
+                    <field name="first_followup"/>
+                    <field name="second_followup"/>
+                    <field name="responded"/>
+                    <field name="confirmed_payment"/>
+                    <field name="date_first_followup"/>
+                    <field name="date_second_followup"/>
+                    <field name="date_responded"/>
+                    <field name="date_responded"/>
+                    <field name="date_confirmed_payment"/>
+                    <field name="last_updated"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="billing_collection_form_view" model="ir.ui.view">
+            <field name="name">billing_collection_form_view</field>
+            <field name="model">billing.collection</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="billing_id" options="{'no_create': True,'no_open': True }"/>
+                        </group>
+                        <group string="Follow update" col="4">
+                            <group>
+                                <label for="first_followup" string="1st Follow-up"/>
+                                <field name="first_followup" nolabel="1"/>
+                                <field name="date_first_followup"/>
+                            </group>
+                            <group>
+                                <label for="second_followup" string="2nd Follow-up"/>
+                                <field name="second_followup" nolabel="1"/>
+                                <field name="date_second_followup"/>
+                            </group>
+                            <group>
+                                <label for="responded" string="Responded"/>
+                                <field name="responded" nolabel="1"/>
+                                <field name="date_responded"/>
+                            </group>
+                            <group>
+                                <label for="confirmed_payment" string="Confirmed Payment"/>
+                                <field name="confirmed_payment" nolabel="1"/>
+                                <field name="date_confirmed_payment"/>
+                                <field name="last_updated"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="billing_collection_view_action" model="ir.actions.act_window">
+            <field name="name">Billing and Collection Update</field>
+            <field name="res_model">billing.collection</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="billing_collection_tree_view"/>
+        </record>
+    </data>
+</odoo>

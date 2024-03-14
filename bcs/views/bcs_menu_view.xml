@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <menuitem id="bcs_root_menu"
+                  name="Billing and Collection"
+                  action="billing_summary_view_action"/>
+        <menuitem id="menu_general_root"
+                  name="Create/Update"
+                  sequence="10"
+                  parent="bcs_root_menu"/>
+        <menuitem id="menu_services_type"
+                  name="Services"
+                  parent="menu_general_root"
+                  action="services_type_view_action"/>
+        <menuitem id="menu_bcs_billing"
+                  name="Billing"
+                  parent="menu_general_root"
+                  action="bcs_billing_view_action"/>
+        <menuitem id="menu_bcs_collection"
+                  name="Collection"
+                  parent="menu_general_root"
+                  action="bcs_collection_view_action"/>
+        <menuitem id="menu_billing_collection_update"
+                  name="Billing and Collection Update"
+                  parent="menu_general_root"
+                  action="billing_collection_view_action"/>
+        <menuitem id="menu_status_root"
+                  name="Billing Status"
+                  sequence="20"
+                  parent="bcs_root_menu"/>
+        <menuitem id="menu_draft_billing"
+                  name="Draft"
+                  parent="menu_status_root"
+                  action="draft_bcs_billing_view_action"/>
+        <menuitem id="menu_submitted_billing"
+                  name="Submitted"
+                  parent="menu_status_root"
+                  action="submitted_bcs_billing_view_action"/>
+        <menuitem id="menu_verified_billing"
+                  name="Verified"
+                  parent="menu_status_root"
+                  action="verified_bcs_billing_view_action"/>
+    </data>
+</odoo>
+        <!-- web_icon="amyu1,static/description/odoo_icon.png"-->

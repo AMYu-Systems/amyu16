@@ -1,3 +1,16 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_bcs_client_billing_info,amyu access client billing info,bcs.model_client_billing_info,base.group_user,1,1,1,1
 access_bcs_physical_bank,amyu access physical bank,bcs.model_bank,base.group_user,1,1,1,1
+access.base.billing,access.base_billing,model_base_billing,base.group_user,1,1,1,1
+access.billing.summary,access.billing_summary,model_billing_summary,base.group_user,1,1,1,1
+access.audit.billing,access.audit_billing,model_audit_billing,base.group_user,1,1,1,1
+access.trc.billing,access.trc_billing,model_trc_billing,base.group_user,1,1,1,1
+access.books.billing,access.books_billing,model_books_billing,base.group_user,1,1,1,1
+access.business.permit.billing,access.business_permit_billing,model_business_permit_billing,base.group_user,1,1,1,1
+access.gis.billing,access.gis_billing,model_gis_billing,base.group_user,1,1,1,1
+access.loa.billing,access.loa_billing,model_loa_billing,base.group_user,1,1,1,1
+access.special.engagement,access.special_engagement,model_special_engagement,base.group_user,1,1,1,1
+access.services.type,access.services_type,model_services_type,base.group_user,1,1,1,1
+access.bcs.billing,access.bcs_billing,model_bcs_billing,base.group_user,1,1,1,1
+access.bcs.collection,access.bcs_collection,model_bcs_collection,base.group_user,1,1,1,1
+access.billing.collection,access.billing_collection,model_billing_collection,base.group_user,1,1,1,1
