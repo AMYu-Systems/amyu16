@@ -34,7 +34,9 @@ class BcsBilling(models.Model):
 
     client_name = fields.Char(string="Client Name")
     collection_ids = fields.Many2many(comodel_name='bcs.collection', string="Collection")
+    
     # for_collection_updates = fields.Many2many(comodel_name='bcs.updates', string="For-collection Updates") # maybe not needed
+    
     date_billed = fields.Date(string="Date Billed")
     state_selection = [('draft', 'Draft'),
                        ('submitted', 'Submitted'),

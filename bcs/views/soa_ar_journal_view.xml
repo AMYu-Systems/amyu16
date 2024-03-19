@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="soa_ar_journal_view_form" model="ir.ui.view">
+            <field name="name">soa.ar.journal.form</field>
+            <field name="model">soa.ar.journal</field>
+            <field name="arch" type="xml">
+                <form string="AR Journal">
+                    <sheet>
+                        <group>
+                            <field name="client" />
+                            <field name="initial_balance" />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="soa_ar_journal_view_tree" model="ir.ui.view">
+            <field name="name">soa_ar_journal_view_tree</field>
+            <field name="model">soa.ar.journal</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="client" />
+                    <field name="balance" />
+                    <button string="Create" icon="gtk-redo" name="new_billing" type="object"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="soa_ar_journal_view_action" model="ir.actions.act_window">
+            <field name="name">AR Journal</field>
+            <field name="res_model">soa.ar.journal</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+    </data>
+</odoo>

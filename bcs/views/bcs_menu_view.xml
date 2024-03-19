@@ -3,13 +3,13 @@
     <data>
         <menuitem id="bcs_root_menu"
                   name="Billing and Collection"
-                  action="billing_summary_view_action"/>
+                  action="soa_ar_journal_view_action"/>
         
         <menuitem id="menu_arjournal_root"
                   name="AR Journal"
                   sequence="10"
                   parent="bcs_root_menu"
-                  action="billing_summary_view_action"/>
+                  action="soa_ar_journal_view_action"/>
 
         <menuitem id="menu_billing_summary_root"
                   name="Billing Summary"
@@ -26,24 +26,24 @@
                   name="Active Billings"
                   parent="menu_billing_root"
                   action="billing_summary_view_action"/>
-        <menuitem id="menu_billing_lists"
-                  name="Billing Lists"
-                  parent="menu_billing_root"/>
         <menuitem id="menu_all_billings"
                   name="All Billings"
-                  parent="menu_billing_lists"
+                  parent="menu_billing_root"
                   action="billing_summary_view_action"/>
+        <menuitem id="menu_billing_per_status"
+                  name="Billings per Status"
+                  parent="menu_billing_root"/>
         <menuitem id="menu_draft_billing"
                   name="Drafts"
-                  parent="menu_billing_lists"
+                  parent="menu_billing_per_status"
                   action="draft_bcs_billing_view_action"/>
         <menuitem id="menu_submitted_billing"
                   name="For Verification"
-                  parent="menu_billing_lists"
+                  parent="menu_billing_per_status"
                   action="submitted_bcs_billing_view_action"/>
         <menuitem id="menu_verified_billing"
                   name="For Approval"
-                  parent="menu_billing_lists"
+                  parent="menu_billing_per_status"
                   action="verified_bcs_billing_view_action"/>
 
         <menuitem id="menu_bcs_collection"
@@ -51,16 +51,19 @@
                   sequence="13"
                   parent="bcs_root_menu"
                   action="bcs_collection_view_action"/>
+        <menuitem id="menu_all_collections"
+                  name="All Collections"
+                  sequence="130"
+                  parent="menu_bcs_collection"
+                  action="bcs_collection_view_action"/>
         <menuitem id="menu_for_collections_updates"
                   name="For-collection Updates"
+                  sequence="131"
                   parent="menu_bcs_collection"
                   action="bcs_updates_view_action"/>
         <menuitem id="menu_unissued_payments"
                   name="Unissued Payments"
-                  parent="menu_bcs_collection"
-                  action="bcs_collection_view_action"/>
-        <menuitem id="menu_all_collections"
-                  name="All Collections"
+                  sequence="132"
                   parent="menu_bcs_collection"
                   action="bcs_collection_view_action"/>
 
