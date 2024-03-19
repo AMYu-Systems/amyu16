@@ -34,9 +34,8 @@ class BcsBilling(models.Model):
 
     client_name = fields.Char(string="Client Name")
     collection_ids = fields.Many2many(comodel_name='bcs.collection', string="Collection")
-    billing_collection_updates = fields.Char(string="Billing Collection Update")
+    # for_collection_updates = fields.Many2many(comodel_name='bcs.updates', string="For-collection Updates") # maybe not needed
     date_billed = fields.Date(string="Date Billed")
-    last_updated = fields.Datetime(string="Last Updated")
     state_selection = [('draft', 'Draft'),
                        ('submitted', 'Submitted'),
                        ('verified', 'Verified'),

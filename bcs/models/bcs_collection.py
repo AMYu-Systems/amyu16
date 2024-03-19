@@ -49,11 +49,13 @@ class BcsCollection(models.Model):
                       ('cash', 'Cash'),
                       ('online', 'Online')]
     payment_mode = fields.Selection(payment_method, default='online', string="Mode of Payment")
-    bank = fields.Char(string="Bank")
+    bank = fields.Many2one(comodel_name='bank', string="Bank")
+    # If check
     check_number = fields.Char(string="Check Number")
     check_date = fields.Date(string="Check Date")
+    # If online
     transaction_generated = fields.Char(string="Transaction Generated")
     transaction_date = fields.Date(string="Transaction Date")
     amount = fields.Float(string="Amount")
     remarks = fields.Text(string="Remarks")
-    unissued_amount_for_ar = fields.Float(string="Unissued Amount For AR", default=0)
+    unissued_amount_for_ar = fields.Float(string="Unissued Amount For AR", default=0, readonly=True)
