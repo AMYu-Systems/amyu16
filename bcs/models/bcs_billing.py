@@ -77,4 +77,4 @@ class BcsBilling(models.Model):
     service_id = fields.Many2many(comodel_name="services.type", string="Services")
     amount = fields.Float(string="Amount")
     issued_by = fields.Char(string="Issued By")
-    remarks = fields.Text(string="Remarksl")
+    remarks = fields.Text(string="Remarks")
