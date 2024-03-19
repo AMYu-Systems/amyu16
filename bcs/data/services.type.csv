@@ -1,0 +1,7 @@
+"id","name","practice"
+"service_aud","Audit","assurance_audit"
+"service_tax","TRC","tax_services"
+"service_bks","Books","consultancy_services"
+"service_bps","Business Permits","consultancy_services"
+"service_gis","GIS","consultancy_services"
+"service_loa","LOA","consultancy_services"
