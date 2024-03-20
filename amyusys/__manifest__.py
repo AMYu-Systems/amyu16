@@ -2,7 +2,7 @@
 {
     'name': "AMYU Systems",
     'summary': """
-        Install this module to install all AMYU Systems (HRIS, CPMS, BCS, & ETS)""",
+        Install all AMYU Systems (HRIS, CPMS, BCS, & ETS)""",
     'description': """
         AMYu Systems
 
@@ -22,7 +22,10 @@
 
     # always loaded
     'data': [
-        # 'data/ets.location.csv',
+        # 'data/amyusys.included.modules.csv',
+        'wizard/import_amyu_data_wizard_view.xml',
+        'views/amyusys_main_view.xml',
+        'views/amyusys_menu_view.xml',
      ],
     'application': True,
     'license': 'LGPL-3',

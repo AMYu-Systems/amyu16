@@ -1,0 +1,19 @@
+<odoo>
+    <data>
+        <record id="import_amyu_data_wizard_form_view" model="ir.ui.view">
+            <field name="name">import.amyu.data.wizard.form.view</field>
+            <field name="model">import.amyu.data.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="excel_file" />
+                        <field name="csv_file" />
+                    </group>
+                    <footer>
+                        <button string="Import Data" type="object" name="process_import" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

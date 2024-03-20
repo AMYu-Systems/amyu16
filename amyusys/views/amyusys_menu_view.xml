@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <menuitem
+            id="menu_amyusys_root"
+            name="AMYU Systems"
+            action="amyusys_main_view_action"/>
+    </data>
+</odoo>
