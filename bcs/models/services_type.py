@@ -4,6 +4,13 @@ from odoo import fields, models
 class ServicesType(models.Model):
     _name = 'services.type'
     _description = "Services"
+    _sql_constraints = [
+        (
+            'unique_name', 
+            'unique(name)',
+            'Can\'t have duplicate values.'
+        )
+    ]
 
     name = fields.Text(string="Name")
     description = fields.Text(string="Description")

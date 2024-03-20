@@ -4,7 +4,13 @@ from odoo import fields, models, api
 class BillingSummary(models.Model):
     _name = 'billing.summary'
     _description = "Billing Summary"
-
+    _sql_constraints = [
+        (
+            'unique_name', 
+            'unique(name)',
+            'Can\'t have duplicate values.'
+        )
+    ]
     name = fields.Char(string="Client Name")
     image_1012 = fields.Image(string="Image")
     partner = fields.Char(string="Partner")

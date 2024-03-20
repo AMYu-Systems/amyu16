@@ -52,3 +52,4 @@ class ARJournal(models.Model):
             'domain': [()],
             'context': "{'create': False}"
         }
+    
