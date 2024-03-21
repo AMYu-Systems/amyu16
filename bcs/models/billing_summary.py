@@ -17,13 +17,13 @@ class BillingSummary(models.Model):
     _description = "Billing Summary"
     _sql_constraints = [
         (
-            'unique_name', 
-            'unique(name)',
-            'Can\'t have duplicate values.'
+            'unique_client_id', 
+            'unique(client_id)',
+            'Can\'t have duplicate clients.'
         )
     ]
     
-    client_id = fields.Many2one(string="Client Name", comodel_name='client.profile')
+    client_id = fields.Many2one(string="Client Name", comodel_name='client.profile', required=True)
     
     image_1012 = fields.Image(string="Image")
     partner_id = fields.Many2one(related='client_id.lead_partner_id', string="Partner")
@@ -65,3 +65,4 @@ class BillingSummary(models.Model):
         self.has_gis = 'GIS' in service_list
         self.has_loa = 'LOA' in service_list
         self.has_spe = 'SPE' in service_list
+        return

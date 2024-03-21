@@ -7,15 +7,15 @@
             <field name="arch" type="xml">
                 <tree>
                     <field name="transaction"/>
-                    <field name="client_name"/>
-                    <field name="collection_ids" widget="many2many_tags"/>
+                    <field name="client_id"/>
+                    <!-- <field name="collection_ids" widget="many2many_tags"/> -->
                     <!-- <field name="for_collection_updates"/> -->
                     <field name="date_billed"/>
                     <!-- <field name="last_updated"/> -->
                     <field name="state"/>
                     <field name="status"/>
                     <field name="other"/>
-                    <field name="service_id" widget="many2many_tags"/>
+                    <field name="services_id" widget="many2many_tags"/>
                     <field name="amount"/>
                     <field name="issued_by"/>
                     <field name="remarks"/>
@@ -53,14 +53,14 @@
                     <sheet>
                         <group>
                             <field name="transaction"/>
-                            <field name="client_name"/>
-                            <field name="collection_ids" widget="many2many_tags"
-                                   options="{'no_create': True,'no_open': True }"/>
+                            <field name="client_id"/>
+                            <!-- <field name="collection_ids" widget="many2many_tags"
+                                   options="{'no_create': True,'no_open': True }"/> -->
                             <!-- <field name="billing_collection_updates"/> -->
                             <field name="date_billed"/>
                             <!-- <field name="last_updated"/> -->
                             <field name="other"/>
-                            <field name="service_id" widget="many2many_tags"/>
+                            <field name="services_id" widget="many2many_tags"/>
                             <field name="amount"/>
                             <field name="issued_by"/>
                             <field name="remarks"/>

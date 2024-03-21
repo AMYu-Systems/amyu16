@@ -12,7 +12,7 @@
                     <field name="payment_collection"/>
                     <field name="collected_by"/>
                     <field name="date_collected"/>
-                    <field name="last_update"/>
+                    <!-- <field name="last_update"/> -->
                     <field name="depository_bank"/>
                     <field name="payment_mode"/>
                     <field name="bank"/>
@@ -41,7 +41,7 @@
                             <field name="payment_collection"/>
                             <field name="collected_by"/>
                             <field name="date_collected"/>
-                            <field name="last_update"/>
+                            <!-- <field name="last_update"/> -->
                             <field name="depository_bank"/>
                             <field name="payment_mode"/>
                             <field name="bank" attrs="{'invisible':[('payment_mode', '==','cash')]}"/>

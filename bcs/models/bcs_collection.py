@@ -31,24 +31,23 @@ class BcsCollection(models.Model):
         vals['transaction'] = transaction
         return super(BcsCollection, self).create(vals)
 
-    paid_by_id = fields.Many2one(comodel_name='billing.summary', string="Paid By")
+    paid_by_id = fields.Many2one(comodel_name='billing.summary', string="Paid By (Client)", required=True)
     billing_ids = fields.Many2many(comodel_name='bcs.billing', string="Billing")
     collection_type = [('direct_payment', 'Direct Payment'),
                        ('consolidated', 'Consolidated Payment'),
                        ('suspense', 'Suspense Account')]
-    payment_collection = fields.Selection(collection_type, default='suspense', string="Collection Type")
-    collected_by = fields.Char(string="Collected By")
-    date_collected = fields.Date(string="Date Collected")
-    last_update = fields.Datetime(string="Last Updated")
+    payment_collection = fields.Selection(collection_type, default='suspense', string="Collection Type", required=True)
+    collected_by = fields.Many2one(comodel_name='hr.employee', string="Collected By", required=True)
+    date_collected = fields.Date(string="Date Collected", required=True)
     bank_type = [('bpi', 'BPI'),
                  ('bdo', 'BDO'),
                  ('eastwest', 'EASTWEST'),
                  ('metrobank', 'METROBANK')]
-    depository_bank = fields.Selection(bank_type, default='bpi', string="Depository Bank")
+    depository_bank = fields.Selection(bank_type, default='bpi', string="Depository Bank", required=True)
     payment_method = [('check', 'Check'),
                       ('cash', 'Cash'),
                       ('online', 'Online')]
-    payment_mode = fields.Selection(payment_method, default='online', string="Mode of Payment")
+    payment_mode = fields.Selection(payment_method, default='online', string="Mode of Payment", required=True)
     bank = fields.Many2one(comodel_name='bank', string="Bank")
     # If check
     check_number = fields.Char(string="Check Number")
@@ -56,6 +55,6 @@ class BcsCollection(models.Model):
     # If online
     transaction_generated = fields.Char(string="Transaction Generated")
     transaction_date = fields.Date(string="Transaction Date")
-    amount = fields.Float(string="Amount")
+    amount = fields.Float(string="Amount", required=True)
     remarks = fields.Text(string="Remarks")
     unissued_amount_for_ar = fields.Float(string="Unissued Amount For AR", default=0, readonly=True)

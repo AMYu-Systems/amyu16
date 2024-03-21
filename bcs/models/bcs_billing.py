@@ -7,13 +7,13 @@ from odoo.exceptions import ValidationError
 class BcsBilling(models.Model):
     _name = 'bcs.billing'
     _description = "Billing"
-    _rec_name = 'client_name'
+    _rec_name = 'client_id'
 
     transaction = fields.Char(string="Transaction id", readonly="1")
 
     @api.model
     def create(self, vals):
-        name = re.sub(r'\W+', ' ', vals['client_name'])
+        name = re.sub(r'\W+', ' ', vals['client_id.name'])
         name_array = name.split()
         if len(name_array) == 1:
             transaction = name_array[0][0:3]
@@ -32,8 +32,8 @@ class BcsBilling(models.Model):
         vals['transaction'] = transaction
         return super(BcsBilling, self).create(vals)
 
-    client_name = fields.Char(string="Client Name")
-    
+    client_id = fields.Many2one(comodel_name='client.profile', string="Client Name", required=True)
+    issued_by = fields.Many2one(comodel_name='hr.employee', string="Issued By")
     # collection_ids = fields.Many2many(comodel_name='bcs.collection', string="Collection")
     # for_collection_updates = fields.Many2many(comodel_name='bcs.updates', string="For-collection Updates") # maybe not needed
     
@@ -74,7 +74,6 @@ class BcsBilling(models.Model):
     #             raise ValidationError("Fields can only be edited when state is not 'approved'.")
 
     other = fields.Text(string="Other Instruction")
-    service_id = fields.Many2many(comodel_name="services.type", string="Services")
-    amount = fields.Float(string="Amount")
-    issued_by = fields.Char(string="Issued By")
+    services_id = fields.Many2many(comodel_name="services.type", string="Services", required=True)
+    amount = fields.Float(string="Amount", readonly=True)
     remarks = fields.Text(string="Remarks")
