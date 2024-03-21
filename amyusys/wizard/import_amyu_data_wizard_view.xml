@@ -15,5 +15,12 @@
                 </form>
             </field>
         </record>
+
+        <record id="import_amyu_data_wizard_action" model="ir.actions.act_window">
+            <field name="name">Import Data</field>
+            <field name="res_model">import.amyu.data.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
     </data>
 </odoo>

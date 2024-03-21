@@ -22,7 +22,7 @@
 
     # always loaded
     'data': [
-        # 'data/amyusys.included.modules.csv',
+        'data/amyusys.included.modules.csv',
         'wizard/import_amyu_data_wizard_view.xml',
         'views/amyusys_main_view.xml',
         'views/amyusys_menu_view.xml',

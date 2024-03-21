@@ -5,5 +5,10 @@
             id="menu_amyusys_root"
             name="AMYU Systems"
             action="amyusys_main_view_action"/>
+        <menuitem
+            id="menu_amyusys_import"
+            parent="menu_amyusys_root"
+            name="Import Data"
+            action="import_amyu_data_wizard_action"/>
     </data>
 </odoo>
