@@ -78,6 +78,15 @@
             <field name="view_id" ref="bcs_billing_tree_view"/>
         </record>
 
+        <record id="bcs_billing_form_action" model="ir.actions.act_window">
+            <field name="name">Billing</field>
+            <field name="res_model">bcs.billing</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="bcs_billing_form_view"/>
+            <field name="domain">[('state','=','draft')]</field>
+        </record>
+
         <record model="ir.sequence" id="billing_id_seq">
             <field name="name">Billing Transaction ID Sequence"</field>
             <field name="code">billing.id.seq</field>
