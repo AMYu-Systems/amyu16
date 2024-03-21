@@ -33,8 +33,8 @@ class BcsBilling(models.Model):
         return super(BcsBilling, self).create(vals)
 
     client_name = fields.Char(string="Client Name")
-    collection_ids = fields.Many2many(comodel_name='bcs.collection', string="Collection")
     
+    # collection_ids = fields.Many2many(comodel_name='bcs.collection', string="Collection")
     # for_collection_updates = fields.Many2many(comodel_name='bcs.updates', string="For-collection Updates") # maybe not needed
     
     date_billed = fields.Date(string="Date Billed")

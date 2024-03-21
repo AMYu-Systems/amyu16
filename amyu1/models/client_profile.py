@@ -814,3 +814,5 @@ class ClientProfile(models.Model):
     # upload_file = fields.Binary(string='File', attachment=True)
     # file_name = fields.Char(string='Filename')
     # year_field = fields.Date(string="Year")
+    
+    # client_ids = fields.One2many(comodel_name='billing.summary', inverse_name='client_id')

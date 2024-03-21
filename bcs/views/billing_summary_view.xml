@@ -6,12 +6,12 @@
             <field name="model">billing.summary</field>
             <field name="arch" type="xml">
                 <tree>
-                    <field name="name"/>
+                    <field name="client_id"/>
                     <field name="service_ids" widget="many2many_tags"/>
-                    <field name="partner"/>
-                    <field name="manager"/>
-                    <field name="supervisor"/>
-                    <field name="associate"/>
+                    <field name="partner_id"/>
+                    <field name="manager_id"/>
+                    <field name="supervisor_id"/>
+                    <field name="associate_id"/>
                 </tree>
             </field>
         </record>
@@ -27,7 +27,7 @@
                         </div>
                         <div class="oe_title">
                             <h1>
-                                <field name="name" placeholder="Client Name"/>
+                                <field name="client_id" placeholder="Client Name"/>
                             </h1>
                         </div>
                         <group>
@@ -35,16 +35,25 @@
                         </group>
                         <group string="Engagement Team">
                             <group>
-                                <field name="partner"/>
-                                <field name="manager"/>
+                                <field name="partner_id"/>
+                                <field name="manager_id"/>
                             </group>
                             <group>
-                                <field name="supervisor"/>
-                                <field name="associate"/>
+                                <field name="supervisor_id"/>
+                                <field name="associate_id"/>
+                            </group>
+                            <group invisible="1">
+                                <field name="has_aud"/>
+                                <field name="has_trc"/>
+                                <field name="has_bks"/>
+                                <field name="has_per"/>
+                                <field name="has_gis"/>
+                                <field name="has_loa"/>
+                                <field name="has_spe"/>
                             </group>
                         </group>
                         <notebook>
-                            <page string="Audit" attrs="{'invisible': [('service_ids', 'not in', 1)]}">
+                            <page string="Audit" attrs="{'invisible': [('has_aud', '=', False)]}">
                                 <field name="audit_ids" nolabel="1">
                                     <tree>
                                         <field name="billing_month"/>
@@ -60,7 +69,7 @@
                                     </tree>
                                 </field>
                             </page>
-                            <page string="TRC" attrs="{'invisible': [('service_ids', 'not in', 2)]}">
+                            <page string="TRC" attrs="{'invisible': [('has_trc', '=', False)]}">
                                 <field name="trc_ids" nolabel="1">
                                     <tree>
                                         <field name="name"/>
@@ -78,7 +87,7 @@
                                     </tree>
                                 </field>
                             </page>
-                            <page string="Books" attrs="{'invisible': [('service_ids', 'not in', 3)]}">
+                            <page string="Books" attrs="{'invisible': [('has_bks', '=', False)]}">
                                 <field name="books_ids" nolabel="1">
                                     <tree>
                                         <field name="billing_month"/>
@@ -96,7 +105,7 @@
                                     </tree>
                                 </field>
                             </page>
-                            <page string="Business Permit" attrs="{'invisible': [('service_ids', 'not in', 4)]}">
+                            <page string="Business Permit" attrs="{'invisible': [('has_per', '=', False)]}">
                                 <field name="permit_ids" nolabel="1">
                                     <tree>
                                         <field name="billing_month"/>
@@ -113,7 +122,7 @@
                                     </tree>
                                 </field>
                             </page>
-                            <page string="GIS" attrs="{'invisible': [('service_ids', 'not in', 5)]}">
+                            <page string="GIS" attrs="{'invisible': [('has_gis', '=', False)]}">
                                 <field name="gis_ids" nolabel="1">
                                     <tree>
                                         <field name="billing_month"/>
@@ -128,7 +137,7 @@
                                     </tree>
                                 </field>
                             </page>
-                            <page string="LOA" attrs="{'invisible': [('service_ids', 'not in', 6)]}">
+                            <page string="LOA" attrs="{'invisible': [('has_loa', '=', False)]}">
                                 <field name="loa_ids" nolabel="1">
                                     <tree>
                                         <field name="name"/>
@@ -146,7 +155,7 @@
                                     </tree>
                                 </field>
                             </page>
-                            <page string="Special Engagement" attrs="{'invisible': [('service_ids', 'not in', 7)]}">
+                            <page string="Special Engagement" attrs="{'invisible': [('has_spe', '=', False)]}">
                                 <field name="spe_ids">
                                     <tree>
                                         <field name="billing_month"/>
