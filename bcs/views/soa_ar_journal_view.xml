@@ -8,7 +8,7 @@
                 <form string="AR Journal">
                     <sheet>
                         <group>
-                            <field name="client" />
+                            <field name="client_id" />
                             <field name="initial_balance" />
                         </group>
                     </sheet>
@@ -21,9 +21,9 @@
             <field name="model">soa.ar.journal</field>
             <field name="arch" type="xml">
                 <tree>
-                    <field name="client" />
+                    <field name="client_id" />
                     <field name="balance" />
-                    <button string="Create" icon="gtk-redo" name="new_billing" type="object"/>
+                    <!-- <button string="Create" icon="gtk-redo" name="new_billing" type="object"/> -->
                 </tree>
             </field>
         </record>

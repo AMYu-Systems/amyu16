@@ -4,9 +4,15 @@ from odoo import fields, models, api
 class ARJournal(models.Model):
     _name = 'soa.ar.journal'
     _description = "AR Journal of Client"
-    name = fields.Text(string="Name")
+    _sql_constraints = [
+        (
+            'unique_client_id', 
+            'unique(client_id)',
+            'Can\'t have duplicate values.'
+        )
+    ]
     
-    client = fields.Text()
+    client_id = fields.Many2one(string="Client Name", comodel_name='client.profile', required=True)
     initial_balance = fields.Float()
     balance = fields.Float()
     
@@ -15,10 +21,11 @@ class ARJournal(models.Model):
     ar_ids_count = fields.Integer()
     pc_ids_count = fields.Integer()
 
-    @api.depends("client")
-    def _compute_name(self):
-        for record in self:
-            record.name = record.client
+    # name = fields.Text(string="Name")
+    # @api.depends("client_id")
+    # def _compute_name(self):
+    #     for record in self:
+    #         record.name = record.client_id.name
             
     def add_accounts_receivable(self, ar):
         self.accounts_receivable_ids.add(ar)
