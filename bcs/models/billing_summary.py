@@ -48,6 +48,28 @@ class BillingSummary(models.Model):
     has_gis = fields.Boolean(default=False)
     has_loa = fields.Boolean(default=False)
     has_spe = fields.Boolean(default=False)
+    
+    state_selection = [('draft', 'Draft'),
+                       ('submitted', 'Submitted'),
+                       ('verified', 'Verified'),
+                       ('approved', 'Approved')]
+    state = fields.Selection(state_selection, default='draft', copy=False)
+
+    # ops manager create
+    def draft_action(self):
+        self.state = 'draft'
+
+    # ops manager
+    def ops_manager_submitted_action(self):
+        self.state = 'submitted'
+
+    # ops manager
+    def ops_manager_verified_action(self):
+        self.state = 'verified'
+
+    # fad manager
+    def partner_approved_action(self):
+        self.state = 'approved'
 
     def get_services(self):
         services = self.env['billing.summary'].search([('service_ids', '!=', False)])
