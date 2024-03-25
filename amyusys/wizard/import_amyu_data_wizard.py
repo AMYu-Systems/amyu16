@@ -1,4 +1,5 @@
-import logging, base64, pandas as pd, json
+import logging, base64, pandas as pd, json, math
+from io import BytesIO
 from odoo import _, fields, models, api
 from odoo.exceptions import ValidationError
 
@@ -30,11 +31,11 @@ class ImportAmyuDataWizard(models.TransientModel):
         created, created_per_model = self._process_data(data)
         
         # Format message
-        suffix = "s" if created == 1 else ""
+        suffix = "" if created == 1 else "s"
         title = f'Created {created} record{suffix}'
         message = ''
         for model_name, count in created_per_model.items():
-            message += f'{model_name}: {count}\n'
+            message += f'{model_name}: {count} | '
         
         # Success
         return {
@@ -43,7 +44,7 @@ class ImportAmyuDataWizard(models.TransientModel):
             'params': {
                 'title': title,
                 'message': message,
-                'sticky': False,
+                'sticky': True,
                 'next': {'type': 'ir.actions.act_window_close'},
             }
         }
@@ -53,7 +54,7 @@ class ImportAmyuDataWizard(models.TransientModel):
         excel_file = base64.b64decode(self.excel_file)
 
         # Read the Excel file
-        excel_data = pd.read_excel(excel_file, sheet_name=None)
+        excel_data = pd.read_excel(BytesIO(excel_file), sheet_name=None)
 
         # Transform each sheet into CSV and then into JSON
         json_data = {}
@@ -67,7 +68,7 @@ class ImportAmyuDataWizard(models.TransientModel):
                 for arb_id, data in zip(
                     arb_list, 
                     json.loads(df.to_json(orient='records'))
-                )
+                ) if arb_id and not math.isnan(arb_id)
             }
         
         return json_data
@@ -83,18 +84,20 @@ class ImportAmyuDataWizard(models.TransientModel):
         
         def _process_hr_employee(data: dict):
             created = 0
-            users = {}
+            employees = {}
             skipped = []
             record: dict
             for arbitrary__id, record in data.items():
+                arbitrary__id = int(arbitrary__id)
                 
                 new_user = {}
                 if record['res.users__login']:
                     # If user already exists, skip the record
                     existing = self.env['res.users'].search([('login', '=', record['res.users__login'])])
                     if existing: 
-                        users[arbitrary__id] = self.env['hr.employee'].search([('user_id', '=', existing.id)])
+                        employees[arbitrary__id] = self.env['hr.employee'].search([('user_id', '=', existing.id)])
                         skipped.append(arbitrary__id)
+                        self._print('User skipped: ' + str(arbitrary__id) + ' > with id of ' + str(employees[arbitrary__id].id), True)
                         continue
                     
                     new_user['name'] = record['first_name'] + ' ' + record['family_name']
@@ -113,11 +116,9 @@ class ImportAmyuDataWizard(models.TransientModel):
                     # Skip arbitrary for now
                     if field_name.startswith('arbitrary__'):
                         continue
-                    # If foreign key which ends in "_id"
-                    if field_name.endswith('_id') and value:
+                    # If foreign key: department_id and job_id
+                    if field_name in ['department_id', 'job_id'] and value:
                         fname = field_name.split('_')[0]
-                        # obj_id = None
-                        # while not obj_id:
                         obj_id = self.env[f'hr.{fname}'].search([('name', '=', value)])
                         if not obj_id:
                             obj_id = self.env[f'hr.{fname}'].create({'name': value})
@@ -126,7 +127,7 @@ class ImportAmyuDataWizard(models.TransientModel):
                     else:
                         record_no_arb[field_name] = value
                 
-                users[arbitrary__id] = self.env['hr.employee'].create(record_no_arb)
+                employees[arbitrary__id] = self.env['hr.employee'].create(record_no_arb)
                 created += 1
                 self._print('Employee created: ' + str(arbitrary__id), True)
         
@@ -138,8 +139,8 @@ class ImportAmyuDataWizard(models.TransientModel):
                 for field_name, value in record.items():
                     if field_name.startswith('arbitrary__') and value:
                         fname = field_name.replace('arbitrary__', '')
-                        arb_fields[fname] = users[value].id
-                user_id = users[arbitrary__id]
+                        arb_fields[fname] = employees[value].id
+                user_id = employees[arbitrary__id]
                 user_id.update(arb_fields)
                 self._print('Employee updated: ' + str(arbitrary__id), True)
             
@@ -147,14 +148,24 @@ class ImportAmyuDataWizard(models.TransientModel):
                 self._print('Employee skipped count: ' + str(len(skipped)), True)
             
             self.env.cr.commit()
-            return created, users
+            return created, employees
         
         def _process_associate_profile(data: dict, hr_employees: dict):
             created = 0
             associates = {}
+            skipped = []
             record: dict
             for arbitrary__id, record in data.items():
-                user_id = hr_employees[record['user_id']]
+                arbitrary__id = int(arbitrary__id)
+                employee_id = hr_employees[record['user_id']]
+                
+                # If user already exists, skip the record
+                existing = self.env['associate.profile'].search([('user_id', '=', employee_id.user_id.id)])
+                if existing: 
+                    associates[arbitrary__id] = existing
+                    skipped.append(arbitrary__id)
+                    self._print('Assoc Profile skipped: ' + str(arbitrary__id) + ' > with id of ' + str(existing.id), True)
+                    continue
                 
                 team_id = self.env[f'team.department'].search([('name', '=', record['team_id'])])
                 if not team_id:
@@ -163,13 +174,13 @@ class ImportAmyuDataWizard(models.TransientModel):
                 # self._print(user_id.first_name, True)
                 
                 associates[arbitrary__id] = self.env['associate.profile'].create({
-                    'user_id': user_id.id, 
-                    'supervisor_id': user_id.coach_id.id,
-                    'manager_id': user_id.parent_id.id,
+                    'user_id': employee_id.user_id.id, 
+                    'supervisor_id': employee_id.coach_id.id,
+                    'manager_id': employee_id.parent_id.id,
                     'team_id': team_id.id, 
-                    'cluster_id': user_id.department_id.id,
-                    'job_id': user_id.job_id.id,
-                    'lead_partner_id': user_id.executive_id.id,
+                    'cluster_id': employee_id.department_id.id,
+                    'job_id': employee_id.job_id.id,
+                    'lead_partner_id': employee_id.executive_id.id,
                 })
                 
                 created += 1
@@ -179,19 +190,30 @@ class ImportAmyuDataWizard(models.TransientModel):
         def _process_client_profile(data: dict, hr_employees:dict, associates: dict):
             created = 0
             clients = {}
+            skipped = []
             record: dict
             for arbitrary__id, record in data.items():
-                user_id = hr_employees[record['user_id']]
-                assoc_id = hr_employees[record['team_id']]
+                arbitrary__id = int(arbitrary__id)
                 
-                new_record = {'user_id': user_id.id, 'assoc_id': assoc_id.id}
+                # If user already exists, skip the record
+                existing = self.env['client.profile'].search([('name', 'ilike', str(record['name']).upper())])
+                if existing: 
+                    associates[arbitrary__id] = existing
+                    skipped.append(arbitrary__id)
+                    self._print('Client Profile skipped: ' + str(arbitrary__id) + ' > with id of ' + str(existing.id), True)
+                    continue
+                
+                employee_id = hr_employees[record['user_id']]
+                assoc_id = associates[record['team_id']]
+                
+                new_record = {'user_id': employee_id.user_id.id, 'team_id': assoc_id.id}
                 field_name:str
                 for field_name, value in record.items():
                     if field_name.endswith('_id'):
                         continue
                     new_record[field_name] = value
                 
-                clients[arbitrary__id] = self.env['associate.profile'].create(new_record)
+                clients[arbitrary__id] = self.env['client.profile'].create(new_record)
                 created += 1
                 self._print('Client Profile created: ' + str(arbitrary__id), True)
             return created, clients
@@ -219,22 +241,22 @@ class ImportAmyuDataWizard(models.TransientModel):
         if not self.enable_print: return
         logger = self.Logger()
         display = print if not use_log else logger.log
-        display('---------------------------------------')
+        display('_______________________________________')
         display(str(data))
-        display('---------------------------------------')
+        display('_______________________________________')
          
     def _print_data(self, data: dict, use_log=False):
         if not self.enable_print: return
         logger = self.Logger()
         display = print if not use_log else logger.log
         
-        disp_str = '\n\n---------------------------------------'
+        disp_str = '\n\n_______________________________________'
         records: dict
         for model, records in data.items():
             disp_str += ('\n\n'+ model + ':')
             for record in records.items():
                 disp_str += '\n' + str(record)
-        disp_str += ('\n---------------------------------------\n\n')
+        disp_str += ('\n_______________________________________\n\n')
         display(disp_str)
  
     def _error_message(self, title: str, message: str):
