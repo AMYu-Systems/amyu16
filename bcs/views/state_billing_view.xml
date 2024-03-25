@@ -61,6 +61,7 @@
             <field name="domain">[('state','=','submitted')]</field>
             <field name="view_id" ref="submitted_bcs_billing_tree_view"/>
         </record>
+        
         <!--        Verified-->
         <record id="verified_bcs_billing_tree_view" model="ir.ui.view">
             <field name="name">verified_bcs_billing_tree_view</field>
