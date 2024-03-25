@@ -14,17 +14,18 @@
         <menuitem id="menu_billing_summary_root"
                   name="Billing Summary"
                   sequence="11"
-                  parent="bcs_root_menu"/>
-        <menuitem id="menu_billing_summary_list"
-                  name="View Billing Summary List"
+                  parent="bcs_root_menu"
+                  action="billing_summary_view_action" />
+        <!-- <menuitem id="menu_billing_summary_list"
+                  name="View List"
                   sequence="110"
                   parent="menu_billing_summary_root"
-                  action="billing_summary_view_action" />
-        <menuitem id="menu_new_billing_summary"
-                  name="View New Billing Summary"
+                  action="billing_summary_view_action" /> -->
+        <!-- <menuitem id="menu_new_billing_summary"
+                  name="View Newly Added"
                   sequence="111"
                   parent="menu_billing_summary_root"
-                  action="billing_summary_view_action" />
+                  action="billing_summary_view_action" /> -->
 
         <menuitem id="menu_billing_root"
                   name="Billing"
