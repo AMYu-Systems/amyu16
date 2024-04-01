@@ -60,3 +60,12 @@ class LabelSec(models.Model):
     active = fields.Boolean(string="Active")
     color = fields.Integer(string="Color")
     qcc_id = fields.Many2one(string="Checklist", comodel_name='main.view')
+
+
+class RevisionStatus(models.Model):
+    _name = 'revision.status'
+    _description = "Ongoing Process"
+
+    name = fields.Char(string="Name")
+    color = fields.Integer(string="Color")
+    revision_ids = fields.One2many(string="Name", comodel_name='main.view', inverse_name="revision_ids")

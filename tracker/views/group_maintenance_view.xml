@@ -59,5 +59,34 @@
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="team_manager_tree_view"/>
         </record>
+        <!--        Supervisor-->
+        <record id="team_supervisor_tree_view" model="ir.ui.view">
+            <field name="name">team_supervisor_tree_view</field>
+            <field name="model">team.supervisor</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="team_supervisor_form_view" model="ir.ui.view">
+            <field name="name">team_supervisor_form_view</field>
+            <field name="model">team.supervisor</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="team_supervisor_view_action" model="ir.actions.act_window">
+            <field name="name">Supervisor</field>
+            <field name="res_model">team.supervisor</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="team_supervisor_tree_view"/>
+        </record>
     </data>
 </odoo>
