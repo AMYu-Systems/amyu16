@@ -4,11 +4,11 @@
         <field name="name">liaison.form</field>
         <field name="model">liaison</field>
         <field name="arch" type="xml">
-            <form string="liaison Form">
+            <form string="Liaison Form">
                 <sheet>
                     <group>
-                        <field name="user"/>
-                        <field name="assigned_location"/>
+                        <field name="employee_id" options="{'no_create': True, 'no_create_edit':True}" />
+                        <field name="location_id"/>
                     </group>
                 </sheet>
             </form>
@@ -19,15 +19,15 @@
         <field name="name">liaison.tree</field>
         <field name="model">liaison</field>
         <field name="arch" type="xml">
-            <tree string="liaison">
-                <field name="user"/>
-                <field name="assigned_location"/>
+            <tree string="Liaison">
+                <field name="employee_id"/>
+                <field name="location_id"/>
             </tree>
         </field>
     </record>
 
     <record id="liaison_action" model="ir.actions.act_window">
-        <field name="name">liaison</field>
+        <field name="name">Liaison</field>
         <field name="res_model">liaison</field>
         <field name="view_mode">tree,form</field>
         <field name="target">current</field>

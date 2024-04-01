@@ -1,5 +1,5 @@
 
-import logging, pytz, datetime, pandas, math
+import datetime
 from odoo import api, fields, models
 from lxml import etree
 
@@ -7,7 +7,7 @@ class Errand(models.Model):
     _name = 'errand'
     _description = 'Errand Record'
 
-    # in sequence
+    # Values inside each array as dict value is in sequence
     CHOICES = {
         'type_of_request': [
             ('delivery', 'Delivery'), 
@@ -49,7 +49,7 @@ class Errand(models.Model):
     ctrl_no = fields.Char(string='Ctrl No.') # auto generated
     status = fields.Selection(CHOICES['status'], default='draft')
     date_requested = fields.Date() # validation, past to present only
-    requested_by = fields.Many2one('res.users') # many to one - registered user
+    requested_by = fields.Many2one('hr.employee') # many to one - registered user
     client = fields.Char(string='Client') # many to one - all the clients from cpms
     deadline = fields.Date() # validation, future only (unless rimd)
     location = fields.Many2one('location') # many to one - location table
@@ -124,7 +124,7 @@ class Errand(models.Model):
         """ 
         Set the assigned liaison to the default liaison of the location  
         """
-        domain = [('assigned_location','=', self.location.id)]
+        domain = [('location_id','=', self.location.id)]
         default_liaison = self.env['liaison'].search(domain)
         self.liaison = default_liaison
     

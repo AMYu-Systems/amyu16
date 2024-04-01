@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ROOT -->
+    <menuitem
+        id="menu_bcs_root"
+        name="BCS"
+        action=""/>
+
+    <!-- MAIN NAVBAR -->
+    <!-- <menuitem
+        id="menu_ar_journal"
+        name="AR Journal"
+        parent="menu_bcs_root"
+        action=""/> -->
+    <menuitem 
+        id="menu_others"
+        name="Others"
+        parent="menu_bcs_root"/>
+
+    <!-- SUBMENUS FOR "Others" -->
+    <menuitem 
+        parent="menu_others"
+        id="menu_client_billing_info"
+        name="Client Billing Info"
+        action="client_billing_info_action"/>
+    <menuitem 
+        parent="menu_others"
+        id="menu_bank"
+        name="Banks"
+        action="bank_action"/>
+</odoo>
