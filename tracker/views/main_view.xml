@@ -5,7 +5,7 @@
             <field name="name">kanban.main.tree.view</field>
             <field name="model">main.view</field>
             <field name="arch" type="xml">
-                <tree export_xlsx="0">
+                <tree export_xlsx="0" create="0">
                     <field name="name" readonly="1"/>
                     <field name="user_id" readonly="1"/>
                     <field name="state" widget="badge"
@@ -16,6 +16,7 @@
                            decoration-primary="state == 'filing'"
                            decoration-success="state == 'filed'" readonly="1"/>
                     <field name="date_start" readonly="1"/>
+                    <field name="date" invisible="1"/>
                     <field name="date_end" readonly="1"/>
                     <field name="total_time" readonly="1"/>
                 </tree>
@@ -26,10 +27,11 @@
             <field name="name">main.kanban.view</field>
             <field name="model">main.view</field>
             <field name="arch" type="xml">
-                <kanban default_group_by="state" create="False" records_draggable="tracker.preparation">
+                <kanban default_group_by="state" create="False">
                     <field name="state"/>
                     <field name="name"/>
                     <field name="user_id"/>
+                    <field name="date" invisible="1"/>
                     <field name="date_start"/>
                     <field name="date_end"/>
                     <templates>
@@ -41,7 +43,7 @@
                                             <div>
                                                 <span style="float:right">
                                                     <p class="text-info">
-                                                        <field name="revision"/>
+                                                        <field name="revision_ids"/>
                                                     </p>
                                                 </span>
                                             </div>
@@ -61,6 +63,7 @@
                                         <div class="oe_kanban_date">
                                             Date Start:
                                             <span style="font-weight: regular; color: blue;">
+                                                <field name="date" invisible="1"/>
                                                 <field name="date_start"/>
                                             </span>
                                         </div>
@@ -78,7 +81,8 @@
                                                 </p>
                                             </span>
                                         </div>
-
+                                        <progressbar field="priority"
+                                                     colors='{"3": "success", "2": "warning", "1": "danger", "0": "info"}'/>
                                     </div>
                                 </div>
                             </div>
@@ -94,14 +98,14 @@
             <field name="arch" type="xml">
                 <search>
                     <searchpanel>
-                        <field name="cluster_id" enable_counters="1" string="Cluster"/>
+                        <field name="supervisors_id" enable_counters="1" string="Team"/>
                     </searchpanel>
                 </search>
             </field>
         </record>
 
         <record id="status_view_action" model="ir.actions.act_window">
-            <field name="name">Client Status</field>
+            <field name="name">Dashboard</field>
             <field name="res_model">main.view</field>
             <field name="view_mode">kanban,tree,form</field>
         </record>

@@ -23,3 +23,6 @@ class GroupSupervisor(models.Model):
 
     name = fields.Char(string="Name")
     supervisors_ids = fields.One2many(string="Name", comodel_name='main.view', inverse_name="supervisors_id")
+
+
+

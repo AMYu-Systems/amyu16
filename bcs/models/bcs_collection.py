@@ -12,22 +12,22 @@ class BcsCollection(models.Model):
 
     @api.model
     def create(self, vals):
-        name = re.sub(r'\W+', ' ', vals['paid_by_id'])
-        name_array = name.split()
-        if len(name_array) == 1:
-            transaction = name_array[0][0:3]
-        elif len(name_array) == 2:
-            name1 = name_array[0]
-            name2 = name_array[1]
-            transaction = (name1[0:2] if len(name1) >= 2 else name1[0:1]) + \
-                          (name2[0:2] if len(name1) == 1 else name2[0:1])
-        elif len(name_array) >= 3:
-            name1 = name_array[0]
-            name2 = name_array[1]
-            name3 = name_array[2]
-            transaction = name1[0:1] + name2[0:1] + name3[0:1]
+        # name = re.sub(r'\W+', ' ', vals['paid_by_id'])
+        # name_array = name.split()
+        # if len(name_array) == 1:
+        #     transaction = name_array[0][0:3]
+        # elif len(name_array) == 2:
+        #     name1 = name_array[0]
+        #     name2 = name_array[1]
+        #     transaction = (name1[0:2] if len(name1) >= 2 else name1[0:1]) + \
+        #                   (name2[0:2] if len(name1) == 1 else name2[0:1])
+        # elif len(name_array) >= 3:
+        #     name1 = name_array[0]
+        #     name2 = name_array[1]
+        #     name3 = name_array[2]
+        #     transaction = name1[0:1] + name2[0:1] + name3[0:1]
         # Compute Client ID
-        transaction += "-" + self.env['ir.sequence'].next_by_code('collection.id.seq')
+        transaction = self.env['ir.sequence'].next_by_code('collection.id.seq')
         vals['transaction'] = transaction
         return super(BcsCollection, self).create(vals)
 

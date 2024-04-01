@@ -6,7 +6,7 @@ class Bank(models.Model):
     _description = 'Bank records'
     _sql_constraints = [
         (
-            'unique_name', 
+            'unique_name',
             'unique(name)',
             'Can\'t have duplicate values.'
         )
