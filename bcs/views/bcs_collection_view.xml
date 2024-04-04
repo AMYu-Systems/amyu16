@@ -12,14 +12,14 @@
                     <field name="payment_collection"/>
                     <field name="collected_by"/>
                     <field name="date_collected"/>
-                    <field name="last_update"/>
+                    <!-- <field name="last_update"/> -->
                     <field name="depository_bank"/>
                     <field name="payment_mode"/>
                     <field name="bank"/>
-                    <field name="check_number"/>
-                    <field name="check_date"/>
-                    <field name="transaction_generated"/>
-                    <field name="transaction_date"/>
+                    <!-- <field name="check_number"/> -->
+                    <!-- <field name="check_date"/> -->
+                    <!-- <field name="transaction_generated"/> -->
+                    <!-- <field name="transaction_date"/> -->
                     <field name="amount"/>
                     <field name="remarks"/>
                     <field name="unissued_amount_for_ar"/>
@@ -41,7 +41,7 @@
                             <field name="payment_collection"/>
                             <field name="collected_by"/>
                             <field name="date_collected"/>
-                            <field name="last_update"/>
+                            <!-- <field name="last_update"/> -->
                             <field name="depository_bank"/>
                             <field name="payment_mode"/>
                             <field name="bank" attrs="{'invisible':[('payment_mode', '==','cash')]}"/>
@@ -51,7 +51,16 @@
                             <field name="transaction_date" attrs="{'invisible':[('payment_mode', '!=','online')]}"/>
                             <field name="amount"/>
                             <field name="remarks"/>
-                            <field name="unissued_amount_for_ar"/>
+                        </group>
+                        <group attrs="{'invisible': [('unissued_amount_for_ar', '=', 0)]}" col="4">
+                            <group>
+                                <field name="unissued_amount_for_ar"/>
+                            </group>
+                            <group>
+                                <button name="manual_posting" string="Manual Posting" class="oe_highlight text-nowrap" type="object"/>
+                            </group>
+                            <group string=" "></group>
+                            <group string=" "></group>
                         </group>
                     </sheet>
                 </form>
@@ -63,6 +72,43 @@
             <field name="res_model">bcs.collection</field>
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="bcs_collection_tree_view"/>
+        </record>
+
+        <record id="bcs_collection_form_action" model="ir.actions.act_window">
+            <field name="name">Collection</field>
+            <field name="res_model">bcs.collection</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="bcs_collection_form_view"/>
+        </record>
+        
+        <record id="bcs_unissued_payments_tree_view" model="ir.ui.view">
+            <field name="name">bcs_collection_tree_view</field>
+            <field name="model">bcs.collection</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="transaction"/>
+                    <field name="paid_by_id"/>
+                    <field name="billing_ids"/>
+                    <field name="payment_collection"/>
+                    <field name="collected_by"/>
+                    <field name="date_collected"/>
+                    <field name="depository_bank"/>
+                    <field name="payment_mode"/>
+                    <field name="bank"/>
+                    <field name="amount"/>
+                    <field name="unissued_amount_for_ar"/>
+                    <field name="remarks"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="bcs_unissued_payments_view_action" model="ir.actions.act_window">
+            <field name="name">Unissued Payments Collection</field>
+            <field name="res_model">bcs.collection</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="bcs_collection_tree_view"/>
+            <field name="domain">[('unissued_amount_for_ar', '>', 0)]</field>
         </record>
 
         <record model="ir.sequence" id="collection_id_seq">

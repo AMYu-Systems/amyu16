@@ -17,6 +17,8 @@
         'views/ets_location_views.xml',
         'views/ets_liaison_views.xml',
         'views/ets_menu_views.xml',
+        
+        'data/location.csv',
     ],
     'auto_install': True,
     'installable': True,
