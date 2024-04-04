@@ -7,8 +7,23 @@ from odoo.exceptions import ValidationError
 class BcsBilling(models.Model):
     _name = 'bcs.billing'
     _description = "Billing"
-    _rec_name = 'client_id'
+    _rec_name = 'name'
+    # _rec_name = 'transaction'
 
+    name = fields.Char(compute="_compute_name")
+    @api.depends("services_id", "date_billed")
+    def _compute_name(self):
+        for record in self:
+            services = ''
+            if record.services_id:
+                for service in record.services_id:
+                    services += service.code + ', '
+                services = services[:-2]
+            else:
+                services = 'No Services'
+            record.name = record.date_billed.strftime("%b %Y") + ' | ' + services + ' | ' + record.client_id.name
+        return
+    
     transaction = fields.Char(string="Transaction id", readonly="1")
 
     # @api.model
@@ -33,6 +48,16 @@ class BcsBilling(models.Model):
     #     return super(BcsBilling, self).create(vals)
 
     client_id = fields.Many2one(comodel_name='client.profile', string="Client Name", required=True)
+    
+    @api.onchange('client_id')
+    def _onchange_client_id(self):
+        bs = self.env['billing.summary'].search(
+            [('client_id', '=', self.client_id.id)], limit=1)
+        if bs:
+            self.services_id = bs.service_ids
+            self.amount = bs.get_services_total_amount(self.services_id)
+            
+    
     issued_by = fields.Many2one(comodel_name='hr.employee', string="Issued By")
     # collection_ids = fields.Many2many(comodel_name='bcs.collection', string="Collection")
     # for_collection_updates = fields.Many2many(comodel_name='bcs.updates', string="For-collection Updates") # maybe not needed
@@ -59,10 +84,19 @@ class BcsBilling(models.Model):
     # fad manager
     def fsd_manager_approved_action(self):
         self.state = 'approved'
+        
+        # add to ar journal
+        arj = self.env['soa.ar.journal'].search([
+            ('client_id', '=', self.client_id.id) ])
+        if arj:
+            arj = arj[0]
+            arj.new_billing(self)
+        
 
     status_selection = [('not_sent', 'Not yet sent'),
                         ('sent_to_client', 'Sent to client'),
-                        ('client_received', 'Client has received')]
+                        ('client_received', 'Client has received'),
+                        ('void_transaction', 'Void Transaction')]
     status = fields.Selection(status_selection, default='not_sent')
     
     # only appear when status == 'sent_to_client'
@@ -72,10 +106,22 @@ class BcsBilling(models.Model):
     # fad has sent billing to client
     def sent_to_client(self):
         self.status = 'sent_to_client'
+        
+        # add to for-updates collection
+        self.env['bcs.updates'].create({'billing_id': self.id})
 
     # client confirms they received it
     def client_received(self):
         self.status = 'client_received'
+        
+    # billing is apparently void
+    def void_transaction(self):
+        self.status = 'void_transaction'
+        
+        # update ar journal as well
+        arj = self.env['soa.ar.journal'].search([('client_id', '=', self.client_id.id)], limit=1)
+        if arj:
+            arj.void_transaction(self)
 
     # @api.constrains('state')
     # def _check_state_for_editing(self):
@@ -86,5 +132,13 @@ class BcsBilling(models.Model):
 
     other = fields.Text(string="Other Instruction")
     services_id = fields.Many2many(comodel_name="services.type", string="Services", required=True)
+    
+    @api.onchange('services_id')
+    def _onchange_services_id(self):
+        bs = self.env['billing.summary'].search(
+            [('client_id', '=', self.client_id.id)], limit=1)
+        if bs:
+            self.amount = bs.get_services_total_amount(self.services_id)
+    
     amount = fields.Float(string="Amount", readonly=True)
     remarks = fields.Text(string="Remarks")

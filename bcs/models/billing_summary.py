@@ -63,7 +63,7 @@ class BillingSummary(models.Model):
     def ops_manager_submitted_action(self):
         self.state = 'submitted'
 
-    # ops manager
+    # fad supervisor
     def ops_manager_verified_action(self):
         self.state = 'verified'
 
@@ -88,3 +88,25 @@ class BillingSummary(models.Model):
         self.has_loa = 'LOA' in service_list
         self.has_spe = 'SPE' in service_list
         return
+    
+    def get_services_total_amount(self, included_services_id):
+        included = []
+        total = 0
+        
+        included_code = []
+        for service_id in included_services_id:
+            included_code.append(service_id.code)
+        
+        if 'AUD' in included_code and self.has_aud: included.append(self.audit_ids)
+        if 'TRC' in included_code and self.has_trc: included.append(self.trc_ids)
+        if 'BKS' in included_code and self.has_bks: included.append(self.books_ids)
+        if 'PER' in included_code and self.has_per: included.append(self.permit_ids)
+        if 'GIS' in included_code and self.has_gis: included.append(self.gis_ids)
+        if 'LOA' in included_code and self.has_loa: included.append(self.loa_ids)
+        if 'SPE' in included_code and self.has_spe: included.append(self.spe_ids)
+            
+        for services in included: 
+            for rec in services:
+                total += rec.amount
+        return total
+    

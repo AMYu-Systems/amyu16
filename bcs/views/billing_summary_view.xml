@@ -31,7 +31,7 @@
                             </h1>
                         </div>
                         <group>
-                            <field name="service_ids" widget="many2many_tags"/>
+                            <field name="service_ids" widget="many2many_tags" options="{'no_create': True, 'no_create_edit':True}" />
                         </group>
                         <group string="Engagement Team">
                             <group>

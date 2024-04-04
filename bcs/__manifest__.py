@@ -25,6 +25,7 @@
       'data/services.type.csv',
       'security/ir.model.access.csv',
       'views/soa_ar_journal_view.xml',
+      'views/soa_manual_posting_view.xml',
       'views/base_billing_view.xml',
       'views/billing_summary_view.xml',
       'views/audit_billing_view.xml',

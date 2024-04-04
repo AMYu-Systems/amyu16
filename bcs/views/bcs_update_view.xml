@@ -5,18 +5,21 @@
             <field name="name">bcs_updates_tree_view</field>
             <field name="model">bcs.updates</field>
             <field name="arch" type="xml">
-                <tree>
+                <tree editable="bottom">
                     <field name="billing_id"/>
-                    <field name="first_followup"/>
-                    <field name="second_followup"/>
-                    <field name="responded"/>
-                    <field name="confirmed_payment"/>
-                    <field name="date_first_followup"/>
-                    <field name="date_second_followup"/>
-                    <field name="date_responded"/>
-                    <field name="date_responded"/>
-                    <field name="date_confirmed_payment"/>
-                    <field name="last_updated"/>
+                    <!-- <field name="view_first_followup"/>
+                    <field name="view_second_followup"/>
+                    <field name="view_responded"/>
+                    <field name="view_confirmed"/> -->
+                    <field name="view_first_followup" string="1st Follow-up" readonly="1"/>
+                    <field name="first_followup" string=" " />
+                    <field name="view_second_followup" string="2nd Follow-up" readonly="1"/>
+                    <field name="second_followup" string=" "/>
+                    <field name="view_responded" string="Responded" readonly="1"/>
+                    <field name="responded" string=" "/>
+                    <field name="view_confirmed" string="Confirmed Payment" readonly="1"/>
+                    <field name="confirmed_payment" string=" "/>
+                    <field name="remarks"/>
                 </tree>
             </field>
         </record>
@@ -35,22 +38,25 @@
                                 <label for="first_followup" string="1st Follow-up"/>
                                 <field name="first_followup" nolabel="1"/>
                                 <field name="date_first_followup"/>
+                                <field name="view_first_followup" invisible="1"/>
                             </group>
                             <group>
                                 <label for="second_followup" string="2nd Follow-up"/>
                                 <field name="second_followup" nolabel="1"/>
                                 <field name="date_second_followup"/>
+                                <field name="view_second_followup" invisible="1"/>
                             </group>
                             <group>
                                 <label for="responded" string="Responded"/>
                                 <field name="responded" nolabel="1"/>
                                 <field name="date_responded"/>
+                                <field name="view_responded" invisible="1"/>
                             </group>
                             <group>
                                 <label for="confirmed_payment" string="Confirmed Payment"/>
                                 <field name="confirmed_payment" nolabel="1"/>
                                 <field name="date_confirmed_payment"/>
-                                <field name="last_updated"/>
+                                <field name="view_confirmed" invisible="1"/>
                             </group>
                         </group>
                     </sheet>
@@ -59,7 +65,7 @@
         </record>
 
         <record id="bcs_updates_view_action" model="ir.actions.act_window">
-            <field name="name">For-collection Updates</field>
+            <field name="name">For-Collection Updates</field>
             <field name="res_model">bcs.updates</field>
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="bcs_updates_tree_view"/>

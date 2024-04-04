@@ -47,7 +47,7 @@
                   sequence="122"
                   name="View All Billings"
                   parent="menu_billing_root"
-                  action="bcs_billing_view_action"/>
+                  action="bcs_all_billing_view_action"/>
         <menuitem id="menu_billing_per_status"
                   sequence="123"
                   name="View Billings per Status"
@@ -85,13 +85,13 @@
                   name="View Pending Records"
                   parent="menu_bcs_collection"/>
         <menuitem id="menu_for_collections_updates"
-                  name="For-collection Updates"
+                  name="For-Collection Updates"
                   parent="menu_pending_collections"
                   action="bcs_updates_view_action"/>
         <menuitem id="menu_unissued_payments"
                   name="Unissued Payments"
                   parent="menu_pending_collections"
-                  action="bcs_collection_view_action"/>
+                  action="bcs_unissued_payments_view_action"/>
 
         <menuitem id="menu_others_root"
                   name="Others"
