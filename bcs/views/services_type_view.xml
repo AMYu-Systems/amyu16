@@ -6,7 +6,9 @@
             <field name="model">services.type</field>
             <field name="arch" type="xml">
                 <tree>
+                    <!-- <field name="id"/> -->
                     <field name="name"/>
+                    <field name="code"/>
                     <field name="description"/>
                     <field name="practice"/>
                     <field name="active"/>

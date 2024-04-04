@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+        <!--label-->
         <record id="maintenance_tree_view" model="ir.ui.view">
             <field name="name">maintenance_tree_view</field>
             <field name="model">label.maintenance</field>
@@ -36,7 +37,7 @@
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="maintenance_tree_view"/>
         </record>
-
+        <!--printer-->
         <record id="printer_tree_view" model="ir.ui.view">
             <field name="name">printer_tree_view</field>
             <field name="model">label.printer</field>
@@ -71,7 +72,7 @@
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="printer_tree_view"/>
         </record>
-
+        <!--sorter-->
         <record id="sorter_tree_view" model="ir.ui.view">
             <field name="name">sorter_tree_view</field>
             <field name="model">label.sorter</field>
@@ -106,7 +107,7 @@
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="sorter_tree_view"/>
         </record>
-
+        <!--qcc-->
         <record id="label_qcc_tree_view" model="ir.ui.view">
             <field name="name">label_qcc_tree_view</field>
             <field name="model">label.qcc</field>
@@ -141,7 +142,7 @@
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="label_qcc_tree_view"/>
         </record>
-
+        <!--bir-->
         <record id="label_bir_tree_view" model="ir.ui.view">
             <field name="name">label_bir_tree_view</field>
             <field name="model">label.bir</field>
@@ -176,7 +177,7 @@
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="label_bir_tree_view"/>
         </record>
-
+        <!--sec-->
         <record id="label_sec_tree_view" model="ir.ui.view">
             <field name="name">label_sec_tree_view</field>
             <field name="model">label.sec</field>
@@ -210,6 +211,37 @@
             <field name="res_model">label.sec</field>
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="label_sec_tree_view"/>
+        </record>
+        <!--progress-->
+        <record id="progress_tree_view" model="ir.ui.view">
+            <field name="name">progress_tree_view</field>
+            <field name="model">revision.status</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="color"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="progress__form_view" model="ir.ui.view">
+            <field name="name">progress__form_view</field>
+            <field name="model">revision.status</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="name"/>
+                        <field name="color" widget="color_picker"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="progress_view_action" model="ir.actions.act_window">
+            <field name="name">Ongoing Process</field>
+            <field name="res_model">revision.status</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="progress_tree_view"/>
         </record>
     </data>
 </odoo>

@@ -8,8 +8,10 @@
                 <sheet>
                     <group>
                         <field name="bank_type" widget="radio" options="{'horizontal': True}"/>
-                        <field name="name" placeholder="Bank name and branch" attrs="{'invisible': [('bank_type','!=','physical')] }" />
-                        <field name="name" placeholder="Online bank" attrs="{'invisible': [('bank_type','!=','online')] }" />
+                        <field name="name" placeholder="Bank name and branch"
+                               attrs="{'invisible': [('bank_type','!=','physical')] }"/>
+                        <field name="name" placeholder="Online bank"
+                               attrs="{'invisible': [('bank_type','!=','online')] }"/>
                         <field name="address" attrs="{'invisible': [('bank_type','!=','physical')] }"/>
                         <field name="remarks"/>
                     </group>

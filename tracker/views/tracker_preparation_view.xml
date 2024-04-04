@@ -5,19 +5,13 @@
             <field name="name">main.tree.view</field>
             <field name="model">main.view</field>
             <field name="arch" type="xml">
-                <tree editable="bottom" create="1" export_xlsx="0">
+                <tree>
                     <field name="name"/>
                     <field name="user_id" readonly="1"/>
-                    <field name="supervisors_id" options="{'no_open': True,'no_create': True}"/>
-                    <field name="managers_id" options="{'no_open': True,'no_create': True}"/>
-                    <field name="cluster_id" options="{'no_open': True,'no_create': True}"/>
-                    <field name="state" widget="badge"
-                           decoration-danger="state == 'iar'"
-                           decoration-info="state == 'printing'"
-                           decoration-muted="state == 'sorting'"
-                           decoration-warning="state == 'qcc'"
-                           decoration-primary="state == 'filing'"
-                           decoration-success="state == 'filed'" readonly="1"/>
+                    <field name="supervisors_id" invisible="1"/>
+                    <field name="managers_id" invisible="1"/>
+                    <field name="cluster_id" invisible="1"/>
+                    <field name="state" widget="badge" readonly="1"/>
                     <field name="date_start" readonly="1"/>
                     <field name="date_end" readonly="1"/>
                     <field name="total_time" readonly="1"/>
@@ -25,18 +19,19 @@
             </field>
         </record>
 
-        <record id="client_main_form_view" model="ir.ui.view">
+        <record id="main_form_view" model="ir.ui.view">
             <field name="name">client.main.form.view</field>
             <field name="model">main.view</field>
             <field name="arch" type="xml">
-                <form create="false">
+                <form>
                     <header>
-                        <field name="state" readonly="1"/>
+                        <field name="state" invisible="1"/>
                     </header>
                     <sheet>
                         <div>
                             <span style="float:right">
-                                <field name="revision" widget="radio" options="{'horizontal':True}"/>
+                                <field name="revision_ids" widget="many2many_tags" placeholder="STATUS"
+                                       options="{'no_open': True,'no_create': True,'color_field': 'color'}"/>
                             </span>
                         </div>
                         <div class="oe_title">
@@ -45,6 +40,20 @@
                             </h1>
                         </div>
                         <div>
+                            <group>
+                                <group>
+                                    <field name="user_id" readonly="1"
+                                           attrs="{'invisible':[('state', '!=', 'draft')]}"/>
+                                    <field name="supervisors_id" attrs="{'invisible':[('state', '!=', 'draft')]}"
+                                           options="{'no_open': True,'no_create': True}"/>
+                                </group>
+                                <group>
+                                    <field name="managers_id" attrs="{'invisible':[('state', '!=', 'draft')]}"
+                                           options="{'no_open': True,'no_create': True}"/>
+                                    <field name="cluster_id" attrs="{'invisible':[('state', '!=', 'draft')]}"
+                                           options="{'no_open': True,'no_create': True}"/>
+                                </group>
+                            </group>
                             <group>
                                 <field name="label_note_ids" widget="many2many_tags"
                                        attrs="{'readonly':[('state','=', 'filed')]}"
@@ -55,35 +64,44 @@
                                     <field name="date_start" readonly="1"/>
                                 </group>
                                 <group>
-                                    <field name="date_end" attrs="{'invisible': [('state', '!=', 'filed')]}"/>
+                                    <field name="date_end" attrs="{'invisible': [('state', '!=', 'filed')]}"
+                                           readonly="1"/>
                                 </group>
                             </group>
                             <div>
                                 <group col="5"
-                                       attrs="{'invisible': ['|','|','|','|','|','|','|','|','|',('state', '=', 'preparation'),('state', '=', 'checking'),('state', '=', 'review'),('state', '=', 'initial_approval'),('state', '=', 'proofread')
+                                       attrs="{'invisible': ['|','|','|','|','|','|','|','|','|','|',('state', '=', 'draft'),('state', '=', 'preparation'),('state', '=', 'checking'),('state', '=', 'review'),('state', '=', 'initial_approval'),('state', '=', 'proofread')
                                        ,('state', '=', 'final_checking'),('state', '=', 'final_review'),('state', '=', 'final_approval'),('state', '=', 'final_proofread'),('state', '=', 'iar_review')]}">
                                     <group string="Printer Checklist">
                                         <field name="label_printer_ids" widget="many2many_tags" nolabel="1"
+                                               placeholder="select"
                                                attrs="{'readonly': ['|','|','|',('state', '=', 'sorting'),('state', '=', 'qcc'),('state', '=', 'filing'),('state', '=', 'filed')]}"
                                                options="{'no_open': True,'no_create': True,'color_field': 'color'}"/>
                                     </group>
                                     <group string="Sorter Checklist" attrs="{'invisible':[('state', '=', 'printing')]}">
                                         <field name="label_sorter_ids" widget="many2many_tags" nolabel="1"
+                                               placeholder="select"
                                                attrs="{'readonly': ['|','|','|',('state', '=', 'printing'),('state', '=', 'qcc'),('state', '=', 'filing'),('state', '=', 'filed')]}"
                                                options="{'no_open': True,'no_create': True,'color_field': 'color'}"/>
                                     </group>
-                                    <group string="Quality Check Control Checklist" attrs="{'invisible':['|',('state', '=', 'printing'),('state', '=', 'sorting')]}">
+                                    <group string="Quality Check Control Checklist"
+                                           attrs="{'invisible':['|',('state', '=', 'printing'),('state', '=', 'sorting')]}">
                                         <field name="label_qcc_ids" widget="many2many_tags" nolabel="1"
+                                               placeholder="select"
                                                attrs="{'readonly': ['|','|','|',('state', '=', 'printing'),('state', '=', 'sorting'),('state', '=', 'filing'),('state', '=', 'filed')]}"
                                                options="{'no_open': True,'no_create': True,'color_field': 'color'}"/>
                                     </group>
-                                    <group string="B.I.R Checklist" attrs="{'invisible':['|','|',('state', '=', 'printing'),('state', '=', 'sorting'),('state', '=', 'qcc')]}">
+                                    <group string="B.I.R Checklist"
+                                           attrs="{'invisible':['|','|',('state', '=', 'printing'),('state', '=', 'sorting'),('state', '=', 'qcc')]}">
                                         <field name="label_bir_ids" widget="many2many_tags" nolabel="1"
+                                               placeholder="select"
                                                attrs="{'readonly': ['|','|','|',('state', '=', 'printing'),('state', '=', 'sorting'),('state', '=', 'qcc'),('state', '=', 'filed')]}"
                                                options="{'no_open': True,'no_create': True,'color_field': 'color'}"/>
                                     </group>
-                                    <group string="S.E.C Checklist" attrs="{'invisible':['|','|',('state', '=', 'printing'),('state', '=', 'sorting'),('state', '=', 'qcc')]}">
+                                    <group string="S.E.C Checklist"
+                                           attrs="{'invisible':['|','|',('state', '=', 'printing'),('state', '=', 'sorting'),('state', '=', 'qcc')]}">
                                         <field name="label_sec_ids" widget="many2many_tags" nolabel="1"
+                                               placeholder="select"
                                                attrs="{'readonly': ['|','|','|',('state', '=', 'printing'),('state', '=', 'sorting'),('state', '=', 'sorting'),('state', '=', 'filed')]}"
                                                options="{'no_open': True,'no_create': True,'color_field': 'color'}"/>
                                     </group>
@@ -98,12 +116,13 @@
             </field>
         </record>
 
-        <record id="preparation_view_action" model="ir.actions.act_window">
-            <field name="name">Client List</field>
+        <record id="main_view_action" model="ir.actions.act_window">
+            <field name="name">New Client</field>
             <field name="res_model">main.view</field>
             <field name="view_mode">tree,form</field>
-            <field name="domain">[('state','=','preparation')]</field>
-            <field name="view_id" ref="main_tree_view"/>
+            <field name="target">new</field>
+            <field name="domain">[('state','=','draft')]</field>
+            <field name="view_id" ref="main_form_view"/>
         </record>
     </data>
 </odoo>

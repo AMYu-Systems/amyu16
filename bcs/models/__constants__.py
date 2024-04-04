@@ -1,4 +1,3 @@
-
 BILLING_METHOD_CHOICES = [
     ('email', 'Email'),
     ('hardcopy', 'Hardcopy'),

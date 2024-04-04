@@ -10,7 +10,8 @@
                         <field name="client"/>
                         <field name="preferred_billing_method"/>
                         <field name="preferred_payment_method"/>
-                        <field name="payment_bank_id" attrs="{'invisible': [('preferred_payment_method','=','cash')] }"/>
+                        <field name="payment_bank_id"
+                               attrs="{'invisible': [('preferred_payment_method','=','cash')] }"/>
                         <field name="remarks"/>
                     </group>
                 </sheet>
