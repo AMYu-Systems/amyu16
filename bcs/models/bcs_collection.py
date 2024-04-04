@@ -39,9 +39,10 @@ class BcsCollection(models.Model):
         #     name2 = name_array[1]
         #     name3 = name_array[2]
         #     transaction = name1[0:1] + name2[0:1] + name3[0:1]
-        # # Compute Client ID
-        # transaction += "-" + self.env['ir.sequence'].next_by_code('collection.id.seq')
-        # vals['transaction'] = transaction
+        
+        # Compute Client ID
+        transaction = self.env['ir.sequence'].next_by_code('collection.id.seq')
+        vals['transaction'] = transaction
         
         res = super(BcsCollection, self).create(vals)
         

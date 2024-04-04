@@ -1,6 +1,35 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <data>
+        <record id="preparation_main_tree_view" model="ir.ui.view">
+            <field name="name">main.tree.view</field>
+            <field name="model">main.view</field>
+            <field name="arch" type="xml">
+                <tree create="False" delete="False" export_xlsx="False">
+                    <field name="name"/>
+                    <field name="user_id"/>
+                    <field name="state" widget="badge"
+                           decoration-danger="state == 'iar'"
+                           decoration-info="state == 'printing'"
+                           decoration-muted="state == 'sorting'"
+                           decoration-warning="state == 'qcc'"
+                           decoration-primary="state == 'filing'"
+                           decoration-success="state == 'filed'"/>
+                    <field name="date_start"/>
+                    <field name="date_end"/>
+                    <field name="total_time"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="preparation_main_view_action" model="ir.actions.act_window">
+            <field name="name">Preparation</field>
+            <field name="res_model">main.view</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('state','=','preparation')]</field>
+            <field name="view_id" ref="preparation_main_tree_view"/>
+        </record>
+
         <record id="checking_main_tree_view" model="ir.ui.view">
             <field name="name">main.tree.view</field>
             <field name="model">main.view</field>
