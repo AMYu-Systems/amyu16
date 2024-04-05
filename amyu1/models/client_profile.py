@@ -239,16 +239,16 @@ class ClientProfile(models.Model):
     #     #         'escalation_id': res.id
     #     #     })
     #     return res
-    # @api.model
-    # def create(self, vals):
-    #     res = super(ClientProfile, self).create(vals)
-    #
-    #     if res:
-    #         # Add to BCS (AR Journal and Billing Summary)
-    #         self.env['soa.ar.journal'].create({ 'client_id': res.id, })
-    #         self.env['billing.summary'].create({ 'client_id': res.id, })
-    #
-    #     return res
+    @api.model
+    def create(self, vals):
+        res = super(ClientProfile, self).create(vals)
+        
+        if res:
+            # Add to BCS (AR Journal and Billing Summary)
+            self.env['soa.ar.journal'].create({ 'client_id': res.id, })
+            self.env['billing.summary'].create({ 'client_id': res.id, })
+        
+        return res
 
     registered_unit_no = fields.Char(string="Unit/Floor", tracking=True)
 
