@@ -23,7 +23,7 @@
 
     # always loaded
     'data': [
-        'conf/cpms_config.xml',
+        'views/cpms_group.xml',
         'security/ir.model.access.csv',
         'views/associate_profile_view.xml',
         'views/client_profile_view.xml',
