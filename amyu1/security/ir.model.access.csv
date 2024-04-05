@@ -22,3 +22,14 @@ access.job.title,access.job_title,amyu1.model_job_title,base.group_user,1,1,1,1
 access.cluster.department,access.cluster_department,amyu1.model_cluster_department,base.group_user,1,1,1,1
 access.team.department,access.team_department,amyu1.model_team_department,base.group_user,1,1,1,1
 access.capitalization.share,access.capitalization_share,amyu1.model_capitalization_share,base.group_user,1,1,1,1
+
+access_associate_profile_adm,access_associate_profile,amyu1.model_associate_profile,administrator_group,1,1,1,1
+access_client_profile_adm,access_client_profile,amyu1.model_client_profile,administrator_group,1,1,1,1
+access_associate_profile_assoc,access_associate_profile,amyu1.model_associate_profile,associate_group,1,1,1,0
+access_client_profile_assoc,access_client_profile,amyu1.model_client_profile,associate_group,1,1,1,0
+access_associate_profile_sup,access_associate_profile,amyu1.model_associate_profile,supervisor_group,1,1,0,0
+access_client_profile_sup,access_client_profile,amyu1.model_client_profile,supervisor_group,1,1,0,0
+access_associate_profile_man,access_associate_profile,amyu1.model_associate_profile,manager_group,1,1,0,0
+access_client_profile_man,access_client_profile,amyu1.model_client_profile,manager_group,1,1,0,0
+access_associate_profile_clu,access_associate_profile,amyu1.model_associate_profile,cluster_group,1,1,0,0
+access_client_profile_clu,access_client_profile,amyu1.model_client_profile,cluster_group,1,1,0,0
