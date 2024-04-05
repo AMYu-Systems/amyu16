@@ -26,7 +26,6 @@
         'security/ir.model.access.csv',
         'views/associate_profile_view.xml',
         'views/client_profile_view.xml',
-        'security/group_menu.xml',
         'views/cpms_state_view.xml',
         'views/cpms_client_list_view.xml',
         'views/cpms_report_view.xml',
@@ -38,6 +37,7 @@
         'views/escalation_contact.xml',
         'views/cmps_menu_view.xml',
         'report/cpms_preview_reports.xml',
+        'views/group_menu.xml',
 
     ],
     'application': True,
