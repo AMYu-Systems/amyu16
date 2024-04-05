@@ -25,3 +25,8 @@ class AccountsReceivable(models.Model):
                 services += service.code + ', '
             services = services[:-2]
             record.name = record.billing_id.date_billed.strftime("%b %Y") + ' | ' + services
+    
+    # create_uid <- automatic field by odoo16, res.user who created the record
+    # create_date <- automatic field by odoo16 to know when was the date the record got created
+    # write_uid <- automatic field by odoo16, res.user who updated the record
+    # write_date <- automatic field by odoo16 to know when was the last time the record got updated
