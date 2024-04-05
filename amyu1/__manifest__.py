@@ -23,6 +23,7 @@
 
     # always loaded
     'data': [
+        'conf/cpms_config.xml',
         'security/ir.model.access.csv',
         'views/associate_profile_view.xml',
         'views/client_profile_view.xml',
@@ -37,7 +38,6 @@
         'views/escalation_contact.xml',
         'views/cmps_menu_view.xml',
         'report/cpms_preview_reports.xml',
-        'views/group_menu.xml',
 
     ],
     'application': True,
