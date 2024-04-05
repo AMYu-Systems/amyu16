@@ -51,12 +51,17 @@ class BcsBilling(models.Model):
     
     @api.onchange('client_id')
     def _onchange_client_id(self):
+        
+        arj = self.env['soa.ar.journal'].search(
+            [('client_id', '=', self.client_id.id)], limit=1)
+        if arj:
+            self.previous_amount = arj.balance
+            
         bs = self.env['billing.summary'].search(
             [('client_id', '=', self.client_id.id)], limit=1)
         if bs:
             self.services_id = bs.service_ids
-            self.amount = bs.get_services_total_amount(self.services_id)
-            
+            self.services_amount = bs.get_services_total_amount(self.services_id)
     
     issued_by = fields.Many2one(comodel_name='hr.employee', string="Issued By")
     # collection_ids = fields.Many2many(comodel_name='bcs.collection', string="Collection")
@@ -138,7 +143,14 @@ class BcsBilling(models.Model):
         bs = self.env['billing.summary'].search(
             [('client_id', '=', self.client_id.id)], limit=1)
         if bs:
-            self.amount = bs.get_services_total_amount(self.services_id)
+            self.services_amount = bs.get_services_total_amount(self.services_id)
     
-    amount = fields.Float(string="Amount", readonly=True)
+    previous_amount = fields.Float(string="Previous Amount")
+    services_amount = fields.Float(string="Services Amount")
+    amount = fields.Float(string="Total Amount", compute="_compute_amount")
     remarks = fields.Text(string="Remarks")
+    
+    @api.depends('previous_amount', 'services_amount')
+    def _compute_amount(self):
+        for rec in self:
+            rec.amount = rec.previous_amount + rec.services_amount

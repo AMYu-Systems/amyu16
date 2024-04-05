@@ -1,19 +1,7 @@
 import re
 from datetime import datetime, date
 from odoo import fields, models, api
-import logging, pytz, datetime, pandas, math
-from odoo import api, fields, models
 
-_logger = logging.getLogger(__name__)
-
-# Test
-def test_with_logger(data: any="Debug Message", warn: bool = False) -> None:
-    """
-        Outputs a debug message in the odoo log file, 5 times in a row
-    """
-    method = _logger.info if not warn else _logger.warning
-    for _ in range(5):
-        method(data)
 
 class BcsCollection(models.Model):
     _name = 'bcs.collection'
@@ -58,12 +46,13 @@ class BcsCollection(models.Model):
         return res
 
     name = fields.Char(compute="_compute_name")
-    @api.depends("billing_ids", "date_collected", "bank.name")
+    @api.depends("billing_ids", "date_collected", "bank.name", "payment_collection", "paid_by_id", "paid_by_id.name")
     def _compute_name(self):
         for record in self:
             record.name = record.date_collected.strftime("%b %Y") + ' | ' \
                 + str(len(record.billing_ids)) + ' billing' + ('s ' if len(record.billing_ids) > 1 else ' ') \
-                + ('Cash' if record.payment_mode == 'cash' else record.bank.name) + ' | ' + record.paid_by_id.name
+                + ('Cash' if record.payment_mode == 'cash' else record.bank.name) + ' | ' \
+                + (record.paid_by_id.name)
                 
     paid_by_id = fields.Many2one(comodel_name='client.profile', string="Paid By (Client)", required=True)
     @api.onchange('paid_by_id')
@@ -76,21 +65,22 @@ class BcsCollection(models.Model):
             self.billing_ids = [(4, most_recent_billing.id)]
     
     billing_ids = fields.Many2many(comodel_name='bcs.billing', string="Billing")
+    collection_type = [('direct_payment', 'Direct Payment'),
+                       ('consolidated', 'Consolidated Payment'),]
+                    #    ('suspense', 'Suspense Account')]
+    payment_collection = fields.Selection(collection_type, default='direct_payment', string="Collection Type", required=True)
+    
     @api.onchange('billing_ids')
     def _onchange_billing_ids(self):
         blen = len(self.billing_ids)
-        if blen == 0:
-            self.payment_collection = 'suspense'
-        elif blen == 1:
+        # if blen == 0:
+        #     self.payment_collection = 'suspense'
+        if blen == 1:
             self.payment_collection = 'direct_payment'
-        elif blen == 2:
+        elif blen >= 2:
             self.payment_collection = 'consolidated'
-        
+        return
     
-    collection_type = [('direct_payment', 'Direct Payment'),
-                       ('consolidated', 'Consolidated Payment'),
-                       ('suspense', 'Suspense Account')]
-    payment_collection = fields.Selection(collection_type, default='suspense', string="Collection Type", required=True)
     collected_by = fields.Many2one(comodel_name='hr.employee', string="Collected By", required=True)
     date_collected = fields.Date(string="Date Collected", default=fields.Date.today, required=True)
     bank_type = [('bpi', 'BPI'),
@@ -115,7 +105,6 @@ class BcsCollection(models.Model):
     
     def manual_posting(self):
         arjs = self.env['soa.ar.journal'].search([('client_id', 'in', [bill.client_id.id for bill in self.billing_ids])])
-        test_with_logger([a.name for a in arjs])
         return {
             'type': 'ir.actions.act_window',
             'name': 'Payments Collection',

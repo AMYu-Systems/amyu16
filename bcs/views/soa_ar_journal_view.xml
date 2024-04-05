@@ -15,6 +15,7 @@
                             <group>
                                 <field name="accounts_receivable_ids" string="">
                                     <tree create="0" edit="0">
+                                        <field name="journal_index" string="Index" />
                                         <field name="name" string="Accounts Receivable"/>
                                         <field name="amount"/>
                                     </tree>
@@ -23,6 +24,7 @@
                             <group>
                                 <field name="payments_collection_ids" string="">
                                     <tree create="0" edit="0">
+                                        <field name="journal_index" string="Index" />
                                         <field name="name" string="Payments Collection"/>
                                         <field name="amount"/>
                                     </tree>

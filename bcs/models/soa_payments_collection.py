@@ -27,7 +27,8 @@ class PaymentsCollection(models.Model):
         
     @api.model
     def create(self, vals):
-        vals['journal_index'] = self.ar_journal_id.pc_ids_count + 1
+        if not vals['journal_index']:
+            vals['journal_index'] = self.ar_journal_id.pc_ids_count + 1
         res = super(PaymentsCollection, self).create(vals)
         
         if res and res.manual_posting:

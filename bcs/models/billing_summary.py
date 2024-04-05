@@ -49,27 +49,27 @@ class BillingSummary(models.Model):
     has_loa = fields.Boolean(default=False)
     has_spe = fields.Boolean(default=False)
     
-    state_selection = [('draft', 'Draft'),
-                       ('submitted', 'Submitted'),
-                       ('verified', 'Verified'),
-                       ('approved', 'Approved')]
-    state = fields.Selection(state_selection, default='draft', copy=False)
+    # state_selection = [('draft', 'Draft'),
+    #                    ('submitted', 'Submitted'),
+    #                    ('verified', 'Verified'),
+    #                    ('approved', 'Approved')]
+    # state = fields.Selection(state_selection, default='draft', copy=False)
 
-    # ops manager create
-    def draft_action(self):
-        self.state = 'draft'
+    # # auto create or when "edit -> draft" has been implemented
+    # def draft_action(self):
+    #     self.state = 'draft'
 
-    # ops manager
-    def ops_manager_submitted_action(self):
-        self.state = 'submitted'
+    # # ops manager press submit
+    # def submitted_action(self):
+    #     self.state = 'submitted'
 
-    # fad supervisor
-    def ops_manager_verified_action(self):
-        self.state = 'verified'
+    # # fad supervisor press verify
+    # def verified_action(self):
+    #     self.state = 'verified'
 
-    # fad manager
-    def partner_approved_action(self):
-        self.state = 'approved'
+    # # fad manager press approve
+    # def approved_action(self):
+    #     self.state = 'approved'
 
     def get_services(self):
         services = self.env['billing.summary'].search([('service_ids', '!=', False)])

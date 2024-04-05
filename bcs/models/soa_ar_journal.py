@@ -42,6 +42,7 @@ class ARJournal(models.Model):
         self.balance += billing.amount
         self.ar_ids_count += 1
         ar = self.env['soa.accounts.receivable'].create({
+            'ar_journal_id': self.id,
             'billing_id': billing.id, 
             'journal_index': self.ar_ids_count
         })
@@ -51,6 +52,7 @@ class ARJournal(models.Model):
         self.balance -= collection.amount
         self.pc_ids_count += 1
         pc = self.env['soa.payments.collection'].create({
+            'ar_journal_id': self.id,
             'collection_id': collection.id,
             'journal_index': self.pc_ids_count
         })
@@ -74,10 +76,14 @@ class ARJournal(models.Model):
         sub = sum([pc.amount for pc in self.payments_collection_ids])
         self.balance = add - sub
     
+    
+    """ FOR DEBUGGING PURPOSES ONLY """
     def reset_all_ar_pc(self):
-        """ FOR DEBUGGING PURPOSES ONLY """
         self.accounts_receivable_ids = [(6, 0, [])]
         self.payments_collection_ids = [(6, 0, [])]
+        self.ar_ids_count = 0
+        self.pc_ids_count = 0
+    
     
     def open_rec(self):
         return {
