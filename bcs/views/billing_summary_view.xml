@@ -89,7 +89,7 @@
                                         <field name="billing_month"/>
                                         <field name="payment_term"/>
                                         <field name="details"/>
-                                        <field name="billing_summary_id"/>
+                                        <field name="billing_summary_id" readonly="1"/>
                                         <field name="service_fee"/>
                                         <field name="ope_rate"/>
                                         <field name="ope"/>

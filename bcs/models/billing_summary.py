@@ -15,6 +15,7 @@ def test_with_logger(data: any="Debug Message", warn: bool = False) -> None:
 class BillingSummary(models.Model):
     _name = 'billing.summary'
     _description = "Billing Summary"
+    _rec_name = 'client_id'
     _sql_constraints = [
         (
             'unique_client_id', 

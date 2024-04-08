@@ -5,11 +5,11 @@
             <field name="name">soa.ar.journal.form</field>
             <field name="model">soa.ar.journal</field>
             <field name="arch" type="xml">
-                <form string="AR Journal">
+                <form string="AR Journal" readonly="1">
                     <sheet>
                         <group>
                             <field name="client_id" />
-                            <field name="view_initial_balance" />
+                            <!-- <field name="view_initial_balance" /> -->
                         </group>
                         <group col="2">
                             <group>

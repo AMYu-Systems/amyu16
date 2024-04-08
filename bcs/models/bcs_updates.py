@@ -7,7 +7,8 @@ class ForCollectionUpdates(models.Model):
     _name = 'bcs.updates'
     _rec_name = 'billing_id'
 
-    billing_id = fields.Many2one(comodel_name='bcs.billing', string="Billing Transaction", required=True, readonly=True)
+    billing_id = fields.Many2one(comodel_name='bcs.billing', string="Billing Transaction", 
+                                 required=True, readonly=True, ondelete='cascade')
     first_followup = fields.Boolean(string='1st Follow-up')
     second_followup = fields.Boolean(string='2nd Follow-up')
     responded = fields.Boolean(string='Responded')
