@@ -14,8 +14,9 @@
         <menuitem id="menu_billing_summary_root"
                   name="Billing Summary"
                   sequence="11"
-                  parent="bcs_root_menu"/>
-        <menuitem id="menu_billing_summary_list"
+                  parent="bcs_root_menu"
+                  action="billing_summary_view_action" />
+        <!-- <menuitem id="menu_billing_summary_list"
                   name="View All Billing Summary"
                   sequence="110"
                   parent="menu_billing_summary_root"
@@ -27,7 +28,7 @@
         <menuitem id="menu_new_billing_summary"
                   name="Draft"
                   parent="menu_billing_summary_root" 
-                  action="billing_summary_view_action" />
+                  action="billing_summary_view_action" /> -->
 
         <menuitem id="menu_billing_root"
                   name="Billing"
@@ -43,11 +44,6 @@
                   name="View Active Billings"
                   parent="menu_billing_root"
                   action="bcs_billing_view_action"/>
-        <menuitem id="menu_all_billings"
-                  sequence="122"
-                  name="View All Billings"
-                  parent="menu_billing_root"
-                  action="bcs_all_billing_view_action"/>
         <menuitem id="menu_billing_per_status"
                   sequence="123"
                   name="View Billings per Status"
@@ -64,6 +60,11 @@
                   name="For Approval"
                   parent="menu_billing_per_status"
                   action="verified_bcs_billing_view_action"/>
+        <menuitem id="menu_all_billings"
+                  sequence="124"
+                  name="View All Billings"
+                  parent="menu_billing_root"
+                  action="bcs_all_billing_view_action"/>
 
         <menuitem id="menu_bcs_collection"
                   name="Collection"
@@ -75,11 +76,6 @@
                   name="＋New Collection"
                   parent="menu_bcs_collection"
                   action="bcs_collection_form_action"/>
-        <menuitem id="menu_all_collections"
-                  name="View All Collections"
-                  sequence="131"
-                  parent="menu_bcs_collection"
-                  action="bcs_collection_view_action"/>
         <menuitem id="menu_pending_collections"
                   sequence="132"
                   name="View Pending Records"
@@ -92,6 +88,11 @@
                   name="Unissued Payments"
                   parent="menu_pending_collections"
                   action="bcs_unissued_payments_view_action"/>
+        <menuitem id="menu_all_collections"
+                  name="View All Collections"
+                  sequence="133"
+                  parent="menu_bcs_collection"
+                  action="bcs_collection_view_action"/>
 
         <menuitem id="menu_others_root"
                   name="Others"

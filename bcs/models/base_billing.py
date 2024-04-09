@@ -4,7 +4,7 @@ from odoo import fields, models, api
 class BaseBilling(models.Model):
     _name = 'base.billing'
 
-    billing_summary_id = fields.Many2one('billing.summary', string='Billing Summary')
+    billing_summary_id = fields.Many2one('billing.summary', string='Billing Summary', readonly=True)
     service_fee = fields.Float(default=0)
     ope_rate = fields.Float(default=0)
     ope = fields.Float(compute='_compute_ope', store=True)

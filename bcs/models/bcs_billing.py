@@ -26,8 +26,9 @@ class BcsBilling(models.Model):
     
     transaction = fields.Char(string="Transaction id", readonly="1")
 
-    # @api.model
-    # def create(self, vals):
+    @api.model
+    def create(self, vals):
+        transaction = ''
     #     name = re.sub(r'\W+', ' ', vals['client_id.name'])
     #     name_array = name.split()
     #     if len(name_array) == 1:
@@ -42,27 +43,39 @@ class BcsBilling(models.Model):
     #         name2 = name_array[1]
     #         name3 = name_array[2]
     #         transaction = name1[0:1] + name2[0:1] + name3[0:1]
-    #     # Compute Client ID
-    #     transaction += "-" + self.env['ir.sequence'].next_by_code('billing.id.seq')
-    #     vals['transaction'] = transaction
-    #     return super(BcsBilling, self).create(vals)
+        # Compute Client ID
+        # transaction += "-" + self.env['ir.sequence'].next_by_code('billing.id.seq')
+        transaction +=  self.env['ir.sequence'].next_by_code('billing.id.seq')
+        vals['transaction'] = transaction
+        return super(BcsBilling, self).create(vals)
 
     client_id = fields.Many2one(comodel_name='client.profile', string="Client Name", required=True)
     
     @api.onchange('client_id')
     def _onchange_client_id(self):
+        
+        arj = self.env['soa.ar.journal'].search(
+            [('client_id', '=', self.client_id.id)], limit=1)
+        if arj and arj.balance:
+            self.previous_amount = arj.balance
+            
         bs = self.env['billing.summary'].search(
             [('client_id', '=', self.client_id.id)], limit=1)
         if bs:
             self.services_id = bs.service_ids
-            self.amount = bs.get_services_total_amount(self.services_id)
-            
+            self.services_amount = bs.get_services_total_amount(self.services_id)
     
-    issued_by = fields.Many2one(comodel_name='hr.employee', string="Issued By")
+    @api.model
+    def _default_issued_by(self):
+        if not self.env.user or not self.env.user.id:
+            return False
+        return self.env['hr.employee'].search([('user_id', '=', self.env.user.id)], limit=1)
+        
+    issued_by = fields.Many2one(comodel_name='hr.employee', string="Issued By", default=_default_issued_by)
     # collection_ids = fields.Many2many(comodel_name='bcs.collection', string="Collection")
     # for_collection_updates = fields.Many2many(comodel_name='bcs.updates', string="For-collection Updates") # maybe not needed
     
-    date_billed = fields.Date(string="Date Billed")
+    date_billed = fields.Date(string="Date Billed", required=True, default=fields.Date.today)
     state_selection = [('draft', 'Draft'),
                        ('submitted', 'Submitted'),
                        ('verified', 'Verified'),
@@ -87,9 +100,8 @@ class BcsBilling(models.Model):
         
         # add to ar journal
         arj = self.env['soa.ar.journal'].search([
-            ('client_id', '=', self.client_id.id) ])
+            ('client_id', '=', self.client_id.id) ], limit=1)
         if arj:
-            arj = arj[0]
             arj.new_billing(self)
         
 
@@ -135,10 +147,15 @@ class BcsBilling(models.Model):
     
     @api.onchange('services_id')
     def _onchange_services_id(self):
-        bs = self.env['billing.summary'].search(
-            [('client_id', '=', self.client_id.id)], limit=1)
+        bs = self.env['billing.summary'].search([('client_id', '=', self.client_id.id)], limit=1)
         if bs:
-            self.amount = bs.get_services_total_amount(self.services_id)
+            self.services_amount = bs.get_services_total_amount(self.services_id)
     
-    amount = fields.Float(string="Amount", readonly=True)
+    previous_amount = fields.Float(string="Previous Amount")
+    services_amount = fields.Float(string="Services Amount")
+    amount = fields.Float(string="Total Amount")
     remarks = fields.Text(string="Remarks")
+    
+    @api.onchange('previous_amount', 'services_amount')
+    def _onchange_amount(self):
+        self.amount = self.previous_amount + self.services_amount

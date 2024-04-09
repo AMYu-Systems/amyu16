@@ -5,16 +5,17 @@
             <field name="name">soa.ar.journal.form</field>
             <field name="model">soa.ar.journal</field>
             <field name="arch" type="xml">
-                <form string="AR Journal">
+                <form string="AR Journal" readonly="1">
                     <sheet>
                         <group>
                             <field name="client_id" />
-                            <field name="view_initial_balance" />
+                            <!-- <field name="view_initial_balance" /> -->
                         </group>
                         <group col="2">
                             <group>
                                 <field name="accounts_receivable_ids" string="">
                                     <tree create="0" edit="0">
+                                        <field name="journal_index" string="Index" />
                                         <field name="name" string="Accounts Receivable"/>
                                         <field name="amount"/>
                                     </tree>
@@ -23,6 +24,7 @@
                             <group>
                                 <field name="payments_collection_ids" string="">
                                     <tree create="0" edit="0">
+                                        <field name="journal_index" string="Index" />
                                         <field name="name" string="Payments Collection"/>
                                         <field name="amount"/>
                                     </tree>

@@ -14,11 +14,11 @@ class ARJournal(models.Model):
     
     client_id = fields.Many2one(string="Client Name", comodel_name='client.profile', required=True)
     
-    # use this to change value in view
-    view_initial_balance = fields.Float('Initial Balance')
+    # # use this to change value in view
+    # view_initial_balance = fields.Float('Initial Balance')
     
-    # do not show in view
-    initial_balance = fields.Float()
+    # # do not show in view
+    # initial_balance = fields.Float()
     balance = fields.Float()
     
     accounts_receivable_ids = fields.One2many(comodel_name='soa.accounts.receivable', inverse_name='ar_journal_id')
@@ -32,29 +32,31 @@ class ARJournal(models.Model):
         for record in self:
             record.name = record.client_id.name
     
-    @api.onchange('view_initial_balance')
-    def _onchange_initial_balance(self):
-        self.balance -= self.initial_balance
-        self.balance += self.view_initial_balance
-        self.initial_balance = self.view_initial_balance
+    # @api.onchange('view_initial_balance')
+    # def _onchange_initial_balance(self):
+    #     self.balance -= self.initial_balance
+    #     self.balance += self.view_initial_balance
+    #     self.initial_balance = self.view_initial_balance
 
     def new_billing(self, billing):
         self.balance += billing.amount
         self.ar_ids_count += 1
         ar = self.env['soa.accounts.receivable'].create({
+            'ar_journal_id': self.id,
             'billing_id': billing.id, 
             'journal_index': self.ar_ids_count
         })
-        self.accounts_receivable_ids = (4, ar.id)  # this syntax, with 4, means add apparently
+        self.accounts_receivable_ids = [(4, ar.id)]  # this syntax, with 4, means add apparently
     
     def new_collection(self, collection):
         self.balance -= collection.amount
         self.pc_ids_count += 1
         pc = self.env['soa.payments.collection'].create({
+            'ar_journal_id': self.id,
             'collection_id': collection.id,
             'journal_index': self.pc_ids_count
         })
-        self.payments_collection_ids = (4, pc.id)
+        self.payments_collection_ids = [(4, pc.id)]
     
     def new_manual_posting(self, payments_collection):
         self.balance -= payments_collection.amount
@@ -69,15 +71,20 @@ class ARJournal(models.Model):
         self.ar_ids_count -= 1
         
     def recalculate(self):
-        self.initial_balance = self.view_initial_balance
-        add = sum([ar.amount for ar in self.accounts_receivable_ids], start=self.initial_balance)
+        # self.initial_balance = self.view_initial_balance
+        # add = sum([ar.amount for ar in self.accounts_receivable_ids], start=self.initial_balance)
+        add = sum([ar.amount for ar in self.accounts_receivable_ids])
         sub = sum([pc.amount for pc in self.payments_collection_ids])
         self.balance = add - sub
     
+    
+    """ FOR DEBUGGING PURPOSES ONLY """
     def reset_all_ar_pc(self):
-        """ FOR DEBUGGING PURPOSES ONLY """
         self.accounts_receivable_ids = [(6, 0, [])]
         self.payments_collection_ids = [(6, 0, [])]
+        self.ar_ids_count = 0
+        self.pc_ids_count = 0
+    
     
     def open_rec(self):
         return {

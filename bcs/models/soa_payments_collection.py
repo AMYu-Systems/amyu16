@@ -6,7 +6,8 @@ class PaymentsCollection(models.Model):
     _description = "Payments Collection connected to AR Journal"
     
     collection_id = fields.Many2one('bcs.collection',  required=True)
-    ar_journal_id = fields.Many2one('soa.ar.journal', required=True, domain="[('id', 'in', context.get('ar_journal_ids', []))]")
+    ar_journal_id = fields.Many2one('soa.ar.journal', required=True, 
+                                    ondelete='cascade', domain="[('id', 'in', context.get('ar_journal_ids', []))]")
     journal_index = fields.Integer( required=True )
     amount = fields.Float(compute='_compute_amount')
     
@@ -27,7 +28,8 @@ class PaymentsCollection(models.Model):
         
     @api.model
     def create(self, vals):
-        vals['journal_index'] = self.ar_journal_id.pc_ids_count + 1
+        if not vals['journal_index']:
+            vals['journal_index'] = self.ar_journal_id.pc_ids_count + 1
         res = super(PaymentsCollection, self).create(vals)
         
         if res and res.manual_posting:
@@ -46,3 +48,7 @@ class PaymentsCollection(models.Model):
                 + dict(record.collection_id._fields['payment_collection'].selection).get(record.collection_id.payment_collection) \
                 + ' - ' + ('Cash' if record.collection_id.payment_mode == 'cash' else record.collection_id.bank.name)
     
+    # create_uid <- automatic field by odoo16, res.user who created the record
+    # create_date <- automatic field by odoo16 to know when was the date the record got created
+    # write_uid <- automatic field by odoo16, res.user who updated the record
+    # write_date <- automatic field by odoo16 to know when was the last time the record got updated
