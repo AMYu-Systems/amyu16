@@ -6,8 +6,8 @@ class PaymentsCollection(models.Model):
     _description = "Payments Collection connected to AR Journal"
     
     collection_id = fields.Many2one('bcs.collection',  required=True)
-    ar_journal_id = fields.Many2one('soa.ar.journal', required=True, 
-                                    ondelete='cascade', domain="[('id', 'in', context.get('ar_journal_ids', []))]")
+    ar_journal_id = fields.Many2one('soa.ar.journal', required=True, ondelete='cascade', 
+                                    domain="[('id', 'in', context.get('ar_journal_ids', []))]")
     journal_index = fields.Integer( required=True )
     amount = fields.Float(compute='_compute_amount')
     
@@ -28,7 +28,7 @@ class PaymentsCollection(models.Model):
         
     @api.model
     def create(self, vals):
-        if not vals['journal_index']:
+        if 'journal_index' not in vals:
             vals['journal_index'] = self.ar_journal_id.pc_ids_count + 1
         res = super(PaymentsCollection, self).create(vals)
         

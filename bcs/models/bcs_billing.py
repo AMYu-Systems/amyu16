@@ -62,7 +62,8 @@ class BcsBilling(models.Model):
         bs = self.env['billing.summary'].search(
             [('client_id', '=', self.client_id.id)], limit=1)
         if bs:
-            self.services_id = bs.service_ids
+            self.allowed_service_ids = [(6, 0, [srv.id for srv in bs.service_ids])]
+            self.services_id = [(6, 0, [srv.id for srv in bs.service_ids])]
             self.services_amount = bs.get_services_total_amount(self.services_id)
     
     @api.model
@@ -143,7 +144,10 @@ class BcsBilling(models.Model):
     #             raise ValidationError("Fields can only be edited when state is not 'approved'.")
 
     other = fields.Text(string="Other Instruction")
-    services_id = fields.Many2many(comodel_name="services.type", string="Services", required=True)
+    services_id = fields.Many2many(comodel_name="services.type", string="Services", required=True, 
+                                   relation="bcs_billing_selected_services_rel")
+    allowed_service_ids = fields.Many2many(comodel_name="services.type", string="Allowed Services",
+                                           relation="bcs_billing_allowed_services_rel")
     
     @api.onchange('services_id')
     def _onchange_services_id(self):

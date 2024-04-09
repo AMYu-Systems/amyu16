@@ -39,7 +39,7 @@ class ARJournal(models.Model):
     #     self.initial_balance = self.view_initial_balance
 
     def new_billing(self, billing):
-        self.balance += billing.amount
+        self.balance = billing.amount
         self.ar_ids_count += 1
         ar = self.env['soa.accounts.receivable'].create({
             'ar_journal_id': self.id,
@@ -61,7 +61,7 @@ class ARJournal(models.Model):
     def new_manual_posting(self, payments_collection):
         self.balance -= payments_collection.amount
         self.pc_ids_count += 1
-        self.payments_collection_ids = (4, payments_collection.id)
+        self.payments_collection_ids = [(4, payments_collection.id)]
     
     def void_transaction(self, billing):
         self.balance -= billing.amount
@@ -73,8 +73,8 @@ class ARJournal(models.Model):
     def recalculate(self):
         # self.initial_balance = self.view_initial_balance
         # add = sum([ar.amount for ar in self.accounts_receivable_ids], start=self.initial_balance)
-        add = sum([ar.amount for ar in self.accounts_receivable_ids])
-        sub = sum([pc.amount for pc in self.payments_collection_ids])
+        add = self.accounts_receivable_ids[-1].amount if len(self.accounts_receivable_ids) > 0 else 0
+        sub = self.payments_collection_ids[-1].amount if len(self.payments_collection_ids) > 0 else 0
         self.balance = add - sub
     
     
