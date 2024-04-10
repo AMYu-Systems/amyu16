@@ -1,5 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access.main_view,access.main_view,model_main_view,administrator_group,1,1,1,0
+access.main_view,access.main_view,model_main_view,administrator_group,1,1,1,1
 access.main_view,access.main_view,model_main_view,fsms_user_group,1,1,1,0
 access.main_view_prep,access.main_view_prep,model_main_view,preparation_group,1,1,1,0
 access.main_view_check,access.main_view_check,model_main_view,checking_group,1,1,0,0
