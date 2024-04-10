@@ -43,7 +43,7 @@
                                             <div>
                                                 <span style="float:right">
                                                     <p class="text-info">
-                                                        <field name="revision_ids"/>
+                                                        <field name="revision_id"/>
                                                     </p>
                                                 </span>
                                             </div>
@@ -98,7 +98,7 @@
             <field name="arch" type="xml">
                 <search>
                     <searchpanel>
-                        <field name="supervisors_id" enable_counters="1" string="Team"/>
+                        <field name="supervisor_id" enable_counters="1" string="Team"/>
                     </searchpanel>
                 </search>
             </field>

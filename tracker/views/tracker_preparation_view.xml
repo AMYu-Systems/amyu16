@@ -8,9 +8,9 @@
                 <tree>
                     <field name="name"/>
                     <field name="user_id" readonly="1"/>
-                    <field name="supervisors_id" invisible="1"/>
-                    <field name="managers_id" invisible="1"/>
-                    <field name="cluster_id" invisible="1"/>
+                    <field name="supervisor_id" invisible="1"/>
+                    <field name="manager_id" invisible="1"/>
+                    <field name="partners_id" invisible="1"/>
                     <field name="state" widget="badge" readonly="1"/>
                     <field name="date_start" readonly="1"/>
                     <field name="date_end" readonly="1"/>
@@ -30,7 +30,7 @@
                     <sheet>
                         <div>
                             <span style="float:right">
-                                <field name="revision_ids" widget="many2many_tags" placeholder="STATUS"
+                                <field name="revision_id" placeholder="STATUS"
                                        options="{'no_open': True,'no_create': True,'color_field': 'color'}"/>
                             </span>
                         </div>
@@ -44,13 +44,13 @@
                                 <group>
                                     <field name="user_id" readonly="1"
                                            attrs="{'invisible':[('state', '!=', 'draft')]}"/>
-                                    <field name="supervisors_id" attrs="{'invisible':[('state', '!=', 'draft')]}"
+                                    <field name="supervisor_id" attrs="{'invisible':[('state', '!=', 'draft')]}"
                                            options="{'no_open': True,'no_create': True}"/>
                                 </group>
                                 <group>
-                                    <field name="managers_id" attrs="{'invisible':[('state', '!=', 'draft')]}"
+                                    <field name="manager_id" attrs="{'invisible':[('state', '!=', 'draft')]}"
                                            options="{'no_open': True,'no_create': True}"/>
-                                    <field name="cluster_id" attrs="{'invisible':[('state', '!=', 'draft')]}"
+                                    <field name="partners_id" attrs="{'invisible':[('state', '!=', 'draft')]}"
                                            options="{'no_open': True,'no_create': True}"/>
                                 </group>
                             </group>
@@ -69,41 +69,55 @@
                                 </group>
                             </group>
                             <div>
-                                <group col="5"
-                                       attrs="{'invisible': ['|','|','|','|','|','|','|','|','|','|',('state', '=', 'draft'),('state', '=', 'preparation'),('state', '=', 'checking'),('state', '=', 'review'),('state', '=', 'initial_approval'),('state', '=', 'proofread')
+                                <group col="3" attrs="{'invisible': ['|','|','|','|','|','|','|','|','|','|',('state', '=', 'draft'),('state', '=', 'preparation'),('state', '=', 'checking'),('state', '=', 'review'),('state', '=', 'initial_approval'),('state', '=', 'proofread')
                                        ,('state', '=', 'final_checking'),('state', '=', 'final_review'),('state', '=', 'final_approval'),('state', '=', 'final_proofread'),('state', '=', 'iar_review')]}">
-                                    <group string="Printer Checklist">
-                                        <field name="label_printer_ids" widget="many2many_tags" nolabel="1"
+                                    <!--printer-->
+                                    <group>
+                                        <field name="label_printer_ids" widget="many2many_checkboxes"
                                                placeholder="select"
                                                attrs="{'readonly': ['|','|','|',('state', '=', 'sorting'),('state', '=', 'qcc'),('state', '=', 'filing'),('state', '=', 'filed')]}"
-                                               options="{'no_open': True,'no_create': True,'color_field': 'color'}"/>
+                                               options="{'no_open': True,'color_field': 'color'}"/>
+                                        <field name="other_attachment_printer"
+                                               attrs="{'readonly': ['|','|','|',('state', '=', 'sorting'),('state', '=', 'qcc'),('state', '=', 'filing'),('state', '=', 'filed')]}"/>
                                     </group>
-                                    <group string="Sorter Checklist" attrs="{'invisible':[('state', '=', 'printing')]}">
-                                        <field name="label_sorter_ids" widget="many2many_tags" nolabel="1"
+                                    <!--sorter-->
+                                    <group attrs="{'invisible':[('state', '=', 'printing')]}">
+                                        <field name="label_sorter_ids" widget="many2many_checkboxes"
                                                placeholder="select"
                                                attrs="{'readonly': ['|','|','|',('state', '=', 'printing'),('state', '=', 'qcc'),('state', '=', 'filing'),('state', '=', 'filed')]}"
-                                               options="{'no_open': True,'no_create': True,'color_field': 'color'}"/>
+                                               options="{'no_open': True,'color_field': 'color'}"/>
+                                        <field name="other_attachment_sorter"
+                                               attrs="{'readonly': ['|','|','|',('state', '=', 'printing'),('state', '=', 'qcc'),('state', '=', 'filing'),('state', '=', 'filed')]}"/>
                                     </group>
-                                    <group string="Quality Check Control Checklist"
-                                           attrs="{'invisible':['|',('state', '=', 'printing'),('state', '=', 'sorting')]}">
-                                        <field name="label_qcc_ids" widget="many2many_tags" nolabel="1"
+                                    <!--QCC-->
+                                    <group attrs="{'invisible':['|',('state', '=', 'printing'),('state', '=', 'sorting')]}">
+                                        <field name="label_qcc_ids" widget="many2many_checkboxes"
                                                placeholder="select"
                                                attrs="{'readonly': ['|','|','|',('state', '=', 'printing'),('state', '=', 'sorting'),('state', '=', 'filing'),('state', '=', 'filed')]}"
-                                               options="{'no_open': True,'no_create': True,'color_field': 'color'}"/>
+                                               options="{'no_open': True,'color_field': 'color'}"/>
+                                        <field name="other_attachment_qcc"
+                                               attrs="{'readonly': ['|','|','|',('state', '=', 'printing'),('state', '=', 'sorting'),('state', '=', 'filing'),('state', '=', 'filed')]}"/>
                                     </group>
-                                    <group string="B.I.R Checklist"
-                                           attrs="{'invisible':['|','|',('state', '=', 'printing'),('state', '=', 'sorting'),('state', '=', 'qcc')]}">
-                                        <field name="label_bir_ids" widget="many2many_tags" nolabel="1"
+                                </group>
+                                <!--BIR-->
+                                <group attrs="{'invisible': ['|','|','|','|','|','|','|','|','|','|',('state', '=', 'draft'),('state', '=', 'preparation'),('state', '=', 'checking'),('state', '=', 'review'),('state', '=', 'initial_approval'),('state', '=', 'proofread')
+                                       ,('state', '=', 'final_checking'),('state', '=', 'final_review'),('state', '=', 'final_approval'),('state', '=', 'final_proofread'),('state', '=', 'iar_review')]}">
+                                    <group attrs="{'invisible':['|','|',('state', '=', 'printing'),('state', '=', 'sorting'),('state', '=', 'qcc')]}">
+                                        <field name="label_bir_ids" widget="many2many_checkboxes"
                                                placeholder="select"
                                                attrs="{'readonly': ['|','|','|',('state', '=', 'printing'),('state', '=', 'sorting'),('state', '=', 'qcc'),('state', '=', 'filed')]}"
-                                               options="{'no_open': True,'no_create': True,'color_field': 'color'}"/>
+                                               options="{'no_open': True,'color_field': 'color'}"/>
+                                        <field name="other_attachment_bir"
+                                               attrs="{'readonly': ['|','|','|',('state', '=', 'printing'),('state', '=', 'sorting'),('state', '=', 'qcc'),('state', '=', 'filed')]}"/>
                                     </group>
-                                    <group string="S.E.C Checklist"
-                                           attrs="{'invisible':['|','|',('state', '=', 'printing'),('state', '=', 'sorting'),('state', '=', 'qcc')]}">
-                                        <field name="label_sec_ids" widget="many2many_tags" nolabel="1"
+                                    <!--SEC-->
+                                    <group attrs="{'invisible':['|','|',('state', '=', 'printing'),('state', '=', 'sorting'),('state', '=', 'qcc')]}">
+                                        <field name="label_sec_ids" widget="many2many_checkboxes"
                                                placeholder="select"
                                                attrs="{'readonly': ['|','|','|',('state', '=', 'printing'),('state', '=', 'sorting'),('state', '=', 'sorting'),('state', '=', 'filed')]}"
-                                               options="{'no_open': True,'no_create': True,'color_field': 'color'}"/>
+                                               options="{'no_open': True,'color_field': 'color'}"/>
+                                        <field name="other_attachment_sec"
+                                               attrs="{'readonly': ['|','|','|',('state', '=', 'printing'),('state', '=', 'sorting'),('state', '=', 'sorting'),('state', '=', 'filed')]}"/>
                                     </group>
                                 </group>
                             </div>

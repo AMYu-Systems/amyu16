@@ -3,7 +3,7 @@ from odoo import models, fields, api, exceptions
 
 class MainView(models.Model):
     _name = 'main.view'
-    _description = "FS Monitoring"
+    _description = "FSMS Monitoring"
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'write_date'
 
@@ -16,9 +16,9 @@ class MainView(models.Model):
 
     user_id = fields.Many2one(string="Associate", comodel_name='res.users', default=lambda self: self.env.user,
                               tracking=True)
-    supervisors_id = fields.Many2one(string="Supervisor", comodel_name='team.supervisor')
-    managers_id = fields.Many2one(string="Manager", comodel_name='team.manager')
-    cluster_id = fields.Many2one(string="Partner", comodel_name='group.cluster')
+    supervisor_id = fields.Many2one(string="Supervisor", comodel_name='associate.group')
+    manager_id = fields.Many2one(string="Manager", related="supervisor_id.manager_id")
+    partners_id = fields.Many2one(string="Partner", related="supervisor_id.partners_id")
     STATES = [('draft', 'Client List'), ('preparation', 'Preparation'), ('checking', 'Checking'), ('review', 'Review'),
               ('initial_approval', 'Init. Approval'), ('proofread', 'Proofread'),
               ('final_checking', 'FNL Checking'), ('final_review', 'FNL Review'),
@@ -27,6 +27,17 @@ class MainView(models.Model):
               ('qcc', 'Quality Control Check'), ('filing', 'Filing'), ('filed', 'Filed')]
     state = fields.Selection(STATES, string="Status", default='draft', tracking=True,
                              group_expand='_expand_states', index=True)
+
+    def write(self, values):
+        old_states = {rec.id: rec.state for rec in self}
+        res = super(MainView, self).write(values)
+        for record in self:
+            if 'state' in values and record.state != old_states.get(record.id):
+                self.env['state.history'].create({
+                    'object_id': record.id,
+                    'state': record.state,
+                })
+        return res
 
     @api.onchange('state')
     def _check_state_transition(self):
@@ -94,12 +105,12 @@ class MainView(models.Model):
         return super(MainView, self).write(vals)
 
     total_time = fields.Integer(string="Total Time", compute='_compute_total_time', store=True)
-    revision_ids = fields.Many2many(comodel_name='revision.status', string="Status")
+    revision_id = fields.Many2one(comodel_name='revision.status', string="Status", tracking=True)
 
     @api.onchange('state')
-    def clear_revision_ids(self):
+    def clear_revision_id(self):
         if self.state != 'draft':
-            self.revision_ids = [(5, 0, 0)]
+            self.revision_id = [(5, 0, 0)]
 
     @api.depends('date_start', 'date_end')
     def _compute_total_time(self):
@@ -113,14 +124,18 @@ class MainView(models.Model):
                 record.total_time = 0.0
 
     # LABEL
-    label_note_ids = fields.Many2many(string="Label", comodel_name='label.maintenance', inverse_name='label_id')
+    label_note_ids = fields.Many2many(string="Label", comodel_name='label.maintenance', inverse_name='label_id',
+                                      tracking=True)
     label_printer_ids = fields.Many2many(string="Printer Checklist", comodel_name='label.printer',
                                          inverse_name='printer_id')
+    other_attachment_printer = fields.Char(string="Others")
     label_sorter_ids = fields.Many2many(string="Sorter Checklist", comodel_name='label.sorter',
                                         inverse_name='sorter_id')
+    other_attachment_sorter = fields.Char(string="Others")
     label_qcc_ids = fields.Many2many(string="Quality Check Control Checklist",
                                      comodel_name='label.qcc', inverse_name='qcc_id')
-    label_bir_ids = fields.Many2many(string="B.I.R Checklist", comodel_name='label.bir', inverse_name='bir_id',
-                                     )
-    label_sec_ids = fields.Many2many(string="S.E.C Checklist", comodel_name='label.sec', inverse_name='sec_id',
-                                     )
+    other_attachment_qcc = fields.Char(string="Others")
+    label_bir_ids = fields.Many2many(string="B.I.R Checklist", comodel_name='label.bir', inverse_name='bir_id')
+    other_attachment_bir = fields.Char(string="Others")
+    label_sec_ids = fields.Many2many(string="S.E.C Checklist", comodel_name='label.sec', inverse_name='sec_id')
+    other_attachment_sec = fields.Char(string="Others")

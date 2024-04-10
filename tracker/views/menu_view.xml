@@ -133,17 +133,17 @@
                   name="Progress"
                   parent="sub_menu_maintenance_client"
                   action="progress_view_action"/>
-        <menuitem id="menu_partner_list_client"
-                  name="Partner"
+        <menuitem id="menu_associate_group"
+                  name="Team"
                   parent="sub_menu_maintenance_client"
-                  action="partner_view_action"/>
-        <menuitem id="menu_manager_list_client"
-                  name="Manager"
-                  parent="sub_menu_maintenance_client"
-                  action="team_manager_view_action"/>
-        <menuitem id="menu_supervisor_list_client"
-                  name="Supervisor"
-                  parent="sub_menu_maintenance_client"
-                  action="team_supervisor_view_action"/>
+                  action="associate_view_action"/>
+
+        <menuitem id="sub_menu_history_record"
+                  name="Progress Record"
+                  parent="menu_label_list_root"/>
+        <menuitem id="menu_record_state"
+                  name="LogSheet "
+                  parent="sub_menu_history_record"
+                  action="action_state_record_tree"/>
     </data>
 </odoo>
