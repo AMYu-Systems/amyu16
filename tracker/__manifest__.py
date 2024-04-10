@@ -23,10 +23,10 @@
 
     # always loaded
     'data': [
+        'views/groups_view.xml',
         'security/ir.model.access.csv',
         'views/main_view.xml',
         'views/tracker_process_view.xml',
-        'views/groups_view.xml',
         'views/tracker_preparation_view.xml',
         'views/label_note_view.xml',
         'views/state_history_view.xml',
