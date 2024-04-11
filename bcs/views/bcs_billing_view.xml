@@ -69,6 +69,11 @@
                                 confirm="Are you sure to proceed to the next status? (Client Received)"
                                 attrs="{'invisible': [('status', '!=', 'sent_to_client')]}"/>
 
+                        <button name="void_billing" string="Void Statement" type="object" class="oe_highlight"
+                                confirm="Are you sure to proceed to VOID this Billing Statement?"
+                                attrs="{'invisible': ['|', ('status', '!=', 'client_received'), ('allow_void', '=', False)]}"/>
+
+                        <field name="allow_void" invisible="1" />
                         <field name="status" widget="statusbar" clickable="True"
                                status_invisible="not_sent,sent_email,send_errand,client_received"/>
                     </header>

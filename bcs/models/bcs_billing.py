@@ -11,11 +11,11 @@ class BcsBilling(models.Model):
     # _rec_name = 'transaction'
 
     name = fields.Char(compute="_compute_name")
-    @api.depends("services_id", "date_billed")
+    @api.depends("services_id", "date_billed", "client_id.name")
     def _compute_name(self):
         for record in self:
             services = ''
-            if record.services_id:
+            if len(record.services_id) > 0:
                 for service in record.services_id:
                     services += service.code + ', '
                 services = services[:-2]
@@ -105,11 +105,11 @@ class BcsBilling(models.Model):
         if arj:
             arj.new_billing(self)
         
-
+    allow_void = fields.Boolean(default=True)
     status_selection = [('not_sent', 'Not yet sent'),
                         ('sent_to_client', 'Sent to client'),
                         ('client_received', 'Client has received'),
-                        ('void_transaction', 'Void Transaction')]
+                        ('void_billing', 'Void Statement')]
     status = fields.Selection(status_selection, default='not_sent')
     
     # only appear when status == 'sent_to_client'
@@ -128,13 +128,25 @@ class BcsBilling(models.Model):
         self.status = 'client_received'
         
     # billing is apparently void
-    def void_transaction(self):
-        self.status = 'void_transaction'
+    def void_billing(self):
+        if not self.allow_void:
+            return
         
-        # update ar journal as well
+        self.status = 'void_billing'
+        
+        # CONSTRAINT: check first if the most recent billing, is the same as this record
+        # past billings can no longer be voided
+        most_recent_billing = self.env['bcs.billing'].search(
+            [('state', '=', 'approved'), ('client_id', '=', self.client_id.id)], 
+            order="transaction desc", limit=1)
+        if most_recent_billing.id != self.id:
+            self.allow_void = False
+            return
+        
+        # update ar journal
         arj = self.env['soa.ar.journal'].search([('client_id', '=', self.client_id.id)], limit=1)
         if arj:
-            arj.void_transaction(self)
+            arj.void_billing(self)
 
     # @api.constrains('state')
     # def _check_state_for_editing(self):

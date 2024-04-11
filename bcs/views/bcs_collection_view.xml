@@ -36,9 +36,11 @@
                         <group>
                             <field name="transaction"/>
                             <field name="paid_by_id" options="{'no_create': True,'no_open': True }"/>
-                            <field name="billing_ids" widget="many2many_tags"
+                            <field name="recent_billings_per_client" invisible="1"/>
+                            <field name="billing_ids" widget="many2many_tags" domain="[('id', 'in', recent_billings_per_client)]"
                                    options="{'no_create': True,'no_open': True }"/>
-                            <field name="payment_collection"/>
+                            <field name="payment_collection" readonly="1"/>
+                            <field name="payment_collection" invisible="1"/>
                             <field name="collected_by"/>
                             <field name="date_collected"/>
                             <!-- <field name="last_update"/> -->

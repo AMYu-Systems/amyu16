@@ -17,7 +17,7 @@
             <field name="name">soa.payments.collection.form</field>
             <field name="model">soa.payments.collection</field>
             <field name="arch" type="xml">
-                <form>
+                <form edit="0">
                     <sheet>
                         <group>
                             <field name="collection_id" readonly="1" />
