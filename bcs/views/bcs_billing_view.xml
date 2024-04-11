@@ -116,28 +116,11 @@
             </field>
         </record>
 
-        <record id="bcs_billing_view_action" model="ir.actions.act_window">
-            <field name="name">Billing</field>
-            <field name="res_model">bcs.billing</field>
-            <field name="view_mode">tree,form</field>
-            <field name="domain">[('state','=','approved')]</field>
-            <field name="view_id" ref="bcs_billing_tree_view"/>
-        </record>
-
         <record id="bcs_all_billing_view_action" model="ir.actions.act_window">
             <field name="name">Billing</field>
             <field name="res_model">bcs.billing</field>
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="bcs_billing_tree_view"/>
-        </record>
-
-        <record id="bcs_billing_form_action" model="ir.actions.act_window">
-            <field name="name">Billing</field>
-            <field name="res_model">bcs.billing</field>
-            <field name="view_mode">form</field>
-            <field name="target">new</field>
-            <field name="view_id" ref="bcs_billing_form_view"/>
-            <field name="domain">[('state','=','draft')]</field>
         </record>
 
         <record model="ir.sequence" id="billing_id_seq">

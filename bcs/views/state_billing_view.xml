@@ -31,7 +31,17 @@
             <field name="domain">[('state','=','draft')]</field>
             <field name="view_id" ref="draft_bcs_billing_tree_view"/>
         </record>
-        <!--        Submitted-->
+
+        <record id="bcs_billing_form_action" model="ir.actions.act_window">
+            <field name="name">Billing</field>
+            <field name="res_model">bcs.billing</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="bcs_billing_form_view"/>
+            <field name="domain">[('state','=','draft')]</field>
+        </record>
+
+        <!-- Submitted-->
         <record id="submitted_bcs_billing_tree_view" model="ir.ui.view">
             <field name="name">submitted_bcs_billing_tree_view</field>
             <field name="model">bcs.billing</field>
@@ -91,6 +101,16 @@
             <field name="view_mode">tree,form</field>
             <field name="domain">[('state','=','verified')]</field>
             <field name="view_id" ref="verified_bcs_billing_tree_view"/>
+        </record>
+
+        <!-- Approved -->
+        <record id="bcs_billing_view_action" model="ir.actions.act_window">
+            <field name="name">Billing</field>
+            <field name="res_model">bcs.billing</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('state','=','approved')]</field>
+            <field name="context">{'edit': False, 'create': False}</field>
+            <field name="view_id" ref="bcs_billing_tree_view"/>
         </record>
     </data>
 </odoo>
