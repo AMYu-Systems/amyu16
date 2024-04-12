@@ -97,8 +97,12 @@
             <field name="model">main.view</field>
             <field name="arch" type="xml">
                 <search>
+                    <field name="team_id"/>
+                    <group expand="0" string="Group By">
+                        <filter name="group_by_employee" string="Employee" context="{'group_by': 'team_id'}"/>
+                    </group>
                     <searchpanel>
-                        <field name="supervisor_id" enable_counters="1" string="Team"/>
+                        <field name="team_id" enable_counters="1" string="Team" icon="fa-users"/>
                     </searchpanel>
                 </search>
             </field>

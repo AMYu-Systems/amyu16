@@ -16,9 +16,11 @@ class MainView(models.Model):
 
     user_id = fields.Many2one(string="Associate", comodel_name='res.users', default=lambda self: self.env.user,
                               tracking=True)
-    supervisor_id = fields.Many2one(string="Supervisor", comodel_name='associate.group')
-    manager_id = fields.Many2one(string="Manager", related="supervisor_id.manager_id")
-    partners_id = fields.Many2one(string="Partner", related="supervisor_id.partners_id")
+    team_id = fields.Many2one(string="Team", comodel_name='team.group')
+    supervisor_id = fields.Many2one(string="Supervisor", related="team_id.supervisor_id")
+    manager_id = fields.Many2one(string="Manager", related="team_id.manager_id")
+    partners_id = fields.Many2one(string="Partner", related="team_id.partners_id")
+
     STATES = [('draft', 'Client List'), ('preparation', 'Preparation'), ('checking', 'Checking'), ('review', 'Review'),
               ('initial_approval', 'Init. Approval'), ('proofread', 'Proofread'),
               ('final_checking', 'FNL Checking'), ('final_review', 'FNL Review'),
