@@ -58,13 +58,9 @@ class BcsBilling(models.Model):
             [('client_id', '=', self.client_id.id)], limit=1)
         if arj and arj.balance:
             self.previous_amount = arj.balance
-            
-        bs = self.env['billing.summary'].search(
-            [('client_id', '=', self.client_id.id)], limit=1)
-        if bs:
-            self.allowed_service_ids = [(6, 0, [srv.id for srv in bs.service_ids])]
-            self.services_id = [(6, 0, [srv.id for srv in bs.service_ids])]
-            self.services_amount = bs.get_services_total_amount(self.services_id)
+        
+        # For services id
+        self._calculate_amount_services()
     
     @api.model
     def _default_issued_by(self):
@@ -161,11 +157,12 @@ class BcsBilling(models.Model):
     allowed_service_ids = fields.Many2many(comodel_name="services.type", string="Allowed Services",
                                            relation="bcs_billing_allowed_services_rel")
     
+    billing_service_ids = fields.One2many('bcs.billing.service', inverse_name='billing_id')
+    
     @api.onchange('services_id')
     def _onchange_services_id(self):
-        bs = self.env['billing.summary'].search([('client_id', '=', self.client_id.id)], limit=1)
-        if bs:
-            self.services_amount = bs.get_services_total_amount(self.services_id)
+        self._calculate_amount_services(onchange=True)
+            
     
     previous_amount = fields.Float(string="Previous Amount")
     services_amount = fields.Float(string="Services Amount")
@@ -175,3 +172,28 @@ class BcsBilling(models.Model):
     @api.onchange('previous_amount', 'services_amount')
     def _onchange_amount(self):
         self.amount = self.previous_amount + self.services_amount
+        
+        
+    def _calculate_amount_services(self, onchange=False):
+        '''
+        Need for displaying amounts for Billing Summary of client in Billing
+        '''
+        bs = self.env['billing.summary'].search([('client_id', '=', self.client_id.id)], limit=1)
+        if bs:
+            if not onchange:
+                # this syntax, with 6, means replace the entire list
+                self.allowed_service_ids = [(6, 0, [srv.id for srv in bs.service_ids])]
+                self.services_id = [(6, 0, [srv.id for srv in bs.service_ids])]
+            self.services_amount = bs.get_services_total_amount(self.services_id)
+            services_amount_tuples = bs.get_services_each_amount(self.services_id)
+            billing_service_ids = []
+            for service_tuple in services_amount_tuples:
+                
+                billing_service_ids.append(self.env['bcs.billing.service'].create({
+                    'service_view': service_tuple[0],
+                    'amount': service_tuple[1],
+                }))
+            self.billing_service_ids = [(5,), (6, 0, [bs.id for bs in billing_service_ids])]
+
+    
+    

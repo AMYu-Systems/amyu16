@@ -3,6 +3,7 @@ access.client.billing.info,access.client_billing_info,model_client_billing_info,
 access.bank,access.bank,model_bank,base.group_user,1,1,1,1
 access.base.billing,access.base_billing,model_base_billing,base.group_user,1,1,1,1
 access.billing.summary,access.billing_summary,model_billing_summary,base.group_user,1,1,1,1
+access.billing.service,access.billing_service,model_billing_service,base.group_user,1,1,1,1
 access.audit.billing,access.audit_billing,model_audit_billing,base.group_user,1,1,1,1
 access.trc.billing,access.trc_billing,model_trc_billing,base.group_user,1,1,1,1
 access.books.billing,access.books_billing,model_books_billing,base.group_user,1,1,1,1

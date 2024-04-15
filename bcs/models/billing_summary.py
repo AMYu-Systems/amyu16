@@ -75,6 +75,19 @@ class BillingSummary(models.Model):
     def get_services(self):
         services = self.env['billing.summary'].search([('service_ids', '!=', False)])
         return services
+    
+    def create_billing_service_records(self):
+        pass
+    
+    @api.model
+    def create(self, vals):
+        res = super(BillingService, self).create(vals)
+        
+        billing_service_ids = []
+        billing_service_ids.append(self.env['bcs.billing.service'].create({
+            'service_view': service_tuple[0],
+            'amount': service_tuple[1],
+        }))
 
     @api.onchange('service_ids')
     def _onchange_services(self):
@@ -111,3 +124,47 @@ class BillingSummary(models.Model):
                 total += rec.amount
         return total
     
+    def get_services_each_amount(self, included_services_id):
+        
+        service_amount = []
+        def _set_service_amount(service_type, service_ids):
+            view = service_type.name + f' ({service_type.code})'
+            for service in service_ids:
+                service_amount.append((view, service.amount))
+        
+        included = {}
+        for service_id in included_services_id:
+            included[service_id.code] = service_id
+        
+        if 'AUD' in included.keys() and self.has_aud: 
+            _set_service_amount(included['AUD'], self.audit_ids)
+        if 'TRC' in included.keys() and self.has_trc: 
+            _set_service_amount(included['TRC'], self.trc_ids)
+        if 'BKS' in included.keys() and self.has_bks: 
+            _set_service_amount(included['BKS'], self.books_ids)
+        if 'PER' in included.keys() and self.has_per: 
+            _set_service_amount(included['PER'], self.permit_ids)
+        if 'GIS' in included.keys() and self.has_gis: 
+            _set_service_amount(included['GIS'], self.gis_ids)
+        if 'LOA' in included.keys() and self.has_loa: 
+            _set_service_amount(included['LOA'], self.loa_ids)
+        if 'SPE' in included.keys() and self.has_spe: 
+            _set_service_amount(included['SPE'], self.spe_ids) 
+        
+        return service_amount
+    
+
+class BillingService(models.Model):
+    _name = 'billing.service'
+    _description = "Billing Services"
+    _rec_name = 'name'
+    
+    billing_summary_id = fields.Many2one('billing.summary', readonly=True, ondelete='cascade')
+    service_view = fields.Char(required=True, readonly=True)
+    amount = fields.Float(required=True, readonly=True)
+    name = fields.Char(readonly=True, compute='_compute_name')
+    
+    @api.depends('service_view', 'amount')
+    def _compute_name(self):
+        for record in self:
+            record.name = f'{record.service_view} - PHP {record.amount}'

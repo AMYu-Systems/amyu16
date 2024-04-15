@@ -101,7 +101,14 @@
                             <field name="previous_amount" attrs="{'readonly': [('status','=','sent_to_client')]}"/>
                             <field name="allowed_service_ids" invisible="1" />
                             <field name="services_id" widget="many2many_tags" domain="[('id', 'in', allowed_service_ids)]"
-                                attrs="{'readonly': [('status','=','sent_to_client')]}" options="{'no_create_edit': True, 'no_create': True, 'no_open': True}"/>
+                                attrs="{'readonly': [('status','=','sent_to_client')]}" 
+                                options="{'no_create_edit': True, 'no_create': True, 'no_open': True}"/>
+                            <field name="billing_service_ids" readonly="1">
+                                <tree>
+                                    <field name="service_view" string="Service" />
+                                    <field name="amount" />
+                                </tree>
+                            </field>
                             <field name="services_amount" readonly="1" />
                             <field name="amount" string="Total Amount" readonly="1"/>
                             <field name="issued_by" attrs="{'readonly': [('status','=','sent_to_client')]}"/>
