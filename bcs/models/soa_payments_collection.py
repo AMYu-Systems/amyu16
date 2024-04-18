@@ -34,7 +34,7 @@ class PaymentsCollection(models.Model):
         
         if res and res.manual_posting:
             res.amount = res.manual_amount
-            res.collection_id.unissued_amount_for_ar -= res.amount
+            res.collection_id.new_manual_posting(res)
             res.ar_journal_id.new_manual_posting(res)
         
         return res

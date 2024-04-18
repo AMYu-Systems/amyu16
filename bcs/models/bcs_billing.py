@@ -157,7 +157,7 @@ class BcsBilling(models.Model):
     allowed_service_ids = fields.Many2many(comodel_name="services.type", string="Allowed Services",
                                            relation="bcs_billing_allowed_services_rel")
     
-    billing_service_ids = fields.One2many('bcs.billing.service', inverse_name='billing_id')
+    billing_service_ids = fields.Many2many('billing.service')
     
     @api.onchange('services_id')
     def _onchange_services_id(self):
@@ -185,15 +185,15 @@ class BcsBilling(models.Model):
                 self.allowed_service_ids = [(6, 0, [srv.id for srv in bs.service_ids])]
                 self.services_id = [(6, 0, [srv.id for srv in bs.service_ids])]
             self.services_amount = bs.get_services_total_amount(self.services_id)
-            services_amount_tuples = bs.get_services_each_amount(self.services_id)
-            billing_service_ids = []
-            for service_tuple in services_amount_tuples:
+            # services_amount_tuples = bs.get_services_each_amount(self.services_id)
+            # billing_service_ids = []
+            # for service_tuple in services_amount_tuples:
                 
-                billing_service_ids.append(self.env['bcs.billing.service'].create({
-                    'service_view': service_tuple[0],
-                    'amount': service_tuple[1],
-                }))
-            self.billing_service_ids = [(5,), (6, 0, [bs.id for bs in billing_service_ids])]
+            #     billing_service_ids.append(self.env['bcs.billing.service'].create({
+            #         'service_view': service_tuple[0],
+            #         'amount': service_tuple[1],
+            #     }))
+            # self.billing_service_ids = [(5,), (6, 0, [bs.id for bs in billing_service_ids])]
 
     
     

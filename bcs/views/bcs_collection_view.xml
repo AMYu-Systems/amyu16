@@ -34,11 +34,13 @@
                 <form>
                     <sheet>
                         <group>
+                            <field name="allow_edit_billing_ids" invisible="1"/>
                             <field name="transaction"/>
                             <field name="paid_by_id" options="{'no_create': True,'no_open': True }"/>
                             <field name="recent_billings_per_client" invisible="1"/>
                             <field name="billing_ids" widget="many2many_tags" domain="[('id', 'in', recent_billings_per_client)]"
-                                   options="{'no_create': True,'no_open': True }"/>
+                                   attrs="{'readonly':[('allow_edit_billing_ids', '==', False)] }"
+                                   options="{'no_create': True, 'no_open': True }" />
                             <field name="payment_collection" readonly="1"/>
                             <field name="payment_collection" invisible="1"/>
                             <field name="collected_by"/>

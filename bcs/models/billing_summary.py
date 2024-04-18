@@ -75,19 +75,6 @@ class BillingSummary(models.Model):
     def get_services(self):
         services = self.env['billing.summary'].search([('service_ids', '!=', False)])
         return services
-    
-    def create_billing_service_records(self):
-        pass
-    
-    @api.model
-    def create(self, vals):
-        res = super(BillingService, self).create(vals)
-        
-        billing_service_ids = []
-        billing_service_ids.append(self.env['bcs.billing.service'].create({
-            'service_view': service_tuple[0],
-            'amount': service_tuple[1],
-        }))
 
     @api.onchange('service_ids')
     def _onchange_services(self):

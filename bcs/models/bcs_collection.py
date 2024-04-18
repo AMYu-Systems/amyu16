@@ -99,6 +99,7 @@ class BcsCollection(models.Model):
                        ('consolidated', 'Consolidated Payment'),]
                     #    ('suspense', 'Suspense Account')]
     payment_collection = fields.Selection(collection_type, default='direct_payment', string="Collection Type", required=True)
+    allow_edit_billing_ids = fields.Boolean(default=True)
     
     @api.onchange('billing_ids')
     def _onchange_billing_ids(self):
@@ -107,6 +108,7 @@ class BcsCollection(models.Model):
         #     self.payment_collection = 'suspense'
         if blen == 1:
             self.payment_collection = 'direct_payment'
+            self.unissued_amount_for_ar = 0
         elif blen >= 2:
             self.payment_collection = 'consolidated'
         return
@@ -132,6 +134,10 @@ class BcsCollection(models.Model):
     amount = fields.Float(string="Amount", required=True)
     remarks = fields.Text(string="Remarks")
     unissued_amount_for_ar = fields.Float(string="Unissued Amount For ARs", default=0, readonly=True)
+    
+    def new_manual_posting(self, payments_collection):
+        self.unissued_amount_for_ar -= payments_collection.amount
+        self.allow_edit_billing_ids = False
     
     def manual_posting(self):
         arjs = self.env['soa.ar.journal'].search([('client_id', 'in', [bill.client_id.id for bill in self.billing_ids])])
