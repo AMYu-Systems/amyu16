@@ -77,6 +77,10 @@ class BillingSummary(models.Model):
     # def approved_action(self):
     #     self.state = 'approved'
 
+    def get_services(self):
+        services = self.env['billing.summary'].search([('service_ids', '!=', False)])
+        return services
+
     @api.onchange('service_ids')
     def _onchange_services(self):
         service_list = []

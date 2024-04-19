@@ -64,10 +64,10 @@ class ARJournal(models.Model):
         self.payments_collection_ids = [(4, payments_collection.id)]
     
     def void_billing(self, billing):
-        self.balance = billing.previous_amount
         ar = self.env['soa.accounts.receivable'].search([('billing_id','=',billing.id)], limit=1)
         if ar:
             self.accounts_receivable_ids = [(2, ar.id)] # this syntax, with 2, means delete apparently
+        self.balance = billing.previous_amount if not len(self.accounts_receivable_ids) == 0 else 0
         
     def recalculate(self):
         # self.initial_balance = self.view_initial_balance
@@ -78,7 +78,7 @@ class ARJournal(models.Model):
     
     
     """ FOR DEBUGGING PURPOSES ONLY """
-    def reset_all_ar_pc(self):
+    def reset_journal(self):
         self.accounts_receivable_ids = [(6, 0, [])]
         self.payments_collection_ids = [(6, 0, [])]
         self.ar_ids_count = 0

@@ -80,7 +80,8 @@
                     <sheet>
                         <group>
                             <field name="transaction"/>
-                            <field name="client_id" attrs="{'readonly': [('status','=','sent_to_client')]}"/>
+                            <field name="client_id" attrs="{'readonly': [('status','=','sent_to_client')]}"
+                                options="{'no_create': True,'no_open': True }"/>
                             <!-- <field name="collection_ids" widget="many2many_tags"
                                    options="{'no_create': True,'no_open': True }"/> -->
                             <!-- <field name="billing_collection_updates"/> -->
@@ -110,10 +111,11 @@
                                 </tree>
                             </field>
                             <field name="services_amount" readonly="1" />
-                            <field name="amount" string="Total Amount" readonly="1"/>
-                            <field name="issued_by" attrs="{'readonly': [('status','=','sent_to_client')]}"/>
                             <field name="services_amount" invisible="1" />
+                            <field name="amount" string="Total Amount" readonly="1"/>
                             <field name="amount" string="Total Amount" invisible="1"/>
+                            <field name="issued_by" attrs="{'readonly': [('status','=','sent_to_client')]}" 
+                                options="{'no_create': True,'no_open': True }"/>
                         </group>
                         <group>
                             <field name="remarks"/>

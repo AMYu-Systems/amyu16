@@ -11,7 +11,7 @@ class BcsBilling(models.Model):
     # _rec_name = 'transaction'
 
     name = fields.Char(compute="_compute_name")
-    transaction = fields.Char(string="Transaction id", readonly="1")
+    transaction = fields.Char(string="Transaction ID", readonly="1")
     client_id = fields.Many2one(comodel_name='client.profile', string="Client Name", required=True)
     
     @api.depends("services_id", "date_billed", "client_id.name")
@@ -26,7 +26,7 @@ class BcsBilling(models.Model):
                 services = 'No Services'
             record.name = record.date_billed.strftime("%b %Y") + ' | ' + services + ' | ' + record.client_id.name
         return
-
+    
     @api.model
     def create(self, vals):
         transaction = ''
@@ -153,7 +153,13 @@ class BcsBilling(models.Model):
                                    relation="bcs_billing_selected_services_rel")
     allowed_service_ids = fields.Many2many(comodel_name="services.type", string="Allowed Services",
                                            relation="bcs_billing_allowed_services_rel")
-    billing_service_ids = fields.One2many(comodel_name='billing.service', inverse_name='billing_id')          
+    
+    billing_service_ids = fields.Many2many('billing.service')
+    
+    @api.onchange('services_id')
+    def _onchange_services_id(self):
+        self._calculate_amount_services(onchange=True)
+            
     
     previous_amount = fields.Float(string="Previous Amount")
     services_amount = fields.Float(string="Services Amount")
@@ -168,10 +174,15 @@ class BcsBilling(models.Model):
         bs = self.env['billing.summary'].search([('client_id', '=', self.client_id.id)], limit=1)
         if bs:
             self.services_amount = bs.get_services_total_amount(self.services_id)
-            self.billing_service_ids
-            self.billing_service_ids = [(5,), (6, 0, [bs.id for bs in billing_service_ids])]
-        
-    @api.onchange('previous_amount', 'services_amount')
-    def _onchange_amount(self):
-        self.amount = self.previous_amount + self.services_amount
+            # services_amount_tuples = bs.get_services_each_amount(self.services_id)
+            # billing_service_ids = []
+            # for service_tuple in services_amount_tuples:
+                
+            #     billing_service_ids.append(self.env['bcs.billing.service'].create({
+            #         'service_view': service_tuple[0],
+            #         'amount': service_tuple[1],
+            #     }))
+            # self.billing_service_ids = [(5,), (6, 0, [bs.id for bs in billing_service_ids])]
+
+    
     

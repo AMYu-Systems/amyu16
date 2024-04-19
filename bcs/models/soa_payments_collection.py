@@ -1,5 +1,5 @@
 from odoo import fields, models, api
-
+from odoo.exceptions import ValidationError
 
 class PaymentsCollection(models.Model):
     _name = 'soa.payments.collection'
@@ -34,7 +34,7 @@ class PaymentsCollection(models.Model):
         
         if res and res.manual_posting:
             res.amount = res.manual_amount
-            res.collection_id.unissued_amount_for_ar -= res.amount
+            res.collection_id.new_manual_posting(res)
             res.ar_journal_id.new_manual_posting(res)
         
         return res
@@ -48,6 +48,12 @@ class PaymentsCollection(models.Model):
                 + dict(record.collection_id._fields['payment_collection'].selection).get(record.collection_id.payment_collection) \
                 + ' - ' + ('Cash' if record.collection_id.payment_mode == 'cash' else record.collection_id.bank.name)
     
+    @api.constrains('manual_amount')
+    def _check_amount(self):
+        for record in self:
+            if record.manual_amount > record.collection_id.unissued_amount_for_ar:
+                raise ValidationError("The amount must not exceed the Unissued Amount")
+            
     # create_uid <- automatic field by odoo16, res.user who created the record
     # create_date <- automatic field by odoo16 to know when was the date the record got created
     # write_uid <- automatic field by odoo16, res.user who updated the record
