@@ -1,3 +1,4 @@
+from typing import List
 from odoo import fields, models, api
 import logging
 
@@ -31,6 +32,7 @@ class BillingSummary(models.Model):
     manager_id = fields.Many2one(related='client_id.manager_id', string="Manager")
     supervisor_id = fields.Many2one(related='client_id.supervisor_id', string="Supervisor")
     associate_id = fields.Many2one(related='client_id.user_id', string="Associate")
+    
     service_ids = fields.Many2many(comodel_name='services.type', string="Type of Services")
     audit_ids = fields.One2many(comodel_name='audit.billing', inverse_name='billing_summary_id', string="Audit")
     trc_ids = fields.One2many(comodel_name='trc.billing', inverse_name='billing_summary_id', string="TRC")
@@ -49,6 +51,9 @@ class BillingSummary(models.Model):
     has_gis = fields.Boolean(default=False)
     has_loa = fields.Boolean(default=False)
     has_spe = fields.Boolean(default=False)
+    
+    billing_service_ids = fields.One2many(comodel_name='billing.service', 
+                                          inverse_name='billing_summary_id', string="Services")
     
     # state_selection = [('draft', 'Draft'),
     #                    ('submitted', 'Submitted'),
@@ -72,23 +77,6 @@ class BillingSummary(models.Model):
     # def approved_action(self):
     #     self.state = 'approved'
 
-    def get_services(self):
-        services = self.env['billing.summary'].search([('service_ids', '!=', False)])
-        return services
-    
-    def create_billing_service_records(self):
-        pass
-    
-    @api.model
-    def create(self, vals):
-        res = super(BillingService, self).create(vals)
-        
-        billing_service_ids = []
-        billing_service_ids.append(self.env['bcs.billing.service'].create({
-            'service_view': service_tuple[0],
-            'amount': service_tuple[1],
-        }))
-
     @api.onchange('service_ids')
     def _onchange_services(self):
         service_list = []
@@ -103,7 +91,50 @@ class BillingSummary(models.Model):
         self.has_spe = 'SPE' in service_list
         return
     
-    def get_services_total_amount(self, included_services_id):
+    def _onchange_service_record(self, service_code, record):
+        service = self.env['services.type'].search([('code', '=', service_code)], limit=1)
+        self.create_billing_service(service_type=service, service_record=record)
+        
+    @api.onchange('audit_ids')
+    def _onchange_audit(self):
+        for rec in self.audit_ids:
+            self._onchange_service_record('AUD', rec)
+    
+    @api.onchange('trc_ids')
+    def _onchange_audit(self):
+        for rec in self.trc_ids:
+            self._onchange_service_record('TRC', rec)
+            
+    @api.onchange('books_ids')
+    def _onchange_audit(self):
+        for rec in self.books_ids:
+            self._onchange_service_record('BKS', rec)
+            
+    @api.onchange('permit_ids')
+    def _onchange_audit(self):
+        for rec in self.permit_ids:
+            self._onchange_service_record('PER', rec)
+            
+    @api.onchange('gis_ids')
+    def _onchange_audit(self):
+        for rec in self.gis_ids:
+            self._onchange_service_record('GIS', rec)
+            
+    @api.onchange('loa_ids')
+    def _onchange_audit(self):
+        for rec in self.loa_ids:
+            self._onchange_service_record('LOA', rec)
+            
+    @api.onchange('spe_ids')
+    def _onchange_audit(self):
+        for rec in self.spe_ids:
+            self._onchange_service_record('SPE', rec)
+    
+    def get_services(self):
+        services = self.env['billing.summary'].search([('service_ids', '!=', False)])
+        return services
+    
+    def get_services_total_amount(self, included_services_id) -> float:
         included = []
         total = 0
         
@@ -124,7 +155,7 @@ class BillingSummary(models.Model):
                 total += rec.amount
         return total
     
-    def get_services_each_amount(self, included_services_id):
+    def get_service_records(self, included_services_id) -> List[(str, float)]:
         
         service_amount = []
         def _set_service_amount(service_type, service_ids):
@@ -153,16 +184,46 @@ class BillingSummary(models.Model):
         
         return service_amount
     
-
+    def create_billing_service(self, service_type, service_record):
+        unique_id = f'{service_record.id}-{service_type.code}'
+        
+        existing = self.env['billing.service'].search(
+            [('unique_id', '=', unique_id)], limit=1)
+        if existing:
+            if existing.amount != service_record.amount:
+                existing.amount = service_record.amount
+            return
+        
+        formatted_str = f'{service_type.name} ({service_type.code})'
+        billing_service_id = self.env['billing.service'].create({
+            'billing_summary_id': self.id,
+            'unique_id': unique_id,
+            'service_view': formatted_str,
+            'amount': service_record.amount,
+        })
+        return billing_service_id
+        
+        
+    
+    # def create_billing_service_records(self, included_services_id):
+    #     service_tuple = self.get_services_each_amount(included_services_id)
+    #     billing_service_ids = []
+    #     billing_service_ids.append(self.env['billing.service'].create({
+    #         'service_view': service_tuple[0],
+    #         'amount': service_tuple[1],
+    #     }))
+        
+        
 class BillingService(models.Model):
     _name = 'billing.service'
     _description = "Billing Services"
     _rec_name = 'name'
     
-    billing_summary_id = fields.Many2one('billing.summary', readonly=True, ondelete='cascade')
+    billing_summary_id = fields.Many2one('billing.summary', required=True, readonly=True, ondelete='cascade')
     service_view = fields.Char(required=True, readonly=True)
     amount = fields.Float(required=True, readonly=True)
     name = fields.Char(readonly=True, compute='_compute_name')
+    unique_id = fields.Char(required=True, readonly=True)
     
     @api.depends('service_view', 'amount')
     def _compute_name(self):

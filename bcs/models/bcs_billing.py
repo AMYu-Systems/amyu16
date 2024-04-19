@@ -11,6 +11,9 @@ class BcsBilling(models.Model):
     # _rec_name = 'transaction'
 
     name = fields.Char(compute="_compute_name")
+    transaction = fields.Char(string="Transaction id", readonly="1")
+    client_id = fields.Many2one(comodel_name='client.profile', string="Client Name", required=True)
+    
     @api.depends("services_id", "date_billed", "client_id.name")
     def _compute_name(self):
         for record in self:
@@ -23,8 +26,6 @@ class BcsBilling(models.Model):
                 services = 'No Services'
             record.name = record.date_billed.strftime("%b %Y") + ' | ' + services + ' | ' + record.client_id.name
         return
-    
-    transaction = fields.Char(string="Transaction id", readonly="1")
 
     @api.model
     def create(self, vals):
@@ -48,19 +49,18 @@ class BcsBilling(models.Model):
         transaction +=  self.env['ir.sequence'].next_by_code('billing.id.seq')
         vals['transaction'] = transaction
         return super(BcsBilling, self).create(vals)
-
-    client_id = fields.Many2one(comodel_name='client.profile', string="Client Name", required=True)
     
     @api.onchange('client_id')
     def _onchange_client_id(self):
-        
         arj = self.env['soa.ar.journal'].search(
             [('client_id', '=', self.client_id.id)], limit=1)
         if arj and arj.balance:
             self.previous_amount = arj.balance
         
-        # For services id
-        self._calculate_amount_services()
+        bs = self.env['billing.summary'].search([('client_id', '=', self.client_id.id)], limit=1)
+        if bs:
+            self.allowed_service_ids = [(6, 0, [srv.id for srv in bs.service_ids])]
+            self.services_id = [(6, 0, [srv.id for srv in bs.service_ids])]
     
     @api.model
     def _default_issued_by(self):
@@ -69,9 +69,6 @@ class BcsBilling(models.Model):
         return self.env['hr.employee'].search([('user_id', '=', self.env.user.id)], limit=1)
         
     issued_by = fields.Many2one(comodel_name='hr.employee', string="Issued By", default=_default_issued_by)
-    # collection_ids = fields.Many2many(comodel_name='bcs.collection', string="Collection")
-    # for_collection_updates = fields.Many2many(comodel_name='bcs.updates', string="For-collection Updates") # maybe not needed
-    
     date_billed = fields.Date(string="Date Billed", required=True, default=fields.Date.today)
     state_selection = [('draft', 'Draft'),
                        ('submitted', 'Submitted'),
@@ -156,44 +153,25 @@ class BcsBilling(models.Model):
                                    relation="bcs_billing_selected_services_rel")
     allowed_service_ids = fields.Many2many(comodel_name="services.type", string="Allowed Services",
                                            relation="bcs_billing_allowed_services_rel")
-    
-    billing_service_ids = fields.One2many('bcs.billing.service', inverse_name='billing_id')
-    
-    @api.onchange('services_id')
-    def _onchange_services_id(self):
-        self._calculate_amount_services(onchange=True)
-            
+    billing_service_ids = fields.One2many(comodel_name='billing.service', inverse_name='billing_id')          
     
     previous_amount = fields.Float(string="Previous Amount")
     services_amount = fields.Float(string="Services Amount")
     amount = fields.Float(string="Total Amount")
     remarks = fields.Text(string="Remarks")
     
-    @api.onchange('previous_amount', 'services_amount')
-    def _onchange_amount(self):
-        self.amount = self.previous_amount + self.services_amount
-        
-        
-    def _calculate_amount_services(self, onchange=False):
+    @api.onchange('services_id')
+    def _onchange_services_id(self):
         '''
         Need for displaying amounts for Billing Summary of client in Billing
         '''
         bs = self.env['billing.summary'].search([('client_id', '=', self.client_id.id)], limit=1)
         if bs:
-            if not onchange:
-                # this syntax, with 6, means replace the entire list
-                self.allowed_service_ids = [(6, 0, [srv.id for srv in bs.service_ids])]
-                self.services_id = [(6, 0, [srv.id for srv in bs.service_ids])]
             self.services_amount = bs.get_services_total_amount(self.services_id)
-            services_amount_tuples = bs.get_services_each_amount(self.services_id)
-            billing_service_ids = []
-            for service_tuple in services_amount_tuples:
-                
-                billing_service_ids.append(self.env['bcs.billing.service'].create({
-                    'service_view': service_tuple[0],
-                    'amount': service_tuple[1],
-                }))
+            self.billing_service_ids
             self.billing_service_ids = [(5,), (6, 0, [bs.id for bs in billing_service_ids])]
-
-    
+        
+    @api.onchange('previous_amount', 'services_amount')
+    def _onchange_amount(self):
+        self.amount = self.previous_amount + self.services_amount
     
