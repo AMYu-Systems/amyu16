@@ -24,7 +24,7 @@ class BcsBilling(models.Model):
             record.name = record.date_billed.strftime("%b %Y") + ' | ' + services + ' | ' + record.client_id.name
         return
     
-    transaction = fields.Char(string="Transaction id", readonly="1")
+    transaction = fields.Char(string="Transaction ID", readonly="1")
 
     @api.model
     def create(self, vals):

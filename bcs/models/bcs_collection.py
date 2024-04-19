@@ -21,7 +21,7 @@ class BcsCollection(models.Model):
     _rec_name = 'name'
     # _rec_name = 'transaction'
 
-    transaction = fields.Char(string="Transaction", readonly=1)
+    transaction = fields.Char(string="Transaction ID", readonly=1)
 
     @api.model
     def create(self, vals):
@@ -41,12 +41,15 @@ class BcsCollection(models.Model):
         #     transaction = name1[0:1] + name2[0:1] + name3[0:1]
         
         # Compute Client ID
-        transaction = self.env['ir.sequence'].next_by_code('collection.id.seq')
-        vals['transaction'] = transaction
+        # transaction = self.env['ir.sequence'].next_by_code('collection.id.seq')
+        # vals['transaction'] = transaction
         
         res = super(BcsCollection, self).create(vals)
         
         if res:
+            # compute transaction id
+            res.transaction = '' + self.env['ir.sequence'].next_by_code('collection.id.seq')
+            
             # add to ar journal
             if res.payment_collection == 'direct_payment':
                 arj = self.env['soa.ar.journal'].search([('client_id', '=', res.paid_by_id.id)], limit=1)
@@ -66,8 +69,8 @@ class BcsCollection(models.Model):
     def _compute_name(self):
         for record in self:
             record.name = record.date_collected.strftime("%b %Y") + ' | ' \
-                + str(len(record.billing_ids)) + ' billing' + ('s ' if len(record.billing_ids) > 1 else ' ') \
-                + ('Cash' if record.payment_mode == 'cash' else record.bank.name) + ' | ' \
+                + str(len(record.billing_ids)) + ' Billing' + ('s ' if len(record.billing_ids) > 1 else ' ') \
+                + ('(Cash)' if record.payment_mode == 'cash' else f'({record.bank.name})') + ' | ' \
                 + (record.paid_by_id.name)
                 
     paid_by_id = fields.Many2one(comodel_name='client.profile', string="Paid By (Client)", required=True)
@@ -75,7 +78,7 @@ class BcsCollection(models.Model):
     def _onchange_paid_by_id(self):
         most_recent_billing = self.env['bcs.billing'].search(
             [('client_id', '=', self.paid_by_id.id)],
-            order="date_billed desc", limit=1)
+            order="transaction desc", limit=1)
         if most_recent_billing:
             self.billing_ids = [(5, )]
             self.billing_ids = [(4, most_recent_billing.id)]
@@ -83,11 +86,18 @@ class BcsCollection(models.Model):
     recent_billings_per_client = fields.Many2many(comodel_name='bcs.billing', relation='bcs_collection_allowed_billings_rel', 
                                                   compute='_get_recent_billing_per_client')
 
-    @api.depends('transaction') # just need depends, else compute will not work
+    @api.depends('paid_by_id')
     def _get_recent_billing_per_client(self):
+        most_recent_billing = self.env['bcs.billing'].search(
+            [('client_id', '=', self.paid_by_id.id)],
+            order="transaction desc", limit=1)
+        
         bllings = self.env['bcs.billing'].search([('state', '=', 'approved')], order="transaction desc")
         unique_billing_ids = {}
+        selected_billings = [b.id for b in self.billing_ids]
         for billing in bllings:
+            if billing.id in selected_billings:
+                continue
             if billing.client_id.id not in unique_billing_ids.keys():
                 unique_billing_ids[billing.client_id.id] = billing
         for record in self:

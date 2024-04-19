@@ -30,6 +30,7 @@
                             <field name="manual_posting" readonly="1" />
                         </group>
                         <p>
+                            <br />
                             Note: You won't be able to change the attached Billings once submitted.
                         </p>
                     </sheet>
