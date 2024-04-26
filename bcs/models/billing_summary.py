@@ -138,7 +138,7 @@ class BillingSummary(models.Model):
         services = self.env['billing.summary'].search([('service_ids', '!=', False)])
         return services
     
-    def get_services_total_amount(self, included_services_id) -> float:
+    def get_services_total_amount(self, included_services_id):
         included = []
         total = 0
         
@@ -159,7 +159,7 @@ class BillingSummary(models.Model):
                 total += rec.amount
         return total
     
-    def get_service_records(self, included_services_id) -> List[(str, float)]:
+    def get_service_records(self, included_services_id):
         
         service_amount = []
         def _set_service_amount(service_type, service_ids):
