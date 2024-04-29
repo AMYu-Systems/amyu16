@@ -5,6 +5,7 @@ import pytz
 
 class ForCollectionUpdates(models.Model):
     _name = 'bcs.updates'
+    _description = "Collections Update"
     _rec_name = 'billing_id'
 
     billing_id = fields.Many2one(comodel_name='bcs.billing', string="Billing Transaction", required=True, readonly=True)
@@ -17,38 +18,37 @@ class ForCollectionUpdates(models.Model):
     date_second_followup = fields.Datetime(string='Date')
     date_responded = fields.Datetime(string='Date Responded')
     date_confirmed_payment = fields.Datetime(string='Date Confirmed')
-    
+
     remarks = fields.Text()
-    
+
     # used for view; formatted display
-    view_first_followup = fields.Char(string="1st Follow-up")
-    view_second_followup = fields.Char(string="2nd Follow-up")
-    view_responded = fields.Char(string='Responded')
-    view_confirmed = fields.Text(string='Confirmed Payment')
-    
+    view_first_followup = fields.Char(string="1st Follow-up", compute='_first_followup')
+    view_second_followup = fields.Char(string="2nd Follow-up", compute='_second_followup')
+    view_responded = fields.Char(string='Responded', compute='_responded')
+    view_confirmed = fields.Text(string='Confirmed Payment', compute='_confirmed_payment')
+
+    @api.depends('first_followup')
+    def _first_followup(self):
+        self.date_first_followup, self.view_first_followup = self._update_datetime(self.first_followup)
+
+    @api.depends('second_followup')
+    def _second_followup(self):
+        self.date_second_followup, self.view_second_followup = self._update_datetime(self.second_followup)
+
+    @api.depends('responded')
+    def _responded(self):
+        self.date_responded, self.view_responded = self._update_datetime(self.responded)
+
+    @api.depends('confirmed_payment')
+    def _confirmed_payment(self):
+        self.date_confirmed_payment, self.view_confirmed = self._update_datetime(self.confirmed_payment)
+        self.billing_id.status = 'client_received' if self.confirmed_payment else 'sent_to_client'
+
     def _update_datetime(self, now):
         if not now:
             return False, ''
         dt = datetime.now()
         return dt, f'{dt.astimezone(pytz.timezone("Asia/Manila")).strftime("%b. %d, %Y | %I:%M %p")}'
-    
-    @api.onchange('first_followup')
-    def _onchange_first_followup(self):
-        self.date_first_followup, self.view_first_followup = self._update_datetime(self.first_followup)
-
-    @api.onchange('second_followup')
-    def _onchange_second_followup(self):
-        self.date_second_followup, self.view_second_followup = self._update_datetime(self.second_followup)
-
-    @api.onchange('responded')
-    def _onchange_responded(self):
-        self.date_responded, self.view_responded = self._update_datetime(self.responded)
-
-    @api.onchange('confirmed_payment')
-    def _onchange_confirmed_payment(self):
-        self.date_confirmed_payment, self.view_confirmed = self._update_datetime(self.confirmed_payment)
-        self.billing_id.status = 'client_received' if self.confirmed_payment else 'sent_to_client'
-        
 
     # @api.model
     # def create(self, vals):

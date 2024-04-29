@@ -12,7 +12,7 @@
                     <field name="view_responded"/>
                     <field name="view_confirmed"/> -->
                     <field name="view_first_followup" string="1st Follow-up" readonly="1"/>
-                    <field name="first_followup" string=" " />
+                    <field name="first_followup" string=" "/>
                     <field name="view_second_followup" string="2nd Follow-up" readonly="1"/>
                     <field name="second_followup" string=" "/>
                     <field name="view_responded" string="Responded" readonly="1"/>
