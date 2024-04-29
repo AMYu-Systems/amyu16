@@ -1,6 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+        <!--State-->
+        <record id="state_tree_view" model="ir.ui.view">
+            <field name="name">state_tree_view</field>
+            <field name="model">state.labels</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="state_form_view" model="ir.ui.view">
+            <field name="name">state_form_view</field>
+            <field name="model">state.labels</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="state_label_view_action" model="ir.actions.act_window">
+            <field name="name">State</field>
+            <field name="res_model">state.labels</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="state_tree_view"/>
+        </record>
         <!--label-->
         <record id="maintenance_tree_view" model="ir.ui.view">
             <field name="name">maintenance_tree_view</field>

@@ -95,7 +95,7 @@
                   action="filed_view_action"/>
 
         <menuitem id="menu_label_list_root"
-                  name="Configuration"
+                  name="Checklist"
                   sequence="7"
                   parent="fsms_root_menu"/>
         <menuitem id="sub_menu_label_list_client"
@@ -142,8 +142,12 @@
                   name="Progress Record"
                   parent="menu_label_list_root"/>
         <menuitem id="menu_record_state"
-                  name="LogSheet "
+                  name="LogSheet"
                   parent="sub_menu_history_record"
                   action="action_state_record_tree"/>
+        <menuitem id="menu_state_list"
+                  name="State"
+                  parent="sub_menu_history_record"
+                  action="state_label_view_action"/>
     </data>
 </odoo>

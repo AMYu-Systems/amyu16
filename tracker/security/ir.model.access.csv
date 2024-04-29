@@ -19,6 +19,7 @@ access.label_sorter,access.label_sorter,model_label_sorter,base.group_user,1,1,1
 access.label_qcc,access.label_qcc,model_label_qcc,base.group_user,1,1,1,1
 access.label_bir,access.label_bir,model_label_bir,base.group_user,1,1,1,1
 access.label_sec,access.label_sec,model_label_sec,base.group_user,1,1,1,1
+access.state_labels,access.state_labels,model_state_labels,base.group_user,1,1,1,1
 
 access.revision_status,access.revision_status,model_revision_status,base.group_user,1,1,1,1
 
