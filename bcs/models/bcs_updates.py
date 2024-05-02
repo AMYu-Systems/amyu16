@@ -25,13 +25,13 @@ class ForCollectionUpdates(models.Model):
     view_first_followup = fields.Char(string="1st Follow-up")
     view_second_followup = fields.Char(string="2nd Follow-up")
     view_responded = fields.Char(string='Responded')
-    view_confirmed = fields.Text(string='Confirmed Payment')
+    view_confirmed = fields.Char(string='Confirmed Payment')
     
     def _update_datetime(self, now):
         if not now:
             return False, ''
         dt = datetime.now()
-        return dt, f'{dt.astimezone(pytz.timezone("Asia/Manila")).strftime("%b. %d, %Y | %I:%M %p")}'
+        return dt, f'{dt.astimezone(pytz.timezone("Asia/Manila")).strftime("%m/%d/%Y | %I:%M%p")}'
     
     @api.onchange('first_followup')
     def _onchange_first_followup(self):

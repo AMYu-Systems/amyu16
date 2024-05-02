@@ -163,9 +163,14 @@ class BcsBilling(models.Model):
     
     previous_amount = fields.Float(string="Previous Amount")
     services_amount = fields.Float(string="Services Amount")
-    amount = fields.Float(string="Total Amount")
+    amount = fields.Float(string="Total Amount", compute="_compute_amount")
     remarks = fields.Text(string="Remarks")
     
+    @api.depends('previous_amount', 'services_amount')
+    def _compute_amount(self):
+        for record in self:
+            record.amount = record.previous_amount + record.services_amount
+            
     @api.onchange('services_id')
     def _onchange_services_id(self):
         '''
