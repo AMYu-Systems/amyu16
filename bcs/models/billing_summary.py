@@ -94,45 +94,49 @@ class BillingSummary(models.Model):
         self.has_loa = 'LOA' in service_list
         self.has_spe = 'SPE' in service_list
         return
-    
-    def _onchange_service_record(self, service_code, record):
-        service = self.env['services.type'].search([('code', '=', service_code)], limit=1)
-        self.create_billing_service(service_type=service, service_record=record)
-        
+
+
     @api.onchange('audit_ids')
     def _onchange_audit(self):
+        service = self.env['services.type'].search([('code', '=', 'AUD')], limit=1)
         for rec in self.audit_ids:
-            self._onchange_service_record('AUD', rec)
+            self.create_billing_service(service_type=service, service_record=rec)
     
     @api.onchange('trc_ids')
     def _onchange_audit(self):
+        service = self.env['services.type'].search([('code', '=', 'TRC')], limit=1)
         for rec in self.trc_ids:
-            self._onchange_service_record('TRC', rec)
+            self.create_billing_service(service_type=service, service_record=rec)
             
     @api.onchange('books_ids')
     def _onchange_audit(self):
+        service = self.env['services.type'].search([('code', '=', 'BKS')], limit=1)
         for rec in self.books_ids:
-            self._onchange_service_record('BKS', rec)
+            self.create_billing_service(service_type=service, service_record=rec)
             
     @api.onchange('permit_ids')
     def _onchange_audit(self):
+        service = self.env['services.type'].search([('code', '=', 'PER')], limit=1)
         for rec in self.permit_ids:
-            self._onchange_service_record('PER', rec)
+            self.create_billing_service(service_type=service, service_record=rec)
             
     @api.onchange('gis_ids')
     def _onchange_audit(self):
+        service = self.env['services.type'].search([('code', '=', 'GIS')], limit=1)
         for rec in self.gis_ids:
-            self._onchange_service_record('GIS', rec)
+            self.create_billing_service(service_type=service, service_record=rec)
             
     @api.onchange('loa_ids')
     def _onchange_audit(self):
+        service = self.env['services.type'].search([('code', '=', 'LOA')], limit=1)
         for rec in self.loa_ids:
-            self._onchange_service_record('LOA', rec)
+            self.create_billing_service(service_type=service, service_record=rec)
             
     @api.onchange('spe_ids')
     def _onchange_audit(self):
+        service = self.env['services.type'].search([('code', '=', 'SPE')], limit=1)
         for rec in self.spe_ids:
-            self._onchange_service_record('SPE', rec)
+            self.create_billing_service(service_type=service, service_record=rec)
     
     def get_services(self):
         services = self.env['billing.summary'].search([('service_ids', '!=', False)])
@@ -159,7 +163,7 @@ class BillingSummary(models.Model):
                 total += rec.amount
         return total
     
-    def get_service_records(self, included_services_id) -> List[(str, float)]:
+    def get_service_records(self, included_services_id):
         
         service_amount = []
         def _set_service_amount(service_type, service_ids):
@@ -192,7 +196,7 @@ class BillingSummary(models.Model):
         unique_id = f'{service_record.id}-{service_type.code}'
         
         existing = self.env['billing.service'].search(
-            [('unique_id', '=', unique_id)], limit=1)
+            [('unique_str_id', '=', unique_id)], limit=1)
         if existing:
             if existing.amount != service_record.amount:
                 existing.amount = service_record.amount
@@ -201,11 +205,13 @@ class BillingSummary(models.Model):
         formatted_str = f'{service_type.name} ({service_type.code})'
         billing_service_id = self.env['billing.service'].create({
             'billing_summary_id': self.id,
-            'unique_id': unique_id,
-            'service_view': formatted_str,
+            'unique_str_id': unique_id,
+            'service_formatted': formatted_str,
             'amount': service_record.amount,
         })
-        return billing_service_id
+        
+        self.env.cr.commit()
+        self.billing_service_ids = [(4, billing_service_id.id)]
         
         
     
@@ -221,15 +227,15 @@ class BillingSummary(models.Model):
 class BillingService(models.Model):
     _name = 'billing.service'
     _description = "Billing Services"
-    _rec_name = 'name'
+    # _rec_name = 'name'
     
-    billing_summary_id = fields.Many2one('billing.summary', required=True, readonly=True, ondelete='cascade')
-    service_view = fields.Char(required=True, readonly=True)
-    amount = fields.Float(required=True, readonly=True)
-    name = fields.Char(readonly=True, compute='_compute_name')
-    unique_id = fields.Char(required=True, readonly=True)
+    billing_summary_id = fields.Many2one('billing.summary', ondelete='cascade')
+    service_formatted = fields.Char()
+    amount = fields.Float()
+    unique_str_id = fields.Char()
     
-    @api.depends('service_view', 'amount')
-    def _compute_name(self):
-        for record in self:
-            record.name = f'{record.service_view} - PHP {record.amount}'
+    # name = fields.Char(readonly=True, compute='_compute_name')
+    # @api.depends('service_view', 'amount')
+    # def _compute_name(self):
+    #     for record in self:
+    #         record.name = f'{record.service_view} - PHP {record.amount}'
