@@ -32,6 +32,36 @@
             <field name="model">bcs.collection</field>
             <field name="arch" type="xml">
                 <form>
+                    <header>
+                        <!-- <button name="ops_manager_submitted_action" string="Submit" type="object" class="oe_highlight"
+                                confirm="Are you sure you want to continue to your submission?"
+                                groups="bcs.ops_manager"
+                                attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                        <button name="fad_supervisor_verified_action" string="Verified" type="object"
+                                class="oe_highlight"
+                                confirm="Are you sure you want to continue to your verification?"
+                                groups="bcs.fad_supervisor"
+                                attrs="{'invisible': [('state', '!=', 'submitted')]}"/>
+                        <button name="fsd_manager_approved_action" string="Approved" type="object" class="oe_highlight"
+                                confirm="Are you sure you want to continue to your approval?"
+                                groups="bcs.fad_manager"
+                                attrs="{'invisible': [('state', '!=', 'verified')]}"/> -->
+
+                        <!-- FOR TESTING ONLY -->
+                        <button name="fad_staff_submitted_action" string="Submit" type="object" class="oe_highlight"
+                                confirm="Are you sure you want to continue to your submission?"
+                                attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                        <button name="fad_supervisor_verified_action" string="Verify" type="object"
+                                class="oe_highlight"
+                                confirm="Are you sure you want to continue to your verification?"
+                                attrs="{'invisible': [('state', '!=', 'submitted')]}"/>
+                        <button name="fad_manager_approved_action" string="Approve" type="object" class="oe_highlight"
+                                confirm="Are you sure you want to continue to your approval?"
+                                attrs="{'invisible': [('state', '!=', 'verified')]}"/>
+
+                        <field name="state" widget="statusbar" status_invisible="draft,submitted,verified,approved"
+                               attrs="{'invisible':[('state', '==','approved')]}"/>
+                    </header>
                     <sheet>
                         <group>
                             <field name="allow_edit_billing_ids" invisible="1"/>
@@ -71,6 +101,7 @@
             </field>
         </record>
 
+        <!-- All -->
         <record id="bcs_collection_view_action" model="ir.actions.act_window">
             <field name="name">Collection</field>
             <field name="res_model">bcs.collection</field>
@@ -78,6 +109,35 @@
             <field name="view_id" ref="bcs_collection_tree_view"/>
         </record>
 
+        <!-- Approved -->
+        <record id="approved_bcs_collection_view_action" model="ir.actions.act_window">
+            <field name="name">Collection</field>
+            <field name="res_model">bcs.collection</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('state','=','approved')]</field>
+            <field name="context">{'edit': False, 'create': False}</field>
+            <field name="view_id" ref="bcs_collection_tree_view"/>
+        </record>
+
+        <!-- Verified -->
+        <record id="verified_bcs_collection_view_action" model="ir.actions.act_window">
+            <field name="name">Verified (For Approval)</field>
+            <field name="res_model">bcs.collection</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('state','=','verified')]</field>
+            <field name="view_id" ref="bcs_collection_tree_view"/>
+        </record>
+
+        <!-- Submitted -->
+        <record id="verified_bcs_collection_view_action" model="ir.actions.act_window">
+            <field name="name">Submitted (For Verification)</field>
+            <field name="res_model">bcs.collection</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('state','=','submitted')]</field>
+            <field name="view_id" ref="bcs_collection_tree_view"/>
+        </record>
+
+        <!-- Collection New Window -->
         <record id="bcs_collection_form_action" model="ir.actions.act_window">
             <field name="name">Collection</field>
             <field name="res_model">bcs.collection</field>
@@ -86,6 +146,7 @@
             <field name="view_id" ref="bcs_collection_form_view"/>
         </record>
         
+        <!--  For Manual Posting -->
         <record id="bcs_unissued_payments_tree_view" model="ir.ui.view">
             <field name="name">bcs_collection_tree_view</field>
             <field name="model">bcs.collection</field>
@@ -108,13 +169,14 @@
         </record>
 
         <record id="bcs_unissued_payments_view_action" model="ir.actions.act_window">
-            <field name="name">Unissued Payments Collection</field>
+            <field name="name">Needs Manual Posting</field>
             <field name="res_model">bcs.collection</field>
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="bcs_collection_tree_view"/>
             <field name="domain">[('unissued_amount_for_ar', '>', 0)]</field>
         </record>
 
+        <!-- For Transaction ID -->
         <record model="ir.sequence" id="collection_id_seq">
             <field name="name">Collection Transaction ID Sequence"</field>
             <field name="code">collection.id.seq</field>

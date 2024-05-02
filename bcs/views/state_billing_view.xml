@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        # Draft
+        <!-- Draft -->
         <record id="draft_bcs_billing_tree_view" model="ir.ui.view">
             <field name="name">draft_bcs_billing_tree_view</field>
             <field name="model">bcs.billing</field>
@@ -65,14 +65,14 @@
         </record>
 
         <record id="submitted_bcs_billing_view_action" model="ir.actions.act_window">
-            <field name="name">Submitted</field>
+            <field name="name">Submitted (For Verification)</field>
             <field name="res_model">bcs.billing</field>
             <field name="view_mode">tree,form</field>
             <field name="domain">[('state','=','submitted')]</field>
             <field name="view_id" ref="submitted_bcs_billing_tree_view"/>
         </record>
         
-        <!--        Verified-->
+        <!-- Verified-->
         <record id="verified_bcs_billing_tree_view" model="ir.ui.view">
             <field name="name">verified_bcs_billing_tree_view</field>
             <field name="model">bcs.billing</field>
@@ -96,7 +96,7 @@
         </record>
 
         <record id="verified_bcs_billing_view_action" model="ir.actions.act_window">
-            <field name="name">Verified</field>
+            <field name="name">Verified (For Approval)</field>
             <field name="res_model">bcs.billing</field>
             <field name="view_mode">tree,form</field>
             <field name="domain">[('state','=','verified')]</field>
