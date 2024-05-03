@@ -43,7 +43,7 @@
                                             <div>
                                                 <span style="float:right">
                                                     <p class="text-info">
-                                                        <field name="revision_ids"/>
+                                                        <field name="revision_id"/>
                                                     </p>
                                                 </span>
                                             </div>
@@ -97,8 +97,12 @@
             <field name="model">main.view</field>
             <field name="arch" type="xml">
                 <search>
+                    <field name="team_id"/>
+                    <group expand="0" string="Group By">
+                        <filter name="group_by_employee" string="Employee" context="{'group_by': 'team_id'}"/>
+                    </group>
                     <searchpanel>
-                        <field name="supervisors_id" enable_counters="1" string="Team"/>
+                        <field name="team_id" enable_counters="1" string="Team" icon="fa-users"/>
                     </searchpanel>
                 </search>
             </field>

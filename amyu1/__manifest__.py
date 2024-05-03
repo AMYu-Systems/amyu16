@@ -19,14 +19,14 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'mail', 'resource', 'hr'],
+    'depends': ['base', 'mail', 'muk_web_theme'],
 
     # always loaded
     'data': [
+        'views/cpms_group.xml',
         'security/ir.model.access.csv',
         'views/associate_profile_view.xml',
         'views/client_profile_view.xml',
-        'security/group_menu.xml',
         'views/cpms_state_view.xml',
         'views/cpms_client_list_view.xml',
         'views/cpms_report_view.xml',

@@ -4,8 +4,9 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
+
 # Test
-def test_with_logger(data: any="Debug Message", warn: bool = False) -> None:
+def test_with_logger(data: any = "Debug Message", warn: bool = False) -> None:
     """
         Outputs a debug message in the odoo log file, 5 times in a row
     """
@@ -13,20 +14,22 @@ def test_with_logger(data: any="Debug Message", warn: bool = False) -> None:
     for _ in range(5):
         method(data)
 
+
 class BillingSummary(models.Model):
     _name = 'billing.summary'
     _description = "Billing Summary"
     _rec_name = 'client_id'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _sql_constraints = [
         (
-            'unique_client_id', 
+            'unique_client_id',
             'unique(client_id)',
             'Can\'t have duplicate clients.'
         )
     ]
-    
-    client_id = fields.Many2one(string="Client Name", comodel_name='client.profile', required=True)
-    
+
+    client_id = fields.Many2one(string="Client Name", comodel_name='client.profile', required=True, tracking=True)
+
     image_1012 = fields.Image(string="Image")
     partner_id = fields.Many2one(related='client_id.lead_partner_id', string="Partner")
     manager_id = fields.Many2one(related='client_id.manager_id', string="Manager")
@@ -43,24 +46,24 @@ class BillingSummary(models.Model):
     loa_ids = fields.One2many(comodel_name='loa.billing', inverse_name='billing_summary_id', string="LOA")
     spe_ids = fields.One2many(comodel_name='special.engagement', inverse_name='billing_summary_id',
                               string="Special Engagement")
-    
-    has_aud = fields.Boolean(default=False)
-    has_trc = fields.Boolean(default=False)
-    has_bks = fields.Boolean(default=False)
-    has_per = fields.Boolean(default=False)
-    has_gis = fields.Boolean(default=False)
-    has_loa = fields.Boolean(default=False)
-    has_spe = fields.Boolean(default=False)
+
+    has_aud = fields.Boolean(default=False, tracking=True)
+    has_trc = fields.Boolean(default=False, tracking=True)
+    has_bks = fields.Boolean(default=False, tracking=True)
+    has_per = fields.Boolean(default=False, tracking=True)
+    has_gis = fields.Boolean(default=False, tracking=True)
+    has_loa = fields.Boolean(default=False, tracking=True)
+    has_spe = fields.Boolean(default=False, tracking=True)
+
+    state_selection = [('draft', 'Draft'),
+                       ('submitted', 'Submitted'),
+                       ('verified', 'Verified'),
+                       ('approved', 'Approved')]
+    state = fields.Selection(state_selection, default='draft', copy=False)
     
     billing_service_ids = fields.One2many(comodel_name='billing.service', 
                                           inverse_name='billing_summary_id', string="Services")
     
-    # state_selection = [('draft', 'Draft'),
-    #                    ('submitted', 'Submitted'),
-    #                    ('verified', 'Verified'),
-    #                    ('approved', 'Approved')]
-    # state = fields.Selection(state_selection, default='draft', copy=False)
-
     # # auto create or when "edit -> draft" has been implemented
     # def draft_action(self):
     #     self.state = 'draft'
@@ -145,11 +148,11 @@ class BillingSummary(models.Model):
     def get_services_total_amount(self, included_services_id):
         included = []
         total = 0
-        
+
         included_code = []
         for service_id in included_services_id:
             included_code.append(service_id.code)
-        
+
         if 'AUD' in included_code and self.has_aud: included.append(self.audit_ids)
         if 'TRC' in included_code and self.has_trc: included.append(self.trc_ids)
         if 'BKS' in included_code and self.has_bks: included.append(self.books_ids)
@@ -157,8 +160,8 @@ class BillingSummary(models.Model):
         if 'GIS' in included_code and self.has_gis: included.append(self.gis_ids)
         if 'LOA' in included_code and self.has_loa: included.append(self.loa_ids)
         if 'SPE' in included_code and self.has_spe: included.append(self.spe_ids)
-            
-        for services in included: 
+
+        for services in included:
             for rec in services:
                 total += rec.amount
         return total

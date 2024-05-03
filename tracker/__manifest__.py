@@ -19,17 +19,18 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'mail'],
+    'depends': ['base', 'mail', 'muk_web_theme'],
 
     # always loaded
     'data': [
+        'views/groups_view.xml',
         'security/ir.model.access.csv',
         'views/main_view.xml',
         'views/tracker_process_view.xml',
-        'views/groups_view.xml',
         'views/tracker_preparation_view.xml',
         'views/label_note_view.xml',
-        'views/group_maintenance_view.xml',
+        'views/state_history_view.xml',
+        'views/associate_group_view.xml',
         'views/menu_view.xml',
     ],
     'application': True,

@@ -68,4 +68,12 @@ class RevisionStatus(models.Model):
 
     name = fields.Char(string="Name")
     color = fields.Integer(string="Color")
-    revision_ids = fields.One2many(string="Name", comodel_name='main.view', inverse_name="revision_ids")
+    revision_ids = fields.One2many(string="Name", comodel_name='main.view', inverse_name="revision_id")
+
+
+class StateLabels(models.Model):
+    _name = 'state.labels'
+    _description = "Label of States"
+
+    name = fields.Char(string="States")
+    state_id = fields.Many2one(string="Label", comodel_name='main.view')

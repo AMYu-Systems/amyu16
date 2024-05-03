@@ -1,25 +1,9 @@
-import re
-from datetime import datetime, date
 from odoo import fields, models, api
-import logging
-
-_logger = logging.getLogger(__name__)
-
-# Test
-def test_with_logger(data: any="Debug Message", warn: bool = False) -> None:
-    """
-        Outputs a debug message in the odoo log file, 5 times in a row
-    """
-    method = _logger.info if not warn else _logger.warning
-    for _ in range(5):
-        method(data)
-
 
 class BcsCollection(models.Model):
     _name = 'bcs.collection'
     _description = "Collection"
     _rec_name = 'name'
-    # _rec_name = 'transaction'
 
     transaction = fields.Char(string="Transaction ID", readonly=1)
 
@@ -53,7 +37,7 @@ class BcsCollection(models.Model):
             # add to ar journal
             if res.payment_collection == 'direct_payment':
                 arj = self.env['soa.ar.journal'].search([('client_id', '=', res.paid_by_id.id)], limit=1)
-                if arj: 
+                if arj:
                     arj.new_collection(res)
             elif res.payment_collection == 'consolidated':
                 res.unissued_amount_for_ar = res.amount
@@ -74,13 +58,14 @@ class BcsCollection(models.Model):
                 + (record.paid_by_id.name)
                 
     paid_by_id = fields.Many2one(comodel_name='client.profile', string="Paid By (Client)", required=True)
+
     @api.onchange('paid_by_id')
     def _onchange_paid_by_id(self):
         most_recent_billing = self.env['bcs.billing'].search(
             [('client_id', '=', self.paid_by_id.id)],
             order="transaction desc", limit=1)
         if most_recent_billing:
-            self.billing_ids = [(5, )]
+            self.billing_ids = [(5,)]
             self.billing_ids = [(4, most_recent_billing.id)]
     
     recent_billings_per_client = fields.Many2many(comodel_name='bcs.billing', relation='bcs_collection_allowed_billings_rel', 
@@ -157,11 +142,10 @@ class BcsCollection(models.Model):
             'view_mode': 'form',
             'res_model': 'soa.payments.collection',
             'context': {
-                'default_collection_id': self.id, 
+                'default_collection_id': self.id,
                 'default_manual_posting': True,
                 # 'readonly_by_pass': False,
                 'ar_journal_ids': [a.id for a in arjs],
             },
             'target': 'new',
         }
-    

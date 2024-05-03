@@ -1,7 +1,4 @@
-import re
-
 from odoo import fields, models, api
-from odoo.exceptions import ValidationError
 
 
 class BcsBilling(models.Model):
@@ -91,7 +88,7 @@ class BcsBilling(models.Model):
     # fad manager
     def fsd_manager_approved_action(self):
         self.state = 'approved'
-        
+
         # add to ar journal
         arj = self.env['soa.ar.journal'].search([
             ('client_id', '=', self.client_id.id) ], limit=1)
@@ -104,22 +101,22 @@ class BcsBilling(models.Model):
                         ('client_received', 'Client has received'),
                         ('void_billing', 'Void Statement')]
     status = fields.Selection(status_selection, default='not_sent')
-    
+
     # only appear when status == 'sent_to_client'
     sent_with_email = fields.Boolean(default=True, string="Sent with Email")
     sent_with_errand = fields.Boolean(string="Sent with Errand")
-    
+
     # fad has sent billing to client
     def sent_to_client(self):
         self.status = 'sent_to_client'
-        
+
         # add to for-updates collection
         self.env['bcs.updates'].create({'billing_id': self.id})
 
     # client confirms they received it
     def client_received(self):
         self.status = 'client_received'
-        
+
     # billing is apparently void
     def void_billing(self):
         if not self.allow_void:

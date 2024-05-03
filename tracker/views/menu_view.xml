@@ -95,7 +95,7 @@
                   action="filed_view_action"/>
 
         <menuitem id="menu_label_list_root"
-                  name="Configuration"
+                  name="Checklist"
                   sequence="7"
                   parent="fsms_root_menu"/>
         <menuitem id="sub_menu_label_list_client"
@@ -133,17 +133,21 @@
                   name="Progress"
                   parent="sub_menu_maintenance_client"
                   action="progress_view_action"/>
-        <menuitem id="menu_partner_list_client"
-                  name="Partner"
+        <menuitem id="menu_associate_group"
+                  name="Team"
                   parent="sub_menu_maintenance_client"
-                  action="partner_view_action"/>
-        <menuitem id="menu_manager_list_client"
-                  name="Manager"
-                  parent="sub_menu_maintenance_client"
-                  action="team_manager_view_action"/>
-        <menuitem id="menu_supervisor_list_client"
-                  name="Supervisor"
-                  parent="sub_menu_maintenance_client"
-                  action="team_supervisor_view_action"/>
+                  action="associate_view_action"/>
+
+        <menuitem id="sub_menu_history_record"
+                  name="Progress Record"
+                  parent="menu_label_list_root"/>
+        <menuitem id="menu_record_state"
+                  name="LogSheet"
+                  parent="sub_menu_history_record"
+                  action="action_state_record_tree"/>
+        <menuitem id="menu_state_list"
+                  name="State"
+                  parent="sub_menu_history_record"
+                  action="state_label_view_action"/>
     </data>
 </odoo>

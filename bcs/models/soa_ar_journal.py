@@ -6,12 +6,12 @@ class ARJournal(models.Model):
     _description = "AR Journal of Client"
     _sql_constraints = [
         (
-            'unique_client_id', 
+            'unique_client_id',
             'unique(client_id)',
             'Can\'t have duplicate journal for clients.'
         )
     ]
-    
+
     client_id = fields.Many2one(string="Client Name", comodel_name='client.profile', required=True)
     
     # # use this to change value in view
@@ -20,13 +20,14 @@ class ARJournal(models.Model):
     # # do not show in view
     # initial_balance = fields.Float()
     balance = fields.Float()
-    
+
     accounts_receivable_ids = fields.One2many(comodel_name='soa.accounts.receivable', inverse_name='ar_journal_id')
     payments_collection_ids = fields.One2many(comodel_name='soa.payments.collection', inverse_name='ar_journal_id')
     ar_ids_count = fields.Integer()
     pc_ids_count = fields.Integer()
 
     name = fields.Char(string="Name", compute="_compute_name")
+
     @api.depends("client_id")
     def _compute_name(self):
         for record in self:
@@ -87,15 +88,12 @@ class ARJournal(models.Model):
     
     def open_rec(self):
         return {
-                'name': 'AR Journal | ' + self.client_id.name,
-                'view_type': 'form',
-                'view_mode': 'form',
-                'res_model': 'soa.ar.journal',
-                'res_id': self.id,
-                'type': 'ir.actions.act_window',
-                'target': 'current',
-                'flags': {'form': {'action_buttons': True}}
+            'name': 'AR Journal | ' + self.client_id.name,
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'soa.ar.journal',
+            'res_id': self.id,
+            'type': 'ir.actions.act_window',
+            'target': 'current',
+            'flags': {'form': {'action_buttons': True}}
         }
-        
-    
-    
