@@ -5,21 +5,16 @@
             <field name="name">bcs_updates_tree_view</field>
             <field name="model">bcs.updates</field>
             <field name="arch" type="xml">
-                <tree editable="bottom">
+                <tree>
                     <field name="billing_id"/>
-                    <!-- <field name="view_first_followup"/>
-                    <field name="view_second_followup"/>
-                    <field name="view_responded"/>
-                    <field name="view_confirmed"/> -->
                     <field name="view_first_followup" string="1st Follow-up" readonly="1"/>
                     <field name="first_followup" string=" "/>
                     <field name="view_second_followup" string="2nd Follow-up" readonly="1"/>
                     <field name="second_followup" string=" "/>
-                    <field name="view_responded" string="Responded" readonly="1"/>
-                    <field name="responded" string=" "/>
+                    <field name="view_third_followup" string="3rd Follow-up" readonly="1"/>
+                    <field name="third_followup" string=" "/>
                     <field name="view_confirmed" string="Confirmed Payment" readonly="1"/>
                     <field name="confirmed_payment" string=" "/>
-                    <field name="remarks"/>
                 </tree>
             </field>
         </record>
@@ -34,29 +29,41 @@
                             <field name="billing_id" options="{'no_create': True,'no_open': True }"/>
                         </group>
                         <group string="Follow update" col="4">
+                            <!--#1st follow up-->
                             <group>
                                 <label for="first_followup" string="1st Follow-up"/>
                                 <field name="first_followup" nolabel="1"/>
-                                <field name="date_first_followup"/>
-                                <field name="view_first_followup" invisible="1"/>
+                                <field name="view_first_followup" readonly="1" string="Date"
+                                       attrs="{'invisible':[('first_followup', '==',False)]}"/>
+                                <!--                                <field name="view_first_followup" invisible="1"/>-->
+                                <field name="remarks" attrs="{'invisible':[('first_followup', '==',False)]}"/>
                             </group>
+                            <!--2nd follow up-->
                             <group>
                                 <label for="second_followup" string="2nd Follow-up"/>
                                 <field name="second_followup" nolabel="1"/>
-                                <field name="date_second_followup"/>
-                                <field name="view_second_followup" invisible="1"/>
+                                <field name="view_second_followup" readonly="1" string="Date"
+                                       attrs="{'invisible':[('second_followup', '==',False)]}"/>/>
+                                <!--                                <field name="view_second_followup" invisible="1"/>-->
+                                <field name="second_remarks" string="Remarks"
+                                       attrs="{'invisible':[('second_followup', '==',False)]}"/>/>
                             </group>
+                            <!--third follow up-->
                             <group>
-                                <label for="responded" string="Responded"/>
-                                <field name="responded" nolabel="1"/>
-                                <field name="date_responded"/>
-                                <field name="view_responded" invisible="1"/>
+                                <label for="third_followup" string="3rd Follow-up"/>
+                                <field name="third_followup" nolabel="1"/>
+                                <field name="view_third_followup" readonly="1" string="Date"
+                                       attrs="{'invisible':[('third_followup', '==',False)]}"/>
+                                <!--                                <field name="view_third_followup" invisible="1"/>-->
+                                <field name="third_remarks" string="Remarks"
+                                       attrs="{'invisible':[('third_followup', '==',False)]}"/>/>
                             </group>
                             <group>
                                 <label for="confirmed_payment" string="Confirmed Payment"/>
                                 <field name="confirmed_payment" nolabel="1"/>
-                                <field name="date_confirmed_payment"/>
-                                <field name="view_confirmed" invisible="1"/>
+                                <field name="view_confirmed" readonly="1" string="Date"
+                                       attrs="{'invisible':[('confirmed_payment', '==',False)]}"/>
+                                <!--                                <field name="view_confirmed" invisible="1"/>-->
                             </group>
                         </group>
                     </sheet>

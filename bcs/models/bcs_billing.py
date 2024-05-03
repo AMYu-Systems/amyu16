@@ -19,12 +19,7 @@ class BcsBilling(models.Model):
                 services = services[:-2]
             else:
                 services = 'No Services'
-            # record.name = record.date_billed.strftime("%b %Y") + ' | ' + services + ' | ' + record.client_id.name
-            if record.date_billed and isinstance(record.date_billed, (str, int, float)):
-                formatted_date = record.date_billed.strftime("%b %Y")
-            else:
-                formatted_date = "No Date"
-            record.name = f"{formatted_date} | {services} | {record.client_id.name}"
+            record.name = record.date_billed.strftime("%b %Y") + ' | ' + services + ' | ' + record.client_id.name
         return
 
     transaction = fields.Char(string="Transaction id", readonly="1")

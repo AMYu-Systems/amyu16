@@ -5,8 +5,8 @@ class AccountsReceivable(models.Model):
     _name = 'soa.accounts.receivable'
     _description = "Accounts Receivable connected to AR Journal"
 
-    billing_id = fields.Many2one('bcs.billing', required=True)
-    ar_journal_id = fields.Many2one('soa.ar.journal', required=True)
+    billing_id = fields.Many2one(comodel_name='bcs.billing', required=True)
+    ar_journal_id = fields.Many2one(comodel_name='soa.ar.journal', required=True)
     journal_index = fields.Integer(required=True)
     amount = fields.Float(compute='_compute_amount')
 

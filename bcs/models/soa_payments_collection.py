@@ -5,8 +5,8 @@ class PaymentsCollection(models.Model):
     _name = 'soa.payments.collection'
     _description = "Payments Collection connected to AR Journal"
 
-    collection_id = fields.Many2one('bcs.collection', required=True)
-    ar_journal_id = fields.Many2one('soa.ar.journal', required=True,
+    collection_id = fields.Many2one(comodel_name='bcs.collection', required=True)
+    ar_journal_id = fields.Many2one(comodel_name='soa.ar.journal', required=True,
                                     domain="[('id', 'in', context.get('ar_journal_ids', []))]")
     journal_index = fields.Integer(required=True)
     amount = fields.Float(compute='_compute_amount')
