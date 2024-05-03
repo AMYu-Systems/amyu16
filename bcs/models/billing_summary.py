@@ -18,6 +18,7 @@ class BillingSummary(models.Model):
     _name = 'billing.summary'
     _description = "Billing Summary"
     _rec_name = 'client_id'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _sql_constraints = [
         (
             'unique_client_id',
@@ -26,7 +27,7 @@ class BillingSummary(models.Model):
         )
     ]
 
-    client_id = fields.Many2one(string="Client Name", comodel_name='client.profile', required=True)
+    client_id = fields.Many2one(string="Client Name", comodel_name='client.profile', required=True, tracking=True)
 
     image_1012 = fields.Image(string="Image")
     partner_id = fields.Many2one(related='client_id.lead_partner_id', string="Partner")
@@ -44,13 +45,13 @@ class BillingSummary(models.Model):
     spe_ids = fields.One2many(comodel_name='special.engagement', inverse_name='billing_summary_id',
                               string="Special Engagement")
 
-    has_aud = fields.Boolean(default=False)
-    has_trc = fields.Boolean(default=False)
-    has_bks = fields.Boolean(default=False)
-    has_per = fields.Boolean(default=False)
-    has_gis = fields.Boolean(default=False)
-    has_loa = fields.Boolean(default=False)
-    has_spe = fields.Boolean(default=False)
+    has_aud = fields.Boolean(default=False, tracking=True)
+    has_trc = fields.Boolean(default=False, tracking=True)
+    has_bks = fields.Boolean(default=False, tracking=True)
+    has_per = fields.Boolean(default=False, tracking=True)
+    has_gis = fields.Boolean(default=False, tracking=True)
+    has_loa = fields.Boolean(default=False, tracking=True)
+    has_spe = fields.Boolean(default=False, tracking=True)
 
     state_selection = [('draft', 'Draft'),
                        ('submitted', 'Submitted'),

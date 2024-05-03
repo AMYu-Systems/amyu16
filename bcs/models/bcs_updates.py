@@ -7,13 +7,14 @@ class ForCollectionUpdates(models.Model):
     _name = 'bcs.updates'
     _description = "Collections Update"
     _rec_name = 'billing_id'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     billing_id = fields.Many2one(comodel_name='bcs.billing', string="Billing Transaction", required=True, readonly=True)
-    first_followup = fields.Boolean(string='1st Follow-up')
-    second_followup = fields.Boolean(string='2nd Follow-up')
-    third_followup = fields.Boolean(string='3rd Follow-up')
+    first_followup = fields.Boolean(string='1st Follow-up', tracking=True)
+    second_followup = fields.Boolean(string='2nd Follow-up', tracking=True)
+    third_followup = fields.Boolean(string='3rd Follow-up', tracking=True)
     # responded = fields.Boolean(string='Responded')
-    confirmed_payment = fields.Boolean(string='Confirmed Payment')
+    confirmed_payment = fields.Boolean(string='Confirmed Payment', tracking=True)
 
     date_first_followup = fields.Datetime(string='Date')
     date_second_followup = fields.Datetime(string='Date')
@@ -21,16 +22,16 @@ class ForCollectionUpdates(models.Model):
     # date_responded = fields.Datetime(string='Date Responded')
     date_confirmed_payment = fields.Datetime(string='Date Confirmed')
 
-    remarks = fields.Text()
-    second_remarks = fields.Text()
-    third_remarks = fields.Text()
+    remarks = fields.Text(tracking=True)
+    second_remarks = fields.Text(tracking=True)
+    third_remarks = fields.Text(tracking=True)
 
     # used for view; formatted display
-    view_first_followup = fields.Char(string="1st Follow-up")
-    view_second_followup = fields.Char(string="2nd Follow-up")
-    view_third_followup = fields.Char(string="3rd Follow-up")
+    view_first_followup = fields.Char(string="1st Follow-up", tracking=True)
+    view_second_followup = fields.Char(string="2nd Follow-up", tracking=True)
+    view_third_followup = fields.Char(string="3rd Follow-up", tracking=True)
     # view_responded = fields.Char(string='Responded', compute='_compute_responded')
-    view_confirmed = fields.Char(string='Confirmed Payment')
+    view_confirmed = fields.Char(string='Confirmed Payment', tracking=True)
 
     # @api.depends('first_followup')
     # def _compute_first_followup(self):
@@ -85,6 +86,7 @@ class ForCollectionUpdates(models.Model):
                         now_utc = pytz.utc.localize(now_local)
                         manila_time = now_utc.astimezone(pytz.timezone("Asia/Manila"))
                         vals['view_confirmed'] = manila_time.strftime("%b. %d, %Y | %I:%M %p")
+                        self.billing_id.status = 'client_received' if self.confirmed_payment else 'sent_to_client'
         return super(ForCollectionUpdates, self).create(vals)
 
     def write(self, vals):
@@ -111,4 +113,5 @@ class ForCollectionUpdates(models.Model):
                         now_utc = pytz.utc.localize(now_local)
                         manila_time = now_utc.astimezone(pytz.timezone("Asia/Manila"))
                         vals['view_confirmed'] = manila_time.strftime("%b. %d, %Y | %I:%M %p")
+                        self.billing_id.status = 'client_received' if self.confirmed_payment else 'sent_to_client'
         return super(ForCollectionUpdates, self).write(vals)
