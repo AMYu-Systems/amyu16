@@ -61,31 +61,34 @@ class ForCollectionUpdates(models.Model):
     #     dt = datetime.now()
     #     return dt, f'{dt.astimezone(pytz.timezone("Asia/Manila")).strftime("%b. %d, %Y | %I:%M %p")}'
 
+    # DATETIME_FORMAT = "%b. %d, %Y | %I:%M %p"
+    DATETIME_FORMAT = "%m/%d/%Y | %I:%M%p"
+
     @api.model
     def create(self, vals):
         if vals.get('first_followup'):
             now_local = datetime.now()
             now_utc = pytz.utc.localize(now_local)
             manila_time = now_utc.astimezone(pytz.timezone("Asia/Manila"))
-            vals['view_first_followup'] = manila_time.strftime("%b. %d, %Y | %I:%M %p")
+            vals['view_first_followup'] = manila_time.strftime(self.DATETIME_FORMAT)
         else:
             if vals.get('second_followup'):
                 now_local = datetime.now()
                 now_utc = pytz.utc.localize(now_local)
                 manila_time = now_utc.astimezone(pytz.timezone("Asia/Manila"))
-                vals['view_second_followup'] = manila_time.strftime("%b. %d, %Y | %I:%M %p")
+                vals['view_second_followup'] = manila_time.strftime(self.DATETIME_FORMAT)
             else:
                 if vals.get('third_followup'):
                     now_local = datetime.now()
                     now_utc = pytz.utc.localize(now_local)
                     manila_time = now_utc.astimezone(pytz.timezone("Asia/Manila"))
-                    vals['view_third_followup'] = manila_time.strftime("%b. %d, %Y | %I:%M %p")
+                    vals['view_third_followup'] = manila_time.strftime(self.DATETIME_FORMAT)
                 else:
                     if vals.get('confirmed_payment'):
                         now_local = datetime.now()
                         now_utc = pytz.utc.localize(now_local)
                         manila_time = now_utc.astimezone(pytz.timezone("Asia/Manila"))
-                        vals['view_confirmed'] = manila_time.strftime("%b. %d, %Y | %I:%M %p")
+                        vals['view_confirmed'] = manila_time.strftime(self.DATETIME_FORMAT)
                         self.billing_id.status = 'client_received' if self.confirmed_payment else 'sent_to_client'
         return super(ForCollectionUpdates, self).create(vals)
 
@@ -94,25 +97,25 @@ class ForCollectionUpdates(models.Model):
             now_local = datetime.now()
             now_utc = pytz.utc.localize(now_local)
             manila_time = now_utc.astimezone(pytz.timezone("Asia/Manila"))
-            vals['view_first_followup'] = manila_time.strftime("%b. %d, %Y | %I:%M %p")
+            vals['view_first_followup'] = manila_time.strftime(self.DATETIME_FORMAT)
         else:
             if vals.get('second_followup'):
                 now_local = datetime.now()
                 now_utc = pytz.utc.localize(now_local)
                 manila_time = now_utc.astimezone(pytz.timezone("Asia/Manila"))
-                vals['view_second_followup'] = manila_time.strftime("%b. %d, %Y | %I:%M %p")
+                vals['view_second_followup'] = manila_time.strftime(self.DATETIME_FORMAT)
             else:
                 if vals.get('third_followup'):
                     now_local = datetime.now()
                     now_utc = pytz.utc.localize(now_local)
                     manila_time = now_utc.astimezone(pytz.timezone("Asia/Manila"))
-                    vals['view_third_followup'] = manila_time.strftime("%b. %d, %Y | %I:%M %p")
+                    vals['view_third_followup'] = manila_time.strftime(self.DATETIME_FORMAT)
                 else:
                     if vals.get('confirmed_payment'):
                         now_local = datetime.now()
                         now_utc = pytz.utc.localize(now_local)
                         manila_time = now_utc.astimezone(pytz.timezone("Asia/Manila"))
-                        vals['view_confirmed'] = manila_time.strftime("%b. %d, %Y | %I:%M %p")
+                        vals['view_confirmed'] = manila_time.strftime(self.DATETIME_FORMAT)
                         self.billing_id.status = 'client_received' if self.confirmed_payment else 'sent_to_client'
         return super(ForCollectionUpdates, self).write(vals)
     

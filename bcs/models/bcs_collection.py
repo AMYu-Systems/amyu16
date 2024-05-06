@@ -1,4 +1,5 @@
 from odoo import fields, models, api
+from odoo.exceptions import ValidationError
 
 class BcsCollection(models.Model):
     _name = 'bcs.collection'
@@ -24,6 +25,15 @@ class BcsCollection(models.Model):
         #     name3 = name_array[2]
         #     transaction = name1[0:1] + name2[0:1] + name3[0:1]
         
+        # Check if AR Journal and Billing Summary exists
+        arj = self.env['soa.ar.journal'].search([('client_id', '=', self.paid_by_id.id)], limit=1)
+        if not arj:
+            raise ValidationError('No AR Journal found for this Client.')
+        
+        bs = self.env['billing.summary'].search([('client_id', '=', self.paid_by_id.id)], limit=1)
+        if not bs:
+            raise ValidationError('No Billing Summary found for this Client.')
+        
         # Compute Client ID
         # transaction = self.env['ir.sequence'].next_by_code('collection.id.seq')
         # vals['transaction'] = transaction
@@ -34,17 +44,9 @@ class BcsCollection(models.Model):
             # compute transaction id
             res.transaction = '' + self.env['ir.sequence'].next_by_code('collection.id.seq')
             
-            # add to ar journal
-            if res.payment_collection == 'direct_payment':
-                arj = self.env['soa.ar.journal'].search([('client_id', '=', res.paid_by_id.id)], limit=1)
-                if arj:
-                    arj.new_collection(res)
-            elif res.payment_collection == 'consolidated':
+            # manual posting
+            if res.payment_collection == 'consolidated':
                 res.unissued_amount_for_ar = res.amount
-                
-            # allow_void should now be false in all billings
-            for billing in res.billing_ids:
-                billing.allow_void = False
         
         return res
 
@@ -73,9 +75,9 @@ class BcsCollection(models.Model):
 
     @api.depends('paid_by_id')
     def _get_recent_billing_per_client(self):
-        most_recent_billing = self.env['bcs.billing'].search(
-            [('client_id', '=', self.paid_by_id.id)],
-            order="transaction desc", limit=1)
+        # most_recent_billing = self.env['bcs.billing'].search(
+        #     [('client_id', '=', self.paid_by_id.id)],
+        #     order="transaction desc", limit=1)
         
         bllings = self.env['bcs.billing'].search([('state', '=', 'approved')], order="transaction desc")
         unique_billing_ids = {}
@@ -108,8 +110,56 @@ class BcsCollection(models.Model):
             self.payment_collection = 'consolidated'
         return
     
-    collected_by = fields.Many2one(comodel_name='hr.employee', string="Collected By", required=True)
+    collected_by = fields.Many2one(comodel_name='hr.employee',  
+                                #   domain=f"[('job_id.name','ilike', 'Liaison')]", 
+                                  string="Collected By", required=True)
     date_collected = fields.Date(string="Date Collected", default=fields.Date.today, required=True)
+    state_selection = [('draft', 'Draft'),
+                       ('submitted', 'Submitted'),
+                       ('verified', 'Verified'),
+                       ('approved', 'Approved')]
+    state = fields.Selection(state_selection, default='draft', copy=False)
+    void_collection = fields.Boolean(default=False)
+    
+    def _validate_billing_statuses(self, next_state):
+        for billing in self.billing_ids:
+            if billing.status == 'void_billing':
+                raise ValidationError(f"Void Billing found ({billing.transaction})."\
+                                      +f"This record cannot be {next_state}.")     
+
+    # fad staff edit
+    def draft_action(self):
+        self.state = 'draft'
+
+    # fad staff manager
+    def fad_staff_submitted_action(self):
+        next_state = 'submitted'
+        self._validate_billing_statuses(next_state=next_state)
+        self.state = next_state
+
+    # fad supervisor
+    def fad_supervisor_verified_action(self):
+        next_state = 'verified'
+        self._validate_billing_statuses(next_state=next_state)
+        self.state = next_state
+
+    # fad manager
+    def fad_manager_approved_action(self):
+        next_state = 'approved'
+        self._validate_billing_statuses(next_state=next_state)
+        self.state = next_state
+
+        # add to ar journal
+        if self.payment_collection == 'direct_payment':
+            arj = self.env['soa.ar.journal'].search([('client_id', '=', self.paid_by_id.id)], limit=1)
+            if arj:
+                arj.new_collection(self)
+                
+        # allow_void should now be false in all billings
+        for billing in self.billing_ids:
+            billing.allow_void = False
+            
+            
     bank_type = [('bpi', 'BPI'),
                  ('bdo', 'BDO'),
                  ('eastwest', 'EASTWEST'),

@@ -86,11 +86,12 @@
                             <field name="amount"/>
                             <field name="remarks"/>
                         </group>
-                        <group attrs="{'invisible': [('unissued_amount_for_ar', '=', 0)]}" col="4">
+                        <group col="4"
+                            attrs="{'invisible': [('unissued_amount_for_ar', '=', 0)]}" >
                             <group>
                                 <field name="unissued_amount_for_ar"/>
                             </group>
-                            <group>
+                            <group attrs="{'invisible': [('state', '!=', 'approved')]}" >
                                 <button name="manual_posting" string="Manual Posting" class="oe_highlight text-nowrap" type="object"/>
                             </group>
                             <group string=" "></group>
@@ -129,11 +130,20 @@
         </record>
 
         <!-- Submitted -->
-        <record id="verified_bcs_collection_view_action" model="ir.actions.act_window">
+        <record id="submitted_bcs_collection_view_action" model="ir.actions.act_window">
             <field name="name">Submitted (For Verification)</field>
             <field name="res_model">bcs.collection</field>
             <field name="view_mode">tree,form</field>
             <field name="domain">[('state','=','submitted')]</field>
+            <field name="view_id" ref="bcs_collection_tree_view"/>
+        </record>
+
+        <!-- Draft -->
+        <record id="draft_bcs_collection_view_action" model="ir.actions.act_window">
+            <field name="name">Draft</field>
+            <field name="res_model">bcs.collection</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('state','=','draft')]</field>
             <field name="view_id" ref="bcs_collection_tree_view"/>
         </record>
 

@@ -1,4 +1,5 @@
 from odoo import fields, models, api
+from odoo.exceptions import ValidationError
 
 
 class BcsBilling(models.Model):
@@ -41,6 +42,16 @@ class BcsBilling(models.Model):
     #         name2 = name_array[1]
     #         name3 = name_array[2]
     #         transaction = name1[0:1] + name2[0:1] + name3[0:1]
+    
+        # Check if AR Journal and Billing Summary exists
+        arj = self.env['soa.ar.journal'].search([('client_id', '=', self.client_id.id)], limit=1)
+        if not arj:
+            raise ValidationError('No AR Journal found for this Client.')
+        
+        bs = self.env['billing.summary'].search([('client_id', '=', self.client_id.id)], limit=1)
+        if not bs:
+            raise ValidationError('No Billing Summary found for this Client.')
+    
         # Compute Client ID
         # transaction += "-" + self.env['ir.sequence'].next_by_code('billing.id.seq')
         transaction +=  self.env['ir.sequence'].next_by_code('billing.id.seq')

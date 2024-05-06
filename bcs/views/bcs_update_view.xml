@@ -5,7 +5,7 @@
             <field name="name">bcs_updates_tree_view</field>
             <field name="model">bcs.updates</field>
             <field name="arch" type="xml">
-                <tree create="0">
+                <tree create="0" edit="1" editable="top">
                     <field name="billing_id"/>
                     <field name="view_first_followup" string="1st Follow-up" readonly="1"/>
                     <field name="first_followup" string=" "/>
