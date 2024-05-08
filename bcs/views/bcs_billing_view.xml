@@ -5,7 +5,7 @@
             <field name="name">bcs_billing_tree_view</field>
             <field name="model">bcs.billing</field>
             <field name="arch" type="xml">
-                <tree create="0">
+                <tree create="0" default_order='create_date desc'>
                     <field name="transaction"/>
                     <field name="client_id"/>
                     <!-- <field name="collection_ids" widget="many2many_tags"/> -->
@@ -62,20 +62,24 @@
                         
                         <!-- FOR TESTING ONLY -->
                         <button name="sent_to_client" string="Billing Sent" type="object" class="oe_highlight"
-                                confirm="Are you sure to proceed to the next status? (Sent to client)"
+                                confirm="Are you sure to proceed to the next status? — Sent to client"
                                 attrs="{'invisible': [('status', '!=', 'not_sent')]}"/>
                         
                         <button name="client_received" string="Client Received" type="object" class="oe_highlight"
-                                confirm="Are you sure to proceed to the next status? (Client Received)"
+                                confirm="Are you sure to proceed to the next status? — Client Received"
                                 attrs="{'invisible': [('status', '!=', 'sent_to_client')]}"/>
 
+                        <button name="client_paid" string="Client Paid" type="object" class="oe_highlight"
+                                confirm="Are you sure to proceed to the next status? — Client Paid"
+                                attrs="{'invisible': [('status', '!=', 'client_paid')]}"/>
+                        
                         <button name="void_billing" string="Void Statement" type="object" class="oe_highlight"
                                 confirm="Are you sure to proceed to VOID this Billing Statement?"
                                 attrs="{'invisible': ['|', ('status', '!=', 'client_received'), ('allow_void', '=', False)]}"/>
 
                         <field name="allow_void" invisible="1" />
                         <field name="status" widget="statusbar" clickable="True"
-                               status_invisible="not_sent,sent_email,send_errand,client_received"/>
+                               status_invisible="not_sent,sent_email,send_errand,client_received,client_paid,void_billing"/>
                     </header>
                     <sheet>
                         <group>

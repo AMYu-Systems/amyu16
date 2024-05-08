@@ -22,7 +22,8 @@ class BcsBilling(models.Model):
                 services = services[:-2]
             else:
                 services = 'No Services'
-            record.name = record.date_billed.strftime("%b %Y") + ' | ' + services + ' | ' + record.client_id.name
+            record.name = record.transaction + ' | ' + record.date_billed.strftime("%b %Y") \
+                + ' | ' + services + ' | ' + record.client_id.name
         return
     
     @api.model
@@ -43,15 +44,6 @@ class BcsBilling(models.Model):
     #         name3 = name_array[2]
     #         transaction = name1[0:1] + name2[0:1] + name3[0:1]
     
-        # Check if AR Journal and Billing Summary exists
-        arj = self.env['soa.ar.journal'].search([('client_id', '=', self.client_id.id)], limit=1)
-        if not arj:
-            raise ValidationError('No AR Journal found for this Client.')
-        
-        bs = self.env['billing.summary'].search([('client_id', '=', self.client_id.id)], limit=1)
-        if not bs:
-            raise ValidationError('No Billing Summary found for this Client.')
-    
         # Compute Client ID
         # transaction += "-" + self.env['ir.sequence'].next_by_code('billing.id.seq')
         transaction +=  self.env['ir.sequence'].next_by_code('billing.id.seq')
@@ -59,16 +51,20 @@ class BcsBilling(models.Model):
         return super(BcsBilling, self).create(vals)
     
     @api.onchange('client_id')
-    def _onchange_client_id(self):
-        arj = self.env['soa.ar.journal'].search(
-            [('client_id', '=', self.client_id.id)], limit=1)
-        if arj and arj.balance:
-            self.previous_amount = arj.balance
-        
-        bs = self.env['billing.summary'].search([('client_id', '=', self.client_id.id)], limit=1)
-        if bs:
-            self.allowed_service_ids = [(6, 0, [srv.id for srv in bs.service_ids])]
-            self.services_id = [(6, 0, [srv.id for srv in bs.service_ids])]
+    def _onchange_client_id(self):   
+        if self.client_id:
+            arj = self.env['soa.ar.journal'].search([('client_id', '=', self.client_id.id)], limit=1)
+            if arj and arj.balance:
+                self.previous_amount = arj.balance
+            elif not arj:
+                raise ValidationError('No AR Journal found for this Client.')
+            
+            bs = self.env['billing.summary'].search([('client_id', '=', self.client_id.id)], limit=1)
+            if bs:
+                self.allowed_service_ids = [(6, 0, [srv.id for srv in bs.service_ids])]
+                self.services_id = [(6, 0, [srv.id for srv in bs.service_ids])]
+            else:
+                raise ValidationError('No Billing Summary found for this Client.')
     
     @api.model
     def _default_issued_by(self):
@@ -110,6 +106,7 @@ class BcsBilling(models.Model):
     status_selection = [('not_sent', 'Not yet sent'),
                         ('sent_to_client', 'Sent to client'),
                         ('client_received', 'Client has received'),
+                        ('client_paid', 'Client has paid'),
                         ('void_billing', 'Void Statement')]
     status = fields.Selection(status_selection, default='not_sent')
 
@@ -127,6 +124,15 @@ class BcsBilling(models.Model):
     # client confirms they received it
     def client_received(self):
         self.status = 'client_received'
+        
+    # client has paid the billing
+    def client_paid(self):
+        ''' 
+        This function is only called by bcs_collection.py.
+        Even if not complete, as long as collection exists, the client has "paid" the billing.
+        This is the basis of the Collection Report (?)
+        '''
+        self.status = 'client_paid'
 
     # billing is apparently void
     def void_billing(self):
@@ -148,6 +154,9 @@ class BcsBilling(models.Model):
         arj = self.env['soa.ar.journal'].search([('client_id', '=', self.client_id.id)], limit=1)
         if arj:
             arj.void_billing(self)
+            
+    def set_allow_void_false(self):
+        self.allow_void = False
 
     # @api.constrains('state')
     # def _check_state_for_editing(self):

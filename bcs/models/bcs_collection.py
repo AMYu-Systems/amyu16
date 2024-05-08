@@ -25,15 +25,6 @@ class BcsCollection(models.Model):
         #     name3 = name_array[2]
         #     transaction = name1[0:1] + name2[0:1] + name3[0:1]
         
-        # Check if AR Journal and Billing Summary exists
-        arj = self.env['soa.ar.journal'].search([('client_id', '=', self.paid_by_id.id)], limit=1)
-        if not arj:
-            raise ValidationError('No AR Journal found for this Client.')
-        
-        bs = self.env['billing.summary'].search([('client_id', '=', self.paid_by_id.id)], limit=1)
-        if not bs:
-            raise ValidationError('No Billing Summary found for this Client.')
-        
         # Compute Client ID
         # transaction = self.env['ir.sequence'].next_by_code('collection.id.seq')
         # vals['transaction'] = transaction
@@ -54,7 +45,7 @@ class BcsCollection(models.Model):
     @api.depends("billing_ids", "date_collected", "bank.name", "payment_collection", "paid_by_id", "paid_by_id.name")
     def _compute_name(self):
         for record in self:
-            record.name = record.date_collected.strftime("%b %Y") + ' | ' \
+            record.name = record.transaction + ' | ' + record.date_collected.strftime("%b %Y") + ' | ' \
                 + str(len(record.billing_ids)) + ' Billing' + ('s ' if len(record.billing_ids) > 1 else ' ') \
                 + ('(Cash)' if record.payment_mode == 'cash' else f'({record.bank.name})') + ' | ' \
                 + (record.paid_by_id.name)
@@ -69,6 +60,17 @@ class BcsCollection(models.Model):
         if most_recent_billing:
             self.billing_ids = [(5,)]
             self.billing_ids = [(4, most_recent_billing.id)]
+        
+        # Check if AR Journal and Billing Summary exists
+        if self.paid_by_id:
+            arj = self.env['soa.ar.journal'].search([('client_id', '=', self.paid_by_id.id)], limit=1)
+            if not arj:
+                raise ValidationError('No AR Journal found for this Client.')
+            
+            bs = self.env['billing.summary'].search([('client_id', '=', self.paid_by_id.id)], limit=1)
+            if not bs:
+                raise ValidationError('No Billing Summary found for this Client.')
+        
     
     recent_billings_per_client = fields.Many2many(comodel_name='bcs.billing', relation='bcs_collection_allowed_billings_rel', 
                                                   compute='_get_recent_billing_per_client')
@@ -154,10 +156,13 @@ class BcsCollection(models.Model):
             arj = self.env['soa.ar.journal'].search([('client_id', '=', self.paid_by_id.id)], limit=1)
             if arj:
                 arj.new_collection(self)
+            # only one billing if direct payment
+            for billing in self.billing_ids:
+                billing.client_paid()
                 
         # allow_void should now be false in all billings
         for billing in self.billing_ids:
-            billing.allow_void = False
+            billing.set_allow_void_false()
             
             
     bank_type = [('bpi', 'BPI'),
@@ -181,6 +186,10 @@ class BcsCollection(models.Model):
     unissued_amount_for_ar = fields.Float(string="Unissued Amount For ARs", default=0, readonly=True)
     
     def new_manual_posting(self, payments_collection):
+        for billing in self.billing_ids:
+            pc_client = payments_collection.ar_journal_id.client_id
+            if billing.client_id.id == pc_client.id:
+                billing.client_paid()
         self.unissued_amount_for_ar -= payments_collection.amount
         self.allow_edit_billing_ids = False
     

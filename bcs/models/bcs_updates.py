@@ -116,7 +116,7 @@ class ForCollectionUpdates(models.Model):
                         now_utc = pytz.utc.localize(now_local)
                         manila_time = now_utc.astimezone(pytz.timezone("Asia/Manila"))
                         vals['view_confirmed'] = manila_time.strftime(self.DATETIME_FORMAT)
-                        self.billing_id.status = 'client_received' if self.confirmed_payment else 'sent_to_client'
+                        self.billing_id.status = 'client_received' # if self.confirmed_payment else 'sent_to_client'
         return super(ForCollectionUpdates, self).write(vals)
     
     
