@@ -8,9 +8,9 @@
                 <tree>
                     <field name="client_id"/>
                     <field name="service_ids" widget="many2many_tags"/>
-                    <field name="partner_id"/>
-                    <field name="manager_id"/>
-                    <field name="supervisor_id"/>
+                    <field name="partner_id" optional="hide"/>
+                    <field name="manager_id" optional="hide"/>
+                    <field name="supervisor_id" optional="hide"/>
                     <field name="associate_id"/>
                 </tree>
             </field>
@@ -31,7 +31,8 @@
                             </h1>
                         </div>
                         <group>
-                            <field name="service_ids" widget="many2many_tags" options="{'no_create': True, 'no_create_edit':True}" />
+                            <field name="service_ids" widget="many2many_tags"
+                                   options="{'no_create': True, 'no_create_edit':True}"/>
                         </group>
                         <group string="Engagement Team">
                             <group>
@@ -174,7 +175,7 @@
                             </page>
                         </notebook>
                     </sheet>
-                     <div class="oe_chatter">
+                    <div class="oe_chatter">
                         <field name="message_ids"/>
                     </div>
                 </form>
