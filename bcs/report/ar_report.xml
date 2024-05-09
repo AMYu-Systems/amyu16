@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="arjournal_report_template">
+        <t t-call="web.html_container">
+            <div class="header">
+                <img src="/bcs/static/src/img/MicrosoftTeams-image.png"
+                     style="height:150px;width:200px;left:20px;bottom:500px;middle:50px" class="float-start"
+                     alt="Logo"/>
+            </div>
+
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="bcs.arjournal_report_document"/>
+            </t>
+        </t>
+    </template>
+
+    <template id="arjournal_report_document">
+        <t t-call="web.external_layout">
+            <br/>
+            <h2>
+                INVOICE
+            </h2>
+            <div>
+                <td>
+                    Due Date
+                </td>
+            </div>
+            <table style="font-size:10px;" width="50%">
+                <tr>
+                    <td>Client Name:
+                        <span t-field="doc.client_id"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Balance:
+                        <span t-field="doc.balance"/>
+                    </td>
+                </tr>
+            </table>
+            <table style="font-size:10px;" width="100%">
+                <h5>
+                    <p style="text-center;">Payment Collection</p>
+                </h5>
+                <tr>
+                    <td>Payment Collect</td>
+                    <td>Amount</td>
+                </tr>
+                <t t-foreach='doc.payments_collection_ids' t-as='line'>
+                    <tr>
+                        <td>
+                            <span t-esc="line.name"/>
+                        </td>
+                        <td>
+                            <span t-esc="line.amount"/>
+                        </td>
+                    </tr>
+                </t>
+            </table>
+        </t>
+    </template>
+
+    <record id="paperformat_custom" model="report.paperformat">
+        <field name="name">Custom Paper</field>
+        <field name="default" eval="True"/>
+        <field name="format">custom</field>
+        <field name="page_height">297</field>
+        <field name="page_width">210</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">10.00</field>
+        <field name="margin_bottom">10.00</field>
+        <field name="margin_left">7.0</field>
+        <field name="margin_right">7.0</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">35</field>
+        <field name="dpi">125</field>
+    </record>
+
+    <record id="action_ar_report" model="ir.actions.report">
+        <field name="name">AR Report PDF</field>
+        <field name="model">soa.ar.journal</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">bcs.arjournal_report_template</field>
+        <field name="report_file">bcs.ar_report</field>
+        <field name="print_report_name">'AR Journal - %s' % object.client_id</field>
+        <field name="binding_model_id" ref="model_soa_ar_journal"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

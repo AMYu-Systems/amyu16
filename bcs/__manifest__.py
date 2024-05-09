@@ -45,6 +45,7 @@
         'views/bcs_bank_view.xml',
         'views/bcs_menu_view.xml',
         'wizard/manual_posting.xml',
+        'report/ar_report.xml',
     ],
     'application': True,
     'license': 'LGPL-3',
