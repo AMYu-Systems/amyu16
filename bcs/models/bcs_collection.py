@@ -56,7 +56,7 @@ class BcsCollection(models.Model):
     def _onchange_paid_by_id(self):
         most_recent_billing = self.env['bcs.billing'].search(
             [('client_id', '=', self.paid_by_id.id)],
-            order="transaction desc", limit=1)
+            order="create_date desc", limit=1)
         if most_recent_billing:
             self.billing_ids = [(5,)]
             self.billing_ids = [(4, most_recent_billing.id)]
@@ -81,7 +81,7 @@ class BcsCollection(models.Model):
         #     [('client_id', '=', self.paid_by_id.id)],
         #     order="transaction desc", limit=1)
         
-        bllings = self.env['bcs.billing'].search([('state', '=', 'approved')], order="transaction desc")
+        bllings = self.env['bcs.billing'].search([('state', '=', 'approved')], order="create_date desc")
         unique_billing_ids = {}
         selected_billings = [b.id for b in self.billing_ids]
         for billing in bllings:
@@ -156,9 +156,12 @@ class BcsCollection(models.Model):
             arj = self.env['soa.ar.journal'].search([('client_id', '=', self.paid_by_id.id)], limit=1)
             if arj:
                 arj.new_collection(self)
-            # only one billing if direct payment
+                
+            # only one billing since direct payment
             for billing in self.billing_ids:
-                billing.client_paid()
+                upd = self.env['bcs.updates'].search([('billing_id', '=', billing.id)], limit=1)
+                if upd:
+                    upd.set_confirmed_payment()
                 
         # allow_void should now be false in all billings
         for billing in self.billing_ids:
