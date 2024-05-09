@@ -162,6 +162,6 @@ class SpecialEngagement(models.Model):
                                       ('11', 'December')
                                       ], string='Billing Month')
     payment_terms = fields.Float(string='Payment Terms', default=1)
-    service_id = fields.Many2one('services.type', string='Type of Engagement')
+    # service_id = fields.Many2one('services.type', string='Type of Engagement') # I forgot what this is for -angelo
     service_details = fields.Text(string='Details of Service Engagement')
     billing_summary_id = fields.Many2one(comodel_name='billing.summary', string="Billing Summary")
