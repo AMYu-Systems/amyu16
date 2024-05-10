@@ -75,11 +75,11 @@
                   name="＋New Collection"
                   parent="menu_bcs_collection"
                   action="bcs_collection_form_action"/>
-        <menuitem id="menu_new_collection"
+        <menuitem id="menu_approved_collection"
                   sequence="131"
-                  name="＋New Collection"
+                  name="View Approved Collections"
                   parent="menu_bcs_collection"
-                  action="bcs_collection_form_action"/>
+                  action="approved_bcs_collection_view_action"/>
         <menuitem id="menu_pending_collections"
                   sequence="132"
                   name="View Pending Records"

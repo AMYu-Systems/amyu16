@@ -28,7 +28,6 @@ class BcsBilling(models.Model):
     
     @api.model
     def create(self, vals):
-        transaction = ''
     #     name = re.sub(r'\W+', ' ', vals['client_id.name'])
     #     name_array = name.split()
     #     if len(name_array) == 1:
@@ -46,9 +45,10 @@ class BcsBilling(models.Model):
     
         # Compute Client ID
         # transaction += "-" + self.env['ir.sequence'].next_by_code('billing.id.seq')
-        transaction +=  self.env['ir.sequence'].next_by_code('billing.id.seq')
-        vals['transaction'] = transaction
-        return super(BcsBilling, self).create(vals)
+        res = super(BcsBilling, self).create(vals)
+        if res:
+            res.transaction =  f'{res.id:05d}'
+        return res
     
     @api.onchange('client_id')
     def _onchange_client_id(self):   

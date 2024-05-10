@@ -8,7 +8,7 @@
                 <tree>
                     <field name="billing_month"/>
                     <field name="payment_terms"/>
-                    <field name="service_id"/>
+                    <!-- <field name="service_id"/> -->
                     <field name="service_details"/>
                 </tree>
             </field>
@@ -24,7 +24,7 @@
                         <group>
                             <field name="billing_month"/>
                             <field name="payment_terms"/>
-                            <field name="service_id"/>
+                            <!-- <field name="service_id"/> -->
                             <field name="service_details"/>
                         </group>
                     </sheet>

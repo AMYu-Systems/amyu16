@@ -190,7 +190,7 @@
                                     <tree>
                                         <field name="billing_month"/>
                                         <field name="payment_terms"/>
-                                        <field name="service_id"/>
+                                        <!-- <field name="service_id"/> -->
                                         <field name="service_details"/>
                                         <field name="billing_summary_id"/>
                                         <field name="service_fee"/>

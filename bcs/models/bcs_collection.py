@@ -33,7 +33,7 @@ class BcsCollection(models.Model):
         
         if res:
             # compute transaction id
-            res.transaction = '' + self.env['ir.sequence'].next_by_code('collection.id.seq')
+            res.transaction = f'{res.id:05d}'
             
             # manual posting
             if res.payment_collection == 'consolidated':
@@ -56,7 +56,7 @@ class BcsCollection(models.Model):
     def _onchange_paid_by_id(self):
         most_recent_billing = self.env['bcs.billing'].search(
             [('client_id', '=', self.paid_by_id.id)],
-            order="create_date desc", limit=1)
+            order="transaction desc", limit=1)
         if most_recent_billing:
             self.billing_ids = [(5,)]
             self.billing_ids = [(4, most_recent_billing.id)]
@@ -81,7 +81,7 @@ class BcsCollection(models.Model):
         #     [('client_id', '=', self.paid_by_id.id)],
         #     order="transaction desc", limit=1)
         
-        bllings = self.env['bcs.billing'].search([('state', '=', 'approved')], order="create_date desc")
+        bllings = self.env['bcs.billing'].search([('state', '=', 'approved')], order="transaction desc")
         unique_billing_ids = {}
         selected_billings = [b.id for b in self.billing_ids]
         for billing in bllings:

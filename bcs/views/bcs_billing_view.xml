@@ -5,7 +5,7 @@
             <field name="name">bcs_billing_tree_view</field>
             <field name="model">bcs.billing</field>
             <field name="arch" type="xml">
-                <tree create="0" default_order='create_date desc'>
+                <tree create="0" default_order='transaction desc'>
                     <field name="transaction"/>
                     <field name="client_id"/>
                     <!-- <field name="collection_ids" widget="many2many_tags"/> -->
