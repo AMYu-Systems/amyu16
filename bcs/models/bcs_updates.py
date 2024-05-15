@@ -27,11 +27,11 @@ class ForCollectionUpdates(models.Model):
     third_remarks = fields.Text(tracking=True)
     confirmed_remarks = fields.Text(tracking=True)
         
-    view_first_followup = fields.Char(string="1st Follow-up", tracking=True)
-    view_second_followup = fields.Char(string="2nd Follow-up", tracking=True)
-    view_third_followup = fields.Char(string="3rd Follow-up", tracking=True)
-    # view_responded = fields.Char(string='Responded', compute='_compute_responded')
-    view_confirmed = fields.Char(string='Confirmed Payment', tracking=True)
+    view_first_followup = fields.Text(string="1st Follow-up", tracking=True)
+    view_second_followup = fields.Text(string="2nd Follow-up", tracking=True)
+    view_third_followup = fields.Text(string="3rd Follow-up", tracking=True)
+    # view_responded = fields.Text(string='Responded', compute='_compute_responded')
+    view_confirmed = fields.Text(string='Confirmed Payment', tracking=True)
 
     # @api.depends('first_followup')
     # def _compute_first_followup(self):
@@ -62,7 +62,7 @@ class ForCollectionUpdates(models.Model):
     #     return dt, f'{dt.astimezone(pytz.timezone("Asia/Manila")).strftime("%b. %d, %Y | %I:%M %p")}'
 
     # DATETIME_FORMAT = "%b. %d, %Y | %I:%M %p"
-    DATETIME_FORMAT = "%m/%d/%Y | %I:%M%p"
+    DATETIME_FORMAT = "%m/%d/%Y \n%I:%M%p"
 
     @api.model
     def create(self, vals):
