@@ -43,7 +43,7 @@ class BillingSummary(models.Model):
     permit_ids = fields.One2many(comodel_name='business.permit.billing', inverse_name='billing_summary_id',
                                  string="Business Permit")
     gis_ids = fields.One2many(comodel_name='gis.billing', inverse_name='billing_summary_id', string="GIS")
-    loa_ids = fields.One2many(comodel_name='loa.billing', inverse_name='billing_summary_id', string="LOA")
+    loa_ids = fields.One2many(comodel_name='loa.billing', inverse_name='billing_summary_id', string="TXA")
     spe_ids = fields.One2many(comodel_name='special.engagement', inverse_name='billing_summary_id',
                               string="Special Engagement")
 
@@ -94,7 +94,7 @@ class BillingSummary(models.Model):
         self.has_bks = 'BKS' in service_list
         self.has_per = 'PER' in service_list
         self.has_gis = 'GIS' in service_list
-        self.has_loa = 'LOA' in service_list
+        self.has_loa = 'TXA' in service_list
         self.has_spe = 'SPE' in service_list
         return
 
@@ -131,7 +131,7 @@ class BillingSummary(models.Model):
             
     @api.onchange('loa_ids')
     def _onchange_audit(self):
-        service = self.env['services.type'].search([('code', '=', 'LOA')], limit=1)
+        service = self.env['services.type'].search([('code', '=', 'TXA')], limit=1)
         for rec in self.loa_ids:
             self.create_billing_service(service_type=service, service_record=rec)
             
@@ -158,7 +158,7 @@ class BillingSummary(models.Model):
         if 'BKS' in included_code and self.has_bks: included.append(self.books_ids)
         if 'PER' in included_code and self.has_per: included.append(self.permit_ids)
         if 'GIS' in included_code and self.has_gis: included.append(self.gis_ids)
-        if 'LOA' in included_code and self.has_loa: included.append(self.loa_ids)
+        if 'TXA' in included_code and self.has_loa: included.append(self.loa_ids)
         if 'SPE' in included_code and self.has_spe: included.append(self.spe_ids)
 
         for services in included:
@@ -188,8 +188,8 @@ class BillingSummary(models.Model):
             _set_service_amount(included['PER'], self.permit_ids)
         if 'GIS' in included.keys() and self.has_gis: 
             _set_service_amount(included['GIS'], self.gis_ids)
-        if 'LOA' in included.keys() and self.has_loa: 
-            _set_service_amount(included['LOA'], self.loa_ids)
+        if 'TXA' in included.keys() and self.has_loa: 
+            _set_service_amount(included['TXA'], self.loa_ids)
         if 'SPE' in included.keys() and self.has_spe: 
             _set_service_amount(included['SPE'], self.spe_ids) 
         
