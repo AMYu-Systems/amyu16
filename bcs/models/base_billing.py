@@ -4,7 +4,7 @@ from odoo import fields, models, api
 class BaseBilling(models.Model):
     _name = 'base.billing'
 
-    billing_summary_id = fields.Many2one('billing.summary', string='Billing Summary')
+    billing_summary_id = fields.Many2one('billing.summary', string='Billing Summary', readonly=True)
     service_fee = fields.Float(default=0)
     ope_rate = fields.Float(default=0)
     ope = fields.Float(compute='_compute_ope', store=True)
@@ -162,6 +162,6 @@ class SpecialEngagement(models.Model):
                                       ('11', 'December')
                                       ], string='Billing Month')
     payment_terms = fields.Float(string='Payment Terms', default=1)
-    service_id = fields.Many2one('services.type', string='Type of Engagement')
+    # service_id = fields.Many2one('services.type', string='Type of Engagement') # I forgot what this is for -angelo
     service_details = fields.Text(string='Details of Service Engagement')
     billing_summary_id = fields.Many2one(comodel_name='billing.summary', string="Billing Summary")

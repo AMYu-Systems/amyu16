@@ -21,6 +21,36 @@
             <field name="model">billing.summary</field>
             <field name="arch" type="xml">
                 <form>
+                    <header>
+                        <!-- <button name="submitted_action" string="Submit" type="object" class="oe_highlight"
+                                confirm="Are you sure you want to continue to your submission?"
+                                groups="bcs.ops_manager"
+                                attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                        <button name="verified_action" string="Verified" type="object"
+                                class="oe_highlight"
+                                confirm="Are you sure you want to continue to your verification?"
+                                groups="bcs.fad_supervisor"
+                                attrs="{'invisible': [('state', '!=', 'submitted')]}"/>
+                        <button name="approved_action" string="Approved" type="object" class="oe_highlight"
+                                confirm="Are you sure you want to continue to your approval?"
+                                groups="bcs.fad_manager"
+                                attrs="{'invisible': [('state', '!=', 'verified')]}"/> -->
+
+                        <!-- FOR TESTING ONLY -->
+                        <!-- <button name="submitted_action" string="Submit" type="object" class="oe_highlight"
+                                confirm="Are you sure you want to continue to your submission?"
+                                attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                        <button name="verified_action" string="Verify" type="object"
+                                class="oe_highlight"
+                                confirm="Are you sure you want to continue to your verification?"
+                                attrs="{'invisible': [('state', '!=', 'submitted')]}"/>
+                        <button name="approved_action" string="Approve" type="object" class="oe_highlight"
+                                confirm="Are you sure you want to continue to your approval?"
+                                attrs="{'invisible': [('state', '!=', 'verified')]}"/>
+
+                        <field name="state" widget="statusbar" status_invisible="draft,submitted,verified,approved"
+                               attrs="{'invisible':[('state', '==','approved')]}"/> -->
+                    </header>
                     <sheet>
                         <div>
                             <field name="image_1012" widget="image" nolabel="1" class="oe_avatar"/>
@@ -60,7 +90,7 @@
                                         <field name="billing_month"/>
                                         <field name="payment_term"/>
                                         <field name="details"/>
-                                        <field name="billing_summary_id"/>
+                                        <field name="billing_summary_id" readonly="1"/>
                                         <field name="service_fee"/>
                                         <field name="ope_rate"/>
                                         <field name="ope"/>
@@ -161,7 +191,7 @@
                                     <tree>
                                         <field name="billing_month"/>
                                         <field name="payment_terms"/>
-                                        <field name="service_id"/>
+                                        <!-- <field name="service_id"/> -->
                                         <field name="service_details"/>
                                         <field name="billing_summary_id"/>
                                         <field name="service_fee"/>

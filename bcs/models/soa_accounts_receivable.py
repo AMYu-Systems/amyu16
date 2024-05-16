@@ -4,10 +4,10 @@ from odoo import fields, models, api
 class AccountsReceivable(models.Model):
     _name = 'soa.accounts.receivable'
     _description = "Accounts Receivable connected to AR Journal"
-
-    billing_id = fields.Many2one(comodel_name='bcs.billing', required=True)
-    ar_journal_id = fields.Many2one(comodel_name='soa.ar.journal', required=True)
-    journal_index = fields.Integer(required=True)
+    
+    billing_id = fields.Many2one(comodel_name='bcs.billing',  required=True, ondelete='cascade', readonly=True)
+    ar_journal_id = fields.Many2one(comodel_name='soa.ar.journal', required=True, ondelete='cascade', readonly=True)
+    journal_index = fields.Integer( required=True, readonly=True)
     amount = fields.Float(compute='_compute_amount')
 
     @api.depends("billing_id.amount")

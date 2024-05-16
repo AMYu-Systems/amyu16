@@ -25,13 +25,13 @@ class ForCollectionUpdates(models.Model):
     remarks = fields.Text(tracking=True)
     second_remarks = fields.Text(tracking=True)
     third_remarks = fields.Text(tracking=True)
-
-    # used for view; formatted display
-    view_first_followup = fields.Char(string="1st Follow-up", tracking=True)
-    view_second_followup = fields.Char(string="2nd Follow-up", tracking=True)
-    view_third_followup = fields.Char(string="3rd Follow-up", tracking=True)
-    # view_responded = fields.Char(string='Responded', compute='_compute_responded')
-    view_confirmed = fields.Char(string='Confirmed Payment', tracking=True)
+    confirmed_remarks = fields.Text(tracking=True)
+        
+    view_first_followup = fields.Text(string="1st Follow-up", tracking=True)
+    view_second_followup = fields.Text(string="2nd Follow-up", tracking=True)
+    view_third_followup = fields.Text(string="3rd Follow-up", tracking=True)
+    # view_responded = fields.Text(string='Responded', compute='_compute_responded')
+    view_confirmed = fields.Text(string='Confirmed Payment', tracking=True)
 
     # @api.depends('first_followup')
     # def _compute_first_followup(self):
@@ -61,31 +61,34 @@ class ForCollectionUpdates(models.Model):
     #     dt = datetime.now()
     #     return dt, f'{dt.astimezone(pytz.timezone("Asia/Manila")).strftime("%b. %d, %Y | %I:%M %p")}'
 
+    # DATETIME_FORMAT = "%b. %d, %Y | %I:%M %p"
+    DATETIME_FORMAT = "%m/%d/%Y \n%I:%M%p"
+
     @api.model
     def create(self, vals):
         if vals.get('first_followup'):
             now_local = datetime.now()
             now_utc = pytz.utc.localize(now_local)
             manila_time = now_utc.astimezone(pytz.timezone("Asia/Manila"))
-            vals['view_first_followup'] = manila_time.strftime("%b. %d, %Y | %I:%M %p")
+            vals['view_first_followup'] = manila_time.strftime(self.DATETIME_FORMAT)
         else:
             if vals.get('second_followup'):
                 now_local = datetime.now()
                 now_utc = pytz.utc.localize(now_local)
                 manila_time = now_utc.astimezone(pytz.timezone("Asia/Manila"))
-                vals['view_second_followup'] = manila_time.strftime("%b. %d, %Y | %I:%M %p")
+                vals['view_second_followup'] = manila_time.strftime(self.DATETIME_FORMAT)
             else:
                 if vals.get('third_followup'):
                     now_local = datetime.now()
                     now_utc = pytz.utc.localize(now_local)
                     manila_time = now_utc.astimezone(pytz.timezone("Asia/Manila"))
-                    vals['view_third_followup'] = manila_time.strftime("%b. %d, %Y | %I:%M %p")
+                    vals['view_third_followup'] = manila_time.strftime(self.DATETIME_FORMAT)
                 else:
                     if vals.get('confirmed_payment'):
                         now_local = datetime.now()
                         now_utc = pytz.utc.localize(now_local)
                         manila_time = now_utc.astimezone(pytz.timezone("Asia/Manila"))
-                        vals['view_confirmed'] = manila_time.strftime("%b. %d, %Y | %I:%M %p")
+                        vals['view_confirmed'] = manila_time.strftime(self.DATETIME_FORMAT)
                         self.billing_id.status = 'client_received' if self.confirmed_payment else 'sent_to_client'
         return super(ForCollectionUpdates, self).create(vals)
 
@@ -94,24 +97,34 @@ class ForCollectionUpdates(models.Model):
             now_local = datetime.now()
             now_utc = pytz.utc.localize(now_local)
             manila_time = now_utc.astimezone(pytz.timezone("Asia/Manila"))
-            vals['view_first_followup'] = manila_time.strftime("%b. %d, %Y | %I:%M %p")
+            vals['view_first_followup'] = manila_time.strftime(self.DATETIME_FORMAT)
         else:
             if vals.get('second_followup'):
                 now_local = datetime.now()
                 now_utc = pytz.utc.localize(now_local)
                 manila_time = now_utc.astimezone(pytz.timezone("Asia/Manila"))
-                vals['view_second_followup'] = manila_time.strftime("%b. %d, %Y | %I:%M %p")
+                vals['view_second_followup'] = manila_time.strftime(self.DATETIME_FORMAT)
             else:
                 if vals.get('third_followup'):
                     now_local = datetime.now()
                     now_utc = pytz.utc.localize(now_local)
                     manila_time = now_utc.astimezone(pytz.timezone("Asia/Manila"))
-                    vals['view_third_followup'] = manila_time.strftime("%b. %d, %Y | %I:%M %p")
+                    vals['view_third_followup'] = manila_time.strftime(self.DATETIME_FORMAT)
                 else:
                     if vals.get('confirmed_payment'):
                         now_local = datetime.now()
                         now_utc = pytz.utc.localize(now_local)
                         manila_time = now_utc.astimezone(pytz.timezone("Asia/Manila"))
-                        vals['view_confirmed'] = manila_time.strftime("%b. %d, %Y | %I:%M %p")
-                        self.billing_id.status = 'client_received' if self.confirmed_payment else 'sent_to_client'
+                        vals['view_confirmed'] = manila_time.strftime(self.DATETIME_FORMAT)
+                        # self.billing_id.status = 'client_received' if self.confirmed_payment else 'sent_to_client'
+                        self.billing_id.client_paid()
         return super(ForCollectionUpdates, self).write(vals)
+    
+    def set_confirmed_payment(self):
+        self.confirmed_payment = True
+        now_local = datetime.now()
+        now_utc = pytz.utc.localize(now_local)
+        manila_time = now_utc.astimezone(pytz.timezone("Asia/Manila"))
+        self.view_confirmed = manila_time.strftime(self.DATETIME_FORMAT)
+        self.billing_id.client_paid()
+    

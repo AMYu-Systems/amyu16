@@ -1,12 +1,12 @@
 from odoo import fields, models, api
-
+from odoo.exceptions import ValidationError
 
 class PaymentsCollection(models.Model):
     _name = 'soa.payments.collection'
     _description = "Payments Collection connected to AR Journal"
 
-    collection_id = fields.Many2one(comodel_name='bcs.collection', required=True)
-    ar_journal_id = fields.Many2one(comodel_name='soa.ar.journal', required=True,
+    collection_id = fields.Many2one(comodel_name='bcs.collection', required=True, ondelete='cascade',)
+    ar_journal_id = fields.Many2one(comodel_name='soa.ar.journal', required=True, ondelete='cascade',
                                     domain="[('id', 'in', context.get('ar_journal_ids', []))]")
     journal_index = fields.Integer(required=True)
     amount = fields.Float(compute='_compute_amount')
@@ -28,12 +28,13 @@ class PaymentsCollection(models.Model):
 
     @api.model
     def create(self, vals):
-        vals['journal_index'] = self.ar_journal_id.pc_ids_count + 1
+        if 'journal_index' not in vals:
+            vals['journal_index'] = self.ar_journal_id.pc_ids_count + 1
         res = super(PaymentsCollection, self).create(vals)
 
         if res and res.manual_posting:
             res.amount = res.manual_amount
-            res.collection_id.unissued_amount_for_ar -= res.amount
+            res.collection_id.new_manual_posting(res)
             res.ar_journal_id.new_manual_posting(res)
 
         return res
@@ -45,7 +46,11 @@ class PaymentsCollection(models.Model):
         for record in self:
             if not record.collection_id: continue
             record.name = record.collection_id.date_collected.strftime("%b %Y") + ' | ' \
-                          + dict(record.collection_id._fields['payment_collection'].selection).get(
-                record.collection_id.payment_collection) \
-                          + ' - ' + (
-                              'Cash' if record.collection_id.payment_mode == 'cash' else record.collection_id.bank.name)
+                + dict(record.collection_id._fields['payment_collection'].selection).get(record.collection_id.payment_collection) \
+                + ' - ' + ('Cash' if record.collection_id.payment_mode == 'cash' else record.collection_id.bank.name)
+    
+    @api.constrains('manual_amount')
+    def _check_amount(self):
+        for record in self:
+            if record.manual_amount > record.collection_id.unissued_amount_for_ar:
+                raise ValidationError("The amount must not exceed the Unissued Amount")
