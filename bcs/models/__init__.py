@@ -9,4 +9,4 @@ from . import bcs_collection
 from . import bcs_updates
 from . import soa_accounts_receivable
 from . import soa_ar_journal
-# from . import soa_payments_collection
+from . import soa_payments_collection

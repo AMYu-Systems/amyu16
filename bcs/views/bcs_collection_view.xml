@@ -9,7 +9,7 @@
                     <field name="transaction"/>
                     <field name="paid_by_id"/>
                     <field name="billing_ids"/>
-                    <field name="state"/>
+                    <field name="state" optional="hide"/>
                     <field name="payment_collection"/>
                     <field name="collected_by"/>
                     <field name="date_collected"/>
@@ -21,8 +21,8 @@
                     <!-- <field name="transaction_generated"/> -->
                     <!-- <field name="transaction_date"/> -->
                     <field name="amount"/>
-                    <field name="remarks"/>
-                    <field name="unissued_amount_for_ar"/>
+                    <field name="remarks" optional="hide"/>
+                    <field name="unissued_amount_for_ar" optional="hide"/>
                 </tree>
             </field>
         </record>
