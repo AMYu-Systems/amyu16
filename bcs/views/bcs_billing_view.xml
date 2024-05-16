@@ -12,13 +12,13 @@
                     <!-- <field name="for_collection_updates"/> -->
                     <field name="date_billed"/>
                     <!-- <field name="last_updated"/> -->
-                    <field name="state"/>
+                    <field name="state" optional="hide"/>
                     <field name="status"/>
-                    <field name="other"/>
+                    <field name="other" optional="hide"/>
                     <field name="services_id" widget="many2many_tags"/>
                     <field name="amount"/>
                     <field name="issued_by"/>
-                    <field name="remarks"/>
+                    <field name="remarks" optional="hide"/>
                 </tree>
             </field>
         </record>
