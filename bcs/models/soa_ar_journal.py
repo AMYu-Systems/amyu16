@@ -52,11 +52,9 @@ class ARJournal(models.Model):
     def new_collection(self, collection):
         self.balance -= collection.amount
         self.pc_ids_count += 1
-        pc = self.env['manual.posting'].create({
-        # pc = self.env['soa.payments.collection'].create({
-        #     'ar_journal_id': self.id,
+        pc = self.env['soa.payments.collection'].create({
+            'ar_journal_id': self.id,
             'collection_id': collection.id,
-            'journal_index': self.pc_ids_count
         })
         self.payments_collection_ids = [(4, pc.id)]
 

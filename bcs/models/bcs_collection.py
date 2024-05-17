@@ -205,8 +205,6 @@ class BcsCollection(models.Model):
             'res_model': 'manual.posting',
             'context': {
                 'default_collection_id': self.id,
-                'default_manual_posting': True,
-                # 'readonly_by_pass': False,
                 'ar_journal_ids': [a.id for a in arjs],
             },
             'target': 'new',
