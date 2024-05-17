@@ -6,11 +6,12 @@ class BcsBilling(models.Model):
     _name = 'bcs.billing'
     _description = "Billing"
     _rec_name = 'name'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     # _rec_name = 'transaction'
 
     name = fields.Char(compute="_compute_name")
     transaction = fields.Char(string="Transaction ID", readonly="1")
-    client_id = fields.Many2one(comodel_name='client.profile', string="Client Name", required=True)
+    client_id = fields.Many2one(comodel_name='client.profile', string="Client Name", required=True, tracking=True)
     
     @api.depends("services_id", "date_billed", "client_id.name")
     def _compute_name(self):
@@ -72,13 +73,13 @@ class BcsBilling(models.Model):
             return False
         return self.env['hr.employee'].search([('user_id', '=', self.env.user.id)], limit=1)
         
-    issued_by = fields.Many2one(comodel_name='hr.employee', string="Issued By", default=_default_issued_by)
-    date_billed = fields.Date(string="Date Billed", required=True, default=fields.Date.today)
+    issued_by = fields.Many2one(comodel_name='hr.employee', string="Issued By", default=_default_issued_by, tracking=True)
+    date_billed = fields.Date(string="Date Billed", required=True, default=fields.Date.today, tracking=True)
     state_selection = [('draft', 'Draft'),
                        ('submitted', 'Submitted'),
                        ('verified', 'Verified'),
                        ('approved', 'Approved')]
-    state = fields.Selection(state_selection, default='draft', copy=False)
+    state = fields.Selection(state_selection, default='draft', copy=False, tracking=True)
 
     # ops manager create
     def draft_action(self):
@@ -108,11 +109,11 @@ class BcsBilling(models.Model):
                         ('client_received', 'Client has received'),
                         ('client_paid', 'Client has paid'),
                         ('void_billing', 'Void Statement')]
-    status = fields.Selection(status_selection, default='not_sent')
+    status = fields.Selection(status_selection, default='not_sent', tracking=True)
 
     # only appear when status == 'sent_to_client'
-    sent_with_email = fields.Boolean(default=True, string="Sent with Email")
-    sent_with_errand = fields.Boolean(string="Sent with Errand")
+    sent_with_email = fields.Boolean(default=True, string="Sent with Email", tracking=True)
+    sent_with_errand = fields.Boolean(string="Sent with Errand", tracking=True)
 
     # fad has sent billing to client
     def sent_to_client(self):
@@ -165,12 +166,12 @@ class BcsBilling(models.Model):
     #                 record[field] != record._origin[field] for field in ['status', 'billing_sent']):
     #             raise ValidationError("Fields can only be edited when state is not 'approved'.")
 
-    other = fields.Text(string="Other Instruction")
+    other = fields.Text(string="Other Instruction", tracking=True)
     services_id = fields.Many2many(comodel_name="services.type", string="Services", required=True, 
-                                   relation="bcs_billing_selected_services_rel")
+                                   relation="bcs_billing_selected_services_rel", track_visibility=True)
     allowed_service_ids = fields.Many2many(comodel_name="services.type", string="Allowed Services",
                                            relation="bcs_billing_allowed_services_rel")
-    
+    # for all services as one general record
     billing_service_ids = fields.Many2many('billing.service')
     
     @api.onchange('services_id')
@@ -178,10 +179,10 @@ class BcsBilling(models.Model):
         self._calculate_amount_services(onchange=True)
             
     
-    previous_amount = fields.Float(string="Previous Amount")
-    services_amount = fields.Float(string="Services Amount")
-    amount = fields.Float(string="Total Amount", compute="_compute_amount")
-    remarks = fields.Text(string="Remarks")
+    previous_amount = fields.Float(string="Previous Amount", tracking=True)
+    services_amount = fields.Float(string="Services Amount", tracking=True)
+    amount = fields.Float(string="Total Amount", compute="_compute_amount", tracking=True)
+    remarks = fields.Text(string="Remarks", tracking=True)
     
     @api.depends('previous_amount', 'services_amount')
     def _compute_amount(self):

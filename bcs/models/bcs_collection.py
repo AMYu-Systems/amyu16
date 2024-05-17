@@ -202,7 +202,7 @@ class BcsCollection(models.Model):
             'type': 'ir.actions.act_window',
             'name': 'Payments Collection',
             'view_mode': 'form',
-            'res_model': 'soa.payments.collection',
+            'res_model': 'manual.posting',
             'context': {
                 'default_collection_id': self.id,
                 'default_manual_posting': True,

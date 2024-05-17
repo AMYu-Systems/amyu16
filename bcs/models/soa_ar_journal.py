@@ -22,7 +22,7 @@ class ARJournal(models.Model):
     balance = fields.Float()
 
     accounts_receivable_ids = fields.One2many(comodel_name='soa.accounts.receivable', inverse_name='ar_journal_id')
-    payments_collection_ids = fields.One2many(comodel_name='soa.payments.collection', inverse_name='ar_journal_id')
+    payments_collection_ids = fields.One2many(comodel_name='manual.posting', inverse_name='ar_journal_id')
     ar_ids_count = fields.Integer()
     pc_ids_count = fields.Integer()
 
@@ -52,8 +52,12 @@ class ARJournal(models.Model):
     def new_collection(self, collection):
         self.balance -= collection.amount
         self.pc_ids_count += 1
+<<<<<<< HEAD
         pc = self.env['soa.payments.collection'].create({
             'ar_journal_id': self.id,
+=======
+        pc = self.env['manual.posting'].create({
+>>>>>>> 6428c7408df1a5d4cee470a0ae2c7ecb892e40b6
             'collection_id': collection.id,
             'journal_index': self.pc_ids_count
         })
