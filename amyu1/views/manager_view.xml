@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <data>
-         <record id="manager_client_profile_tree_view" model="ir.ui.view">
+        <record id="manager_client_profile_tree_view" model="ir.ui.view">
             <field name="name">manager.client.profile.tree.view</field>
             <field name="model">client.profile</field>
             <field name="arch" type="xml">

@@ -6,7 +6,6 @@ class BcsBilling(models.Model):
     _name = 'bcs.billing'
     _description = "Billing"
     _rec_name = 'name'
-    _inherit = ['mail.thread', 'mail.activity.mixin']
     # _rec_name = 'transaction'
 
     name = fields.Char(compute="_compute_name")
@@ -23,50 +22,50 @@ class BcsBilling(models.Model):
                 services = services[:-2]
             else:
                 services = 'No Services'
-            record.name = record.transaction + ' | ' + record.date_billed.strftime("%b %Y") \
-                + ' | ' + services + ' | ' + record.client_id.name
+            record.name = str(record.transaction) + ' | ' + record.date_billed.strftime("%b %Y") \
+                          + ' | ' + services + ' | ' + record.client_id.name
         return
     
     @api.model
     def create(self, vals):
-    #     name = re.sub(r'\W+', ' ', vals['client_id.name'])
-    #     name_array = name.split()
-    #     if len(name_array) == 1:
-    #         transaction = name_array[0][0:3]
-    #     elif len(name_array) == 2:
-    #         name1 = name_array[0]
-    #         name2 = name_array[1]
-    #         transaction = (name1[0:2] if len(name1) >= 2 else name1[0:1]) + \
-    #                       (name2[0:2] if len(name1) == 1 else name2[0:1])
-    #     elif len(name_array) >= 3:
-    #         name1 = name_array[0]
-    #         name2 = name_array[1]
-    #         name3 = name_array[2]
-    #         transaction = name1[0:1] + name2[0:1] + name3[0:1]
-    
+        #     name = re.sub(r'\W+', ' ', vals['client_id.name'])
+        #     name_array = name.split()
+        #     if len(name_array) == 1:
+        #         transaction = name_array[0][0:3]
+        #     elif len(name_array) == 2:
+        #         name1 = name_array[0]
+        #         name2 = name_array[1]
+        #         transaction = (name1[0:2] if len(name1) >= 2 else name1[0:1]) + \
+        #                       (name2[0:2] if len(name1) == 1 else name2[0:1])
+        #     elif len(name_array) >= 3:
+        #         name1 = name_array[0]
+        #         name2 = name_array[1]
+        #         name3 = name_array[2]
+        #         transaction = name1[0:1] + name2[0:1] + name3[0:1]
+
         # Compute Client ID
         # transaction += "-" + self.env['ir.sequence'].next_by_code('billing.id.seq')
         res = super(BcsBilling, self).create(vals)
         if res:
-            res.transaction =  f'{res.id:05d}'
+            res.transaction = f'{res.id:05d}'
         return res
-    
+
     @api.onchange('client_id')
-    def _onchange_client_id(self):   
+    def _onchange_client_id(self):
         if self.client_id:
             arj = self.env['soa.ar.journal'].search([('client_id', '=', self.client_id.id)], limit=1)
             if arj and arj.balance:
                 self.previous_amount = arj.balance
             elif not arj:
                 raise ValidationError('No AR Journal found for this Client.')
-            
+
             bs = self.env['billing.summary'].search([('client_id', '=', self.client_id.id)], limit=1)
             if bs:
                 self.allowed_service_ids = [(6, 0, [srv.id for srv in bs.service_ids])]
                 self.services_id = [(6, 0, [srv.id for srv in bs.service_ids])]
             else:
                 raise ValidationError('No Billing Summary found for this Client.')
-    
+
     @api.model
     def _default_issued_by(self):
         if not self.env.user or not self.env.user.id:
@@ -79,7 +78,7 @@ class BcsBilling(models.Model):
                        ('submitted', 'Submitted'),
                        ('verified', 'Verified'),
                        ('approved', 'Approved')]
-    state = fields.Selection(state_selection, default='draft', copy=False, tracking=True)
+    state = fields.Selection(state_selection, default='draft', copy=False)
 
     # ops manager create
     def draft_action(self):
@@ -99,10 +98,10 @@ class BcsBilling(models.Model):
 
         # add to ar journal
         arj = self.env['soa.ar.journal'].search([
-            ('client_id', '=', self.client_id.id) ], limit=1)
+            ('client_id', '=', self.client_id.id)], limit=1)
         if arj:
             arj.new_billing(self)
-        
+
     allow_void = fields.Boolean(default=True)
     status_selection = [('not_sent', 'Not yet sent'),
                         ('sent_to_client', 'Sent to client'),
@@ -112,8 +111,8 @@ class BcsBilling(models.Model):
     status = fields.Selection(status_selection, default='not_sent', tracking=True)
 
     # only appear when status == 'sent_to_client'
-    sent_with_email = fields.Boolean(default=True, string="Sent with Email", tracking=True)
-    sent_with_errand = fields.Boolean(string="Sent with Errand", tracking=True)
+    sent_with_email = fields.Boolean(default=True, string="Sent with Email")
+    sent_with_errand = fields.Boolean(string="Sent with Errand")
 
     # fad has sent billing to client
     def sent_to_client(self):
@@ -125,37 +124,37 @@ class BcsBilling(models.Model):
     # client confirms they received it
     def client_received(self):
         self.status = 'client_received'
-        
+
     # client has paid the billing
     def client_paid(self):
-        ''' 
-        This function is only called by bcs_collection.py.
-        Even if not complete, as long as collection exists, the client has "paid" the billing.
-        This is the basis of the Collection Report (?)
-        '''
+        # '''
+        # This function is only called by bcs_collection.py.
+        # Even if not complete, as long as collection exists, the client has "paid" the billing.
+        # This is the basis of the Collection Report (?)
+        # '''
         self.status = 'client_paid'
 
     # billing is apparently void
     def void_billing(self):
         if not self.allow_void:
             return
-        
+
         self.status = 'void_billing'
-        
+
         # CONSTRAINT: check first if the most recent billing, is the same as this record
         # past billings can no longer be voided
         most_recent_billing = self.env['bcs.billing'].search(
-            [('state', '=', 'approved'), ('client_id', '=', self.client_id.id)], 
+            [('state', '=', 'approved'), ('client_id', '=', self.client_id.id)],
             order="transaction desc", limit=1)
         if most_recent_billing.id != self.id:
             self.allow_void = False
             return
-        
+
         # update ar journal
         arj = self.env['soa.ar.journal'].search([('client_id', '=', self.client_id.id)], limit=1)
         if arj:
             arj.void_billing(self)
-            
+
     def set_allow_void_false(self):
         self.allow_void = False
 
@@ -173,7 +172,7 @@ class BcsBilling(models.Model):
                                            relation="bcs_billing_allowed_services_rel")
     # for all services as one general record
     billing_service_ids = fields.Many2many('billing.service')
-    
+
     @api.onchange('services_id')
     def _onchange_services_id(self):
         self._calculate_amount_services(onchange=True)
@@ -188,24 +187,21 @@ class BcsBilling(models.Model):
     def _compute_amount(self):
         for record in self:
             record.amount = record.previous_amount + record.services_amount
-            
+
     @api.onchange('services_id')
     def _onchange_services_id(self):
-        '''
-        Need for displaying amounts for Billing Summary of client in Billing
-        '''
+        # '''
+        # Need for displaying amounts for Billing Summary of client in Billing
+        # '''
         bs = self.env['billing.summary'].search([('client_id', '=', self.client_id.id)], limit=1)
         if bs:
             self.services_amount = bs.get_services_total_amount(self.services_id)
             # services_amount_tuples = bs.get_services_each_amount(self.services_id)
             # billing_service_ids = []
             # for service_tuple in services_amount_tuples:
-                
+
             #     billing_service_ids.append(self.env['bcs.billing.service'].create({
             #         'service_view': service_tuple[0],
             #         'amount': service_tuple[1],
             #     }))
             # self.billing_service_ids = [(5,), (6, 0, [bs.id for bs in billing_service_ids])]
-
-    
-    

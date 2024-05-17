@@ -12,13 +12,13 @@
                     <!-- <field name="for_collection_updates"/> -->
                     <field name="date_billed"/>
                     <!-- <field name="last_updated"/> -->
-                    <field name="state"/>
-                    <field name="status"/>
-                    <field name="other"/>
+                    <field name="state" optional="hide"/>
+                    <field name="status" optional="hide"/>
+                    <field name="other" optional="hide"/>
                     <field name="services_id" widget="many2many_tags"/>
                     <field name="amount"/>
                     <field name="issued_by"/>
-                    <field name="remarks"/>
+                    <field name="remarks" optional="hide"/>
                 </tree>
             </field>
         </record>
@@ -72,12 +72,12 @@
                         <button name="client_paid" string="Client Paid" type="object" class="oe_highlight"
                                 confirm="Are you sure to proceed to the next status? — Client Paid"
                                 attrs="{'invisible': [('status', '!=', 'client_paid')]}"/>
-                        
+
                         <button name="void_billing" string="Void Statement" type="object" class="oe_highlight"
                                 confirm="Are you sure to proceed to VOID this Billing Statement?"
                                 attrs="{'invisible': ['|', ('status', '!=', 'client_received'), ('allow_void', '=', False)]}"/>
 
-                        <field name="allow_void" invisible="1" />
+                        <field name="allow_void" invisible="1"/>
                         <field name="status" widget="statusbar" clickable="True"
                                status_invisible="not_sent,sent_email,send_errand,client_received,client_paid,void_billing"/>
                     </header>
@@ -85,7 +85,7 @@
                         <group>
                             <field name="transaction"/>
                             <field name="client_id" attrs="{'readonly': [('status','=','sent_to_client')]}"
-                                options="{'no_create': True,'no_open': True }"/>
+                                   options="{'no_create': True,'no_open': True }"/>
                             <!-- <field name="collection_ids" widget="many2many_tags"
                                    options="{'no_create': True,'no_open': True }"/> -->
                             <!-- <field name="billing_collection_updates"/> -->
@@ -105,30 +105,28 @@
                         <group>
                             <field name="other" attrs="{'readonly': [('status','=','sent_to_client')]}"/>
                             <field name="previous_amount" attrs="{'readonly': [('status','=','sent_to_client')]}"/>
-                            <field name="allowed_service_ids" invisible="1" />
-                            <field name="services_id" widget="many2many_tags" domain="[('id', 'in', allowed_service_ids)]"
-                                attrs="{'readonly': [('status','=','sent_to_client')]}" 
-                                options="{'no_create_edit': True, 'no_create': True, 'no_open': True}"/>
+                            <field name="allowed_service_ids" invisible="1"/>
+                            <field name="services_id" widget="many2many_tags"
+                                   domain="[('id', 'in', allowed_service_ids)]"
+                                   attrs="{'readonly': [('status','=','sent_to_client')]}"
+                                   options="{'no_create_edit': True, 'no_create': True, 'no_open': True}"/>
                             <!-- <field name="billing_service_ids" readonly="1">
                                 <tree>
                                     <field name="service_formatted" string="Service" />
                                     <field name="amount" />
                                 </tree>
                             </field> -->
-                            <field name="services_amount" readonly="1" />
-                            <field name="services_amount" invisible="1" />
+                            <field name="services_amount" readonly="1"/>
+                            <field name="services_amount" invisible="1"/>
                             <field name="amount" string="Total Amount" readonly="1"/>
                             <field name="amount" string="Total Amount" invisible="1"/>
-                            <field name="issued_by" attrs="{'readonly': [('status','=','sent_to_client')]}" 
-                                options="{'no_create': True,'no_open': True }"/>
+                            <field name="issued_by" attrs="{'readonly': [('status','=','sent_to_client')]}"
+                                   options="{'no_create': True,'no_open': True }"/>
                         </group>
                         <group>
                             <field name="remarks"/>
                         </group>
                     </sheet>
-                    <div class="oe_chatter">
-                        <field name="message_ids"/>
-                    </div>
                 </form>
             </field>
         </record>

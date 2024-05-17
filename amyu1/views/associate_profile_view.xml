@@ -18,7 +18,7 @@
                                 <div class="oe_kanban_details">
                                     <div class="oe_kanban_title">
                                         <h2>
-                                            <field name="user_id" />
+                                            <field name="user_id"/>
                                         </h2>
                                     </div>
                                     <div class="oe_kanban_description">
@@ -63,9 +63,8 @@
                         <field name="image" widget="image" nolabel="1" class="oe_avatar"/>
                     </div>
                     <group>
+                        <field name="user_id" options="{'no_open': True,'no_create': True}" nolabel="1"/>
                         <group>
-                            <field name="user_id" options="{'no_open': True,'no_create': True}"
-                                   invisible="1" readonly="1"/>
                             <field name="supervisor_id" options="{'no_open': True,'no_create': True}"/>
                             <field name="manager_id" options="{'no_open': True,'no_create': True}"/>
                             <field name="lead_partner_id" options="{'no_open': True,'no_create': True}"/>
