@@ -62,7 +62,7 @@ class ForCollectionUpdates(models.Model):
     #     return dt, f'{dt.astimezone(pytz.timezone("Asia/Manila")).strftime("%b. %d, %Y | %I:%M %p")}'
 
     # DATETIME_FORMAT = "%b. %d, %Y | %I:%M %p"
-    DATETIME_FORMAT = "%m/%d/%Y \n%I:%M%p"
+    DATETIME_FORMAT = "%m/%d/%Y asdadasfd asdfadfad asd \n%I:%M%p"
 
     @api.model
     def create(self, vals):

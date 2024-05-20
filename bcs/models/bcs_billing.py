@@ -15,16 +15,22 @@ class BcsBilling(models.Model):
     @api.depends("services_id", "date_billed", "client_id.name")
     def _compute_name(self):
         for record in self:
-            services = ''
-            if len(record.services_id) > 0:
-                for service in record.services_id:
-                    services += service.code + ', '
-                services = services[:-2]
-            else:
-                services = 'No Services'
+            services = BcsBilling.get_services_str(record)
             record.name = str(record.transaction) + ' | ' + record.date_billed.strftime("%b %Y") \
                           + ' | ' + services + ' | ' + record.client_id.name
         return
+    
+    @staticmethod
+    def get_services_str(record) -> str:
+        services = ''
+        separator = ', '
+        if len(record.services_id) > 0:
+            for service in record.services_id:
+                services += service.code + separator
+            services = services[:-2]
+        else:
+            services = 'No Services'
+        return services
     
     @api.model
     def create(self, vals):
