@@ -17,7 +17,8 @@
     'website': "https://www.amyucpas.com",
     'category': 'Custom',
     'version': '0.1',
-    'depends': ['base', 'muk_web_theme', 'hrad', 'amyu1'],
+    'depends': ['base', 'muk_web_theme', 'report_xlsx',
+                'hrad', 'amyu1'],
 
     # always loaded
     'data': [
@@ -46,7 +47,7 @@
         'views/bcs_menu_view.xml',
         'wizard/manual_posting.xml',
         'report/ar_report.xml',
-        # 'report/collection_report.xml',
+        'report/collection_report.xml',
     ],
     'application': True,
     'license': 'LGPL-3',

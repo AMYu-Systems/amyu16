@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <report
+    <!-- <report
         id="collection_report_xlsx"
-        model="bcs.collection"
+        model="bcs.bcs.collection"
         string="Download Report as Excel"
         report_type="xlsx"
-        name="bcs.collection_report"
-        file="Collection Report"
-        attachment_use="False" />
+        name="bcs.bcs_collection_xlsx"
+        file="bcs_collection_xlsx" /> -->
+    
+    <record id="collection_report_xlsx" model="ir.actions.report">
+        <field name="name">Download Excel Report</field>
+        <field name="model">bcs.collection</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">bcs.collection_report_xlsx</field>
+        <field name="report_file">bcs.collection_report_xlsx</field>
+        <field name="print_report_name">'Collection Report - %s' % object.transaction</field>
+        <field name="binding_model_id" ref="model_bcs_collection"/>
+        <field name="binding_type">report</field>
+    </record>
 </odoo>

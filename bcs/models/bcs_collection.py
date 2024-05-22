@@ -94,11 +94,6 @@ class BcsCollection(models.Model):
             record.recent_billings_per_client = [(6, 0, [value.id for value in unique_billing_ids.values()])]
             
     billing_ids = fields.Many2many(comodel_name='bcs.billing', string="Billing", relation='bcs_collection_selected_billing_rel')
-    billing_trans_text = fields.Text(string="Billing Transaction ID")
-    billing_date_text = fields.Text(string="Billing Period")
-    billing_services_text = fields.Text(string="Service Types")
-    billing_client_text = fields.Text(string="Paid For (Client)")
-    billing_amount_text = fields.Text(string="Billing Amount")
     
     collection_type = [('direct_payment', 'Direct Payment'),
                        ('consolidated', 'Consolidated Payment'),]
