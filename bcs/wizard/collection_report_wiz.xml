@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="bcs_collection_report_view_form" model="ir.ui.view">
+            <field name="name">bcs.collection.report.view.form</field>
+            <field name="model">bcs.collection_report</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="date_start" />
+                        </group>
+                        <group>
+                            <field name="date_end" />
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button string="Export" class="btn-primary" type="object" name="export_collection_report" />
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="bcs_collection_report_action_wiz" model="ir.actions.act_window">
+            <field name="name">Collection Report Range</field>
+            <field name="res_model">bcs.collection_report</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="bcs_collection_report_view_form"/>
+            <field name="target">new</field>
+        </record>
+    </data>
+</odoo>
