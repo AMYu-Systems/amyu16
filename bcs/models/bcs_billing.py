@@ -54,6 +54,10 @@ class BcsBilling(models.Model):
         res = super(BcsBilling, self).create(vals)
         if res:
             res.transaction = f'{res.id:05d}'
+            prev_billing = self.env['bcs.billing'].search(
+                [('status', '=', 'void_billing')], order='id desc', limit=1)
+            if prev_billing:
+                res.previous_voided_billing = prev_billing
         return res
 
     @api.onchange('client_id')
@@ -109,6 +113,7 @@ class BcsBilling(models.Model):
             arj.new_billing(self)
 
     allow_void = fields.Boolean(default=True)
+    previous_voided_billing = fields.Many2one(comodel_name='bcs.billing')
     status_selection = [('not_sent', 'Not yet sent'),
                         ('sent_to_client', 'Sent to client'),
                         ('client_received', 'Client has received'),

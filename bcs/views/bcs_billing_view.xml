@@ -123,6 +123,9 @@
                             <field name="issued_by" attrs="{'readonly': [('status','=','sent_to_client')]}"
                                    options="{'no_create': True,'no_open': True }"/>
                         </group>
+                        <group attrs="{'invisible': [('previous_voided_billing', '=', False)]}">
+                            <field name="previous_voided_billing" readonly='1' />
+                        </group>
                         <group>
                             <field name="remarks"/>
                         </group>
