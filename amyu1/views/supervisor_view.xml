@@ -15,7 +15,7 @@
         </record>
 
         <record id="client_profile_supervisor_action" model="ir.actions.act_window">
-            <field name="name">For Verification</field>
+            <field name="name">For Verification </field>
             <field name="res_model">client.profile</field>
             <field name="view_mode">tree,form</field>
             <field name="domain">[('state','=','supervisor')]</field>
