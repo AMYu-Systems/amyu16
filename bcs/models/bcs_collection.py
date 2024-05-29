@@ -152,13 +152,13 @@ class BcsCollection(models.Model):
         self._validate_billing_statuses(next_state=next_state)
         self.state = next_state
 
-        # add to ar journal
+        # add to ar journal if direct payment
         if self.payment_collection == 'direct_payment':
             arj = self.env['soa.ar.journal'].search([('client_id', '=', self.paid_by_id.id)], limit=1)
             if arj:
-                arj.new_collection(self)
+                arj.new_collection(self, self.billing_ids[0])
                 
-            # only one billing since direct payment
+            # bcs_updates: only one billing since direct payment
             for billing in self.billing_ids:
                 upd = self.env['bcs.updates'].search([('billing_id', '=', billing.id)], limit=1)
                 if upd:
@@ -188,14 +188,14 @@ class BcsCollection(models.Model):
     amount = fields.Float(string="Amount", required=True)
     remarks = fields.Text(string="Remarks")
     unissued_amount_for_ar = fields.Float(string="Unissued Amount For ARs", default=0, readonly=True)
+    manual_posting_ids = fields.Many2many(comodel_name='soa.payments.collection',
+                                          string="Manual Postings", readonly=True)
     
-    def new_manual_posting(self, payments_collection):
-        for billing in self.billing_ids:
-            pc_client = payments_collection.ar_journal_id.client_id
-            if billing.client_id.id == pc_client.id:
-                billing.client_paid()
-        self.unissued_amount_for_ar -= payments_collection.amount
+    def new_manual_posting(self, billing, payments_collection, manual_amount):
+        billing.client_paid()
+        self.unissued_amount_for_ar -= manual_amount
         self.allow_edit_billing_ids = False
+        self.manual_posting_ids = [(4, payments_collection.id)]
     
     def manual_posting(self):
         arjs = self.env['soa.ar.journal'].search([('client_id', 'in', [bill.client_id.id for bill in self.billing_ids])])
@@ -211,4 +211,16 @@ class BcsCollection(models.Model):
             'target': 'new',
         }
 
+
+# NOT NEEDED? Use soa.payments.collection instead?
+# class BcsManualPostingRecord(models.Model):
+#     _name = 'bcs.manual.posting.record'
+#     _description = "Manual Posting Records"
+#     _rec_name = 'paid_for_id'
     
+#     collection_id = fields.Many2one(comodel_name='bcs.collection', required=True)
+#     paid_for_id = fields.Many2one(comodel_name='client.profile', string="Paid For (Client)", required=True)
+#     amount = fields.Float(required=True)
+    
+#     def set_amount(self, amount: float):
+#         self.amount = amount

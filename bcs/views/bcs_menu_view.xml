@@ -114,7 +114,7 @@
                   parent="menu_bcs_collection"
                   action="bcs_collection_view_action"/>
         <menuitem id="menu_collection_report"
-                  name="Export Collection Report"
+                  name="> Export Collection Report"
                   sequence="135"
                   parent="menu_bcs_collection"
                   action="bcs_collection_report_action_wiz"/>

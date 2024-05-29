@@ -97,6 +97,16 @@
                             <group string=" "></group>
                             <group string=" "></group>
                         </group>
+                        <group attrs="{'invisible': [('payment_collection', '!=', 'consolidated')]}">
+                            <field name="manual_posting_ids" string="Manual Posting Breakdown">
+                                <tree create="0" edit="0" default_order='journal_index asc'>
+                                    <field name="journal_index" string="Index" invisible='1'/>
+                                    <field name="name" string="Payments Collection"/>
+                                    <field name="related_ar_record" string="Related AR" widget='badge' />
+                                    <field name="amount"/>
+                                </tree>
+                            </field>
+                        </group>
                     </sheet>
                 </form>
             </field>

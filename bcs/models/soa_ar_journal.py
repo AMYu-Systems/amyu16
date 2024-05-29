@@ -49,24 +49,39 @@ class ARJournal(models.Model):
         })
         self.accounts_receivable_ids = [(4, ar.id)]  # this syntax, with 4, means add apparently
 
-    def new_collection(self, collection):
+    def new_collection(self, collection, billing):
         self.balance -= collection.amount
         self.pc_ids_count += 1
+        ar = self.env['soa.accounts.receivable'].search([('billing_id','=',billing.id)], limit=1)
         pc = self.env['soa.payments.collection'].create({
             'ar_journal_id': self.id,
             'collection_id': collection.id,
+            'related_ar_record': ar.id,
+            'journal_index': self.pc_ids_count
         })
         self.payments_collection_ids = [(4, pc.id)]
 
-    def new_manual_posting(self, payments_collection):
-        self.balance -= payments_collection.amount
+    def new_manual_posting(self, collection, billing, manual_amount):
+        self.balance -= manual_amount
         self.pc_ids_count += 1
-        self.payments_collection_ids = [(4, payments_collection.id)]
+        ar = self.env['soa.accounts.receivable'].search([('billing_id','=',billing.id)], limit=1)
+        pc = self.env['soa.payments.collection'].create({
+            'ar_journal_id': self.id,
+            'collection_id': collection.id,
+            'related_ar_record': ar.id,
+            'journal_index': self.pc_ids_count,
+            'amount': manual_amount,
+            'manual_amount': manual_amount,
+            'manual_posting': True,
+        })
+        self.payments_collection_ids = [(4, pc.id)]
+        return pc
 
     def void_billing(self, billing):
         ar = self.env['soa.accounts.receivable'].search([('billing_id', '=', billing.id)], limit=1)
         if ar:
             self.accounts_receivable_ids = [(2, ar.id)]  # this syntax, with 2, means delete apparently
+            self.ar_ids_count -= 1
         self.balance = billing.previous_amount if not len(self.accounts_receivable_ids) == 0 else 0
 
     def recalculate(self):
@@ -77,7 +92,6 @@ class ARJournal(models.Model):
         self.balance = add - sub
 
     """ FOR DEBUGGING PURPOSES ONLY """
-
     def reset_journal(self):
         self.accounts_receivable_ids = [(6, 0, [])]
         self.payments_collection_ids = [(6, 0, [])]
