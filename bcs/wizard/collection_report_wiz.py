@@ -48,5 +48,5 @@ class CollectionReportWiz(models.TransientModel):
         data = {'collections': collections}
         
         report = self.env.ref('bcs.collection_report_xlsx_rec_id')
-        report.name = self.report_file_name
+        # report.print_report_name = self.report_file_name
         return report.report_action(self, data=data)

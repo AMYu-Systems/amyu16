@@ -10,6 +10,7 @@
     
     <record id="collection_report_xlsx_rec_id" model="ir.actions.report">
         <field name="name">Download Collection Report (XLSX)</field>
+        <!-- <field name="model">report.bcs.collection_report_xlsx</field> -->
         <field name="model">collection.report.wizard</field>
         <field name="report_type">xlsx</field>
         <field name="report_name">bcs.collection_report_xlsx</field>

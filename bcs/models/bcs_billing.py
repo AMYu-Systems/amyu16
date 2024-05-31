@@ -55,9 +55,11 @@ class BcsBilling(models.Model):
         if res:
             res.transaction = f'{res.id:05d}'
             prev_billing = self.env['bcs.billing'].search(
-                [('status', '=', 'void_billing')], order='id desc', limit=1)
+                [('state', '=', 'approved'), ('status', '=', 'void_billing'), ('id','=',res.id-1)], 
+                order='id desc', limit=1)
             if prev_billing:
                 res.previous_voided_billing = prev_billing
+                prev_billing.next_approved_after_void = res
         return res
 
     @api.onchange('client_id')
@@ -113,7 +115,9 @@ class BcsBilling(models.Model):
             arj.new_billing(self)
 
     allow_void = fields.Boolean(default=True)
-    previous_voided_billing = fields.Many2one(comodel_name='bcs.billing')
+    previous_voided_billing = fields.Many2one(comodel_name='bcs.billing', ref='previous_voided_billing')
+    next_approved_after_void = fields.Many2one(comodel_name='bcs.billing', ref='next_approved_after_void', 
+                                               string='Next Approved Billing')
     status_selection = [('not_sent', 'Not yet sent'),
                         ('sent_to_client', 'Sent to client'),
                         ('client_received', 'Client has received'),

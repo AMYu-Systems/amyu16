@@ -52,7 +52,8 @@ class ARJournal(models.Model):
     def new_collection(self, collection, billing):
         self.balance -= collection.amount
         self.pc_ids_count += 1
-        ar = self.env['soa.accounts.receivable'].search([('billing_id','=',billing.id)], limit=1)
+        # ar = self.env['soa.accounts.receivable'].search([('billing_id','=',billing.id)], limit=1)
+        ar = self.accounts_receivable_ids[-1]
         pc = self.env['soa.payments.collection'].create({
             'ar_journal_id': self.id,
             'collection_id': collection.id,
@@ -61,10 +62,10 @@ class ARJournal(models.Model):
         })
         self.payments_collection_ids = [(4, pc.id)]
 
-    def new_manual_posting(self, collection, billing, manual_amount):
+    def new_manual_posting(self, collection, manual_amount):
         self.balance -= manual_amount
         self.pc_ids_count += 1
-        ar = self.env['soa.accounts.receivable'].search([('billing_id','=',billing.id)], limit=1)
+        ar = self.accounts_receivable_ids[-1]
         pc = self.env['soa.payments.collection'].create({
             'ar_journal_id': self.id,
             'collection_id': collection.id,

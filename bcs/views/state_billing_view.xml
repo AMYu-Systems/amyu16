@@ -29,7 +29,7 @@
             <field name="res_model">bcs.billing</field>
             <field name="view_mode">tree,form</field>
             <field name="domain">[('state','=','draft')]</field>
-            <field name="view_id" ref="draft_bcs_billing_tree_view"/>
+            <field name="view_id" ref="bcs_billing_tree_view"/>
         </record>
 
         <record id="bcs_billing_form_action" model="ir.actions.act_window">
@@ -69,7 +69,7 @@
             <field name="res_model">bcs.billing</field>
             <field name="view_mode">tree,form</field>
             <field name="domain">[('state','=','submitted')]</field>
-            <field name="view_id" ref="submitted_bcs_billing_tree_view"/>
+            <field name="view_id" ref="bcs_billing_tree_view"/>
         </record>
         
         <!-- Verified-->
@@ -100,7 +100,7 @@
             <field name="res_model">bcs.billing</field>
             <field name="view_mode">tree,form</field>
             <field name="domain">[('state','=','verified')]</field>
-            <field name="view_id" ref="verified_bcs_billing_tree_view"/>
+            <field name="view_id" ref="bcs_billing_tree_view"/>
         </record>
 
         <!-- Approved -->
@@ -108,7 +108,7 @@
             <field name="name">Billing</field>
             <field name="res_model">bcs.billing</field>
             <field name="view_mode">tree,form</field>
-            <field name="domain">[('state','=','approved')]</field>
+            <field name="domain">[('state','=','approved'), ('status','!=','void_billing')]</field>
             <field name="context">{'edit': False, 'create': False}</field>
             <field name="view_id" ref="bcs_billing_tree_view"/>
         </record>

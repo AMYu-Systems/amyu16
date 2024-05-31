@@ -69,9 +69,9 @@
                                 confirm="Are you sure to proceed to the next status? — Client Received"
                                 attrs="{'invisible': [('status', '!=', 'sent_to_client')]}"/>
 
-                        <button name="client_paid" string="Client Paid" type="object" class="oe_highlight"
+                        <!-- <button name="client_paid" string="Client Paid" type="object" class="oe_highlight"
                                 confirm="Are you sure to proceed to the next status? — Client Paid"
-                                attrs="{'invisible': [('status', '!=', 'client_paid')]}"/>
+                                attrs="{'invisible': [('status', '!=', 'client_paid')]}"/> -->
 
                         <button name="void_billing" string="Void Statement" type="object" class="oe_highlight"
                                 confirm="Are you sure to proceed to VOID this Billing Statement?"
@@ -126,6 +126,9 @@
                         <group attrs="{'invisible': [('previous_voided_billing', '=', False)]}">
                             <field name="previous_voided_billing" readonly='1' />
                         </group>
+                        <group attrs="{'invisible': [('next_approved_after_void', '=', False)]}">
+                            <field name="next_approved_after_void" readonly='1' />
+                        </group>
                         <group>
                             <field name="remarks"/>
                         </group>
@@ -141,6 +144,17 @@
             <field name="view_id" ref="bcs_billing_tree_view"/>
         </record>
 
+        <!-- Voided -->
+        <record id="bcs_voided_billing_view_action" model="ir.actions.act_window">
+            <field name="name">Voided Billing</field>
+            <field name="res_model">bcs.billing</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('status','=','void_billing')]</field>
+            <field name="context">{'edit': False, 'create': False}</field>
+            <field name="view_id" ref="bcs_billing_tree_view"/>
+        </record>
+
+        <!-- Sequential... Unused? -->
         <record model="ir.sequence" id="billing_id_seq">
             <field name="name">Billing Transaction ID Sequence"</field>
             <field name="code">billing.id.seq</field>

@@ -168,7 +168,7 @@
                                     </tree>
                                 </field>
                             </page>
-                            <page string="LOA" attrs="{'invisible': [('has_loa', '=', False)]}">
+                            <page string="TXA" attrs="{'invisible': [('has_loa', '=', False)]}">
                                 <field name="loa_ids" nolabel="1">
                                     <tree>
                                         <field name="name"/>

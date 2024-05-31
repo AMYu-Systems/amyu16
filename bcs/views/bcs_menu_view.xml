@@ -60,8 +60,13 @@
                         name="For Approval"
                         parent="menu_billing_per_status"
                         action="verified_bcs_billing_view_action"/>
-        <menuitem id="menu_all_billings"
+        <menuitem id="menu_void_billings"
                   sequence="124"
+                  name="View Voided Billings"
+                  parent="menu_billing_root"
+                  action="bcs_voided_billing_view_action"/>
+        <menuitem id="menu_all_billings"
+                  sequence="125"
                   name="View All Billings"
                   parent="menu_billing_root"
                   action="bcs_all_billing_view_action"/>

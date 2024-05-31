@@ -191,8 +191,11 @@ class BcsCollection(models.Model):
     manual_posting_ids = fields.Many2many(comodel_name='soa.payments.collection',
                                           string="Manual Postings", readonly=True)
     
-    def new_manual_posting(self, billing, payments_collection, manual_amount):
-        billing.client_paid()
+    def new_manual_posting(self, payments_collection, manual_amount):
+        for billing in self.billing_ids:
+            if billing.client_id.id == payments_collection.client_id.id:
+                billing.client_paid()
+                break
         self.unissued_amount_for_ar -= manual_amount
         self.allow_edit_billing_ids = False
         self.manual_posting_ids = [(4, payments_collection.id)]
