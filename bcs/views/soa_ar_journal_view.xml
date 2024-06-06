@@ -8,14 +8,14 @@
                 <form string="AR Journal">
                     <sheet>
                         <group>
-                            <field name="client_id" readonly="1" />
+                            <field name="client_id"/>
                             <!-- <field name="view_initial_balance" /> -->
                         </group>
                         <group col="2">
                             <group>
                                 <field name="accounts_receivable_ids" string="">
                                     <tree create="0" edit="0" default_order='journal_index desc'>
-                                        <field name="journal_index" string="Index" />
+                                        <field name="journal_index" string="Index"/>
                                         <field name="name" string="Accounts Receivable"/>
                                         <field name="amount"/>
                                     </tree>
@@ -24,7 +24,7 @@
                             <group>
                                 <field name="payments_collection_ids" string="">
                                     <tree create="0" edit="0" default_order='journal_index desc'>
-                                        <field name="journal_index" string="Index" />
+                                        <field name="journal_index" string="Index"/>
                                         <field name="name" string="Payments Collection"/>
                                         <field name="amount"/>
                                     </tree>
@@ -53,8 +53,8 @@
             <field name="model">soa.ar.journal</field>
             <field name="arch" type="xml">
                 <tree action="open_rec" type="object">
-                    <field name="client_id" />
-                    <field name="balance" />
+                    <field name="client_id"/>
+                    <field name="balance"/>
                     <!-- <button string="Create" icon="gtk-redo" name="new_billing" type="object"/> -->
                 </tree>
             </field>
