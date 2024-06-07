@@ -10,70 +10,82 @@ class BcsBilling(models.Model):
 
     name = fields.Char(compute="_compute_name")
     transaction = fields.Char(string="Transaction ID", readonly="1")
-    client_id = fields.Many2one(comodel_name='client.profile', string="Client Name", required=True)
+    client_id = fields.Many2one(comodel_name='client.profile', string="Client Name", required=True, tracking=True)
     
     @api.depends("services_id", "date_billed", "client_id.name")
     def _compute_name(self):
         for record in self:
-            services = ''
-            if len(record.services_id) > 0:
-                for service in record.services_id:
-                    services += service.code + ', '
-                services = services[:-2]
-            else:
-                services = 'No Services'
-            record.name = record.transaction + ' | ' + record.date_billed.strftime("%b %Y") \
-                + ' | ' + services + ' | ' + record.client_id.name
+            services = BcsBilling.get_services_str(record)
+            record.name = str(record.transaction) + ' | ' + record.date_billed.strftime("%b %Y") \
+                          + ' | ' + services + ' | ' + record.client_id.name
         return
+    
+    @staticmethod
+    def get_services_str(record) -> str:
+        services = ''
+        separator = ', '
+        if len(record.services_id) > 0:
+            for service in record.services_id:
+                services += service.code + separator
+            services = services[:-2]
+        else:
+            services = 'No Services'
+        return services
     
     @api.model
     def create(self, vals):
-    #     name = re.sub(r'\W+', ' ', vals['client_id.name'])
-    #     name_array = name.split()
-    #     if len(name_array) == 1:
-    #         transaction = name_array[0][0:3]
-    #     elif len(name_array) == 2:
-    #         name1 = name_array[0]
-    #         name2 = name_array[1]
-    #         transaction = (name1[0:2] if len(name1) >= 2 else name1[0:1]) + \
-    #                       (name2[0:2] if len(name1) == 1 else name2[0:1])
-    #     elif len(name_array) >= 3:
-    #         name1 = name_array[0]
-    #         name2 = name_array[1]
-    #         name3 = name_array[2]
-    #         transaction = name1[0:1] + name2[0:1] + name3[0:1]
-    
+        #     name = re.sub(r'\W+', ' ', vals['client_id.name'])
+        #     name_array = name.split()
+        #     if len(name_array) == 1:
+        #         transaction = name_array[0][0:3]
+        #     elif len(name_array) == 2:
+        #         name1 = name_array[0]
+        #         name2 = name_array[1]
+        #         transaction = (name1[0:2] if len(name1) >= 2 else name1[0:1]) + \
+        #                       (name2[0:2] if len(name1) == 1 else name2[0:1])
+        #     elif len(name_array) >= 3:
+        #         name1 = name_array[0]
+        #         name2 = name_array[1]
+        #         name3 = name_array[2]
+        #         transaction = name1[0:1] + name2[0:1] + name3[0:1]
+
         # Compute Client ID
         # transaction += "-" + self.env['ir.sequence'].next_by_code('billing.id.seq')
         res = super(BcsBilling, self).create(vals)
         if res:
-            res.transaction =  f'{res.id:05d}'
+            res.transaction = f'{res.id:05d}'
+            prev_billing = self.env['bcs.billing'].search(
+                [('state', '=', 'approved'), ('status', '=', 'void_billing'), ('id','=',res.id-1)], 
+                order='id desc', limit=1)
+            if prev_billing:
+                res.previous_voided_billing = prev_billing
+                prev_billing.next_approved_after_void = res
         return res
-    
+
     @api.onchange('client_id')
-    def _onchange_client_id(self):   
+    def _onchange_client_id(self):
         if self.client_id:
             arj = self.env['soa.ar.journal'].search([('client_id', '=', self.client_id.id)], limit=1)
             if arj and arj.balance:
                 self.previous_amount = arj.balance
             elif not arj:
                 raise ValidationError('No AR Journal found for this Client.')
-            
+
             bs = self.env['billing.summary'].search([('client_id', '=', self.client_id.id)], limit=1)
             if bs:
                 self.allowed_service_ids = [(6, 0, [srv.id for srv in bs.service_ids])]
                 self.services_id = [(6, 0, [srv.id for srv in bs.service_ids])]
             else:
                 raise ValidationError('No Billing Summary found for this Client.')
-    
+
     @api.model
     def _default_issued_by(self):
         if not self.env.user or not self.env.user.id:
             return False
         return self.env['hr.employee'].search([('user_id', '=', self.env.user.id)], limit=1)
         
-    issued_by = fields.Many2one(comodel_name='hr.employee', string="Issued By", default=_default_issued_by)
-    date_billed = fields.Date(string="Date Billed", required=True, default=fields.Date.today)
+    issued_by = fields.Many2one(comodel_name='hr.employee', string="Issued By", default=_default_issued_by, tracking=True)
+    date_billed = fields.Date(string="Date Billed", required=True, default=fields.Date.today, tracking=True)
     state_selection = [('draft', 'Draft'),
                        ('submitted', 'Submitted'),
                        ('verified', 'Verified'),
@@ -98,17 +110,23 @@ class BcsBilling(models.Model):
 
         # add to ar journal
         arj = self.env['soa.ar.journal'].search([
-            ('client_id', '=', self.client_id.id) ], limit=1)
+            ('client_id', '=', self.client_id.id)], limit=1)
         if arj:
             arj.new_billing(self)
-        
+
     allow_void = fields.Boolean(default=True)
+    previous_voided_billing = fields.Many2one(comodel_name='bcs.billing', ref='previous_voided_billing')
+    next_approved_after_void = fields.Many2one(comodel_name='bcs.billing', ref='next_approved_after_void', 
+                                               string='Next Approved Billing')
+    void_reason = fields.Text(string="Reason for Void")
+    void_attachment = fields.Many2many('ir.attachment', string="Attachment for Void")
+    
     status_selection = [('not_sent', 'Not yet sent'),
                         ('sent_to_client', 'Sent to client'),
                         ('client_received', 'Client has received'),
                         ('client_paid', 'Client has paid'),
                         ('void_billing', 'Void Statement')]
-    status = fields.Selection(status_selection, default='not_sent')
+    status = fields.Selection(status_selection, default='not_sent', tracking=True)
 
     # only appear when status == 'sent_to_client'
     sent_with_email = fields.Boolean(default=True, string="Sent with Email")
@@ -124,37 +142,37 @@ class BcsBilling(models.Model):
     # client confirms they received it
     def client_received(self):
         self.status = 'client_received'
-        
+
     # client has paid the billing
     def client_paid(self):
-        ''' 
-        This function is only called by bcs_collection.py.
-        Even if not complete, as long as collection exists, the client has "paid" the billing.
-        This is the basis of the Collection Report (?)
-        '''
+        # '''
+        # This function is only called by bcs_collection.py.
+        # Even if not complete, as long as collection exists, the client has "paid" the billing.
+        # This is the basis of the Collection Report (?)
+        # '''
         self.status = 'client_paid'
 
     # billing is apparently void
     def void_billing(self):
         if not self.allow_void:
             return
-        
+
         self.status = 'void_billing'
-        
+
         # CONSTRAINT: check first if the most recent billing, is the same as this record
         # past billings can no longer be voided
         most_recent_billing = self.env['bcs.billing'].search(
-            [('state', '=', 'approved'), ('client_id', '=', self.client_id.id)], 
+            [('state', '=', 'approved'), ('client_id', '=', self.client_id.id)],
             order="transaction desc", limit=1)
         if most_recent_billing.id != self.id:
             self.allow_void = False
             return
-        
+
         # update ar journal
         arj = self.env['soa.ar.journal'].search([('client_id', '=', self.client_id.id)], limit=1)
         if arj:
             arj.void_billing(self)
-            
+
     def set_allow_void_false(self):
         self.allow_void = False
 
@@ -165,46 +183,43 @@ class BcsBilling(models.Model):
     #                 record[field] != record._origin[field] for field in ['status', 'billing_sent']):
     #             raise ValidationError("Fields can only be edited when state is not 'approved'.")
 
-    other = fields.Text(string="Other Instruction")
+    other = fields.Text(string="Other Instruction", tracking=True)
     services_id = fields.Many2many(comodel_name="services.type", string="Services", required=True, 
-                                   relation="bcs_billing_selected_services_rel")
+                                   relation="bcs_billing_selected_services_rel", track_visibility=True)
     allowed_service_ids = fields.Many2many(comodel_name="services.type", string="Allowed Services",
                                            relation="bcs_billing_allowed_services_rel")
-    
+    # for all services as one general record
     billing_service_ids = fields.Many2many('billing.service')
-    
+
     @api.onchange('services_id')
     def _onchange_services_id(self):
         self._calculate_amount_services(onchange=True)
             
     
-    previous_amount = fields.Float(string="Previous Amount")
-    services_amount = fields.Float(string="Services Amount")
-    amount = fields.Float(string="Total Amount", compute="_compute_amount")
-    remarks = fields.Text(string="Remarks")
+    previous_amount = fields.Float(string="Previous Amount", tracking=True)
+    services_amount = fields.Float(string="Services Amount", tracking=True)
+    amount = fields.Float(string="Total Amount", compute="_compute_amount", tracking=True)
+    remarks = fields.Text(string="Remarks", tracking=True)
     
     @api.depends('previous_amount', 'services_amount')
     def _compute_amount(self):
         for record in self:
             record.amount = record.previous_amount + record.services_amount
-            
+
     @api.onchange('services_id')
     def _onchange_services_id(self):
-        '''
-        Need for displaying amounts for Billing Summary of client in Billing
-        '''
+        # '''
+        # Need for displaying amounts for Billing Summary of client in Billing
+        # '''
         bs = self.env['billing.summary'].search([('client_id', '=', self.client_id.id)], limit=1)
         if bs:
             self.services_amount = bs.get_services_total_amount(self.services_id)
             # services_amount_tuples = bs.get_services_each_amount(self.services_id)
             # billing_service_ids = []
             # for service_tuple in services_amount_tuples:
-                
+
             #     billing_service_ids.append(self.env['bcs.billing.service'].create({
             #         'service_view': service_tuple[0],
             #         'amount': service_tuple[1],
             #     }))
             # self.billing_service_ids = [(5,), (6, 0, [bs.id for bs in billing_service_ids])]
-
-    
-    

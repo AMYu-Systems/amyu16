@@ -8,8 +8,8 @@
                 <tree create="0" default_order='transaction desc'>
                     <field name="transaction"/>
                     <field name="paid_by_id"/>
-                    <field name="billing_ids"/>
-                    <field name="state"/>
+                    <field name="billing_ids" widget="many2many_tags"/>
+                    <field name="state" optional="hide"/>
                     <field name="payment_collection"/>
                     <field name="collected_by"/>
                     <field name="date_collected"/>
@@ -21,8 +21,8 @@
                     <!-- <field name="transaction_generated"/> -->
                     <!-- <field name="transaction_date"/> -->
                     <field name="amount"/>
-                    <field name="remarks"/>
-                    <field name="unissued_amount_for_ar"/>
+                    <field name="remarks" optional="hide"/>
+                    <field name="unissued_amount_for_ar" optional="hide"/>
                 </tree>
             </field>
         </record>
@@ -97,6 +97,17 @@
                             <group string=" "></group>
                             <group string=" "></group>
                         </group>
+                        <group attrs="{'invisible': ['|', ('payment_collection', '!=', 'consolidated'), ('state', '!=', 'approved') ]}">
+                            <field name="manual_posting_ids" string="Manual Posting Breakdown">
+                                <tree create="0" edit="0" delete="0" default_order='journal_index asc'>
+                                    <field name="journal_index" string="Index" invisible='1'/>
+                                    <field name="client_id" string="Client"/>
+                                    <field name="name" string="Payments Collection"/>
+                                    <field name="related_ar_record" string="Related AR" widget='badge' />
+                                    <field name="amount"/>
+                                </tree>
+                            </field>
+                        </group>
                     </sheet>
                 </form>
             </field>
@@ -104,7 +115,7 @@
 
         <!-- All -->
         <record id="bcs_collection_view_action" model="ir.actions.act_window">
-            <field name="name">Collection</field>
+            <field name="name">All Collection Records</field>
             <field name="res_model">bcs.collection</field>
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="bcs_collection_tree_view"/>
@@ -112,7 +123,7 @@
 
         <!-- Approved -->
         <record id="approved_bcs_collection_view_action" model="ir.actions.act_window">
-            <field name="name">Collection</field>
+            <field name="name">Approved Collections</field>
             <field name="res_model">bcs.collection</field>
             <field name="view_mode">tree,form</field>
             <field name="domain">[('state','=','approved')]</field>

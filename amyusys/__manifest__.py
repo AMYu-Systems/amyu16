@@ -18,7 +18,7 @@
     'website': "https://www.amyucpas.com",
     'category': 'Custom',
     'version': '0.1',
-    'depends': ['base', 'muk_web_theme', 'hrad', 'amyu1', 'bcs', 'ets'],
+    'depends': ['base', 'muk_web_theme', 'web_unsplash', 'hrad', 'amyu1', 'bcs', 'ets'],
 
     # always loaded
     'data': [

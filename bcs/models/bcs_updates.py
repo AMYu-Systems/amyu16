@@ -8,8 +8,16 @@ class ForCollectionUpdates(models.Model):
     _description = "Collections Update"
     _rec_name = 'billing_id'
     _inherit = ['mail.thread', 'mail.activity.mixin']
+    _sql_constraints = [
+        (
+            'unique_billing_id',
+            'unique(billing_id)',
+            'Can\'t have duplicate billing_ids.'
+        )
+    ]
 
-    billing_id = fields.Many2one(comodel_name='bcs.billing', string="Billing Transaction", required=True, readonly=True)
+    billing_id = fields.Many2one(comodel_name='bcs.billing', string="Billing Transaction",
+                                 ondelete='cascade', required=True, readonly=True)
     first_followup = fields.Boolean(string='1st Follow-up', tracking=True)
     second_followup = fields.Boolean(string='2nd Follow-up', tracking=True)
     third_followup = fields.Boolean(string='3rd Follow-up', tracking=True)
@@ -26,7 +34,7 @@ class ForCollectionUpdates(models.Model):
     second_remarks = fields.Text(tracking=True)
     third_remarks = fields.Text(tracking=True)
     confirmed_remarks = fields.Text(tracking=True)
-        
+
     view_first_followup = fields.Text(string="1st Follow-up", tracking=True)
     view_second_followup = fields.Text(string="2nd Follow-up", tracking=True)
     view_third_followup = fields.Text(string="3rd Follow-up", tracking=True)
@@ -119,7 +127,7 @@ class ForCollectionUpdates(models.Model):
                         # self.billing_id.status = 'client_received' if self.confirmed_payment else 'sent_to_client'
                         self.billing_id.client_paid()
         return super(ForCollectionUpdates, self).write(vals)
-    
+
     def set_confirmed_payment(self):
         self.confirmed_payment = True
         now_local = datetime.now()
@@ -127,4 +135,3 @@ class ForCollectionUpdates(models.Model):
         manila_time = now_utc.astimezone(pytz.timezone("Asia/Manila"))
         self.view_confirmed = manila_time.strftime(self.DATETIME_FORMAT)
         self.billing_id.client_paid()
-    

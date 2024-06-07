@@ -41,12 +41,12 @@
                   action="bcs_billing_form_action"/>
         <menuitem id="menu_active_billings"
                   sequence="121"
-                  name="View Active Billings"
+                  name="View Approved Billings"
                   parent="menu_billing_root"
                   action="bcs_billing_view_action"/>
         <menuitem id="menu_billing_per_status"
                   sequence="123"
-                  name="View Billings per Status"
+                  name="View Billings per State"
                   parent="menu_billing_root"/>
                 <menuitem id="menu_draft_billing"
                         name="Drafts"
@@ -60,8 +60,13 @@
                         name="For Approval"
                         parent="menu_billing_per_status"
                         action="verified_bcs_billing_view_action"/>
-        <menuitem id="menu_all_billings"
+        <menuitem id="menu_void_billings"
                   sequence="124"
+                  name="View Voided Billings"
+                  parent="menu_billing_root"
+                  action="bcs_voided_billing_view_action"/>
+        <menuitem id="menu_all_billings"
+                  sequence="125"
                   name="View All Billings"
                   parent="menu_billing_root"
                   action="bcs_all_billing_view_action"/>
@@ -113,6 +118,11 @@
                   sequence="134"
                   parent="menu_bcs_collection"
                   action="bcs_collection_view_action"/>
+        <menuitem id="menu_collection_report"
+                  name="> Export Collection Report"
+                  sequence="135"
+                  parent="menu_bcs_collection"
+                  action="bcs_collection_report_action_wiz"/>
 
         <menuitem id="menu_others_root"
                   name="Others"
