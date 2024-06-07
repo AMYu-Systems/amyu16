@@ -35,6 +35,8 @@ class AccountsReceivable(models.Model):
             services = services[:-2]
             name = f'{record.journal_index} | '
             name += record.billing_id.date_billed.strftime("%b %Y") + ' | ' + services
+            servs_amt = "{:,.2f}".format(record.billing_id.services_amount)
+            name += ' | ' + f'Services: {servs_amt}'
             previous = "{:,.2f}".format(record.billing_id.previous_amount)
             name += ' | ' + f'Previous: {previous}'
             record.name = name

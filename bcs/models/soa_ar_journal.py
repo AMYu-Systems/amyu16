@@ -40,7 +40,7 @@ class ARJournal(models.Model):
     #     self.initial_balance = self.view_initial_balance
 
     def new_billing(self, billing):
-        self.balance = billing.amount
+        self.balance = billing.amount # note that billing amount is already prev.amt + servs.amt
         self.ar_ids_count += 1
         ar = self.env['soa.accounts.receivable'].create({
             'ar_journal_id': self.id,

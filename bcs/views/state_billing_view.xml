@@ -104,11 +104,21 @@
         </record>
 
         <!-- Approved -->
-        <record id="bcs_billing_view_action" model="ir.actions.act_window">
+        <record id="bcs_approved_billing_view_action" model="ir.actions.act_window">
             <field name="name">Approved Billings</field>
             <field name="res_model">bcs.billing</field>
             <field name="view_mode">tree,form</field>
             <field name="domain">[('state','=','approved'), ('status','!=','void_billing')]</field>
+            <field name="context">{'edit': False, 'create': False}</field>
+            <field name="view_id" ref="bcs_billing_tree_view"/>
+        </record>
+
+        <!-- Active Approved -->
+        <record id="bcs_active_billing_view_action" model="ir.actions.act_window">
+            <field name="name">Active Billings</field>
+            <field name="res_model">bcs.billing</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('state','=','approved'), ('status','!=','void_billing'), ('active_billing', '=', true)]</field>
             <field name="context">{'edit': False, 'create': False}</field>
             <field name="view_id" ref="bcs_billing_tree_view"/>
         </record>

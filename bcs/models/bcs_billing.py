@@ -55,7 +55,8 @@ class BcsBilling(models.Model):
         if res:
             res.transaction = f'{res.id:05d}'
             prev_billing = self.env['bcs.billing'].search(
-                [('state', '=', 'approved'), ('status', '=', 'void_billing'), ('id','=',res.id-1)], 
+                [('client_id', '=', res.client_id.id), ('state', '=', 'approved'), 
+                 ('status', '=', 'void_billing')], 
                 order='id desc', limit=1)
             if prev_billing:
                 res.previous_voided_billing = prev_billing
@@ -113,6 +114,15 @@ class BcsBilling(models.Model):
             ('client_id', '=', self.client_id.id)], limit=1)
         if arj:
             arj.new_billing(self)
+            # check if billing amount is less than ar balance
+            if self.amount <= 0:
+                # MATIC WALANG BAYAD
+                update = self.env['bcs.updates'].create({
+                    'billing_id': self.id,
+                    'confirmed_remarks': '[System Remarks: Remaining Balance is more than Billing amount]',
+                })
+                if update:
+                    update.set_confirmed_payment()
 
     allow_void = fields.Boolean(default=True)
     previous_voided_billing = fields.Many2one(comodel_name='bcs.billing', ref='previous_voided_billing')
@@ -195,7 +205,7 @@ class BcsBilling(models.Model):
     def _onchange_services_id(self):
         self._calculate_amount_services(onchange=True)
             
-    
+    active_billing = fields.Boolean(string="Active Billing", tracking=True, compute="_compute_active_billing")
     previous_amount = fields.Float(string="Previous Amount", tracking=True)
     services_amount = fields.Float(string="Services Amount", tracking=True)
     amount = fields.Float(string="Total Amount", compute="_compute_amount", tracking=True)
@@ -205,6 +215,23 @@ class BcsBilling(models.Model):
     def _compute_amount(self):
         for record in self:
             record.amount = record.previous_amount + record.services_amount
+
+    @api.depends('amount', 'state', 'status')
+    def _compute_active_billing(self):
+        for record in self:
+            most_recent_billing = self.env['bcs.billing'].search(
+                [('client_id', '=', record.client_id.id)], 
+                order='id desc', limit=1)
+            if record.amount <= 0 \
+                or record.status == 'void_billing' \
+                or record.state != 'approved' \
+                or most_recent_billing.id != record.id:
+                # if amount is less than 0, its already paid -> not active anymore
+                # if billing is void, then disregard -> not active anymore
+                # if its not the most recent billing of the client -> not active anymore
+                record.active_billing = False
+            else:
+                record.active_billing = True
 
     @api.onchange('services_id')
     def _onchange_services_id(self):

@@ -41,9 +41,14 @@
                   action="bcs_billing_form_action"/>
         <menuitem id="menu_active_billings"
                   sequence="121"
+                  name="View Active Billings"
+                  parent="menu_billing_root"
+                  action="bcs_active_billing_view_action"/>
+        <menuitem id="menu_approved_billings"
+                  sequence="122"
                   name="View Approved Billings"
                   parent="menu_billing_root"
-                  action="bcs_billing_view_action"/>
+                  action="bcs_approved_billing_view_action"/>
         <menuitem id="menu_billing_per_status"
                   sequence="123"
                   name="View Billings per State"
