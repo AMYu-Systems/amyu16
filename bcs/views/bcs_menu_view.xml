@@ -46,7 +46,7 @@
                   action="bcs_billing_view_action"/>
         <menuitem id="menu_billing_per_status"
                   sequence="123"
-                  name="View Billings per Status"
+                  name="View Billings per State"
                   parent="menu_billing_root"/>
                 <menuitem id="menu_draft_billing"
                         name="Drafts"
