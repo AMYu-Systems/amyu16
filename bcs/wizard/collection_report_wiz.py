@@ -6,19 +6,21 @@ from ..report.collection_report import CollectionReportXlsx
 class CollectionReportWiz(models.TransientModel):
     _name = 'collection.report.wizard'
     
+    
     @api.onchange('date_start', 'date_end')
-    def _compute_filename(self):
-        rec = self
-        ds = rec.date_start
-        de = rec.date_end
+    def _onchange_dates(self):
+        if self.date_end < self.date_start:
+            self.date_start = self.date_end.replace(day=1)
+        ds = self.date_start
+        de = self.date_end
         name = f'{fields.Date.today()} Collection Report'
         if ds and de:
             name += f' ({ds} to {de})'
         elif not (ds or de):
             name += ' (all)'
-        rec.report_file_name = name
+        self.report_file_name = name
         
-    report_file_name = fields.Char(default=_compute_filename)
+    report_file_name = fields.Char(default=_onchange_dates)
     
     def _default_date_start(self):
         today = fields.Date.today()
@@ -27,7 +29,7 @@ class CollectionReportWiz(models.TransientModel):
     
     date_start = fields.Date(default=_default_date_start)
     date_end = fields.Date(default=lambda self: fields.Date.today())
-
+            
     # @api.multi
     def export_collection_report(self):
 

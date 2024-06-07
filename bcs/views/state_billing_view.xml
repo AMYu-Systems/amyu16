@@ -105,7 +105,7 @@
 
         <!-- Approved -->
         <record id="bcs_billing_view_action" model="ir.actions.act_window">
-            <field name="name">Billing</field>
+            <field name="name">Approved Billings</field>
             <field name="res_model">bcs.billing</field>
             <field name="view_mode">tree,form</field>
             <field name="domain">[('state','=','approved'), ('status','!=','void_billing')]</field>

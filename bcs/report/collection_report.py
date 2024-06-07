@@ -48,8 +48,6 @@ class CollectionReportXlsx(models.AbstractModel):
 
     def generate_xlsx_report(self, workbook, data, lines):
         sheet = workbook.add_worksheet('Collection Report')
-        font12 = workbook.add_format({'font_size': 12})
-        number = workbook.add_format({'font_size': 12, 'num_format': '#,##0.00'})
         # sheet.set_column('D:D', 12)
         
         # Write the column names
@@ -74,6 +72,11 @@ class CollectionReportXlsx(models.AbstractModel):
                     if not field.startswith('billing_ids'): continue
                     billing_field = field.split('.')[-1]
                     value, style = self._format_billing_field_value(workbook, billing, billing_field)
+                    if billing_field == 'client_id':
+                        direct = collection['payment_collection'] == 'direct_payment'
+                        same_client = value.lower() == str(collection['paid_by_id'][1]).lower()
+                        if direct and same_client:
+                            value = '*'
                     sheet.write(row, col_idx[field], value, style)
                 row += 1
                 

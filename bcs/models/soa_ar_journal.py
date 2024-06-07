@@ -87,10 +87,17 @@ class ARJournal(models.Model):
 
     def recalculate(self):
         # self.initial_balance = self.view_initial_balance
-        # add = sum([ar.amount for ar in self.accounts_receivable_ids], start=self.initial_balance)
-        add = self.accounts_receivable_ids[-1].amount if len(self.accounts_receivable_ids) > 0 else 0
-        sub = self.payments_collection_ids[-1].amount if len(self.payments_collection_ids) > 0 else 0
-        self.balance = add - sub
+        ar = self.accounts_receivable_ids[-1] if len(self.accounts_receivable_ids) > 0 else None
+        if ar:
+            pcs = self.env['soa.payments.collection'].search([
+                ('ar_journal_id', '=', self.id),
+                ('related_ar_record', '=', ar.id),])
+        else:
+            pcs = self.env['soa.payments.collection'].search([('ar_journal_id', '=', self.id)])
+        sub = 0
+        for pc in pcs:
+            sub += pc.amount
+        self.balance = ar.amount - sub
 
     """ FOR DEBUGGING PURPOSES ONLY """
     def reset_journal(self):

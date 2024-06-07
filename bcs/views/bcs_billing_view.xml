@@ -13,7 +13,7 @@
                     <field name="date_billed"/>
                     <!-- <field name="last_updated"/> -->
                     <field name="state" optional="hide"/>
-                    <field name="status" optional="hide"/>
+                    <field name="status" />
                     <field name="other" optional="hide"/>
                     <field name="services_id" widget="many2many_tags"/>
                     <field name="amount"/>
@@ -129,6 +129,10 @@
                         <group attrs="{'invisible': [('next_approved_after_void', '=', False)]}">
                             <field name="next_approved_after_void" readonly='1' />
                         </group>
+                        <group attrs="{'invisible': [('status','!=','void_billing')]}">
+                            <field name="void_reason" />
+                            <field name="void_attachment" widget="many2many_binary"/>
+                        </group>
                         <group>
                             <field name="remarks"/>
                         </group>
@@ -137,21 +141,67 @@
             </field>
         </record>
 
-        <record id="bcs_all_billing_view_action" model="ir.actions.act_window">
-            <field name="name">Billing</field>
-            <field name="res_model">bcs.billing</field>
-            <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="bcs_billing_tree_view"/>
-        </record>
-
         <!-- Voided -->
+        <record id="bcs_void_billing_tree_view" model="ir.ui.view">
+            <field name="name">bcs_billing_tree_view</field>
+            <field name="model">bcs.billing</field>
+            <field name="arch" type="xml">
+                <tree create="0" default_order='transaction desc'>
+                    <field name="transaction"/>
+                    <field name="client_id"/>
+                    <!-- <field name="collection_ids" widget="many2many_tags"/> -->
+                    <!-- <field name="for_collection_updates"/> -->
+                    <field name="date_billed"/>
+                    <!-- <field name="last_updated"/> -->
+                    <field name="state" optional="hide"/>
+                    <field name="status" optional="hide"/>
+                    <field name="other" optional="hide"/>
+                    <field name="services_id" widget="many2many_tags"/>
+                    <field name="amount"/>
+                    <field name="issued_by"/>
+                    <field name="next_approved_after_void" optional="hide"/>
+                    <field name="void_reason" />
+                    <field name="void_attachment" widget="many2many_binary" optional="hide"/>
+                    <field name="remarks" optional="hide"/>
+                </tree>
+            </field>
+        </record>
         <record id="bcs_voided_billing_view_action" model="ir.actions.act_window">
             <field name="name">Voided Billing</field>
             <field name="res_model">bcs.billing</field>
             <field name="view_mode">tree,form</field>
             <field name="domain">[('status','=','void_billing')]</field>
-            <field name="context">{'edit': False, 'create': False}</field>
-            <field name="view_id" ref="bcs_billing_tree_view"/>
+            <field name="context">{'create': False}</field>
+            <field name="view_id" ref="bcs_void_billing_tree_view"/>
+        </record>
+
+        <!-- ALL -->
+        <record id="bcs_all_billing_tree_view" model="ir.ui.view">
+            <field name="name">bcs_billing_tree_view</field>
+            <field name="model">bcs.billing</field>
+            <field name="arch" type="xml">
+                <tree create="0" default_order='transaction desc'>
+                    <field name="transaction"/>
+                    <field name="client_id"/>
+                    <!-- <field name="collection_ids" widget="many2many_tags"/> -->
+                    <!-- <field name="for_collection_updates"/> -->
+                    <field name="date_billed"/>
+                    <!-- <field name="last_updated"/> -->
+                    <field name="state" />
+                    <field name="status" />
+                    <field name="other" optional="hide"/>
+                    <field name="services_id" widget="many2many_tags"/>
+                    <field name="amount"/>
+                    <field name="issued_by"/>
+                    <field name="remarks" />
+                </tree>
+            </field>
+        </record>
+        <record id="bcs_all_billing_view_action" model="ir.actions.act_window">
+            <field name="name">All Billing Records</field>
+            <field name="res_model">bcs.billing</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="bcs_all_billing_tree_view"/>
         </record>
 
         <!-- Sequential... Unused? -->

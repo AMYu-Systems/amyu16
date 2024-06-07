@@ -118,6 +118,9 @@ class BcsBilling(models.Model):
     previous_voided_billing = fields.Many2one(comodel_name='bcs.billing', ref='previous_voided_billing')
     next_approved_after_void = fields.Many2one(comodel_name='bcs.billing', ref='next_approved_after_void', 
                                                string='Next Approved Billing')
+    void_reason = fields.Text(string="Reason for Void")
+    void_attachment = fields.Many2many('ir.attachment', string="Attachment for Void")
+    
     status_selection = [('not_sent', 'Not yet sent'),
                         ('sent_to_client', 'Sent to client'),
                         ('client_received', 'Client has received'),
