@@ -16,11 +16,6 @@ class ClientProfile(models.Model):
         if self.name:
             self.name = str(self.name).upper()
 
-    # @api.onchange('name')
-    # def caps_name(self):
-    #     if self.name:
-    #         self.name = str(self.name).title()
-
     image_101 = fields.Image(string="Image")
     organization_type = fields.Selection(selection=
                                          [('sole_proprietor', 'Sole Proprietor'),
@@ -125,33 +120,15 @@ class ClientProfile(models.Model):
 
     def action_submit_supervisor(self):
         self.state = 'supervisor'
-        # return {
-        #     'type': 'ir.actions.client',
-        #     'tag': 'reload',
-        #
-        # }
 
     def action_approve_supervisor(self):
         self.state = 'manager'
-        # return {
-        #     'type': 'ir.actions.client',
-        #     'tag': 'reload',
-        # }
 
     def action_return(self):
         self.state = 'cancel'
-        # return {
-        #     'type': 'ir.actions.client',
-        #     'tag': 'reload',
-        # }
 
     def action_approve_manager(self):
         self.state = 'approved'
-        # return {
-        #     'type': 'ir.actions.client',
-        #     'tag': 'reload',
-        #
-        # }
 
     # @api.onchange("name")
     # def compute_name(self):
@@ -239,16 +216,16 @@ class ClientProfile(models.Model):
     #     #         'escalation_id': res.id
     #     #     })
     #     return res
-    @api.model
-    def create(self, vals):
-        res = super(ClientProfile, self).create(vals)
-        
-        if res:
-            # Add to BCS (AR Journal and Billing Summary)
-            self.env['soa.ar.journal'].create({ 'client_id': res.id, })
-            self.env['billing.summary'].create({ 'client_id': res.id, })
-        
-        return res
+    # @api.model
+    # def create(self, vals):
+    #     res = super(ClientProfile, self).create(vals)
+    #
+    #     if res:
+    #         # Add to BCS (AR Journal and Billing Summary)
+    #         self.env['soa.ar.journal'].create({'client_id': res.id, })
+    #         self.env['billing.summary'].create({'client_id': res.id, })
+    #
+    #     return res
 
     registered_unit_no = fields.Char(string="Unit/Floor", tracking=True)
 
@@ -824,6 +801,6 @@ class ClientProfile(models.Model):
     # upload_file = fields.Binary(string='File', attachment=True)
     # file_name = fields.Char(string='Filename')
     # year_field = fields.Date(string="Year")
-    
+
     # client_ids = fields.One2many(comodel_name='billing.summary', inverse_name='client_id')
     # arjournal_client_ids = fields.One2many(comodel_name='soa.ar.journal', inverse_name='client_id')
