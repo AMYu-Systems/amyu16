@@ -12,7 +12,6 @@
                     <!-- <field name="for_collection_updates"/> -->
                     <field name="date_billed"/>
                     <!-- <field name="last_updated"/> -->
-<<<<<<< HEAD
 <!--                    <-->
 <!--                    <-->
 <!--                    <-->
@@ -28,15 +27,10 @@
                     <field name="status"/>
                     <field name="other"/>
 <!--                    >>>>>>> parent of e2f5528 (cpms link to hris)-->
-=======
-                    <field name="state" optional="hide"/>
-                    <field name="status" optional="hide"/>
-                    <field name="other" optional="hide"/>
->>>>>>> parent of 8bf2b33 (revert cpms)
                     <field name="services_id" widget="many2many_tags"/>
                     <field name="amount"/>
                     <field name="issued_by"/>
-                    <field name="remarks" optional="hide"/>
+                    <field name="remarks"/>
                 </tree>
             </field>
         </record>

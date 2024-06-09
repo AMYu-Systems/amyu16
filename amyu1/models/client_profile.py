@@ -1,20 +1,13 @@
 from odoo import models, fields, api
 import re
 from odoo.exceptions import ValidationError
-from datetime import date
+from datetime import datetime, date
 
 
 class ClientProfile(models.Model):
     _name = 'client.profile'
     _description = "Profile"
     _inherit = ['mail.thread', 'mail.activity.mixin']
-    _sql_constraints = [
-        (
-            'unique_client_id',
-            'unique(client_id)',
-            'Can\'t have duplicate clients.'
-        )
-    ]
 
     name = fields.Char(string="Client Name", required=True, tracking=True)
 
@@ -24,16 +17,16 @@ class ClientProfile(models.Model):
             self.name = str(self.name).upper()
 
     image_101 = fields.Image(string="Image")
-    organization_type = fields.Selection(selection=[('sole_proprietor', 'Sole Proprietor'),
-                                                    ('general_partnership', 'General Partnership'),
-                                                    ('general_professional_partnership',
-                                                     'General Professional Partnership'),
-                                                    ('domestic_stock', 'Domestic Stock Corporation'),
-                                                    ('domestic_corp', 'Domestic NSNP Corporation'),
-                                                    ('foreign_corp', 'Branch of Foreign Corporation'),
-                                                    ('foreign_nsnp_corp', 'Branch of Foreign NSNP Corporation'),
-                                                    ('roqh_foreign_corp', 'ROHQ of Foreign Corporation'),
-                                                    ('representative_office', 'Representative Office')],
+    organization_type = fields.Selection(selection=
+                                         [('sole_proprietor', 'Sole Proprietor'),
+                                          ('general_partnership', 'General Partnership'),
+                                          ('general_professional_partnership', 'General Professional Partnership'),
+                                          ('domestic_stock', 'Domestic Stock Corporation'),
+                                          ('domestic_corp', 'Domestic NSNP Corporation'),
+                                          ('foreign_corp', 'Branch of Foreign Corporation'),
+                                          ('foreign_nsnp_corp', 'Branch of Foreign NSNP Corporation'),
+                                          ('roqh_foreign_corp', 'ROHQ of Foreign Corporation'),
+                                          ('representative_office', 'Representative Office')],
                                          string="Organization Type", tracking=True)
     sole_proprietor_ids = fields.One2many(comodel_name='sole.proprietor', inverse_name='sole_proprietor_id',
                                           string="Sole", tracking=True)
@@ -55,29 +48,29 @@ class ClientProfile(models.Model):
     representative_office_ids = fields.One2many(comodel_name='representative.office',
                                                 inverse_name='representative_office_id',
                                                 string="Representative Office", tracking=True)
-    industry_class = fields.Selection(selection=[('agricultural', 'Agricultural Products & Farming Operations'),
-                                                 ('automotive', 'Automotive & Spare Parts'),
-                                                 ('', ''), ('utilities', 'Energy, Utilities & Telecommunications'),
-                                                 ('financial_service', 'Financial Services'),
-                                                 ('', ''), ('food', 'Food, Beverage & Restaurant Operations'),
-                                                 ('organization', 'Foundations & Non-Profit Organizations'),
-                                                 ('appliances', 'Furniture, Appliances & IT Equipment'),
-                                                 ('construction', 'Hardware & Construction Supplies'),
-                                                 ('health', 'Healthcare & Pharmaceuticals'),
-                                                 ('hospital', 'Hospitality & Leisure'),
-                                                 ('industrial', 'Industrial Manufacturing'),
-                                                 ('information_technology',
-                                                  'IT Services & Business Process Outsourcing'),
-                                                 ('retail', 'Lifestyle & Retail Brands'),
-                                                 ('entertainment', 'Media & Entertainment'),
-                                                 ('nothing', 'n.e.c. (not elsewhere classified)'),
-                                                 ('', ''), ('other_service', 'Other Services'),
-                                                 ('print_service', 'Printing Services'),
-                                                 ('consultancy', 'Professional & Consultancy Services'),
-                                                 ('transport', 'Public Transport Services'),
-                                                 ('real_estate', 'Real Estate Development & Construction'),
-                                                 ('stationery', 'Stationery & Paper Products'),
-                                                 ('logistic', 'Warehousing & Logistics')],
+    industry_class = fields.Selection(selection=
+                                      [('agricultural', 'Agricultural Products & Farming Operations'),
+                                       ('automotive', 'Automotive & Spare Parts'),
+                                       ('', ''), ('utilities', 'Energy, Utilities & Telecommunications'),
+                                       ('financial_service', 'Financial Services'),
+                                       ('', ''), ('food', 'Food, Beverage & Restaurant Operations'),
+                                       ('organization', 'Foundations & Non-Profit Organizations'),
+                                       ('appliances', 'Furniture, Appliances & IT Equipment'),
+                                       ('construction', 'Hardware & Construction Supplies'),
+                                       ('health', 'Healthcare & Pharmaceuticals'),
+                                       ('hospital', 'Hospitality & Leisure'),
+                                       ('industrial', 'Industrial Manufacturing'),
+                                       ('information_technology', 'IT Services & Business Process Outsourcing'),
+                                       ('retail', 'Lifestyle & Retail Brands'),
+                                       ('entertainment', 'Media & Entertainment'),
+                                       ('nothing', 'n.e.c. (not elsewhere classified)'),
+                                       ('', ''), ('other_service', 'Other Services'),
+                                       ('print_service', 'Printing Services'),
+                                       ('consultancy', 'Professional & Consultancy Services'),
+                                       ('transport', 'Public Transport Services'),
+                                       ('real_estate', 'Real Estate Development & Construction'),
+                                       ('stationery', 'Stationery & Paper Products'),
+                                       ('logistic', 'Warehousing & Logistics')],
                                       string="Industry Class", tracking=True)
     nature_of_business = fields.Text(string="Nature of Activities, Brands, Product & Services", tracking=True)
 
@@ -104,8 +97,8 @@ class ClientProfile(models.Model):
                                         ('approved', 'Approved'),
                                         ('cancel', 'Returned')], tracking=True, default='draft', string="Status")
 
-    # def state_waiting(self, cr, uid, ids, context=None):
-    #     return self.write(cr, uid, ids, {'state': 'draft'}, context=context)
+    def state_waiting(self, cr, uid, ids, context=None):
+        return self.write(cr, uid, ids, {'state': 'draft'}, context=context)
 
     user_id = fields.Many2one(string="Associate", comodel_name='res.users', default=lambda self: self.env.user,
                               tracking=True)
@@ -223,7 +216,6 @@ class ClientProfile(models.Model):
     #     #         'escalation_id': res.id
     #     #     })
     #     return res
-<<<<<<< HEAD
     # @api.model
     # def create(self, vals):
     #     res = super(ClientProfile, self).create(vals)
@@ -234,18 +226,6 @@ class ClientProfile(models.Model):
     #         self.env['billing.summary'].create({'client_id': res.id, })
     #
     #     return res
-=======
-    @api.model
-    def create(self, vals):
-        res = super(ClientProfile, self).create(vals)
-
-        if res:
-            # Add to BCS (AR Journal and Billing Summary)
-            self.env['soa.ar.journal'].create({'client_id': res.id, })
-            self.env['billing.summary'].create({'client_id': res.id, })
-
-        return res
->>>>>>> parent of 8bf2b33 (revert cpms)
 
     registered_unit_no = fields.Char(string="Unit/Floor", tracking=True)
 
@@ -531,9 +511,10 @@ class ClientProfile(models.Model):
     filing_payment = fields.Selection(
         selection=[('ebir_manual', 'eBIR (Manual)'), ('efps', 'EFPS'), ('not_applicable', 'N/A')],
         string="Filling & Payment", tracking=True)
-    books_of_account = fields.Selection(selection=[('manual', 'Manual'),
-                                                   ('computer_aid_loose_leaf', 'Computer-aided (Loose-leaf)'),
-                                                   ('cas_generated', 'CAS-Generated'), ('not_applicable', 'N/A')],
+    books_of_account = fields.Selection(selection=
+                                        [('manual', 'Manual'),
+                                         ('computer_aid_loose_leaf', 'Computer-aided (Loose-leaf)'),
+                                         ('cas_generated', 'CAS-Generated'), ('not_applicable', 'N/A')],
                                         string="Books of Accounts", tracking=True)
     psic_psoc = fields.Char(string="PSIC/PSOC", size=10, tracking=True)
 
@@ -820,9 +801,6 @@ class ClientProfile(models.Model):
     # upload_file = fields.Binary(string='File', attachment=True)
     # file_name = fields.Char(string='Filename')
     # year_field = fields.Date(string="Year")
-<<<<<<< HEAD
 
     # client_ids = fields.One2many(comodel_name='billing.summary', inverse_name='client_id')
     # arjournal_client_ids = fields.One2many(comodel_name='soa.ar.journal', inverse_name='client_id')
-=======
->>>>>>> parent of 8bf2b33 (revert cpms)
