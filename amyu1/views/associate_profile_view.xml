@@ -65,7 +65,7 @@
                     <group>
                         <group>
                             <field name="user_id" options="{'no_open': True,'no_create': True}"
-                                   invisible="1" readonly="1"/>
+                                  />
                             <field name="supervisor_id" options="{'no_open': True,'no_create': True}"/>
                             <field name="manager_id" options="{'no_open': True,'no_create': True}"/>
                             <field name="lead_partner_id" options="{'no_open': True,'no_create': True}"/>
