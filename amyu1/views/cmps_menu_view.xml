@@ -2,7 +2,7 @@
 <odoo>
     <data>
         <menuitem id="cpms_root_menu"
-                  name="CPMS"
+                  name="Client Profile"
                   web_icon="amyu1,static/description/odoo_icon.png"
                   action="client_tree_action"/>
 
