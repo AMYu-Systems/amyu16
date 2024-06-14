@@ -13,7 +13,7 @@
                     <field name="date_billed"/>
                     <!-- <field name="last_updated"/> -->
                     <field name="state" optional="hide"/>
-                    <field name="status" />
+                    <field name="status" widget="badge"/>
                     <field name="other" optional="hide"/>
                     <field name="services_id" widget="many2many_tags"/>
                     <field name="amount"/>
@@ -190,7 +190,7 @@
                     <field name="date_billed"/>
                     <!-- <field name="last_updated"/> -->
                     <field name="state" />
-                    <field name="status" />
+                    <field name="status" widget="badge"/>
                     <field name="other" optional="hide"/>
                     <field name="services_id" widget="many2many_tags"/>
                     <field name="amount"/>

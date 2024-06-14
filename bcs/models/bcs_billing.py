@@ -1,6 +1,12 @@
 from odoo import fields, models, api
 from odoo.exceptions import ValidationError
-
+import logging
+_logger = logging.getLogger(__name__)
+def test_with_logger(data: any = "Debug Message", warn: bool = False):
+    """Outputs a debug message in the odoo log file, 5 times in a row"""
+    method = _logger.info if not warn else _logger.warning
+    for _ in range(5):
+        method(data)
 
 class BcsBilling(models.Model):
     _name = 'bcs.billing'
@@ -11,6 +17,7 @@ class BcsBilling(models.Model):
     name = fields.Char(compute="_compute_name")
     transaction = fields.Char(string="Transaction ID", readonly="1")
     client_id = fields.Many2one(comodel_name='client.profile', string="Client Name", required=True, tracking=True)
+    ar_journal = fields.Many2one(comodel_name='soa.ar.journal', string="AR Journal", compute='_compute_arj', store=True)
     
     @api.depends("services_id", "date_billed", "client_id.name")
     def _compute_name(self):
@@ -18,6 +25,15 @@ class BcsBilling(models.Model):
             services = BcsBilling.get_services_str(record)
             record.name = str(record.transaction) + ' | ' + record.date_billed.strftime("%b %Y") \
                           + ' | ' + services + ' | ' + record.client_id.name
+        return
+    
+    @api.depends('client_id')
+    def _compute_arj(self):
+        for record in self:
+            arj = self.env['soa.ar.journal'].search(
+                [('client_id', '=', record.client_id.id)], limit=1)
+            if arj:
+                record.ar_journal = arj
         return
     
     @staticmethod
@@ -63,10 +79,10 @@ class BcsBilling(models.Model):
                 prev_billing.next_approved_after_void = res
         return res
 
-    @api.onchange('client_id')
+    @api.onchange('client_id', 'ar_journal')
     def _onchange_client_id(self):
         if self.client_id:
-            arj = self.env['soa.ar.journal'].search([('client_id', '=', self.client_id.id)], limit=1)
+            arj = self.ar_journal
             if arj and arj.balance:
                 self.previous_amount = arj.balance
             elif not arj:
@@ -91,7 +107,7 @@ class BcsBilling(models.Model):
                        ('submitted', 'Submitted'),
                        ('verified', 'Verified'),
                        ('approved', 'Approved')]
-    state = fields.Selection(state_selection, default='draft', copy=False)
+    state = fields.Selection(state_selection, default='draft', copy=False, store=True, tracking=True)
 
     # ops manager create
     def draft_action(self):
@@ -110,10 +126,8 @@ class BcsBilling(models.Model):
         self.state = 'approved'
 
         # add to ar journal
-        arj = self.env['soa.ar.journal'].search([
-            ('client_id', '=', self.client_id.id)], limit=1)
-        if arj:
-            arj.new_billing(self)
+        if self.ar_journal:
+            self.ar_journal.new_billing(self)
             # check if billing amount is less than ar balance
             if self.amount <= 0:
                 # MATIC WALANG BAYAD
@@ -136,7 +150,7 @@ class BcsBilling(models.Model):
                         ('client_received', 'Client has received'),
                         ('client_paid', 'Client has paid'),
                         ('void_billing', 'Void Statement')]
-    status = fields.Selection(status_selection, default='not_sent', tracking=True)
+    status = fields.Selection(status_selection, default='not_sent', store=True, tracking=True)
 
     # only appear when status == 'sent_to_client'
     sent_with_email = fields.Boolean(default=True, string="Sent with Email")
@@ -179,9 +193,8 @@ class BcsBilling(models.Model):
             return
 
         # update ar journal
-        arj = self.env['soa.ar.journal'].search([('client_id', '=', self.client_id.id)], limit=1)
-        if arj:
-            arj.void_billing(self)
+        if self.ar_journal:
+            self.ar_journal.void_billing(self)
 
     def set_allow_void_false(self):
         self.allow_void = False
@@ -204,11 +217,11 @@ class BcsBilling(models.Model):
     @api.onchange('services_id')
     def _onchange_services_id(self):
         self._calculate_amount_services(onchange=True)
-            
-    active_billing = fields.Boolean(string="Active Billing", tracking=True, compute="_compute_active_billing")
+    
+    active_billing = fields.Boolean(string="Active Billing", compute="_compute_active_billing", store=True)
     previous_amount = fields.Float(string="Previous Amount", tracking=True)
     services_amount = fields.Float(string="Services Amount", tracking=True)
-    amount = fields.Float(string="Total Amount", compute="_compute_amount", tracking=True)
+    amount = fields.Float(string="Total Amount", compute="_compute_amount", store=True)
     remarks = fields.Text(string="Remarks", tracking=True)
     
     @api.depends('previous_amount', 'services_amount')
@@ -216,16 +229,19 @@ class BcsBilling(models.Model):
         for record in self:
             record.amount = record.previous_amount + record.services_amount
 
-    @api.depends('amount', 'state', 'status')
+    @api.depends('amount', 'state', 'status', 'ar_journal.balance', 'ar_journal.most_recent_billing_id')
     def _compute_active_billing(self):
         for record in self:
-            most_recent_billing = self.env['bcs.billing'].search(
-                [('client_id', '=', record.client_id.id)], 
-                order='id desc', limit=1)
+            arj = record.ar_journal
+            mrb_id = arj.most_recent_billing_id
+            test_with_logger(str(arj.balance))
+            test_with_logger(str(mrb_id.id), str(record.id),)
+            
             if record.amount <= 0 \
-                or record.status == 'void_billing' \
                 or record.state != 'approved' \
-                or most_recent_billing.id != record.id:
+                or record.status == 'void_billing' \
+                or mrb_id.id != record.id \
+                or (mrb_id.id == record.id and arj.balance <= 0):
                 # if amount is less than 0, its already paid -> not active anymore
                 # if billing is void, then disregard -> not active anymore
                 # if its not the most recent billing of the client -> not active anymore
@@ -235,9 +251,9 @@ class BcsBilling(models.Model):
 
     @api.onchange('services_id')
     def _onchange_services_id(self):
-        # '''
-        # Need for displaying amounts for Billing Summary of client in Billing
-        # '''
+        '''
+        Need for displaying amounts for Billing Summary of client in Billing
+        '''
         bs = self.env['billing.summary'].search([('client_id', '=', self.client_id.id)], limit=1)
         if bs:
             self.services_amount = bs.get_services_total_amount(self.services_id)

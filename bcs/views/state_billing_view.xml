@@ -14,7 +14,7 @@
                     <field name="date_billed"/>
                     <!-- <field name="last_updated"/> -->
                     <field name="state"/>
-                    <field name="status"/>
+                    <field name="status" widget="badge"/>
                     <field name="other"/>
                     <field name="services_id"/>
                     <field name="amount"/>
@@ -54,7 +54,7 @@
                     <field name="date_billed"/>
                     <!-- <field name="last_updated"/> -->
                     <field name="state"/>
-                    <field name="status"/>
+                    <field name="status" widget="badge"/>
                     <field name="other"/>
                     <field name="services_id"/>
                     <field name="amount"/>
@@ -85,7 +85,7 @@
                     <field name="date_billed"/>
                     <!-- <field name="last_updated"/> -->
                     <field name="state"/>
-                    <field name="status"/>
+                    <field name="status" widget="badge"/>
                     <field name="other"/>
                     <field name="services_id"/>
                     <field name="amount"/>
@@ -118,7 +118,7 @@
             <field name="name">Active Billings</field>
             <field name="res_model">bcs.billing</field>
             <field name="view_mode">tree,form</field>
-            <field name="domain">[('state','=','approved'), ('status','!=','void_billing'), ('active_billing', '=', true)]</field>
+            <field name="domain">[('active_billing', '=', true)]</field>
             <field name="context">{'edit': False, 'create': False}</field>
             <field name="view_id" ref="bcs_billing_tree_view"/>
         </record>

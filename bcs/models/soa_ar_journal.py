@@ -19,7 +19,7 @@ class ARJournal(models.Model):
 
     # # do not show in view
     # initial_balance = fields.Float()
-    balance = fields.Float()
+    balance = fields.Float(store=True)
 
     accounts_receivable_ids = fields.One2many(comodel_name='soa.accounts.receivable', inverse_name='ar_journal_id')
     payments_collection_ids = fields.One2many(comodel_name='soa.payments.collection', inverse_name='ar_journal_id')
@@ -87,17 +87,45 @@ class ARJournal(models.Model):
 
     def recalculate(self):
         # self.initial_balance = self.view_initial_balance
+        ar_amt, pc_amt = self._get_ar_pc_amount()
+        self.balance = ar_amt - pc_amt
+        
+    def _get_ar_pc_amount(self):
         ar = self.accounts_receivable_ids[-1] if len(self.accounts_receivable_ids) > 0 else None
         if ar:
             pcs = self.env['soa.payments.collection'].search([
                 ('ar_journal_id', '=', self.id),
                 ('related_ar_record', '=', ar.id),])
+            ar_amt = ar.amount
         else:
             pcs = self.env['soa.payments.collection'].search([('ar_journal_id', '=', self.id)])
-        sub = 0
+            ar_amt = 0
+        pc_amt = 0
         for pc in pcs:
-            sub += pc.amount
-        self.balance = ar.amount - sub
+            pc_amt += pc.amount
+        return ar_amt, pc_amt
+    
+    # Most recent billing record
+    most_recent_billing_id = fields.Many2one(comodel_name='bcs.billing', compute='_compute_most_recent_billing', store=True)
+    # Collection records for most recent billing
+    # recent_billing_collection_ids = fields.Many2many(comodel_name='bcs.collection')
+        
+    @api.depends('accounts_receivable_ids')
+    def _compute_most_recent_billing(self):
+        for record in self:
+            ar_ids = record.accounts_receivable_ids
+            if len(ar_ids) <= 0: continue
+            record.most_recent_billing_id = ar_ids[-1].billing_id
+    
+    # @api.depends('payments_collection_ids', 'most_recent_billing_id')
+    # def _compute_recent_billing_collections(self):
+    #     for record in self:
+    #         mrb_id = record.most_recent_billing_id
+    #         pc_ids = record.payments_collection_ids
+    #         collection_ids = []
+    #         for pc_id in pc_ids:
+    #             if pc_id.related_ar_record.billing_id == mrb_id.id:
+    #                 pc_id.collection_id
 
     """ FOR DEBUGGING PURPOSES ONLY """
     def reset_journal(self):

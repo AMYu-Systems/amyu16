@@ -104,7 +104,7 @@
                         action="bcs_unissued_payments_view_action"/>
         <menuitem id="menu_collection_per_status"
                   sequence="133"
-                  name="View Collections per Status"
+                  name="View Collections per State"
                   parent="menu_bcs_collection"/>
                 <menuitem id="menu_draft_collection"
                         name="Drafts"

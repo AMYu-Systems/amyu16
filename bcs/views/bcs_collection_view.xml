@@ -9,7 +9,7 @@
                     <field name="transaction"/>
                     <field name="paid_by_id"/>
                     <field name="billing_ids" widget="many2many_tags"/>
-                    <field name="state" optional="hide"/>
+                    <field name="state" widget="badge" optional="hide"/>
                     <field name="payment_collection"/>
                     <field name="collected_by"/>
                     <field name="date_collected"/>
@@ -20,6 +20,28 @@
                     <!-- <field name="check_date"/> -->
                     <!-- <field name="transaction_generated"/> -->
                     <!-- <field name="transaction_date"/> -->
+                    <field name="amount"/>
+                    <field name="remarks" optional="hide"/>
+                    <field name="unissued_amount_for_ar" optional="hide"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="bcs_all_collection_tree_view" model="ir.ui.view">
+            <field name="name">bcs_collection_tree_view</field>
+            <field name="model">bcs.collection</field>
+            <field name="arch" type="xml">
+                <tree create="0" default_order='transaction desc'>
+                    <field name="transaction"/>
+                    <field name="paid_by_id"/>
+                    <field name="billing_ids" widget="many2many_tags"/>
+                    <field name="state" widget="badge" />
+                    <field name="payment_collection"/>
+                    <field name="collected_by"/>
+                    <field name="date_collected"/>
+                    <field name="depository_bank"/>
+                    <field name="payment_mode"/>
+                    <field name="bank"/>
                     <field name="amount"/>
                     <field name="remarks" optional="hide"/>
                     <field name="unissued_amount_for_ar" optional="hide"/>
@@ -118,7 +140,7 @@
             <field name="name">All Collection Records</field>
             <field name="res_model">bcs.collection</field>
             <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="bcs_collection_tree_view"/>
+            <field name="view_id" ref="bcs_all_collection_tree_view"/>
         </record>
 
         <!-- Approved -->
