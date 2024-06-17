@@ -49,7 +49,7 @@
                     <field name="supervisor_id"/>
                     <field name="manager_id"/>
                     <field name="cluster_id"/>
-                    <field name="executive_id"/>
+                    <field name="lead_partner_id"/>
                 </tree>
             </field>
         </record>
@@ -67,7 +67,7 @@
                         <group>
                             <field name="supervisor_id" options="{'no_open': True,'no_create': True}"/>
                             <field name="manager_id" options="{'no_open': True,'no_create': True}"/>
-                            <field name="executive_id" options="{'no_open': True,'no_create': True}"/>
+                            <field name="lead_partner_id" options="{'no_open': True,'no_create': True}"/>
                         </group>
                         <group>
                             <field name="team_id" options="{'no_open': True,'no_create': True}"/>

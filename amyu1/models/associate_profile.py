@@ -12,7 +12,7 @@ class AssociateProfile(models.Model):
     team_id = fields.Many2one(related='user_id.coach_id', string="Team")
     cluster_id = fields.Many2one(related='user_id.department_id', string="Department")
     job_id = fields.Many2one(string="Job Position", related='user_id.job_id')
-    executive_id = fields.Many2one(string="Partner", related='user_id.executive_id')
+    lead_partner_id = fields.Many2one(string="Partner", related='user_id.executive_id')
     image = fields.Image(string="Image")
     client_profile_ids = fields.One2many(string="Clients", comodel_name='client.profile',
                                          inverse_name="team_id")
