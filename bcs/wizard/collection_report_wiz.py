@@ -9,16 +9,26 @@ class CollectionReportWiz(models.TransientModel):
     
     @api.onchange('date_start', 'date_end')
     def _onchange_dates(self):
-        if self.date_end < self.date_start:
+        today = fields.Date.today()
+        
+        # validate
+        if self.date_start and self.date_start > today:
+            raise ValidationError('Invalid Start Date.')
+        if self.date_end and self.date_end > today:
+            raise ValidationError('Invalid End Date.')
+        if self.date_start and self.date_end and self.date_end < self.date_start:
             self.date_start = self.date_end.replace(day=1)
+            raise ValidationError('Invalid Date Range.')
+            
         ds = self.date_start
         de = self.date_end
-        name = f'{fields.Date.today()} Collection Report'
+        name = f'{today} Collection Report'
         if ds and de:
             name += f' ({ds} to {de})'
         elif not (ds or de):
             name += ' (all)'
         self.report_file_name = name
+        
         
     report_file_name = fields.Char(default=_onchange_dates)
     
@@ -32,12 +42,13 @@ class CollectionReportWiz(models.TransientModel):
             
     # @api.multi
     def export_collection_report(self):
-
+        
         # validate date
-        if self.date_start and self.date_start > fields.Date.today():
-            return ValidationError('Invalid Start Date.')
+        if self.date_start and self.date_start > fields.Date.today() \
+            or self.date_end and self.date_end > fields.Date.today():
+            raise ValidationError('Invalid Start or End Date.')
         if self.date_start and self.date_end and self.date_start > self.date_end:
-            return ValidationError('Invalid Date Range.')
+            raise ValidationError('Invalid Date Range.')
 
         domain = [('state', '=', 'approved')]
         if self.date_start:

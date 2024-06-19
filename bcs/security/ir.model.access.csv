@@ -13,6 +13,7 @@ access.loa.billing,access.loa_billing,model_loa_billing,base.group_user,1,1,1,1
 access.special.engagement,access.special_engagement,model_special_engagement,base.group_user,1,1,1,1
 access.services.type,access.services_type,model_services_type,base.group_user,1,1,1,1
 access.bcs.billing,access.bcs_billing,model_bcs_billing,base.group_user,1,1,1,1
+access.bcs.billing.adjustment,access.bcs_billing_adjustment,model_bcs_billing_adjustment,base.group_user,1,1,1,1
 access.bcs.collection,access.bcs_collection,model_bcs_collection,base.group_user,1,1,1,1
 access.bcs.updates,access.bcs_updates,model_bcs_updates,base.group_user,1,1,1,1
 access.soa.ar.journal,access.soa_ar_journal,model_soa_ar_journal,base.group_user,1,1,1,1

@@ -6,7 +6,7 @@ class BcsCollection(models.Model):
     _description = "Collection"
     _rec_name = 'name'
 
-    transaction = fields.Char(string="Transaction ID", readonly=1)
+    transaction = fields.Char(string="Collection ID No.", readonly=1)
 
     @api.model
     def create(self, vals):
@@ -77,29 +77,19 @@ class BcsCollection(models.Model):
 
     @api.depends('paid_by_id')
     def _get_recent_billing_per_client(self):
-        # most_recent_billing = self.env['bcs.billing'].search(
-        #     [('client_id', '=', self.paid_by_id.id)],
-        #     order="transaction desc", limit=1)
-        
-        bllings = self.env['bcs.billing'].search([('state', '=', 'approved')], order="transaction desc")
-        unique_billing_ids = {}
-        selected_billings = [b.id for b in self.billing_ids]
-        for billing in bllings:
-            if billing.id in selected_billings:
-                continue
-            if billing.client_id.id not in unique_billing_ids.keys():
-                unique_billing_ids[billing.client_id.id] = billing
+        ar_journals = self.env['soa.ar.journal'].search([])
+        most_recent_billing_ids_list = []
+        for arj in ar_journals:
+            recent = arj.get_most_recent_billing()
+            if recent:
+                most_recent_billing_ids_list.append(recent.id)
         for record in self:
-            # record.recent_billings_per_client = [(6, 0, [value.id for value in bllings])]
-            record.recent_billings_per_client = [(6, 0, [value.id for value in unique_billing_ids.values()])]
+            record.recent_billings_per_client = [(6, 0, most_recent_billing_ids_list)]
             
-    billing_ids = fields.Many2many(comodel_name='bcs.billing', string="Billing", relation='bcs_collection_selected_billing_rel')
-    
-    collection_type = [('direct_payment', 'Direct Payment'),
-                       ('consolidated', 'Consolidated Payment'),]
-                    #    ('suspense', 'Suspense Account')]
-    payment_collection = fields.Selection(collection_type, default='direct_payment', string="Collection Type", required=True)
-    allow_edit_billing_ids = fields.Boolean(default=True)
+    billing_ids = fields.Many2many(comodel_name='bcs.billing', string="Billing", relation='bcs_collection_selected_billing_rel',
+                                   domain="[('id', 'in', recent_billings_per_client)]")
+    has_adj_billing_ids = fields.Many2many(comodel_name='bcs.billing', string="Billing with Adjustments", 
+                                           relation='bcs_has_adj_billing_ids', domain="[('id', 'in', billing_ids)]")
     
     @api.onchange('billing_ids')
     def _onchange_billing_ids(self):
@@ -111,18 +101,29 @@ class BcsCollection(models.Model):
             self.unissued_amount_for_ar = 0
         elif blen >= 2:
             self.payment_collection = 'consolidated'
-        return
+    
+    
+    # Collection type
+    collection_type = [('direct_payment', 'Direct Payment'),
+                       ('consolidated', 'Consolidated Payment'),]
+                    #    ('suspense', 'Suspense Account')]
+    payment_collection = fields.Selection(collection_type, default='direct_payment', string="Collection Type", required=True)
+    
+    # Used if collection has manual posting
+    # if False, user cant edit self.billing_ids anymore
+    allow_edit_billing_ids = fields.Boolean(default=True) 
     
     collected_by = fields.Many2one(comodel_name='hr.employee',  
-                                #   domain=f"[('job_id.name','ilike', 'Liaison')]", 
                                   string="Collected By", required=True)
+                                #   domain=f"[('job_id.name','ilike', 'Liaison')]", 
+                                
     date_collected = fields.Date(string="Date Collected", default=fields.Date.today, required=True)
     state_selection = [('draft', 'Draft'),
                        ('submitted', 'Submitted'),
                        ('verified', 'Verified'),
                        ('approved', 'Approved')]
     state = fields.Selection(state_selection, default='draft', copy=False)
-    void_collection = fields.Boolean(default=False)
+    # void_collection = fields.Boolean(default=False)
     
     def _validate_billing_statuses(self, next_state):
         for billing in self.billing_ids:
@@ -177,7 +178,7 @@ class BcsCollection(models.Model):
     payment_method = [('check', 'Check'),
                       ('cash', 'Cash'),
                       ('online', 'Online')]
-    payment_mode = fields.Selection(payment_method, default='online', string="Mode of Payment", required=True)
+    payment_mode = fields.Selection(payment_method, default='check', string="Mode of Payment", required=True)
     bank = fields.Many2one(comodel_name='bank', string="Bank")
     # If check
     check_number = fields.Char(string="Check Number")
@@ -189,7 +190,7 @@ class BcsCollection(models.Model):
     remarks = fields.Text(string="Remarks")
     unissued_amount_for_ar = fields.Float(string="Unissued Amount For ARs", default=0, readonly=True)
     manual_posting_ids = fields.Many2many(comodel_name='soa.payments.collection',
-                                          string="Manual Postings", readonly=True)
+                                          string="Allocation", readonly=True)
     
     def new_manual_posting(self, payments_collection, manual_amount):
         for billing in self.billing_ids:
