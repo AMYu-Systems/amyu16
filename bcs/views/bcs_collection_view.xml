@@ -22,6 +22,7 @@
                     <!-- <field name="transaction_date"/> -->
                     <field name="amount"/>
                     <field name="remarks" optional="hide"/>
+                    <field name="has_adj_billing_ids" widget="many2many_tags" optional="hide" />
                     <field name="unissued_amount_for_ar" optional="hide"/>
                 </tree>
             </field>
@@ -44,6 +45,7 @@
                     <field name="bank"/>
                     <field name="amount"/>
                     <field name="remarks" optional="hide"/>
+                    <field name="has_adj_billing_ids" widget="many2many_tags" optional="hide" />
                     <field name="unissued_amount_for_ar" optional="hide"/>
                 </tree>
             </field>
@@ -90,8 +92,10 @@
                             <field name="transaction"/>
                             <field name="paid_by_id" options="{'no_create': True,'no_open': True }"/>
                             <field name="recent_billings_per_client" invisible="1"/>
-                            <field name="billing_ids" widget="many2many_tags" domain="[('id', 'in', recent_billings_per_client)]"
+                            <field name="billing_ids" widget="many2many_tags"
                                    attrs="{'readonly':[('allow_edit_billing_ids', '==', False)] }"
+                                   options="{'no_create': True, 'no_open': True }" />
+                            <field name="has_adj_billing_ids" widget="many2many_tags"
                                    options="{'no_create': True, 'no_open': True }" />
                             <field name="payment_collection" readonly="1"/>
                             <field name="payment_collection" invisible="1"/>
@@ -120,7 +124,7 @@
                             <group string=" "></group>
                         </group>
                         <group attrs="{'invisible': ['|', ('payment_collection', '!=', 'consolidated'), ('state', '!=', 'approved') ]}">
-                            <field name="manual_posting_ids" string="Manual Posting Breakdown">
+                            <field name="manual_posting_ids" string="Manual Posting Allocation Breakdown">
                                 <tree create="0" edit="0" delete="0" default_order='journal_index asc'>
                                     <field name="journal_index" string="Index" invisible='1'/>
                                     <field name="client_id" string="Client"/>

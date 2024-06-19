@@ -14,7 +14,7 @@
                     <!-- <field name="last_updated"/> -->
                     <field name="state" optional="hide"/>
                     <field name="status" widget="badge"/>
-                    <field name="other" optional="hide"/>
+                    <!-- <field name="other" optional="hide"/> -->
                     <field name="services_id" widget="many2many_tags"/>
                     <field name="amount"/>
                     <field name="issued_by"/>
@@ -73,25 +73,21 @@
                         <!-- <button name="client_paid" string="Client Paid" type="object" class="oe_highlight"
                                 confirm="Are you sure to proceed to the next status? — Client Paid"
                                 attrs="{'invisible': [('status', '!=', 'client_paid')]}"/> -->
+                        <button name="add_adjustments" string="Add Adjustments" type="object" class="oe_highlight"
+                                attrs="{'invisible': ['|', ('has_adjustments','=',True), '|', ('status', '=', 'not_sent'), ('status', '=', 'sent_to_client')]}"/>
+                        <button name="remove_adjustments" string="Remove Adjustments" type="object" class="oe_highlight"
+                                confirm="Are you sure to delete all adjustments? This action cannot be reversed."
+                                attrs="{'invisible': ['|', ('has_adjustments','=',False), '|', ('status', '=', 'not_sent'), ('status', '=', 'sent_to_client')]}"/>
 
-                        <button name="void_billing" string="Void Statement" type="object" class="oe_highlight"
+                        <field name="allow_void" invisible="1"/>
+                        <button name="void_billing" string="Void Statement" type="object" class="btn-secondary"
                                 confirm="Are you sure to proceed to VOID this Billing Statement?"
                                 attrs="{'invisible': ['|', ('status', '!=', 'client_received'), ('allow_void', '=', False)]}"/>
 
-                        <field name="allow_void" invisible="1"/>
                         <field name="status" widget="statusbar" clickable="True"
                                status_invisible="not_sent,sent_email,send_errand,client_received,client_paid,void_billing"/>
                     </header>
                     <sheet>
-                        <group>
-                            <field name="transaction"/>
-                            <field name="client_id" attrs="{'readonly': [('status','=','sent_to_client')]}"
-                                   options="{'no_create': True,'no_open': True }"/>
-                            <!-- <field name="collection_ids" widget="many2many_tags"
-                                   options="{'no_create': True,'no_open': True }"/> -->
-                            <!-- <field name="billing_collection_updates"/> -->
-                            <field name="date_billed" attrs="{'readonly': [('status','=','sent_to_client')]}"/>
-                        </group>
                         <group attrs="{'invisible': [('status','=','not_sent')]}" col="4">
                             <group>
                                 <field name="sent_with_email" attrs="{'readonly': [('status','=','client_received')]}"/>
@@ -104,7 +100,19 @@
                             <group string=""></group>
                         </group>
                         <group>
-                            <field name="other" attrs="{'readonly': [('status','=','sent_to_client')]}"/>
+                            <field name="transaction"/>
+                            <field name="client_id" attrs="{'readonly': [('status','=','sent_to_client')]}"
+                                   options="{'no_create': True,'no_open': True }"/>
+                            <!-- <field name="collection_ids" widget="many2many_tags"
+                                   options="{'no_create': True,'no_open': True }"/> -->
+                            <!-- <field name="billing_collection_updates"/> -->
+                            <field name="date_billed" attrs="{'readonly': [('status','=','sent_to_client')]}" />
+                            <field name="issued_by" attrs="{'readonly': [('status','=','sent_to_client')]}"
+                                   options="{'no_create': True,'no_open': True }" />
+                        </group>
+                        <br />
+                        <group>
+                            <!-- <field name="other" attrs="{'readonly': [('status','=','sent_to_client')]}"/> -->
                             <field name="previous_amount" attrs="{'readonly': [('status','=','sent_to_client')]}"/>
                             <field name="allowed_service_ids" invisible="1"/>
                             <field name="services_id" widget="many2many_tags"
@@ -119,11 +127,22 @@
                             </field> -->
                             <field name="services_amount" readonly="1"/>
                             <field name="services_amount" invisible="1"/>
+                        </group>
+                        <group attrs="{'invisible': [('has_adjustments','=',False)]}">
+                            <field name="has_adjustments" invisible="1"/>
+                            <field name="adjustment_ids" >
+                                <tree create="1" editable="bottom">
+                                    <field name="details"/>
+                                    <field name="amount" />
+                                </tree>
+                            </field>
+                            <field name="adjustments_amount" />
+                        </group>
+                        <group>
                             <field name="amount" string="Total Amount" readonly="1"/>
                             <field name="amount" string="Total Amount" invisible="1"/>
-                            <field name="issued_by" attrs="{'readonly': [('status','=','sent_to_client')]}"
-                                   options="{'no_create': True,'no_open': True }"/>
                         </group>
+                        <br />
                         <group attrs="{'invisible': [('previous_voided_billing', '=', False)]}">
                             <field name="previous_voided_billing" readonly='1' />
                         </group>
@@ -143,6 +162,16 @@
             </field>
         </record>
 
+        <!-- Popup form -->
+        <record id="bcs_billing_form_action" model="ir.actions.act_window">
+            <field name="name">Billing</field>
+            <field name="res_model">bcs.billing</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="bcs_billing_form_view"/>
+            <!-- <field name="domain">[('state','=','draft')]</field> -->
+        </record>
+
         <!-- Voided -->
         <record id="bcs_void_billing_tree_view" model="ir.ui.view">
             <field name="name">bcs_billing_tree_view</field>
@@ -157,7 +186,7 @@
                     <!-- <field name="last_updated"/> -->
                     <field name="state" optional="hide"/>
                     <field name="status" optional="hide"/>
-                    <field name="other" optional="hide"/>
+                    <!-- <field name="other" optional="hide"/> -->
                     <field name="services_id" widget="many2many_tags"/>
                     <field name="amount"/>
                     <field name="issued_by"/>
@@ -191,7 +220,7 @@
                     <!-- <field name="last_updated"/> -->
                     <field name="state" />
                     <field name="status" widget="badge"/>
-                    <field name="other" optional="hide"/>
+                    <!-- <field name="other" optional="hide"/> -->
                     <field name="services_id" widget="many2many_tags"/>
                     <field name="amount"/>
                     <field name="issued_by"/>

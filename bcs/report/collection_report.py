@@ -28,12 +28,16 @@ class CollectionReportXlsx(models.AbstractModel):
         'billing_ids.services_id',
         'billing_ids.client_id',
         'billing_ids.amount',
+        'billing_ids.adjustments_amount',
         'collected_by',
         'date_collected',
         'depository_bank',
         'payment_mode',
         'bank',
+        'check_number',
+        'check_date',
         'amount',
+        'manual_posting_ids',
         'remarks',
     ]
     
@@ -43,6 +47,7 @@ class CollectionReportXlsx(models.AbstractModel):
         'billing_ids.services_id': 'Type of Services',
         'billing_ids.client_id': 'Paid for (Client)',
         'billing_ids.amount': 'Billing Amount',
+        'billing_ids.adjustments_amount': 'Adjustments',
     }
 
 
@@ -61,17 +66,23 @@ class CollectionReportXlsx(models.AbstractModel):
         for collection in data['collections']:
             billing_ids_list = collection['billing_ids']
             billing_ids = self.env['bcs.billing'].search([('id', 'in', billing_ids_list)])
+            
             # Write collection fields
             for field in self.FIELDS:
-                if field.startswith('billing_ids'): continue
+                if field.startswith('billing_ids') or field == 'manual_posting_ids': continue
                 value, style = self._format_field_value(workbook, collection, field)
                 sheet.write(row, col_idx[field], value, style)
+            
             # Write billing fields
-            for billing in billing_ids:
+            for billing_id in billing_ids:
                 for field in self.FIELDS:
-                    if not field.startswith('billing_ids'): continue
+                    if not field.startswith('billing_ids') and field != 'manual_posting_ids': continue
+                    if field == 'manual_posting_ids': # Allocation column in report
+                        value, style = self._format_allocation_field_value(workbook, billing_id, collection)
+                        sheet.write(row, col_idx[field], value, style)
+                        continue
                     billing_field = field.split('.')[-1]
-                    value, style = self._format_billing_field_value(workbook, billing, billing_field)
+                    value, style = self._format_billing_field_value(workbook, billing_id, billing_field)
                     if billing_field == 'client_id':
                         direct = collection['payment_collection'] == 'direct_payment'
                         same_client = value.lower() == str(collection['paid_by_id'][1]).lower()
@@ -79,6 +90,7 @@ class CollectionReportXlsx(models.AbstractModel):
                             value = '*'
                     sheet.write(row, col_idx[field], value, style)
                 row += 1
+            
                 
 
     
@@ -131,9 +143,23 @@ class CollectionReportXlsx(models.AbstractModel):
             return (service_names, font12)
         elif field == 'client_id':
             return (value.name, font12)
-        elif field == 'amount':
+        elif field in ['amount', 'adjustments_amount']:
             return (value, number)
         else:
             return (str(value), font12)
+        
+        
+    def _format_allocation_field_value(self, workbook, billing_id, collection):
+        number = workbook.add_format({'font_size': 12, 'num_format': '#,##0.00'})
+        
+        if collection['payment_collection'] == 'direct_payment':
+            return (collection['amount'], number)
+        
+        mp_ids_list = collection['manual_posting_ids']
+        pc = self.env['soa.payments.collection'].search([
+            ('id', 'in', mp_ids_list),
+            ('client_id', '=', billing_id.client_id.id)
+        ], limit=1)
+        return (pc.amount, number)
         
         
