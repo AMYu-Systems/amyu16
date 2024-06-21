@@ -204,6 +204,16 @@
                                 </field>
                             </page>
                         </notebook>
+                        <br />
+                        <group string="All Billing Services">
+                            <field name="billing_service_ids">
+                                <tree create="0">
+                                    <field name="service_name" string="Service" />
+                                    <field name="service_code" string=" " />
+                                    <field name="amount" />
+                                </tree>
+                            </field>
+                        </group>
                     </sheet>
                     <div class="oe_chatter">
                         <field name="message_ids"/>

@@ -119,12 +119,13 @@
                                    domain="[('id', 'in', allowed_service_ids)]"
                                    attrs="{'readonly': [('status','=','sent_to_client')]}"
                                    options="{'no_create_edit': True, 'no_create': True, 'no_open': True}"/>
-                            <!-- <field name="billing_service_ids" readonly="1">
-                                <tree>
-                                    <field name="service_formatted" string="Service" />
+                            <field name="billing_service_ids">
+                                <tree create="0">
+                                    <field name="service_name" string="Service" />
+                                    <field name="service_code" string=" " />
                                     <field name="amount" />
                                 </tree>
-                            </field> -->
+                            </field>
                             <field name="services_amount" readonly="1"/>
                             <field name="services_amount" invisible="1"/>
                         </group>

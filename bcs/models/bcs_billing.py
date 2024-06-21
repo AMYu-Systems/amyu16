@@ -17,7 +17,9 @@ class BcsBilling(models.Model):
     name = fields.Char(compute="_compute_name")
     transaction = fields.Char(string="Billing Invoice No.", readonly="1")
     client_id = fields.Many2one(comodel_name='client.profile', string="Client Name", required=True, tracking=True)
-    ar_journal = fields.Many2one(comodel_name='soa.ar.journal', string="AR Journal", compute='_compute_arj', store=True)
+    ar_journal_id = fields.Many2one(comodel_name='soa.ar.journal', string="AR Journal", compute='_compute_arj', store=True)
+    billing_summary_id = fields.Many2one(comodel_name='billing.summary', compute='_compute_billing_summary', store=True)
+    
     
     @api.depends("services_id", "date_billed", "client_id.name")
     def _compute_name(self):
@@ -27,14 +29,24 @@ class BcsBilling(models.Model):
                           + ' | ' + services + ' | ' + record.client_id.name
         return
     
+    
     @api.depends('client_id')
     def _compute_arj(self):
         for record in self:
-            arj = self.env['soa.ar.journal'].search(
-                [('client_id', '=', record.client_id.id)], limit=1)
+            arj = self.env['soa.ar.journal'].search([('client_id', '=', record.client_id.id)], limit=1)
             if arj:
-                record.ar_journal = arj
+                record.ar_journal_id = arj
         return
+    
+    
+    @api.depends('client_id')
+    def _compute_billing_summary(self):
+        for record in self:
+            bs = self.env['billing.summary'].search([('client_id', '=', record.client_id.id)], limit=1)
+            if bs:
+                record.billing_summary_id = bs
+        return
+    
     
     @staticmethod
     def get_services_str(record) -> str:
@@ -47,6 +59,7 @@ class BcsBilling(models.Model):
         else:
             services = 'No Services'
         return services
+    
     
     @api.model
     def create(self, vals):
@@ -79,27 +92,30 @@ class BcsBilling(models.Model):
                 prev_billing.next_approved_after_void = res
         return res
 
-    @api.onchange('client_id', 'ar_journal')
+
+    @api.onchange('client_id')
     def _onchange_client_id(self):
         if self.client_id:
-            arj = self.ar_journal
+            arj = self.ar_journal_id
             if arj and arj.balance:
                 self.previous_amount = arj.balance
             elif not arj:
                 raise ValidationError('No AR Journal found for this Client.')
 
-            bs = self.env['billing.summary'].search([('client_id', '=', self.client_id.id)], limit=1)
+            bs = self.billing_summary_id
             if bs:
                 self.allowed_service_ids = [(6, 0, [srv.id for srv in bs.service_ids])]
                 self.services_id = [(6, 0, [srv.id for srv in bs.service_ids])]
             else:
                 raise ValidationError('No Billing Summary found for this Client.')
 
+
     @api.model
     def _default_issued_by(self):
         if not self.env.user or not self.env.user.id:
             return False
         return self.env['hr.employee'].search([('user_id', '=', self.env.user.id)], limit=1)
+        
         
     issued_by = fields.Many2one(comodel_name='hr.employee', string="Issued By", default=_default_issued_by, tracking=True)
     date_billed = fields.Date(string="Date Billed", required=True, default=fields.Date.today, tracking=True)
@@ -109,25 +125,29 @@ class BcsBilling(models.Model):
                        ('approved', 'Approved')]
     state = fields.Selection(state_selection, default='draft', copy=False, store=True, tracking=True)
 
+
     # ops manager create
     def draft_action(self):
         self.state = 'draft'
+
 
     # ops manager
     def ops_manager_submitted_action(self):
         self.state = 'submitted'
 
+
     # fad supervisor
     def fad_supervisor_verified_action(self):
         self.state = 'verified'
+
 
     # fad manager
     def fsd_manager_approved_action(self):
         self.state = 'approved'
 
         # add to ar journal
-        if self.ar_journal:
-            self.ar_journal.new_billing(self)
+        if self.ar_journal_id:
+            self.ar_journal_id.new_billing(self)
             # check if billing amount is less than ar balance
             if self.amount <= 0:
                 # MATIC WALANG BAYAD
@@ -137,6 +157,7 @@ class BcsBilling(models.Model):
                 })
                 if update:
                     update.set_confirmed_payment()
+
 
     allow_void = fields.Boolean(default=True)
     previous_voided_billing = fields.Many2one(comodel_name='bcs.billing', ref='previous_voided_billing')
@@ -156,6 +177,7 @@ class BcsBilling(models.Model):
     sent_with_email = fields.Boolean(default=True, string="Sent with Email")
     sent_with_errand = fields.Boolean(string="Sent with Errand")
 
+
     # fad has sent billing to client
     def sent_to_client(self):
         self.status = 'sent_to_client'
@@ -163,9 +185,11 @@ class BcsBilling(models.Model):
         # add to for-updates collection
         self.env['bcs.updates'].create({'billing_id': self.id})
 
+
     # client confirms they received it
     def client_received(self):
         self.status = 'client_received'
+
 
     # client has paid the billing
     def client_paid(self):
@@ -175,6 +199,7 @@ class BcsBilling(models.Model):
         # This is the basis of the Collection Report (?)
         # '''
         self.status = 'client_paid'
+
 
     # billing is apparently void
     def void_billing(self):
@@ -193,8 +218,9 @@ class BcsBilling(models.Model):
             return
 
         # update ar journal
-        if self.ar_journal:
-            self.ar_journal.void_billing(self)
+        if self.ar_journal_id:
+            self.ar_journal_id.void_billing(self)
+
 
     def set_allow_void_false(self):
         ''' Triggered by Collection class '''
@@ -213,26 +239,32 @@ class BcsBilling(models.Model):
     allowed_service_ids = fields.Many2many(comodel_name="services.type", string="Allowed Services",
                                            relation="bcs_billing_allowed_services_rel")
     # for all services as one general record
-    billing_service_ids = fields.Many2many('billing.service')
+    billing_service_ids = fields.Many2many(comodel_name='billing.service')
+    
     
     @api.onchange('services_id')
     def _onchange_services_id(self):
         '''
         Need for displaying amounts for Billing Summary of client in Billing
         '''
-        bs = self.env['billing.summary'].search([('client_id', '=', self.client_id.id)], limit=1)
+        bs = self.billing_summary_id
         if bs:
-            self.services_amount = bs.get_services_total_amount(self.services_id)
-            # services_amount_tuples = bs.get_services_each_amount(self.services_id)
-            # billing_service_ids = []
-            # for service_tuple in services_amount_tuples:
-
-            #     billing_service_ids.append(self.env['bcs.billing.service'].create({
-            #         'service_view': service_tuple[0],
-            #         'amount': service_tuple[1],
-            #     }))
-            # self.billing_service_ids = [(5,), (6, 0, [bs.id for bs in billing_service_ids])]
+            # Total amount only approach
+            # self.services_amount = bs.get_services_total_amount(self.services_id)
             
+            # Get all billing service ids approach
+            bserv_ids = bs.get_service_records(self.services_id)
+            included = [b.id for b in self.billing_service_ids]
+            self.billing_service_ids = [(6, 0, [b.id for b in bserv_ids if b.id not in included])]
+    
+    
+    @api.onchange('billing_service_ids')
+    def _onchange_billing_service_ids(self):
+        total = 0
+        for bserv in self.billing_service_ids:
+            total += bserv.amount
+        self.services_amount = total
+     
             
     active_billing = fields.Boolean(string="Active Billing", compute="_compute_active_billing", store=True)
     previous_amount = fields.Float(string="Previous Amount", tracking=0)
@@ -277,7 +309,7 @@ class BcsBilling(models.Model):
                 amount += record.adjustments_amount
             record.amount = amount
 
-    @api.depends('amount', 'state', 'status', 'ar_journal.balance', 'ar_journal.most_recent_billing_id')
+    @api.depends('amount', 'state', 'status', 'ar_journal_id.balance', 'ar_journal_id.most_recent_billing_id')
     def _compute_active_billing(self):
         '''
         For each record: \n
@@ -287,7 +319,7 @@ class BcsBilling(models.Model):
         if its recent billing but balance is already paid -> not active anymore
         '''
         for record in self:
-            arj = record.ar_journal
+            arj = record.ar_journal_id
             mrb_id = arj.most_recent_billing_id
             # test_with_logger(str(arj.balance))
             # test_with_logger(str(mrb_id.id), str(record.id),)
