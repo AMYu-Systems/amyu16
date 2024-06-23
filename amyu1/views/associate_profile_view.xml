@@ -6,7 +6,7 @@
             <field name="model">associate.profile</field>
             <field name="arch" type="xml">
                 <kanban>
-                    <field name="user_id"/>
+                    <field name="users_id"/>
                     <field name="id"/>
                     <field name="image"/>
                     <templates>
@@ -18,7 +18,7 @@
                                 <div class="oe_kanban_details">
                                     <div class="oe_kanban_title">
                                         <h2>
-                                            <field name="user_id"/>
+                                            <field name="users_id"/>
                                         </h2>
                                     </div>
                                     <div class="oe_kanban_description">
@@ -44,7 +44,7 @@
             <field name="model">associate.profile</field>
             <field name="arch" type="xml">
                 <tree create="False" export_xlsx="0">
-                    <field name="user_id"/>
+                    <field name="users_id"/>
                     <field name="job_id"/>
                     <field name="supervisor_id"/>
                     <field name="manager_id"/>
@@ -63,7 +63,8 @@
                         <field name="image" widget="image" nolabel="1" class="oe_avatar"/>
                     </div>
                     <group>
-                        <field name="user_id" options="{'no_open': True,'no_create': True}"/>
+                        <field name="user_id" invisible="1"/>
+                        <field name="users_id" options="{'no_open': True,'no_create': True}"/>
                         <group>
                             <field name="supervisor_id" options="{'no_open': True,'no_create': True}"/>
                             <field name="manager_id" options="{'no_open': True,'no_create': True}"/>
@@ -95,8 +96,8 @@
             <field name="model">associate.profile</field>
             <field name="arch" type="xml">
                 <search>
-                    <field name="user_id"
-                           filter_domain="['|',('user_id', 'ilike', self),('client_profile_ids', 'ilike', self)]"
+                    <field name="users_id"
+                           filter_domain="['|',('users_id', 'ilike', self),('client_profile_ids', 'ilike', self)]"
                            string="Associate"/>
                     <field name="client_profile_ids" string="Client"/>
                     <searchpanel>
