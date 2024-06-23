@@ -16,7 +16,7 @@
                     <field name="state"/>
                     <field name="status" widget="badge"/>
                     <!-- <field name="other"/> -->
-                    <field name="services_id"/>
+                    <field name="service_ids"/>
                     <field name="amount"/>
                     <field name="issued_by"/>
                     <field name="remarks"/>
@@ -47,7 +47,7 @@
                     <field name="state"/>
                     <field name="status" widget="badge"/>
                     <!-- <field name="other"/> -->
-                    <field name="services_id"/>
+                    <field name="service_ids"/>
                     <field name="amount"/>
                     <field name="issued_by"/>
                     <field name="remarks"/>
@@ -78,7 +78,7 @@
                     <field name="state"/>
                     <field name="status" widget="badge"/>
                     <!-- <field name="other"/> -->
-                    <field name="services_id"/>
+                    <field name="service_ids"/>
                     <field name="amount"/>
                     <field name="issued_by"/>
                     <field name="remarks"/>

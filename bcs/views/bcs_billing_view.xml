@@ -15,7 +15,7 @@
                     <field name="state" optional="hide"/>
                     <field name="status" widget="badge"/>
                     <!-- <field name="other" optional="hide"/> -->
-                    <field name="services_id" widget="many2many_tags"/>
+                    <field name="service_ids" widget="many2many_tags"/>
                     <field name="amount"/>
                     <field name="issued_by"/>
                     <field name="remarks" optional="hide"/>
@@ -115,12 +115,12 @@
                             <!-- <field name="other" attrs="{'readonly': [('status','=','sent_to_client')]}"/> -->
                             <field name="previous_amount" attrs="{'readonly': [('status','=','sent_to_client')]}"/>
                             <field name="allowed_service_ids" invisible="1"/>
-                            <field name="services_id" widget="many2many_tags"
+                            <field name="service_ids" widget="many2many_tags"
                                    domain="[('id', 'in', allowed_service_ids)]"
                                    attrs="{'readonly': [('status','=','sent_to_client')]}"
                                    options="{'no_create_edit': True, 'no_create': True, 'no_open': True}"/>
                             <field name="billing_service_ids">
-                                <tree create="0">
+                                <tree create="false" delete="false" >
                                     <field name="service_name" string="Service" />
                                     <field name="service_code" string=" " />
                                     <field name="amount" />
@@ -188,7 +188,7 @@
                     <field name="state" optional="hide"/>
                     <field name="status" optional="hide"/>
                     <!-- <field name="other" optional="hide"/> -->
-                    <field name="services_id" widget="many2many_tags"/>
+                    <field name="service_ids" widget="many2many_tags"/>
                     <field name="amount"/>
                     <field name="issued_by"/>
                     <field name="next_approved_after_void" optional="hide"/>
@@ -222,7 +222,7 @@
                     <field name="state" />
                     <field name="status" widget="badge"/>
                     <!-- <field name="other" optional="hide"/> -->
-                    <field name="services_id" widget="many2many_tags"/>
+                    <field name="service_ids" widget="many2many_tags"/>
                     <field name="amount"/>
                     <field name="issued_by"/>
                     <field name="active_billing" />

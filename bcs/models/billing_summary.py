@@ -1,4 +1,4 @@
-from typing import List
+from odoo.exceptions import ValidationError
 from odoo import fields, models, api
 import logging
 
@@ -61,7 +61,7 @@ class BillingSummary(models.Model):
                        ('approved', 'Approved')]
     state = fields.Selection(state_selection, default='draft', copy=False)
     
-    billing_service_ids = fields.One2many(comodel_name='billing.service', 
+    billing_service_ids = fields.One2many(comodel_name='billing.service', store=True,
                                           inverse_name='billing_summary_id', string="Services")
     
     # # auto create or when "edit -> draft" has been implemented
@@ -83,7 +83,10 @@ class BillingSummary(models.Model):
     
     # Override
     def write(self, vals):
-        return super(BillingSummary, self).write(vals)
+        res = super(BillingSummary, self).write(vals)
+        self._oncreate_service_records('AUD', self.audit_ids)
+        self._oncreate_service_records('TRC', self.trc_ids)
+        return res
 
 
     def get_services(self):
@@ -104,55 +107,67 @@ class BillingSummary(models.Model):
         self.has_loa = 'TXA' in service_list
         self.has_spe = 'SPE' in service_list
         return
+    
+    
+    def _oncreate_service_records(self, service_code:str, service_ids):
+        service = self.env['services.type'].search([('code', '=', service_code)], limit=1)
+        for rec in service_ids:
+            self.create_billing_service(service_type=service, service_record=rec)
 
+
+    def _onchange_service_records(self, service_code:str, service_ids):
+        service = self.env['services.type'].search([('code', '=', service_code)], limit=1)
+        for rec in service_ids:
+            self.update_billing_service(service_type=service, service_record=rec)
+        
 
     # @api.onchange('audit_ids')
-    # def _onchange_audit(self):
+    # def _oncreate_audit(self):
     #     service = self.env['services.type'].search([('code', '=', 'AUD')], limit=1)
     #     for rec in self.audit_ids:
     #         self.create_billing_service(service_type=service, service_record=rec)
     
     
     # @api.onchange('trc_ids')
-    # def _onchange_audit(self):
-    #     service = self.env['services.type'].search([('code', '=', 'TRC')], limit=1)
-    #     for rec in self.trc_ids:
-    #         self.create_billing_service(service_type=service, service_record=rec)
+    # def _oncreate_trc(self):
+        # service = self.env['services.type'].search([('code', '=', 'TRC')], limit=1)
+        # for rec in self.trc_ids:
+        #     self.create_billing_service(service_type=service, service_record=rec)
+    
+    
+    @api.onchange('audit_ids', 'service_ids')
+    def _onchange_audit(self):
+        self._onchange_service_records('AUD', self.audit_ids)
+         
+    
+    @api.onchange('trc_ids', 'service_ids')
+    def _onchange_trc(self):
+        self._onchange_service_records('TRC', self.trc_ids)
          
             
-    # @api.onchange('books_ids')
-    # def _onchange_audit(self):
-    #     service = self.env['services.type'].search([('code', '=', 'BKS')], limit=1)
-    #     for rec in self.books_ids:
-    #         self.create_billing_service(service_type=service, service_record=rec)
+    @api.onchange('books_ids', 'service_ids')
+    def _onchange_books(self):
+        self._onchange_service_records('BKS', self.books_ids)
         
             
-    # @api.onchange('permit_ids')
-    # def _onchange_audit(self):
-    #     service = self.env['services.type'].search([('code', '=', 'PER')], limit=1)
-    #     for rec in self.permit_ids:
-    #         self.create_billing_service(service_type=service, service_record=rec)
+    @api.onchange('permit_ids', 'service_ids')
+    def _onchange_permit(self):
+        self._onchange_service_records('PER', self.permit_ids)
       
             
-    # @api.onchange('gis_ids')
-    # def _onchange_audit(self):
-    #     service = self.env['services.type'].search([('code', '=', 'GIS')], limit=1)
-    #     for rec in self.gis_ids:
-    #         self.create_billing_service(service_type=service, service_record=rec)
+    @api.onchange('gis_ids', 'service_ids')
+    def _onchange_gis(self):
+        self._onchange_service_records('GIS', self.gis_ids)
        
             
-    # @api.onchange('loa_ids')
-    # def _onchange_audit(self):
-    #     service = self.env['services.type'].search([('code', '=', 'TXA')], limit=1)
-    #     for rec in self.loa_ids:
-    #         self.create_billing_service(service_type=service, service_record=rec)
+    @api.onchange('loa_ids', 'service_ids')
+    def _onchange_loa(self):
+        self._onchange_service_records('TXA', self.loa_ids)
             
             
-    # @api.onchange('spe_ids')
-    # def _onchange_audit(self):
-    #     service = self.env['services.type'].search([('code', '=', 'SPE')], limit=1)
-    #     for rec in self.spe_ids:
-    #         self.create_billing_service(service_type=service, service_record=rec)
+    @api.onchange('spe_ids', 'service_ids')
+    def _onchange_spe(self):
+        self._onchange_service_records('SPE', self.spe_ids)
     
     
     def get_services(self):
@@ -182,82 +197,57 @@ class BillingSummary(models.Model):
         return total
     
     
-    def get_service_records(self, included_service_ids):
-        
-        # Using billing service records
-        billing_service_ids = self.env['billing.service'].search([
-            ('billing_summary_id', '=', self.id),
-            ('service_id', 'in', [serv.id for serv in included_service_ids])
-        ])
-        return billing_service_ids
-        
-        # Naive way
-        # service_amount = []
-        # def _set_service_amount(service_type, service_ids):
-        #     view = service_type.name + f' ({service_type.code})'
-        #     for service in service_ids:
-        #         service_amount.append((view, service.amount))
-        
-        # included = {}
-        # for service_id in included_services_id:
-        #     included[service_id.code] = service_id
-        
-        # if 'AUD' in included.keys() and self.has_aud: 
-        #     _set_service_amount(included['AUD'], self.audit_ids)
-        # if 'TRC' in included.keys() and self.has_trc: 
-        #     _set_service_amount(included['TRC'], self.trc_ids)
-        # if 'BKS' in included.keys() and self.has_bks: 
-        #     _set_service_amount(included['BKS'], self.books_ids)
-        # if 'PER' in included.keys() and self.has_per: 
-        #     _set_service_amount(included['PER'], self.permit_ids)
-        # if 'GIS' in included.keys() and self.has_gis: 
-        #     _set_service_amount(included['GIS'], self.gis_ids)
-        # if 'TXA' in included.keys() and self.has_loa: 
-        #     _set_service_amount(included['TXA'], self.loa_ids)
-        # if 'SPE' in included.keys() and self.has_spe: 
-        #     _set_service_amount(included['SPE'], self.spe_ids) 
-        
-        # return service_amount
+    def get_service_records_as_int_list(self, included_service_ids):
+        billing_service_int_ids = []
+        for bserv_id in self.billing_service_ids:
+            if bserv_id.service_id.id in included_service_ids.ids:
+                billing_service_int_ids.append(bserv_id.id)
+        return billing_service_int_ids
     
     
-    def update_create_billing_service(self, service_type, service_record):
+    def update_billing_service(self, service_record, service_type):
         '''
         Creates a BillingService record for this BillingSummary if does not exist. 
-        Otherwise, just update the amount if the record exists.
+        Otherwise, add again to table if removed previosly and update the amount if the record exists.
+        '''
+        # The replace method is absolute bad code, but it works...
+        # Onchange only gives a virtual record with id "NewId_<actual_id>" 
+        # So we just remove that to query the existing record properly
+        unique_id = f'{service_record.id}-{service_type.code}'.replace('NewId_', '')
+        existing = self.env['billing.service'].search([('unique_str_id', '=', unique_id)], limit=1)
+        
+        if existing:
+            bserv_included : bool = existing.id in self.billing_service_ids.ids
+            # If service not included, remove from billing service table
+            if service_type.id not in self.service_ids.ids and bserv_included:
+                self.billing_service_ids = [(2, existing.id)]
+            else:
+                if not bserv_included:
+                    # Add to billing service table again if previously removed
+                    self.billing_service_ids = [(4, existing.id)]
+            # Change amount if edited
+            # raise ValidationError(existing.amount + ', ' + service_record.amount)
+            if existing.amount != service_record.amount:
+                existing.set_amount(service_record.amount)
+                
+    
+    def create_billing_service(self, service_type, service_record):
+        '''
+        Creates a BillingService record for this BillingSummary if does not exist. 
+        Otherwise, add again to table if removed previosly and update the amount if the record exists.
         '''
         unique_id = f'{service_record.id}-{service_type.code}'
         existing = self.env['billing.service'].search([('unique_str_id', '=', unique_id)], limit=1)
         
-        if existing:
-            if existing.amount != service_record.amount:
-                existing.set_amount(service_record.amount)
-        else:
+        if not existing and service_type.id in self.service_ids.ids:
+            # Create new billing service summary
             billing_service_id = self.env['billing.service'].create({
                 'billing_summary_id': self.id,
                 'unique_str_id': unique_id,
-                'service_type': service_type.id,
+                'service_id': service_type.id,
                 'amount': service_record.amount,
             })
-            
-            self.env.cr.commit()
             self.billing_service_ids = [(4, billing_service_id.id)]
-        
-    
-    def update_remove_service_records(self):
-        service_int_ids = [s.id for s in self.service_ids]
-        new_included_int_ids = []
-        for bserv_id in self.billing_service_ids:
-            if bserv_id.service_id.id in service_int_ids:
-                new_included_int_ids.append(bserv_id.id)
-        self.billing_service_ids = [(6, 0, new_included_int_ids)]
-    
-    # def create_billing_service_records(self, included_services_id):
-    #     service_tuple = self.get_services_each_amount(included_services_id)
-    #     billing_service_ids = []
-    #     billing_service_ids.append(self.env['billing.service'].create({
-    #         'service_view': service_tuple[0],
-    #         'amount': service_tuple[1],
-    #     }))
         
         
         

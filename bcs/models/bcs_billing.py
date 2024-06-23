@@ -1,5 +1,6 @@
 from odoo import fields, models, api
 from odoo.exceptions import ValidationError
+
 import logging
 _logger = logging.getLogger(__name__)
 def test_with_logger(data: any = "Debug Message", warn: bool = False):
@@ -7,6 +8,8 @@ def test_with_logger(data: any = "Debug Message", warn: bool = False):
     method = _logger.info if not warn else _logger.warning
     for _ in range(5):
         method(data)
+
+
 
 class BcsBilling(models.Model):
     _name = 'bcs.billing'
@@ -21,7 +24,7 @@ class BcsBilling(models.Model):
     billing_summary_id = fields.Many2one(comodel_name='billing.summary', compute='_compute_billing_summary', store=True)
     
     
-    @api.depends("services_id", "date_billed", "client_id.name")
+    @api.depends("service_ids", "date_billed", "client_id.name")
     def _compute_name(self):
         for record in self:
             services = BcsBilling.get_services_str(record)
@@ -52,8 +55,8 @@ class BcsBilling(models.Model):
     def get_services_str(record) -> str:
         services = ''
         separator = ', '
-        if len(record.services_id) > 0:
-            for service in record.services_id:
+        if len(record.service_ids) > 0:
+            for service in record.service_ids:
                 services += service.code + separator
             services = services[:-2]
         else:
@@ -104,8 +107,10 @@ class BcsBilling(models.Model):
 
             bs = self.billing_summary_id
             if bs:
+                # raise ValidationError(bs.service_ids)
                 self.allowed_service_ids = [(6, 0, [srv.id for srv in bs.service_ids])]
-                self.services_id = [(6, 0, [srv.id for srv in bs.service_ids])]
+                self.service_ids = [(6, 0, [srv.id for srv in bs.service_ids])]
+                self._set_billing_services()
             else:
                 raise ValidationError('No Billing Summary found for this Client.')
 
@@ -234,29 +239,31 @@ class BcsBilling(models.Model):
     #             raise ValidationError("Fields can only be edited when state is not 'approved'.")
 
     # other = fields.Text(string="Other Instruction", tracking=True)
-    services_id = fields.Many2many(comodel_name="services.type", string="Services", required=True, 
+    service_ids = fields.Many2many(comodel_name="services.type", string="Services", required=True, 
                                    relation="bcs_billing_selected_services_rel", track_visibility=True)
     allowed_service_ids = fields.Many2many(comodel_name="services.type", string="Allowed Services",
                                            relation="bcs_billing_allowed_services_rel")
     # for all services as one general record
-    billing_service_ids = fields.Many2many(comodel_name='billing.service')
+    billing_service_ids = fields.Many2many(comodel_name='billing.service', store=True)
     
     
-    @api.onchange('services_id')
-    def _onchange_services_id(self):
+    def _set_billing_services(self):
+        included_services = self.env['services.type'].search([('code','in', [s.code for s in self.service_ids])])
+        bserv_int_ids = self.billing_summary_id.get_service_records_as_int_list(included_services)
+        self.billing_service_ids = [(6, 0, bserv_int_ids)]
+    
+    
+    @api.onchange('service_ids')
+    def _onchange_service_ids(self):
         '''
         Need for displaying amounts for Billing Summary of client in Billing
         '''
         bs = self.billing_summary_id
         if bs:
-            # Total amount only approach
-            # self.services_amount = bs.get_services_total_amount(self.services_id)
-            
+            # self.services_amount = bs.get_services_total_amount(self.service_ids) # Total amount only
             # Get all billing service ids approach
-            bserv_ids = bs.get_service_records(self.services_id)
-            included = [b.id for b in self.billing_service_ids]
-            self.billing_service_ids = [(6, 0, [b.id for b in bserv_ids if b.id not in included])]
-    
+            self._set_billing_services()
+            
     
     @api.onchange('billing_service_ids')
     def _onchange_billing_service_ids(self):
@@ -278,14 +285,17 @@ class BcsBilling(models.Model):
     amount = fields.Float(string="Total Amount", compute="_compute_amount")
     remarks = fields.Text(string="Remarks", tracking=0)
     
+    
     def add_adjustments(self):
         ''' Button trigger from XML '''
         self.has_adjustments = True
+    
         
     def remove_adjustments(self):
         ''' Button trigger from XML '''
         self.has_adjustments = False
         self.adjustment_ids = [(6, 0, [])] # delete all adjustments
+    
     
     @api.depends('adjustment_ids')
     def _compute_adjustments_amount(self):
@@ -298,6 +308,7 @@ class BcsBilling(models.Model):
                 total += adj_id.amount
             record.adjustments_amount = total
     
+    
     @api.depends('previous_amount', 'services_amount', 'has_adjustments', 'adjustments_amount')
     def _compute_amount(self):
         '''
@@ -308,6 +319,7 @@ class BcsBilling(models.Model):
             if record.has_adjustments:
                 amount += record.adjustments_amount
             record.amount = amount
+
 
     @api.depends('amount', 'state', 'status', 'ar_journal_id.balance', 'ar_journal_id.most_recent_billing_id')
     def _compute_active_billing(self):

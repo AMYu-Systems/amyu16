@@ -87,6 +87,7 @@
                             <page string="Audit" attrs="{'invisible': [('has_aud', '=', False)]}">
                                 <field name="audit_ids" nolabel="1">
                                     <tree>
+                                        <field name="id"/>
                                         <field name="billing_month"/>
                                         <field name="payment_term"/>
                                         <field name="details"/>
@@ -103,6 +104,7 @@
                             <page string="TRC" attrs="{'invisible': [('has_trc', '=', False)]}">
                                 <field name="trc_ids" nolabel="1">
                                     <tree>
+                                        <field name="id"/>
                                         <field name="name"/>
                                         <field name="end_date"/>
                                         <field name="tax_report_period"/>
@@ -121,6 +123,7 @@
                             <page string="Books" attrs="{'invisible': [('has_bks', '=', False)]}">
                                 <field name="books_ids" nolabel="1">
                                     <tree>
+                                        <field name="id"/>
                                         <field name="billing_month"/>
                                         <field name="period_covered"/>
                                         <field name="branches"/>
@@ -139,6 +142,7 @@
                             <page string="Business Permit" attrs="{'invisible': [('has_per', '=', False)]}">
                                 <field name="permit_ids" nolabel="1">
                                     <tree>
+                                        <field name="id"/>
                                         <field name="billing_month"/>
                                         <field name="period_covered"/>
                                         <field name="branches"/>
@@ -156,6 +160,7 @@
                             <page string="GIS" attrs="{'invisible': [('has_gis', '=', False)]}">
                                 <field name="gis_ids" nolabel="1">
                                     <tree>
+                                        <field name="id"/>
                                         <field name="billing_month"/>
                                         <field name="details"/>
                                         <field name="billing_summary_id"/>
@@ -171,6 +176,7 @@
                             <page string="TXA" attrs="{'invisible': [('has_loa', '=', False)]}">
                                 <field name="loa_ids" nolabel="1">
                                     <tree>
+                                        <field name="id"/>
                                         <field name="name"/>
                                         <field name="payment_term"/>
                                         <field name="letter_date"/>
@@ -189,6 +195,7 @@
                             <page string="Special Engagement" attrs="{'invisible': [('has_spe', '=', False)]}">
                                 <field name="spe_ids">
                                     <tree>
+                                        <field name="id"/>
                                         <field name="billing_month"/>
                                         <field name="payment_terms"/>
                                         <!-- <field name="service_id"/> -->
@@ -206,10 +213,11 @@
                         </notebook>
                         <br />
                         <group string="All Billing Services">
-                            <field name="billing_service_ids">
-                                <tree create="0">
+                            <field name="billing_service_ids" force_save='1'>
+                                <tree create="false" delete="false">
+                                    <field name="unique_str_id" string="ID" />
                                     <field name="service_name" string="Service" />
-                                    <field name="service_code" string=" " />
+                                    <field name="service_code" string=" " widget="badge" />
                                     <field name="amount" />
                                 </tree>
                             </field>

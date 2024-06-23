@@ -27,7 +27,7 @@ class AccountsReceivable(models.Model):
     name = fields.Char(compute="_compute_name")
     identifier_str = fields.Char(compute="_compute_identifier_str")
     services_str = fields.Char(compute="_compute_services_str")
-    service_ids = fields.Many2many(related="billing_id.services_id")
+    service_ids = fields.Many2many(related="billing_id.service_ids")
     services_amount = fields.Float(related="billing_id.services_amount")
     previous_amount = fields.Float(related="billing_id.previous_amount")
 
