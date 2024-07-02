@@ -214,7 +214,8 @@
                         <br />
                         <group string="All Billing Services">
                             <field name="billing_service_ids" force_save='1'>
-                                <tree create="false" delete="false">
+                            <!-- delete="false" -->
+                                <tree create="false" > 
                                     <field name="unique_str_id" string="ID" />
                                     <field name="service_name" string="Service" />
                                     <field name="service_code" string=" " widget="badge" />

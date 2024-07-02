@@ -86,6 +86,11 @@ class BillingSummary(models.Model):
         res = super(BillingSummary, self).write(vals)
         self._oncreate_service_records('AUD', self.audit_ids)
         self._oncreate_service_records('TRC', self.trc_ids)
+        self._oncreate_service_records('BKS', self.books_ids)
+        self._oncreate_service_records('PER', self.permit_ids)
+        self._oncreate_service_records('GIS', self.gis_ids)
+        self._oncreate_service_records('TXA', self.loa_ids)
+        self._oncreate_service_records('SPE', self.spe_ids)
         return res
 
 
@@ -117,22 +122,22 @@ class BillingSummary(models.Model):
 
     def _onchange_service_records(self, service_code:str, service_ids):
         service = self.env['services.type'].search([('code', '=', service_code)], limit=1)
+        actual_service_int_ids = [int(str(serv.id).replace('virtual_', '')) 
+                                  for serv in service_ids if str(serv.id).startswith('virtual_')]
+        
+        
+        # Remove deleted ids from the service_ids
+        deleted_int_ids = []
+        for bserv in self.billing_service_ids:
+            bserv_service_id = int(str(bserv.unique_str_id).split('-')[0]) 
+            if bserv_service_id not in actual_service_int_ids:
+                deleted_int_ids.append(bserv.id)
+        for deleted_int_id in deleted_int_ids:
+            self.billing_service_ids = [(2, deleted_int_id)]
+        
+        # Update records from service_ids
         for rec in service_ids:
             self.update_billing_service(service_type=service, service_record=rec)
-        
-
-    # @api.onchange('audit_ids')
-    # def _oncreate_audit(self):
-    #     service = self.env['services.type'].search([('code', '=', 'AUD')], limit=1)
-    #     for rec in self.audit_ids:
-    #         self.create_billing_service(service_type=service, service_record=rec)
-    
-    
-    # @api.onchange('trc_ids')
-    # def _oncreate_trc(self):
-        # service = self.env['services.type'].search([('code', '=', 'TRC')], limit=1)
-        # for rec in self.trc_ids:
-        #     self.create_billing_service(service_type=service, service_record=rec)
     
     
     @api.onchange('audit_ids', 'service_ids')
@@ -226,7 +231,6 @@ class BillingSummary(models.Model):
                     # Add to billing service table again if previously removed
                     self.billing_service_ids = [(4, existing.id)]
             # Change amount if edited
-            # raise ValidationError(existing.amount + ', ' + service_record.amount)
             if existing.amount != service_record.amount:
                 existing.set_amount(service_record.amount)
                 
