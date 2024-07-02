@@ -4,7 +4,7 @@
         <t t-call="web.html_container">
             <div class="header">
                 <img src="/bcs/static/src/img/MicrosoftTeams-image.png"
-                     style="height:150px;width:200px;left:20px;bottom:500px;middle:50px" class="float-start"
+                     style="height:200px;width:300px;left:20px;bottom:500px;middle:50px" class="float-start"
                      alt="Logo"/>
             </div>
 
@@ -17,44 +17,106 @@
     <template id="arjournal_report_document">
         <t t-call="web.external_layout">
             <br/>
-            <h2>
-                INVOICE
-            </h2>
-            <div>
-                <td>
-                    Due Date
-                </td>
-            </div>
+            <br/>
+            <br/>
+            <br/>
             <table style="font-size:10px;" width="50%">
                 <tr>
-                    <td>Client Name:
-                        <span t-field="doc.client_id"/>
+                    <td>
+                        Statement Number:
+                    </td>
+                    <td>
+                        <!--                        <span t-field="doc.client_id"/>-->
                     </td>
                 </tr>
                 <tr>
-                    <td>Balance:
-                        <span t-field="doc.balance"/>
+                    <td>
+                        Client Number:
+                    </td>
+                    <td>
+                        <!--                        <span t-field="doc.balance"/>-->
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Billing Date:
+                    </td>
+                    <td>
+                        <!--                        <span t-field="doc.balance"/>-->
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Billing Number:
+                    </td>
+                    <td>
+                        <!--                        <span t-field="doc.balance"/>-->
                     </td>
                 </tr>
             </table>
             <table style="font-size:10px;" width="100%">
                 <h5>
-                    <p style="text-center;">Payment Collection</p>
+                    <p style="text-center;">ACCOUNTS RECEIVABLE SUMMARY</p>
                 </h5>
                 <tr>
-                    <td>Payment Collect</td>
+                    <td>SOA No.</td>
+                    <td>SOA Date</td>
+                    <td>Description</td>
                     <td>Amount</td>
                 </tr>
-                <t t-foreach='doc.payments_collection_ids' t-as='line'>
-                    <tr>
-                        <td>
-                            <span t-esc="line.name"/>
-                        </td>
-                        <td>
-                            <span t-esc="line.amount"/>
-                        </td>
-                    </tr>
-                </t>
+            </table>
+            <table style="font-size:10px;" width="100%">
+                <tr>
+                    <td>
+                        Accounts Receivable Balance Outstanding
+                    </td>
+                    <td>
+
+                    </td>
+                </tr>
+            </table>
+            <table style="font-size:10px;" width="100%">
+                <h5>
+                    <p style="text-center;">LAST PAYMENT DETAILS</p>
+                </h5>
+                <tr>
+                    <td>Payment Date</td>
+                    <td>Mode of Payment</td>
+                    <td>Payment Details</td>
+                    <td>Amount</td>
+                </tr>
+            </table>
+            <table style="font-size:10px;" width="100%">
+                <tr>
+                    <td>
+                        Total Payment
+                    </td>
+                    <td>
+
+                    </td>
+                </tr>
+            </table>
+            <br/>
+            <table style="font-size:10px;" width="100%">
+                <h5>
+                    <p style="text-center;">BILLING AND CREDIT ADJUSTMENTS</p>
+                </h5>
+                 <tr>
+                    <td>CM Date</td>
+                    <td>CM Memo No.</td>
+                    <td>Details</td>
+                    <td>Amount</td>
+                </tr>
+            </table>
+             <table style="font-size:10px;" width="100%">
+                <tr>
+                    <td>
+                        Total Adjustment
+                    </td>
+                    <td>
+
+                    </td>
+                </tr>
             </table>
         </t>
     </template>

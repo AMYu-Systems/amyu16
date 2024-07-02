@@ -2,16 +2,27 @@
 <odoo>
     <data>
         <menuitem id="cpms_root_menu"
-                  name="CPMS"
+                  name="Client Profile"
                   web_icon="amyu1,static/description/odoo_icon.png"
                   action="client_tree_action"/>
+
         <menuitem id="menu_general_root"
                   name="General"
                   sequence="1"
                   parent="cpms_root_menu"/>
+        <menuitem id="menu_add_edit_client_profile"
+                  sequence="10"
+                  name="New Client"
+                  parent="menu_general_root"/>
+        <menuitem id="add_menu_general_client_profile"
+                  name="+Add/Edit Profile+"
+                  parent="menu_add_edit_client_profile"
+                  action="maintain_client_profile_action"/>
+
+
         <menuitem id="menu_general_profile"
                   name="Members Profile"
-                  sequence="10"
+                  sequence="11"
                   parent="menu_general_root"/>
         <menuitem id="submenu_general_profile"
                   name="Check Profile"
@@ -19,7 +30,7 @@
                   action="maintain_associates_profile_action"/>
 
         <menuitem id="menu_cpms_client_list"
-                  sequence="11"
+                  sequence="12"
                   name="Client List"
                   parent="menu_general_root"/>
         <menuitem id="menu_general_client"
@@ -27,14 +38,6 @@
                   parent="menu_cpms_client_list"
                   action="client_tree_action"/>
 
-        <menuitem id="menu_add_edit_client_profile"
-                  sequence="12"
-                  name="New Client"
-                  parent="menu_general_root"/>
-        <menuitem id="add_menu_general_client_profile"
-                  name="+Add/Edit Profile+"
-                  parent="menu_add_edit_client_profile"
-                  action="maintain_client_profile_action"/>
 
         <menuitem id="menu_cpms_per_status"
                   sequence="20"
@@ -49,14 +52,15 @@
                   action="client_profile_manager_action"
                   parent="menu_cpms_per_status"/>
 
-        <menuitem id="menu_dashboard_root"
-                  name="Dashboard"
-                  sequence="30"
-                  parent="cpms_root_menu"/>
-        <menuitem id="menu_dashboard_report"
+        <menuitem id="menu_dashboard"
                   name="Report"
+                  sequence="30"
+                  parent="menu_general_root"/>
+        <menuitem id="menu_dashboard_report"
+                  name="Master List"
                   action="master_list_action"
-                  parent="menu_dashboard_root"/>
+                  parent="menu_dashboard"/>
+
         <menuitem id="menu_maintenance_root"
                   name="Maintenance"
                   sequence="40"
